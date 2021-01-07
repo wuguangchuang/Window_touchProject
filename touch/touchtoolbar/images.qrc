@@ -7,5 +7,34 @@
         <file>images/disconnect.png</file>
         <file>images/error.png</file>
         <file>images/cancel.png</file>
+        <file>images/about.png</file>
+        <file>images/calibrate.png</file>
+        <file>images/calibrate_blue.png</file>
+        <file>images/hide_blue.png</file>
+        <file>images/mode.png</file>
+        <file>images/read_blue.png</file>
+        <file>images/refresh.png</file>
+        <file>images/refresh_blue.png</file>
+        <file>images/restort_blue.png</file>
+        <file>images/save_blue.png</file>
+        <file>images/screen_spin.png</file>
+        <file>images/serial.png</file>
+        <file>images/setting.png</file>
+        <file>images/setting_blue.png</file>
+        <file>images/show_blue.png</file>
+        <file>images/smallicon.png</file>
+        <file>images/testAction.png</file>
+        <file>images/touch_rotate.png</file>
+        <file>images/touch_spin.png</file>
+        <file>images/upgradeAction.png</file>
+        <file>images/usb.png</file>
+        <file>images/triangle_right.png</file>
+        <file>images/triangle_left.png</file>
+        <file>images/triangle_up.png</file>
+        <file>images/triangle_down.png</file>
+        <file>images/tune.png</file>
+        <file>images/unlock.png</file>
+        <file>images/lock.png</file>
+        <file>images/startup.png</file>
     </qresource>
 </RCC>

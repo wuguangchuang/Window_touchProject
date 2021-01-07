@@ -1200,10 +1200,13 @@ Item {
     RowLayout {
         id: buttons
         anchors.bottom: parent.bottom
-        anchors.bottomMargin: 10
+//        anchors.bottomMargin: 10
         anchors.left: parent.left
         anchors.leftMargin: 10
+        Layout.fillWidth: true
+        Layout.preferredHeight: 30
         Cont1.Button {
+            anchors.bottomMargin: 10
             style: TButtonStyle {
                 height: 20
                 label: Text {
@@ -1223,6 +1226,7 @@ Item {
             visible: true
         }
         Cont1.Button {
+            anchors.bottomMargin: 10
             style: TButtonStyle {
                 height: 20
                 label: Text {
@@ -1240,7 +1244,7 @@ Item {
         }
 
         Cont1.Button {
-
+            anchors.bottomMargin: 10
             style: TButtonStyle {
                 height: 20
                 label: Text {
@@ -1258,7 +1262,8 @@ Item {
             }
         }
         Cont1.Button {
-
+            id:testModeBtn
+            anchors.bottomMargin: 10
             style: TButtonStyle {
                 height: 20
                 label: Text {
@@ -1274,6 +1279,35 @@ Item {
                 enterTest = !enterTest;
 //                            console.log("test qml settest: " + enterTest);
             }
+        }
+        Rectangle{
+            Layout.preferredHeight:25
+            Layout.preferredWidth: signalChartDeviceImage.width +
+                                   signalChartDeviceInfo.width + 3 * defaultMargin
+            border.width: 1
+            border.color: "#aaaaaa"
+            anchors.left: testModeBtn.right
+            anchors.leftMargin: defaultMargin
+           RowLayout{
+               anchors.fill: parent
+               Image{
+                   id:signalChartDeviceImage
+                   Layout.preferredHeight: 25
+                   Layout.preferredWidth: 25
+                   source: deviceConnectImage
+                   fillMode: Image.Stretch
+                   anchors.verticalCenter: parent.verticalCenter
+                   anchors.left: parent.left
+                   anchors.leftMargin: defaultMargin
+               }
+               Text {
+                   id: signalChartDeviceInfo
+                   text: deviceMainInfo
+                   anchors.left: signalChartDeviceImage.right
+                   anchors.leftMargin: defaultMargin
+                   anchors.verticalCenter: parent.verticalCenter
+               }
+           }
         }
     }
     property bool enterTest: false

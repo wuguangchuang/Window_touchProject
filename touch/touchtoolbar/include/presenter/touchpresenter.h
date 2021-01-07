@@ -18,7 +18,7 @@
 #include "sdk/commandthread.h"
 #include "sdk/tdebug.h"
 #include "sdk/tPrintf.h"
-
+#include "src/jsonFile/json.h"
 
 #define DIALOG_NOICON 0
 #define DIALOG_QUESTION 4
@@ -34,9 +34,15 @@ public:
     virtual bool whetherDeviceConnect() = 0;
     virtual QVariant getDeviceInfoName() = 0;
     virtual QVariant getDeviceInfo() = 0;
+    virtual QVariant getDeviceMainInfo() = 0;
     virtual QVariant getSoftwareInfoName() = 0;
     virtual QVariant getSoftwareInfo() = 0;
     virtual QVariantMap getBoardAndLampData() = 0;
+    virtual bool isUpgrading() = 0;
+    virtual bool isTesting() = 0;
+    virtual QString getTr(QString info) = 0;
+    virtual void AutoRun(bool isAutoRun) = 0;
+    virtual QString getAppPath() = 0;
 };
 class ProcessStarter : public QProcess {
     Q_OBJECT
@@ -149,6 +155,7 @@ public:
     Q_INVOKABLE bool whetherDeviceConnect();
     Q_INVOKABLE QVariant getDeviceInfoName();
     Q_INVOKABLE QVariant getDeviceInfo();
+    Q_INVOKABLE QVariant getDeviceMainInfo();
     Q_INVOKABLE QVariant getSoftwareInfoName();
     Q_INVOKABLE QVariant getSoftwareInfo();
 
@@ -177,6 +184,7 @@ public:
     Q_INVOKABLE QVariant setCalibrationDatas(QVariantMap datas);
     Q_INVOKABLE QVariant enterCalibrationMode();
     Q_INVOKABLE QVariant exitCalibrationMode();
+    Q_INVOKABLE QVariant enableCoords(bool enable);
     Q_INVOKABLE QVariant setCalibrationPointData(QVariant index, QVariantMap data);
     Q_INVOKABLE QVariant captureCalibrationIndex(QVariant index);
     Q_INVOKABLE QVariantMap getCalibrationCapture();
@@ -280,6 +288,17 @@ public:
         emit stopAll();
         TDEBUG("send stop thread  signal finshed");
     }
+    Q_INVOKABLE void getUpgradeStatus(){
+       return;
+    }
+
+       Q_INVOKABLE bool isUpgrading(){
+           return touch->isUpgrading();
+    }
+       Q_INVOKABLE bool isTesting(){
+           return touch->isTesting();
+    }
+
     Q_INVOKABLE bool isrunning()
     {
 //        TDEBUG("There are still threads running ");
@@ -324,6 +343,9 @@ public:
     QObject* getComponent() { return component;}
     void setTouchManager(TouchManager *tm) {touchManager = tm;}
 
+    //更多设置
+    Q_INVOKABLE void modeSetting(bool startup = false);
+    Q_INVOKABLE QVariantMap refreshModeSetting();
 
     // call qml
     void showDialog(QString title, QString message, int type = 0);
@@ -418,8 +440,14 @@ private:
 
     QSettings settings;
     ProcessStarter starter;
+    JSON *modeSettingFile;
 public:
     bool initSdkDone;
+    void openProgress(bool isOpen);
+    void changeTabIndex(int index);
+    void enterCalibratePage();
+    void getScreenOrientation();
+
 };
 
 #endif // TOUCHPRESENTER_H

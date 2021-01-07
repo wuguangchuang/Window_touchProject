@@ -8,6 +8,11 @@
 #include <QQmlProperty>
 #include <QSysInfo>
 #include "sdk/TouchManager.h"
+#include <windows.h>
+
+
+#define UPGRADE_FILE_DIR  "config/"
+#define MODE_SETTING_FILE "modeSetting.json"
 
 TouchPresenter::TouchPresenter(QObject *parent, QObject *component) : QObject(parent),
     signalThread(this), sem(0), settings("newskyer", "TouchAssistant"),paintSem(0),touchManager(NULL),
@@ -423,6 +428,11 @@ QVariant TouchPresenter::getDeviceInfo()
 {
     return QVariant::fromValue(touch->getDeviceInfo());
 }
+
+QVariant TouchPresenter::getDeviceMainInfo()
+{
+    return QVariant::fromValue(touch->getDeviceMainInfo());
+}
 QVariant TouchPresenter::getSoftwareInfoName()
 {
     return QVariant::fromValue(touch->getSoftwareInfoName());
@@ -491,6 +501,48 @@ void TouchPresenter::updateSignalList(QVariant list)
 //    foreach (QVariant const &index, signalList) {
 //    }
     signalMutex.unlock();
+}
+
+void TouchPresenter::modeSetting(bool startup)
+{
+    modeSettingFile = new JSON();
+    QString appPath = touch->getAppPath();
+    //保存启动项数据到本地文件中
+    QString path = QString().sprintf("%s/%s%s",appPath.toStdString().c_str(),UPGRADE_FILE_DIR, MODE_SETTING_FILE);
+
+    modeSettingFile->writeJson("startup",startup);
+    touch->AutoRun(startup);
+
+
+    modeSettingFile->saveJson(path);
+
+}
+
+QVariantMap TouchPresenter::refreshModeSetting()
+{
+    QVariantMap map;
+    QVariantMap jsonMap;
+    bool startup;
+    QString appPath = touch->getAppPath();
+    //保存启动项数据到本地文件中
+    QString path = QString().sprintf("%s/%s%s",appPath.toStdString().c_str(),UPGRADE_FILE_DIR, MODE_SETTING_FILE);
+    JSON *json = new JSON();
+    QJsonObject jsonObject = json->loadJson(path);
+    if(jsonObject.isEmpty())
+    {
+        touch->AutoRun(true);
+        startup = true;
+    }
+    else
+    {
+        jsonMap = jsonObject.toVariantMap();
+        startup = jsonMap["startup"].toBool();
+//        TDEBUG("startup = %d",startup ? 1 : 0);
+    }
+
+
+    map.insert("startup",startup);
+    return map;
 }
 
 
@@ -683,6 +735,22 @@ QVariant TouchPresenter::exitCalibrationMode()
     return QVariant::fromValue(true);
 }
 
+QVariant TouchPresenter::enableCoords(bool enable)
+{
+    int ret;
+    if(enable)
+    {
+        ret = touchManager->setCoordsEnabled(NULL, COORDS_CHANNEL_USB, COORDS_CHANNEL_ENABLE);
+        ret = touchManager->setCoordsEnabled(NULL, COORDS_CHANNEL_SERIAL, COORDS_CHANNEL_ENABLE);
+    }
+    else
+    {
+        ret = touchManager->setCoordsEnabled(NULL, COORDS_CHANNEL_USB, COORDS_CHANNEL_DISABLE);
+        ret = touchManager->setCoordsEnabled(NULL, COORDS_CHANNEL_SERIAL, COORDS_CHANNEL_DISABLE);
+    }
+   return QVariant::fromValue(ret);
+}
+
 QVariant TouchPresenter::setCalibrationPointData(QVariant index, QVariantMap data)
 {
     bool result = false;
@@ -753,4 +821,83 @@ QVariant TouchPresenter::testCaliCapture(QVariant time)
     touchManager->testCalibrationCapture(NULL, time.toInt());
     return QVariant::fromValue(true);
 }
+//响应托盘
+void TouchPresenter::openProgress(bool isOpen)
+{
+    if (component == NULL) {
+        return;
+    }
+    QMetaObject::invokeMethod(component, "setWindowHidden",
+                              Q_ARG(QVariant, isOpen));
+    return;
+}
+
+void TouchPresenter::changeTabIndex(int index)
+{
+    if (component == NULL) {
+        return;
+    }
+    QMetaObject::invokeMethod(component, "setWindowHidden",
+                              Q_ARG(QVariant, true));
+
+    QMetaObject::invokeMethod(component, "setCurrentIndex",
+                              Q_ARG(QVariant, index));
+}
+
+void TouchPresenter::enterCalibratePage()
+{
+    if (component == NULL) {
+        return;
+    }
+    if(touchManager->firstConnectedDevice()==NULL)
+    {
+        QMetaObject::invokeMethod(component, "showToast",
+                                  Q_ARG(QVariant, touch->getTr("No connected devices!")));
+        return;
+    }
+    QMetaObject::invokeMethod(component, "enterCalibrate");
+}
+//获取屏幕方向
+void TouchPresenter::getScreenOrientation(){
+    DEVMODE dm;
+    // initialize the DEVMODE structure
+    ZeroMemory(&dm, sizeof(dm));
+    dm.dmSize = sizeof(dm);
+    if(EnumDisplaySettings(NULL,ENUM_CURRENT_SETTINGS,&dm))
+    {
+        switch(dm.dmDisplayOrientation)
+        {
+        case DMDO_DEFAULT:
+            TDEBUG("当前屏幕旋转0度");
+            appendMessageText("当前屏幕旋转0度",0);
+            break;
+        case DMDO_90:
+            TDEBUG("当前屏幕旋转90度");
+            appendMessageText("当前屏幕旋转90度",0);
+            break;
+        case DMDO_180:
+            TDEBUG("当前屏幕旋转180度");
+            appendMessageText("当前屏幕旋转180度",0);
+            break;
+        case DMDO_270:
+            TDEBUG("当前屏幕旋转270度");
+            appendMessageText("当前屏幕旋转270度",0);
+            break;
+        default:
+            TDEBUG("获取屏幕旋转方向失败");
+            appendMessageText("获取屏幕旋转方向失败",0);
+        }
+    }
+    else
+    {
+        TDEBUG("枚举设备设置出错");
+        appendMessageText("枚举设备设置出错",0);
+    }
+
+}
+
+
+
+
+
 

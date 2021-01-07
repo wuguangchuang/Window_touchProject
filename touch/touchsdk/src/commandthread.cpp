@@ -47,10 +47,10 @@ void CommandThread::run()
         do {
                 ret = TouchManager::sendPackageToDevice(item->require, item->reply, item->dev);
 
-                if(ret > 0 && item->dev->touch.connected)
+                if(ret > 0)
                     break;
 
-                for(i = 0;i < milliseconds / 50 && !stop && item->dev->touch.connected;i++)
+                for(i = 0;i < milliseconds / 50 && !stop;i++)
                 {
                     ret = TouchManager::wait_time_out(item->dev->hid, (unsigned char *)(item->reply),HID_REPORT_DATA_LENGTH,50);
 
@@ -72,7 +72,6 @@ void CommandThread::run()
 #endif
 //        hid_send_data(item->dev->hid, (hid_report_data*)item->require, (hid_report_data*)reply);
         if (item->async) {
-            TDEBUG("异步");
             if (item->listener) {
                 item->listener->onCommandDone(item->dev, item->require, item->reply);
             }

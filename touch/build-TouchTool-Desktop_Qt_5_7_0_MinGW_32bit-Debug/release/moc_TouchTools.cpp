@@ -180,6 +180,10 @@ void *Touch::TouchTools::qt_metacast(const char *_clname)
         return static_cast< TouchInterface*>(const_cast< TouchTools*>(this));
     if (!strcmp(_clname, "TouchManager::Trans"))
         return static_cast< TouchManager::Trans*>(const_cast< TouchTools*>(this));
+    if (!strcmp(_clname, "SystemTray::Trans"))
+        return static_cast< SystemTray::Trans*>(const_cast< TouchTools*>(this));
+    if (!strcmp(_clname, "SystemTray::ActionSignal"))
+        return static_cast< SystemTray::ActionSignal*>(const_cast< TouchTools*>(this));
     return QObject::qt_metacast(_clname);
 }
 

@@ -6,7 +6,6 @@ import QtQuick.Controls.Styles 1.4
 import QtQuick.Dialogs 1.1
 import QtQuick.Layouts 1.3
 
-
 import TouchPresenter 1.0
 import QDrawPanel 1.0
 import "qml/ui"
@@ -32,10 +31,10 @@ Window {
     property bool setTest: defaultSetTest
 
     id: mainPage
-    visible:true
+    visible:false
     width: mWidth
     height: mHeight
-    visibility: Window.Maximized
+//    visibility: Window.Maximized
 
     // see also TouchTool.h
     property int mAPP_Factory: 0
@@ -46,10 +45,10 @@ Window {
     property int mTAB_Upgrade: 0
     property int mTAB_Test: 1
     property int mTAB_Signal: 2
-    property int mTAB_Info: 3
-    property int mTAB_Settings: 4
-    property int mTAB_Palette: 5
-    property int mTAB_Aging: 6
+    property int mTAB_Aging: 3
+    property int mTAB_Palette: 4
+    property int mTAB_Settings: 5
+    property int mTAB_Info: 6
     property int deviceCount: 0
 
     title: qsTr("TouchAssistant")
@@ -83,12 +82,11 @@ Window {
     property bool testingFw: false
     property string testBtnName: "Test"
     property bool isSupportOnboardtest:false
-    property bool showTestPage:false
+    property bool showPage:false
 //    property var testMessage : ""
     property int testMessagLength : 0
     property var testMessage : []
     property int maxMessageLeng:15000
-    property var testStr:""
 
 //    property var updateMessage:""
     property var updateMessage:[]
@@ -96,12 +94,20 @@ Window {
     property var upgradeShowStr:""
     property int tabViewHeight:Math.max(Math.min(windowHeight / 5.0,tabHeight),20)
 
+    property var lockImage:"qrc:/dialog/images/unlock.png"
+    property bool lockCheck:false
+
+    property var deviceMainInfo:qsTr("No connected devices!")
+    property var deviceConnectImage:"qrc:/dialog/images/error.png"
+
 
     signal sendOnboardTestFinish(var title,var message,var type);
     signal sendRefreshOnboardTestData(var map);
     signal sendOnboardTestShowDialog(var title,var msg,var type);
     signal sendCloseOnboardTestWindow();
     signal sendDestroyDialog();
+
+
 
     Rectangle {
         anchors.fill: parent
@@ -131,7 +137,7 @@ Window {
                 }
                 if(item.what !== mTAB_Test)
                 {
-//                    onboardTest.visible = false;
+                    onboardTest.visible = false;
                     testProgressBar.value = 0;
                     isSupportOnboardtest = false;
                 }
@@ -152,12 +158,12 @@ Window {
                 property Item upgradeProgressBar: item.upgradeProgressBar
                 property Item updateShowMsgId:item.updateShowMsgId
                 property Item updateShowDialog:item.updateShowDialog
+                property Item lockIcon:item.lockIcon
 
                 property int what: mTAB_Upgrade
                 property bool flag: true
                 property int messageBoxWidth:updateShowMsgId.width
-                property int showDialogWidth:0
-
+                property int showDialogWidth:0              
 
                 Rectangle {
                     property Item upgradeBtn: upgradeBtn
@@ -168,6 +174,7 @@ Window {
                     property Item upgradeProgressBar: upgradeProgressBar
                     property Item updateShowMsgId:updateShowMsgId
                     property Item updateShowDialog:updateShowDialog
+                    property Item lockIcon:lockIcon
                     anchors.fill: parent
 
                     ColumnLayout {//纵向布局
@@ -221,9 +228,12 @@ Window {
                                 id: upgradeProgressBar
                                 minimumValue: 0;
                                 maximumValue: 100;
+                                anchors.left: upgradeBtn.right
+                                anchors.leftMargin: 5
                                 value: 0;
                                 Layout.preferredHeight: upgradeBtn.height
                                 Layout.fillWidth: true
+
                                 style: ProgressBarStyle {
                                     background: Rectangle {
                                         radius: 2
@@ -270,75 +280,100 @@ Window {
                                     //Qt.quit();
                                     if(flag)
                                     {
+                                        if(lockCheck)
+                                        {
+                                            showToast(qsTr("Please unlock and then select firmware"));
+                                            return;
+                                        }
                                         fileDialog.open();
                                     }
                                 }
 
                             }
 
-//                            Rectangle {
-//                                id: upgradeFileRectangle
-////                                height: fileSeleected.height
-//                                implicitHeight: upgradeBtn.height;
-//                                Layout.fillWidth: true
-//                                border.width: 1
-//                                radius: 2
-//                                property Item filetext:filetext
 
-
-                                ComboBox
+                            ComboBox
+                            {
+                                id:updateComBoxId
+                                implicitHeight: upgradeBtn.height;
+                                Layout.fillWidth: true
+    //                                    editable: true
+                                currentIndex: 0
+                                visible: true
+                                model:fileText
+                                enabled: true
+                                anchors.left: fileSeleected.right
+                                anchors.leftMargin: 5
+                                onCurrentTextChanged:
                                 {
-                                    id:updateComBoxId
-                                    Layout.preferredHeight: upgradeBtn.height
-                                    Layout.fillWidth: true
-//                                    editable: true
-                                    currentIndex: 0
-                                    visible: true
-                                    model:fileText
 
-                                    onCurrentTextChanged:
+                                    if(currentText === qsTr("clear history(up to ten)"))
                                     {
-
-                                        if(currentText === qsTr("clear history(up to ten)"))
-                                        {
-                                            touch.clearComboBoxData();
-                                            fileText.insert(0,{"text":""});
-                                            updateComBoxId.currentIndex = 0;
-                                            fileText.clear();
-                                            touch.setUpdatePath("");
-                                        }
-                                        else
-                                        {
-                                            touch.setUpdatePath(currentText);
-                                        }
-
-//                                        console.log("onCurrentTextChanged@@@@@@@currentText = " + currentText);
+                                        touch.clearComboBoxData();
+                                        fileText.insert(0,{"text":""});
+                                        updateComBoxId.currentIndex = 0;
+                                        fileText.clear();
+                                        touch.setUpdatePath("");
                                     }
-                                    property bool firstTime:true
-                                    Component.onCompleted:
+                                    else
                                     {
-                                        if(firstTime)
-                                        {
-                                            firstTime = false;
-                                            fileText.insert(0,{"text":qsTr("clear history(up to ten)")});
-                                        }
+                                        touch.setUpdatePath(currentText);
+                                    }
 
+    //                                        console.log("onCurrentTextChanged@@@@@@@currentText = " + currentText);
+                                }
+                                property bool firstTime:true
+                                Component.onCompleted:
+                                {
+                                    if(firstTime)
+                                    {
+                                        firstTime = false;
+                                        fileText.insert(0,{"text":qsTr("clear history(up to ten)")});
                                     }
 
                                 }
-//                                Text {
-//                                    id: fileText
-//                                    anchors.left: parent.left
-//                                    anchors.leftMargin: 10
-//                                    width: parent.width - 10 * 2
-//                                    elide: Text.ElideLeft
-//                                    text: qsTr("")
-//                                    font.pixelSize: 0
-//                                    anchors.verticalCenter: parent.verticalCenter
-//                                }
 
                             }
-//                        }
+
+                            Rectangle{
+                                id:lockIcon
+//                                Layout.preferredWidth: fileSeleected.height
+//                                Layout.preferredHeight: fileSeleected.height
+                                Layout.preferredWidth: fileSeleected.height
+                                Layout.preferredHeight: fileSeleected.height
+                                border.width: 1
+                                border.color: "#cdcdcd"
+                                visible: true
+
+                                ToolButton{
+                                    id:lockBtn
+                                    anchors.fill: parent
+                                    tooltip: qsTr("Used to lock the firmware.") + "\n" + qsTr("Cannot select firmware when locked.")
+                                    Image{
+                                        anchors.fill: parent
+                                        anchors.centerIn: parent
+                                        source:lockImage
+                                        fillMode: Image.Stretch
+                                    }
+                                    onClicked: {
+                                        if(!lockCheck)
+                                        {
+                                            updateComBoxId.enabled = false;
+                                            lockCheck = true;
+                                            lockImage = "qrc:/dialog/images/lock.png"
+                                        }
+                                        else
+                                        {
+                                            updateComBoxId.enabled = true;
+                                            lockCheck = false;
+                                            lockImage = "qrc:/dialog/images/unlock.png"
+                                        }
+                                    }
+
+                                }
+
+                            }
+                       }
 
 
                         Rectangle
@@ -398,6 +433,32 @@ Window {
                             }
 
                         }
+                        Rectangle{
+                            Layout.preferredHeight: 30
+                            Layout.fillWidth: true
+                            border.width: 1
+                            border.color: "#aaaaaa"
+                               RowLayout{
+                                   anchors.fill: parent
+                                   Image{
+                                       id:upgradeDeviceImage
+                                       Layout.preferredHeight: 25
+                                       Layout.preferredWidth: 25
+                                       source: deviceConnectImage
+                                       fillMode: Image.Stretch
+                                       anchors.verticalCenter: parent.verticalCenter
+                                       anchors.left: parent.left
+                                       anchors.leftMargin: defaultMargin
+                                   }
+                                   Text {
+                                       id: upgradeDeviceInfo
+                                       text: deviceMainInfo
+                                       anchors.left: upgradeDeviceImage.right
+                                       anchors.leftMargin: defaultMargin
+                                       anchors.verticalCenter: parent.verticalCenter
+                                   }
+                               }
+                        }
                     }
 
                 }
@@ -406,9 +467,9 @@ Window {
                     if(visible)
                     {
                         touch.tPrintf("升级模式:");
-                        console.log("升级界面的信息：" + upgradeShowStr);
-//                        messageText.text = upgradeShowStr;
-//                        messageView.text = upgradeShowStr;
+//                        showPage = false;
+//                        console.log("升级界面的信息：" + upgradeShowStr);
+                        messageText.text = upgradeShowStr;
 
                     }
                         
@@ -423,7 +484,6 @@ Window {
                 property Item onboardTest:(item != null) ? item.onboardTest : null
                 property Item testBtn: (item != null) ? item.testBtn : null
                 property Item testProgressBar: (item != null) ? item.testProgressBar : null
-                property Item testShowDialog:item.testShowDialog
 
                 signal sendOnboardTestStart()
 
@@ -454,11 +514,11 @@ Window {
                                 Layout.preferredHeight:Math.min(Math.max(buttonMinHeight,upgradeTestHeight * buttonMinHeight),windowHeight / 5.0);
                                 onVisibleChanged: {
                                     if (visible) {
-//                                        messageTextStringUpdate = messageTextString;
-//                                        messageTextString = messageTextStringTest;
+                                        messageTextStringUpdate = messageTextString;
+                                        messageTextString = messageTextStringTest;
                                     } else {
-//                                        messageTextStringTest = messageTextString;
-//                                        messageTextString = messageTextStringUpdate;
+                                        messageTextStringTest = messageTextString;
+                                        messageTextString = messageTextStringUpdate;
                                     }
                                 }
                                 style: TButtonStyle {
@@ -546,6 +606,7 @@ Window {
                                 function startOnboardTest()
                                 {
                                     messageTextTest.text = " " + "\n";
+
                                     onboardTest.visible = true;
                                 }
                                 Component.onCompleted:
@@ -602,7 +663,6 @@ Window {
                                             Text {
                                                 id: messageTextTest
                                                 renderType: Text.NativeRendering
-                                                text:testStr
                                                 onTextChanged:
                                                 {
                                                     if (messageTextTest.contentHeight > messageBoxTest.height) {
@@ -629,9 +689,32 @@ Window {
                                 }
 
                             }
-
-
-
+                        }
+                        Rectangle{
+                            Layout.preferredHeight: 30
+                            Layout.fillWidth: true
+                            border.width: 1
+                            border.color: "#aaaaaa"
+                               RowLayout{
+                                   anchors.fill: parent
+                                   Image{
+                                       id:testDeviceImage
+                                       Layout.preferredHeight: 25
+                                       Layout.preferredWidth: 25
+                                       source: deviceConnectImage
+                                       fillMode: Image.Stretch
+                                       anchors.verticalCenter: parent.verticalCenter
+                                       anchors.left: parent.left
+                                       anchors.leftMargin: defaultMargin
+                                   }
+                                   Text {
+                                       id: testDeviceInfo
+                                       text: deviceMainInfo
+                                       anchors.left: testDeviceImage.right
+                                       anchors.leftMargin: defaultMargin
+                                       anchors.verticalCenter: parent.verticalCenter
+                                   }
+                               }
                         }
 
                     }
@@ -642,7 +725,7 @@ Window {
                     if(visible)
                     {
                         touch.tPrintf("测试模式:");
-                        showTestPage = true;
+                        showPage = true;
 
                         var str1 = "";
                         for(var i = 0;i < testMessage.length;i++)
@@ -653,7 +736,7 @@ Window {
                     }
                     else
                     {
-                        showTestPage = false;
+                        showPage = false;
                     }
                 }
 
@@ -817,7 +900,6 @@ Window {
 //                    drawPanel.visible = visible;
                 }
             }
-
             Tab {
 
                 id: settingsTabId
@@ -827,30 +909,56 @@ Window {
                 Rectangle {
                     anchors.fill: parent
                     property Item settingsPageV: settingsId
-                    Settings {
-                        id: settingsId
+                    ColumnLayout{
                         anchors.fill: parent
-                        Component.onCompleted: {
-//                            settingsId.caliDataDelegate = calibrationDataDelegate;
-                            settingsId.caliDataModel = calibrationDataModel;
+                        SettingPage{
+                            id:settingsId
+    //                        anchors.fill: parent
+                            Layout.preferredHeight: parent.height - settingeviceInfo.height - defaultMargin
+                            Layout.preferredWidth: parent.width
                         }
-                        onClickCalibration: {
-                            calibrationUi.visible = true;
-                            lastVisibility = mainPage.visibility;
-                            showFullScreen();
-//                            showToast("无操作" + "后自动退出")
-                        }
+                        Rectangle{
+                            id:settingeviceInfo
+                            anchors.bottom: parent.bottom
+                            anchors.left: parent.left
+                            Layout.preferredHeight: 30
+                            Layout.fillWidth: true
+                            border.width: 1
+                            border.color: "#aaaaaa"
+                               RowLayout{
+                                   anchors.fill: parent
+                                   Image{
+                                       id:settingDeviceImage
+                                       Layout.preferredHeight: 25
+                                       Layout.preferredWidth: 25
+                                       source: deviceConnectImage
+                                       fillMode: Image.Stretch
+                                       anchors.verticalCenter: parent.verticalCenter
+                                       anchors.left: parent.left
+                                       anchors.leftMargin: defaultMargin
+                                   }
+                                   Text {
+                                       id: settingDeviceInfo
+                                       text: deviceMainInfo
+                                       anchors.left: settingDeviceImage.right
+                                       anchors.leftMargin: defaultMargin
+                                       anchors.verticalCenter: parent.verticalCenter
+                                   }
+                               }
+                            }
                     }
+
+
+
                 }
                 onVisibleChanged: {
-                    if (visible)
+                    if(visible)
                     {
                         touch.tPrintf("设置模式:");
                         settingsPage.refreshSettings();
                     }
                 }
             }
-
             Tab {
                 title: qsTr("About")
                 id: infoTab
@@ -910,48 +1018,7 @@ Window {
                             }
 
                         }
-                        //软件部分
-//                        RowLayout
-//                        {
-//                            anchors.left: parent.left
-//                            anchors.top: deviceID.bottom
-//                            Rectangle
-//                            {
-//                                id:softwareInfoNameID
-//                                width: 250
-//                                anchors.left: parent.left
-//                                anchors.top: parent.top
-//                                Cont2.Label
-//                                {
-//                                    textFormat: Text.AutoText
-//                                    anchors.left: parent.left
-//                                    anchors.top: parent.top
-//                                    padding: 20     //间距
-//                                    font.pointSize: 13
-//                                    text: softwareInfoName
-//                                    lineHeight: 1.5     //行距
-//                                    lineHeightMode: Text.ProportionalHeight  //按比例
-//                                }
-//                            }
-//                            Rectangle
-//                            {
-//                                id:softwareInfoID
-//                                anchors.top: parent.top
-//                                anchors.left: softwareInfoNameID.right
-//                                anchors.leftMargin: defaultMargin
-//                                Cont2.Label
-//                                {
-//                                    textFormat: Text.AutoText
-//                                    anchors.left: parent.left
-//                                    anchors.top: parent.top
-//                                    padding: 20     //间距
-//                                    font.pointSize: 13
-//                                    text: softwareInfo
-//                                    lineHeight: 1.5     //行距
-//                                    lineHeightMode: Text.ProportionalHeight  //按比例
-//                                }
-//                            }
-//                        }
+
                     }
                 }
                 function showDeviceInfo()
@@ -1037,12 +1104,25 @@ Window {
             focus: true
             visible: false
             onExit: {
-                focus = false;
-                visible = false;
-                mainPage.visibility = lastVisibility;
+                exitCalibrate();
             }
 
         }
+
+        FineTune{
+            id:fineTune
+            visible: false
+            x: 0
+            y: 0
+            z: 1
+            width: Screen.width
+            height: Screen.height
+            focus: true
+            onExitTune: {
+                exitFineTune();
+            }
+        }
+
 
     }
 
@@ -1054,7 +1134,11 @@ Window {
         id: fileText
     }
     function setUpgradeFile(file) {
-
+        if(lockCheck)
+        {
+            showToast(qsTr("Please unlock and then select firmware"));
+            return;
+        }
         file = "" + file;
         var existFlsg = false;
         for(var i = 0;i < fileText.count;i++)
@@ -1140,7 +1224,11 @@ Window {
     }
 
     function setFileText(file) {
-
+        if(lockCheck)
+        {
+            showToast(qsTr("Please unlock and then select firmware"));
+            return;
+        }
 //        setUpgradeFile(file)
         var existFlsg = false;
         for(var i = 0;i < fileText.count;i++)
@@ -1200,7 +1288,7 @@ QMessageBox::Critical	3	an icon indicating that the message represents a critica
             //        console.log("chart erros:" + tt.errorString())
             if (tt.errorString())
                 touch.error("chart erros:" + tt.errorString());
-                if(showTestPage)
+                if(showPage)
                 {
                     currentPage = isSupportOnboardtest?onboardTest.midRectText:testPage.testShowDialog;
                 }
@@ -1228,7 +1316,7 @@ QMessageBox::Critical	3	an icon indicating that the message represents a critica
             if (tt.errorString())
                 touch.error("chart erros:" + tt.errorString());
 
-            if(showTestPage)
+            if(showPage)
             {
 
                 currentPage = isSupportOnboardtest?onboardTest.midRectText:testPage.testShowDialog;
@@ -1268,34 +1356,118 @@ QMessageBox::Critical	3	an icon indicating that the message represents a critica
         testProgressBar.value = progess;
     }
 
-    //type 0 == 设备连接与断开
-    //type 1 == 升级模式
-    //type 2 == 测试模式
     function appendText(message, type) {
-//        var mv = messageView;
-        var tmpLength = 0;
-        var tmpArray = [];
-        var index = 0;
-        var tmpSaveLeng = 0;
-        var str = "";
-        var i = 0;
-        var str1 = "";
-        str = message + "\n";
-        if(type === 0)
-        {
-            var finalMessage = "";
-            finalMessage = message.split(":");
-            if(finalMessage[3].search("TouchApp") !== -1)
+        var mv = messageView;
+        if (type === 0) {
+            if (mv === null) {
+                return;
+            }
+            /*
+            if(showPage)
             {
-                showToast(finalMessage[3]);
+                    testMessage += message + "\n";
             }
 
-        }
-        if(type === 1 || type === 0)
-        {
+            if(mv === updatePage.messageView)
+                mv.text += message + "\n";
+            else if(mv === testPage.messageView)
+                mv.text = testMessage;
+            */
+
+            var str = "";
+            if(showPage)
+            {
+                    str = message + "\n";
+                    testMessage.push(str);
+                    testMessagLength += str.length;
+            }
+            else
+            {
+                str = message + "\n";
+                updateMessage.push(str);
+                updateMessageLength += str.length;
+            }
+
+            var str1 = "";
+            var i = 0;
+            if(mv === updatePage.messageView)
+            {
+                if(updateMessageLength < maxMessageLeng)
+                {
+                    str1 = "";
+                    for(i = 0;i < updateMessage.length;i++)
+                    {
+                        str1 += updateMessage[i];
+                    }
+                    mv.text = str1;
+                    upgradeShowStr = str1;
+                }
+                else
+                {
+                    var tmpUpdateLength = 0;
+                    var tmpUpdateArray = [];
+                    var updateIndex = 0;
+                    var tmpUpdateSaveLeng = 0;
+                    str1 = "";
+                    for(i = 0;i < updateMessage.length;i++)
+                    {
+                        tmpUpdateLength += updateMessage[i].length;
+                        if((updateMessageLength - tmpUpdateLength) > maxMessageLeng)
+                        {
+                            continue;
+                        }
+                        tmpUpdateArray[updateIndex++] = updateMessage[i];
+                        str1 += updateMessage[i];
+                        tmpUpdateSaveLeng += updateMessage[i].length;
+                    }
+                    mv.text = str1;
+                    upgradeShowStr = str1;
+                    updateMessage = tmpUpdateArray;
+                    updateMessageLength = tmpUpdateSaveLeng;
+                }
+
+            }
+            else if(mv === testPage.messageView)
+            {
+                if(testMessagLength < maxMessageLeng)
+                {
+                    str1 = "";
+                    for(i = 0;i < testMessage.length;i++)
+                    {
+                        str1 += testMessage[i];
+                    }
+                    mv.text = str1;
+//                    testStr = str1;
+                }
+                else
+                {
+                    var tmpLength = 0;
+                    var tmpArray = [];
+                    var index = 0;
+                    var tmpSaveLeng = 0;
+                    str1 = "";
+                    for(i = 0;i < testMessage.length;i++)
+                    {
+                        tmpLength += testMessage[i].length;
+                        if((testMessagLength - tmpLength) > maxMessageLeng)
+                        {
+                            continue;
+                        }
+                        tmpArray[index++] = testMessage[i];
+                        str1 += testMessage[i];
+                        tmpSaveLeng += testMessage[i].length;
+                    }
+                    mv.text = str1;
+                    testMessage = tmpArray;
+                    testMessagLength = tmpSaveLeng;
+//                    testStr = str1;
+                }
+            }
+        } else {
+
+            str = message + "\n";
             updateMessage.push(str);
             updateMessageLength += str.length;
-
             if(updateMessageLength < maxMessageLeng)
             {
                 str1 = "";
@@ -1308,10 +1480,11 @@ QMessageBox::Critical	3	an icon indicating that the message represents a critica
             }
             else
             {
-                var tmpUpdateLength = 0;
-                var tmpUpdateArray = [];
-                var updateIndex = 0;
-                var tmpUpdateSaveLeng = 0;
+
+                tmpUpdateLength = 0;
+                tmpUpdateArray = [];
+                updateIndex = 0;
+                tmpUpdateSaveLeng = 0;
                 str1 = "";
                 for(i = 0;i < updateMessage.length;i++)
                 {
@@ -1329,50 +1502,22 @@ QMessageBox::Critical	3	an icon indicating that the message represents a critica
                 updateMessage = tmpUpdateArray;
                 updateMessageLength = tmpUpdateSaveLeng;
             }
-            updatePage.messageView.text = str1;
-        }
-        if(type === 2 || type === 0)
-        {
-            testMessage.push(str);
-            testMessagLength += str.length;
-
-            if(testMessagLength < maxMessageLeng)
+            if(mv === testPage.messageView)
             {
-                str1 = "";
-                for(i = 0;i < testMessage.length;i++)
-                {
-                    str1 += testMessage[i];
-                }
-//                mv.text = str1;
-//                testStr = str1;
+                testMessage.push(message + "\n");
+                testMessagLength += str.length;
+                mv.text += message + "\n";
             }
-            else
+            var finalMessage = "";
+            finalMessage = message.split(":");
+            if(finalMessage[3].search("TouchApp") !== -1)
             {
-                tmpLength = 0;
-                tmpArray = [];
-                index = 0;
-                tmpSaveLeng = 0;
-                str1 = "";
-                for(i = 0;i < testMessage.length;i++)
-                {
-                    tmpLength += testMessage[i].length;
-                    if((testMessagLength - tmpLength) > maxMessageLeng)
-                    {
-                        continue;
-                    }
-                    tmpArray[index++] = testMessage[i];
-                    str1 += testMessage[i];
-                    tmpSaveLeng += testMessage[i].length;
-                }
-//                mv.text = str1;
-
-                testMessage = tmpArray;
-                testMessagLength = tmpSaveLeng;
-//                testStr = str1;
+                showToast(finalMessage[3]);
             }
-            testPage.messageView.text = str1;
-        }
 
+            console.log("@@@@@@ split string = " + finalMessage[3]);
+
+        }
 
 
     }
@@ -1441,7 +1586,7 @@ QMessageBox::Critical	3	an icon indicating that the message represents a critica
         testingFw = u;
     }
     function autoTestConnect(){
-        if(showTestPage)
+        if(showPage)
         {
             if(testingFw)
             {
@@ -1461,7 +1606,7 @@ QMessageBox::Critical	3	an icon indicating that the message represents a critica
     }
     function clearTestInfo()
     {
-        if(showTestPage)
+        if(showPage)
         {
             testProgressBar.value = 0;
             touch.cancelTest(true);
@@ -1513,6 +1658,7 @@ QMessageBox::Critical	3	an icon indicating that the message represents a critica
         switch (appType) {
         case mAPP_Client:
             mainTabView.removeTab(3);
+            updatePage.lockIcon.visible = false;
 //            mainTabView.removeTab(1);
 //            mainTabView.removeTab(1);
 //            mainTabView.removeTab(1);
@@ -1615,13 +1761,25 @@ QMessageBox::Critical	3	an icon indicating that the message represents a critica
 
     function onHotplug(plugin) {   
         infoTab.refreshInfo();
+
+        var _deviceMainInfo = touch.getDeviceMainInfo();
+        if(_deviceMainInfo.localeCompare("No connected devices!") === 0)
+        {
+            deviceMainInfo = qsTr("No connected devices!");
+            deviceConnectImage = "qrc:/dialog/images/error.png";
+        }
+        else
+        {
+            deviceMainInfo = _deviceMainInfo;
+            deviceConnectImage = "qrc:/dialog/images/success.png";
+        }
         if (plugin) {
             deviceCount++;
             if(deviceCount == 1)
             {
                 signalPageTab.firstDeviceConnect = true;
             }
-            if(testChartPage.getSelectedCount() === 0 && signalPageTab.firstDeviceConnect && mainTabView.currentIndex == mTAB_Signal)
+            if(testChartPage.selectedSignalCount === 0 && signalPageTab.firstDeviceConnect && mainTabView.currentIndex == mTAB_Signal)
             {
                 signalPageTab.firstDeviceConnect = false;
                 startSignalChart(false);
@@ -1907,8 +2065,8 @@ QMessageBox::Critical	3	an icon indicating that the message represents a critica
        }
 
         if (close.accepted) {
-            mainPage.sendCloseOnboardTestWindow();
-
+            setWindowHidden(false);
+            close.accepted = false;
         }
     }
 
@@ -1930,7 +2088,21 @@ QMessageBox::Critical	3	an icon indicating that the message represents a critica
     }
     function setCurrentIndex(index)
     {
-        if(1 === touch.getAppType())
+        if(index !== mTAB_Upgrade && touch.isUpgrading())
+        {
+            showToast(qsTr("During upgrade,don't switch infterface"));
+            return;
+        }
+        if(index !== mTAB_Test && touch.isTesting())
+        {
+            showToast(qsTr("During test,don't switch infterface"));
+            return;
+        }
+        if(calibrationUi.visible)
+        {
+           exitCalibrate();
+        }
+        if(mAPP_Client === touch.getAppType())
         {
             if(index === 3)
                 index = 0;
@@ -1939,17 +2111,58 @@ QMessageBox::Critical	3	an icon indicating that the message represents a critica
         }
         mainTabView.currentIndex = index;
     }
-    function setWindowHidden(visibled)
+
+    function setWindowHidden(visbaled)
     {
-        if(mainPage.visible && visibled)
+        if(mainPage.visible && visbaled)
         {
             return;
         }
-
-        mainPage.setVisible(visibled);
-        if(visibled)
+        mainPage.setVisible(visbaled);
+        if(visbaled)
             mainPage.visibility =  Window.Maximized;
     }
+     function enterCalibrate()
+     {
+         if(touch.isUpgrading())
+         {
+             showToast(qsTr("During upgrade,don't switch infterface"));
+             return;
+         }
+         if(touch.isTesting())
+         {
+             showToast(qsTr("During test,don't switch infterface"));
+             return;
+         }
+         if(!mainPage.visible)
+         {
+             setWindowHidden(true);
+         }
+         if(mainTabView.currentIndex != mTAB_Settings)
+         {
+             mainTabView.currentIndex = mTAB_Settings;
+         }
+         if(!calibrationUi.visible)
+         {
+             calibrationUi.visible = true;
+             lastVisibility = mainPage.visibility;
+             showFullScreen();
+         }
 
-
+     }
+     function exitCalibrate(){
+         calibrationUi.focus = false;
+         calibrationUi.visible = false;
+         mainPage.visibility = lastVisibility;
+     }
+     function enterFineTune(){
+         fineTune.visible = true;
+         lastVisibility = mainPage.visibility;
+         showFullScreen();
+     }
+     function exitFineTune(){
+         fineTune.focus = false;
+         fineTune.visible = false;
+         mainPage.visibility = lastVisibility;
+     }
 }

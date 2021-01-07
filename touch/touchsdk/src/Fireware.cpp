@@ -62,8 +62,6 @@ Fireware::Fireware(QString path) : ready(false)
         CCRC_32 crc;
         crc.Reset();
         crc.Calculate((const unsigned char*)fileData, binSize);
-//        char *testData = "123456789";
-//        crc.Calculate((const unsigned char*)testData, strlen(testData));
         TDEBUG("#################calculate crc: 0x%x", crc.GetCrcResult());
         free(fileData);
         if (crc.GetCrcResult() != mFileHeader.crc32) {
@@ -79,7 +77,6 @@ Fireware::Fireware(QString path) : ready(false)
             fireware = (struct FirewarePackage*)malloc(sizeof(struct FirewarePackage));
             memset(fireware, 0, sizeof(struct FirewarePackage));
             ret = file->read((char *)&fireware->header, (int)&(fireware->header.verifyCode) - (int)&fireware->header);
-            TDEBUG("readSize = %d",(int)&(fireware->header.verifyCode) - (int)&fireware->header);
             if (ret < 0) {
                 TWARNING("read fireware header failed");
                 free(fireware);
@@ -105,7 +102,6 @@ Fireware::Fireware(QString path) : ready(false)
                 header->packSize, header->packCount, header->verifyCodeSize);
 
             ret = file->read((char*)fireware->header.verifyCode, fireware->header.verifyCodeSize);
-            TDEBUG("fireware->header.verifyCodeSize = %d",fireware->header.verifyCodeSize);
             if (ret < 0) {
                 TWARNING("read fireware header.fWVerifyCode failed");
                 free(fireware);
@@ -113,16 +109,13 @@ Fireware::Fireware(QString path) : ready(false)
             }
 
             ret = file->read((char*)&fireware->header.firmwareDataCRC32, sizeof(fireware->header.firmwareDataCRC32));
-            TDEBUG("sizeof(fireware->header.firmwareDataCRC32) = %d",sizeof(fireware->header.firmwareDataCRC32));
             if (ret < 0) {
                 TWARNING("read fireware firmwareDataCRC32 failed");
                 free(fireware);
                 return;
             }
-            TDEBUG("sizeof(fireware->header.firmwareDataCRC32) = %d",sizeof(fireware->header.firmwareDataCRC32));
-            TDEBUG("fireware->header.firmwareDataCRC32 = %0x0x",fireware->header.firmwareDataCRC32);
             header->firmwareDataCRC32 = qFromLittleEndian(header->firmwareDataCRC32);
-            TDEBUG("header->firmwareDataCRC32 = %0x0x",header->firmwareDataCRC32);
+
             fireware->data = (qint8*)malloc(header->packCount * header->packSize);
             ret = file->read((char*)fireware->data, header->packCount * header->packSize);
             if (ret < 0) {

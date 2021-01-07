@@ -7,6 +7,8 @@ INPUT(
 ./release\drawpanel.o
 ./release\tusbevent.o
 ./release\singleapp.o
+./release\systemtray.o
+./release\json.o
 ./release\qrc_qml.o
 ./release\qrc_images.o
 ./release\qrc_text.o
@@ -16,4 +18,5 @@ INPUT(
 ./release\moc_drawpanel.o
 ./release\moc_tusbevent.o
 ./release\moc_singleapp.o
+./release\moc_systemtray.o
 );

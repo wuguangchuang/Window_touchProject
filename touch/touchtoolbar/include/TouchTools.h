@@ -9,7 +9,8 @@
 #include "sdk/TouchManager.h"
 #include "touchaging.h"
 #include <QTranslator>
-
+#include "systemtray.h"
+#include "src/jsonFile/json.h"
 
 namespace Touch {
 
@@ -21,7 +22,7 @@ struct TouchData {
     unsigned char data[HID_REPORT_DATA_LENGTH];
 };
 
-#define APP_VERSION_NAME ("v1.12.25")
+#define APP_VERSION_NAME ("v2.1.0")
 #define APP_VERSION_CODE (15)
 
 //#define THIS_APP_TYPE (APP_FACTORY)
@@ -39,7 +40,8 @@ typedef enum {
 
 
 class TouchTools : public QObject, public CommandThread::CommandListener,
-        public TouchManager::HotplugListener, public TouchInterface,public TouchManager::Trans
+        public TouchManager::HotplugListener, public TouchInterface,public TouchManager::Trans,
+        public SystemTray::Trans,public SystemTray::ActionSignal
 {
     Q_OBJECT
 public:
@@ -48,8 +50,8 @@ public:
     QTimer *argcTimer;
     static int language;
     static void setLanguage(int lu);
-    static bool autoTestSwitch;
-    explicit TouchTools(QObject *parent = 0, TouchPresenter *p = 0,int argc = 0,char *argv[] = 0);
+    explicit TouchTools(QObject *parent = 0, TouchPresenter *p = 0,int argc = 0,
+                        char *argv[] = 0,QString appPath = "");
     ~TouchTools();
     bool stopTestIsFinished;
     void addTouchManagerTr();
@@ -70,6 +72,15 @@ public:
 
     void onCommandDone(touch_device *dev, touch_package *require, touch_package *reply);
     QString getTr(QString str);
+    //托盘
+    void openProgress(bool isOpen);
+    void setPageIndex(int index);
+    void enterCalibratePage();
+
+    bool isUpgrading();
+    bool isTesting();
+
+
     void onTouchHotplug(touch_device* dev, const int attached, const void *val);
     void setHotplugInterval(unsigned int interval) {
         hotplugInterval = interval;
@@ -81,6 +92,7 @@ public:
     bool whetherDeviceConnect();
     QVariant getDeviceInfoName();
     QVariant getDeviceInfo();
+    QVariant getDeviceMainInfo();
     QVariant getSoftwareInfoName();
     QVariant getSoftwareInfo();
     bool getTestIsFinished();
@@ -115,6 +127,7 @@ private:
     touch_device *mCurDevice;
     int mDeviceCount;
     TouchManager *mTouchManager;
+    SystemTray *tray;
     AppType appType;
     unsigned int hotplugInterval;
 
@@ -139,6 +152,7 @@ private:
 
     class UpgradeThread : public QThread {
     public:
+        bool running;
         UpgradeThread(TouchTools *tool) : touchTool(tool), running(false), waiting(false){}
         bool isWaiting() { return waiting; }
         void setWaiting(bool wait) { waiting = wait; }
@@ -149,12 +163,12 @@ private:
         TouchTools *touchTool;
     private:
         bool waiting;
-        bool running;
         bool cancel;
     };
     class TestThread : public QThread {
     public:
-        TestThread(TouchTools *tool) : touchTool(tool),cancel(false){}
+        bool running;
+        TestThread(TouchTools *tool) : running(false),touchTool(tool),cancel(false){}
         void setCancel(bool t) { cancel = t;}
         bool isCanceled() { return cancel;}
     protected:
@@ -216,10 +230,23 @@ private:
     }
 
     void setMessageText(QString message) {presenter->setMessageText(message);}
+    void setTestThreadRunning(bool isRunning){
+            testThread.running = isRunning;
+        }
+public:
+    void AutoRun(bool isAutoRun);
+//    void SetProcessAutoRunSelf(const QString &appPath)
+    QString getAppPath(){return appPath;}
 
+public:
+    static bool upgrading;
+    static bool testing;
+    static bool autoTestSwitch;
 private :
     QList<QString> autoUpdatePath;
      bool firstTimeUpdate;
+     QString appPath;
+
 
 };
 

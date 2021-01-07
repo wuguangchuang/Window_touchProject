@@ -21,6 +21,7 @@ Item {
     property color pressedRectColor: "#80000000"
     property color hoverRectColor: "#32000000"
 
+
     function setCalibrationData(index) {
         touch.debug("set calibration data: " + index)
         var point = pointList[index];
@@ -75,6 +76,7 @@ Item {
         MenuItem {
             text: qsTr("recalibration")
             onTriggered: {
+
                 stopCaptureTimer();
                 resizeWindow();
                 root.forceActiveFocus();
@@ -96,7 +98,9 @@ Item {
 
         MenuItem {
             text: qsTr("exit")
+
             onTriggered: root.exit();
+
         }
     }
 
@@ -240,8 +244,30 @@ Item {
             point.active = true;
             refreshCalibrationData();
             hideProgessing();
+
+
+
         }
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     Timer{
         id: finishTimer
@@ -258,6 +284,7 @@ Item {
         }
 
         onTriggered: {
+
             count--
             if (count > 0) {
                 showToast(qsTr("Automatically exit after")+ count + qsTr("seconds"))
@@ -527,6 +554,7 @@ Item {
     Keys.enabled: true
     signal exit();
     function exitPanel() {
+        console.log("退出校准");
         exit();
     }
 

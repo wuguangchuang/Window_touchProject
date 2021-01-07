@@ -24,9 +24,13 @@ using namespace Touch;
 #include "sdk/tdebug.h"
 
 #include "include/drawpanel.h"
+#include "systemtray.h"
 
 #define zh_CN 1
 #define en_US 0
+
+void SetProcessAutoRunSelf(const QString &appPath);
+void AutoRun(bool isAutoRun);
 
 //分析设备，然后将设备添加到设备链表struct _touch_vendor_list
 void parseDevices(QFile &loadFile)
@@ -108,7 +112,7 @@ int main(int argc, char *argv[])
     QApplication app(argc, argv);
     QTranslator translator;
     //bool ok = translator.load(":lang/zh_CN.qm");
-    bool ok;
+    bool ok = false;
     TINFO("start %s: %s, %d", __DATE__, APP_VERSION_NAME, APP_VERSION_CODE);
     SingleApp *singleApp = NULL;
     if (isAlreadyRunning(&singleApp)) {
@@ -119,8 +123,6 @@ int main(int argc, char *argv[])
 //    TDebug::setLogLevel(TLOG_INFO);
 
 //    QQmlComponent configQml(&engine, QUrl(QStringLiteral("qrc:config/touch.qml")));
-    //读取配置文件中的qml文件
-//    QQmlComponent configQml(&engine, "config/touch.qml");
     //读取配置文件中的qml文件
     QString appPath = QCoreApplication::applicationDirPath();
     TDEBUG("软件路径：%s",appPath.toStdString().c_str());
@@ -369,12 +371,21 @@ int main(int argc, char *argv[])
         object = component.create();
         touch->setComponent(object);
     }
+    if(argc > 1 && QString::compare(argv[1],"-selfStarting") == 0)
+    {
+        TDEBUG(" 有两个参数");
+        touch->openProgress(false);
+    }
+    else
+    {
+        touch->openProgress(true);
+    }
 
 
     //该函数就是调用object对象中的setAppType方法，如果调用成功则返回true，调用失败则返回false，
     QMetaObject::invokeMethod(object, "setAppType",
         Q_ARG(QVariant, (int)THIS_APP_TYPE));
-    TouchTools manager(NULL, touch,argc,argv);
+    TouchTools manager(NULL, touch,argc,argv,appPath);
     TINFO("singleApp=%p", singleApp);
     if (singleApp) {
         QObject::connect(singleApp, SIGNAL(newRunner()), manager.getTouchPresenter(), SLOT(newRunner()));
@@ -430,6 +441,9 @@ int main(int argc, char *argv[])
         QThread::msleep(20);
     }
 
+    //开机自启动
+//    manager.AutoRun(false);
+//    touch->SetProcessAutoRunSelf(qApp->applicationFilePath());
 
 //    ue.show();
 

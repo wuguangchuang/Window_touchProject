@@ -18,6 +18,7 @@ using namespace Touch;
 #define UPGRADE_FILE_DIR  "config/"
 #define UPGRADE_FILE_NAME "upgrade"
 #define AUTO_UPDATE_DIR "FirmwareBin/"
+#define MODE_SETTING_FILE "modeSetting.json"
 
 //显示消息框
 void TouchTools::showMessageDialog(QString title, QString message, int type)
@@ -39,7 +40,7 @@ void TouchTools::onTouchHotplug(touch_device *dev, const int attached, const voi
 
     appendMessageText(QString(dev->touch.booloader ? "Bootloader" : "TouchApp") + " " +
                             QString(dev->touch.model) + " " +
-                            (dev->touch.connected ? tr("connected") : tr("disconnected")), 0);
+                            (dev->touch.connected ? tr("connected") : tr("disconnected")), 1);
     if((getAppType() == APP_FACTORY || getAppType() == APP_RD) && dev->touch.booloader && dev->touch.connected)
     {
         QString version = "";
@@ -49,7 +50,7 @@ void TouchTools::onTouchHotplug(touch_device *dev, const int attached, const voi
         version = QString().sprintf(" 0x%04X", toWord(finfo.version_l, finfo.version_h));
         checksum = QString().sprintf(" 0x%04X", toWord(finfo.checksum_l, finfo.checksum_h));
         QString message = tr("Fireware version:") + version +"   "+ tr("Fireware checksum:") + checksum;
-        appendMessageText(message,0);
+        appendMessageText(message,1);
     }
     qint8 mode = 0;
     if(argc > 1 && strcmp(argv[1],"-changeCoordsMode") == 0)
@@ -105,10 +106,12 @@ void TouchTools::onTouchHotplug(touch_device *dev, const int attached, const voi
     touchAging.onTouchHotplug(dev, attached, val);
     if(attached == 1 && !dev->touch.booloader)
     {
-        showFirewareInfo(0);
+        showFirewareInfo(1);
         getBoardAttribyteData();
 
 
+
+        //此处是自动选择升级文件升级的入口
         if(firstTimeUpdate)
         {
             char fileName[200];
@@ -233,11 +236,13 @@ void TouchTools::startTest()
 //    mTouchManager->startTest(mTouchManager->firstConnectedDevice(),
 //                             &mTestLstener,
 //                             (StandardType)mode);
-//    appendMessageText(tr("开始测试"),2);
+//    appendMessageText(tr("开始测试"));
 }
 
 void TouchTools::TestThread::run()
 {
+    testing = true;
+    running = true;
     touch_device *dev;
     bool firstTime = true;
     setCancel(false);
@@ -259,12 +264,14 @@ void TouchTools::TestThread::run()
                 touchTool->presenter->setTextButtonText(TouchTools::tr("Test"));
                 touchTool->presenter->setTestButtonCheck(false);
                 touchTool->presenter->setTesting(false);
+                running = false;
+                testing = false;
                 return;
             }
         }
     }while(dev == NULL || !dev->touch.connected || dev->touch.booloader);
     touchTool->presenter->destroyDialog();
-    touchTool->appendMessageText(TouchTools::tr("Start test"),2);
+    touchTool->appendMessageText(TouchTools::tr("Start test"));
     if(!firstTime)
         msleep(1000);
 
@@ -284,9 +291,14 @@ void TouchTools::TestThread::run()
         break;
     }
 
-    touchTool->mTouchManager->startTest(touchTool->mTouchManager->firstConnectedDevice(),
+    bool ret = touchTool->mTouchManager->startTest(touchTool->mTouchManager->firstConnectedDevice(),
                              &touchTool->mTestLstener,
                              (StandardType)mode);
+    if(!ret)
+    {
+        running = false;
+        testing = false;
+    }
 
 }
 
@@ -316,6 +328,7 @@ void TouchTools::UpgradeThread::run()
     waiting = true;
     running = true;
     cancel = false;
+    upgrading = true;
     bool firstTime = true;
     touchTool->presenter->setUpgrading(true);
     do {
@@ -337,6 +350,7 @@ void TouchTools::UpgradeThread::run()
             touchTool->presenter->setUpgrading(false);
             touchTool->presenter->setUpgradeButtonText(TouchTools::tr("Upgrade"));
             cancel = false;
+            upgrading = false;
             return;
         }
     } while (dev == NULL || !dev->touch.connected);
@@ -351,7 +365,7 @@ void TouchTools::UpgradeThread::run()
     if (result != 0) {
         touchTool->showMessage(TouchTools::tr("Upgrade"), TouchTools::tr("Uprade failure"));
         touchTool->presenter->setUpgradeButtonEnable(true);
-
+        upgrading = false;
     }
     running = false;
     TDEBUG("start upgrade end");
@@ -450,11 +464,11 @@ void TouchTools::InitSdkThread::run(void)
             touchTool->appendMessageText(
                         QString().sprintf("%s %s ",
                                     (dev->touch.booloader ? "Bootloader" : "TouchApp"),
-                                    dev->touch.model) + tr("connected") + "\n",0);
+                                    dev->touch.model) + tr("connected") + "\n");
         }
     }
-
-    QString path = QString().sprintf("%s%s", UPGRADE_FILE_DIR, UPGRADE_FILE_NAME);
+    QString path = QString().sprintf("%s/%s%s",touchTool->appPath.toStdString().c_str(),UPGRADE_FILE_DIR, UPGRADE_FILE_NAME);
+    TDEBUG("保存升级文件的路径:path = %s",path.toStdString().c_str() );
     if (!QDir(UPGRADE_FILE_DIR).exists() && !QDir(".").mkdir(UPGRADE_FILE_DIR)) {
         path = QString(UPGRADE_FILE_NAME);
     }
@@ -613,7 +627,8 @@ QVariant TouchTools::getDeviceInfoName()
     info += tr("Support touch number:") + "\n";
     info += "USB VID:\n";
     info += "USB PID:\n";
-
+    info += tr("Serial number:\n");
+    info += "\n";
     return QVariant::fromValue(info);
 }
 QVariant TouchTools::getDeviceInfo()
@@ -633,6 +648,37 @@ QVariant TouchTools::getDeviceInfo()
         info += QString().sprintf("%d\n", finfo.touch_point);
         info += QString().sprintf("0x%04X\n", toWord(finfo.usb_vid_l, finfo.usb_vid_h));
         info += QString().sprintf("0x%04X\n", toWord(finfo.usb_pid_l, finfo.usb_pid_h));
+        info += dev->touch.serial_number;
+        info += "\n";
+    }
+
+    return QVariant::fromValue(info);
+}
+
+QVariant TouchTools::getDeviceMainInfo()
+{
+    QString info = "";
+    touch_device *dev = mTouchManager->firstConnectedDevice();
+
+    if (dev == NULL || !dev->touch.connected) {
+        info = "No connected devices!";
+    } else {
+        touch_fireware_info finfo;
+        mTouchManager->getFirewareInfo(dev, &finfo);
+        info = tr("Device name:");
+        if(dev->touch.booloader)
+        {
+            info += "Bootloader  ";
+        }
+        else
+        {
+            info += QString(dev->touch.model) + "  ";
+        }
+
+        info += tr("Fireware version:");
+        info += QString().sprintf("0x%04X  ", toWord(finfo.version_l, finfo.version_h));
+        info += tr("Fireware checksum:");
+        info += QString().sprintf("0x%04X  ", toWord(finfo.checksum_l, finfo.checksum_h));
     }
 
     return QVariant::fromValue(info);
@@ -837,18 +883,23 @@ QVariantMap TouchTools::getSignalData(QVariant index, int count)
     delete data;
     return map;
 }
+bool TouchTools::upgrading = false;
+bool TouchTools::testing = false;
 bool TouchTools::autoTestSwitch = false;
 #define show_line() TDEBUG("%s [%d]", __func__, __LINE__);
-TouchTools::TouchTools(QObject *parent, TouchPresenter *presenter,int argc,char **argv) : QObject(parent),
+TouchTools::TouchTools(QObject *parent, TouchPresenter *presenter,int argc,char **argv,QString appPath) : QObject(parent),
     mTestLstener(this), mUpgradeListener(this), initSdkThread(this), upgradeThread(this),
     touchAging(presenter, NULL), appType(APP_FACTORY), hotplugInterval(0),testThread(this)
 {
-
+    this->appPath = appPath;
     if(argc > 0)
     {
      this->argc = argc;
      this->argv = argv;
     }
+
+    tray = new SystemTray(this,this);
+//    tray->hide();
     firstTimeUpdate = false;
     if (presenter == NULL) {
         TDebug::error("presenter is NULL");
@@ -878,6 +929,7 @@ TouchTools::TouchTools(QObject *parent, TouchPresenter *presenter,int argc,char 
 
     QObject::connect(presenter, SIGNAL(startTest()),
                      this, SLOT(startTest()));
+    QObject::connect(tray,SIGNAL(signal_close()),this,SLOT(exitProject()));
 
 //    QObject::connect(timer,SIGNAL(timeout()),this,SLOT(timeoutWorking()));
 //    timer->start(25000);
@@ -890,6 +942,7 @@ TouchTools::TouchTools(QObject *parent, TouchPresenter *presenter,int argc,char 
     TINFO("start init thread");
     addTouchManagerTr();
     initSdkThread.start();
+
 }
 void TouchTools::timeoutWorking()
 {
@@ -908,6 +961,7 @@ void TouchTools::setLanguage(int lu)
 
 void TouchTools::exitProject()
 {
+    tray->closeWidget();
     mTouchManager->mHotplugThread.stopThread();
     if(argc > 1 && QString::compare(argv[1],"-changeCoordsMode") == 0)
     {
@@ -918,6 +972,8 @@ void TouchTools::exitProject()
     }
     exit(0);
 }
+
+
 TouchTools::~TouchTools()
 {
 #if 1  
@@ -934,6 +990,8 @@ TouchTools::~TouchTools()
 
 
     TouchManager::freeAllTouchDeviceInfo();
+    delete tray;
+    tray = NULL;
 
 #endif
 
@@ -953,18 +1011,42 @@ QString TouchTools::getTr(QString str)
     }
     return tr(str.toStdString().c_str());
 }
+void TouchTools::openProgress(bool isOpen)
+{
+    presenter->openProgress(isOpen);
+}
+
+void TouchTools::setPageIndex(int index)
+{
+    presenter->changeTabIndex(index);
+}
+
+void TouchTools::enterCalibratePage()
+{
+    presenter->enterCalibratePage();
+}
+
+bool TouchTools::isUpgrading()
+{
+    return upgrading;
+}
+
+bool TouchTools::isTesting()
+{
+    return testing;
+}
 
 void TouchTools::TestListener::inProgress(int progress, QString message)
 {
     manager->setTestProgess(progress);
     if (message != NULL && message != "") {
-        manager->appendMessageText(message,2);
+        manager->appendMessageText(message);
     }
 }
 void TouchTools::TestListener::showOnboardFailItem(QString message)
 {
     if (message != NULL && message != "") {
-        manager->appendMessageText(message,2);
+        manager->appendMessageText(message);
     }
 }
 
@@ -1011,11 +1093,13 @@ void TouchTools::TestListener::onTestDone(bool result, QString text,bool stop,bo
         }
     }
     manager->presenter->setTextButtonText(tr("Test"));
-    manager->appendMessageText(info,2);
+    manager->appendMessageText(info);
 //    manager->presenter->setTestButtonEnable(true);
     manager->presenter->setTestButtonCheck(false);
     manager->presenter->setTesting(false);
 
+    manager->setTestThreadRunning(false);
+    TouchTools::testing = false;
 }
 
 void TouchTools::TestListener::setNewWindowVisable()
@@ -1050,16 +1134,16 @@ void TouchTools::UpgradeListener::inProgress(int progress)
 //    TDEBUG("upgrade %d", progress);
     switch (progress) {
     case 1:
-        manager->appendMessageText(tr("Load fireware done"),1);
+        manager->appendMessageText(tr("Load fireware done"));
         break;
     case 2:
-        manager->appendMessageText(tr("Reboot device done"),1);
+        manager->appendMessageText(tr("Reboot device done"));
         break;
     case 3:
-        manager->appendMessageText(tr("Enter download mode"),1);
+        manager->appendMessageText(tr("Enter download mode"));
         break;
     case -1:
-        manager->appendMessageText(tr("Start download fireware"),1);
+        manager->appendMessageText(tr("Start download fireware"));
         break;
     }
 
@@ -1073,14 +1157,15 @@ void TouchTools::UpgradeListener::onUpgradeDone(bool result, QString message)
     TINFO("upgrade result %d, (%s)", result, message.toStdString().c_str());
     if (result) {
         manager->showMessage(tr("Upgrade"), tr("Upgrade success") + "!", 1);
-        manager->appendMessageText(tr("Upgrade success") + "!\n",1);
+        manager->appendMessageText(tr("Upgrade success") + "!\n");
     } else {
         manager->showMessage(tr("Upgrade"), tr("Upgrade failed") + "!\n" + message, 3);
-        manager->appendMessageText(tr("Upgrade failed") + "! " + message + "\n",1);
+        manager->appendMessageText(tr("Upgrade failed") + "! " + message + "\n");
     }
     manager->presenter->setUpgradeButtonEnable(true);
 
     manager->presenter->setUpgrading(false);
+    TouchTools::upgrading = false;
 }
 
 void TouchTools::UpgradeListener::showUpdateMessageDialog(QString title, QString message, int type)
@@ -1093,6 +1178,56 @@ void TouchTools::UpgradeListener::destroyDialog()
 {
     manager->presenter->destroyDialog();
 }
+//设置程序自启动 appPath程序路径
+void TouchTools::AutoRun(bool isAutoRun)
+{
+
+    // HKEY_CURRENT_USER仅仅对当前用户有效，
+    // HKEY_LOCAL_MACHINE对所有用户有效（但需要管理员权限启动）
+
+    QString regPath = "HKEY_CURRENT_USER\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run";
+    //QString regPath = "HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run";
+    QSettings nsettings(regPath, QSettings::NativeFormat);	//NativeFormat在windows下就是系统注册表
+
+    QString napppath = QCoreApplication::applicationFilePath() + " -selfStarting";
+    QString nappname = QCoreApplication::applicationName();
+    TDEBUG("napppath %s" ,napppath.toStdString().c_str());
+    TDEBUG("nappname %s" , nappname.toStdString().c_str());
+    napppath = napppath.replace("/", "\\");
+    if (isAutoRun) {
+        nsettings.setValue(nappname, napppath); // 如果要开机启动，则写入此项
+        TDEBUG("添加启动项");
+    }
+    else {
+        nsettings.remove(nappname);		// 如果要禁止开机启动，则移除此项
+        TDEBUG("删除启动项");
+    }
+
+}
+#if 0
+void TouchTools::SetProcessAutoRunSelf(const QString &appPath)
+{
+    //注册表路径需要使用双反斜杠，如果是32位系统，要使用QSettings::Registry32Format
+    QSettings settings("HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Run",
+                       QSettings::NativeFormat);
+
+    //以程序名称作为注册表中的键
+    //根据键获取对应的值（程序路径）
+    QFileInfo fInfo(appPath);
+    QString name = fInfo.baseName();
+    QString path = settings.value(name).toString();
+
+    //如果注册表中的路径和当前程序路径不一样，
+    //则表示没有设置自启动或自启动程序已经更换了路径
+    //toNativeSeparators的意思是将"/"替换为"\"
+    QString newPath = QDir::toNativeSeparators(appPath);
+    if (path != newPath)
+    {
+
+        settings.setValue(name, newPath);
+    }
+}
+#endif
 void TouchTools::addTouchManagerTr(){
     tr("Being detected! Do not touch!");
     tr("test failed");
@@ -1109,6 +1244,11 @@ void TouchTools::addTouchManagerTr(){
     tr("Failed to download firmware");
     tr("IAP failed");
     tr("Firmware error");
-
+    tr("Calibrate");
+    tr("Settings");
+    tr("About");
+    tr("Mode");
+    tr("Open");
+    tr("Exit");
 }
 

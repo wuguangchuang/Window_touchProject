@@ -984,7 +984,7 @@ void TouchManager::doTest()
     }
 
     mTestListener->showTestMessageDialog("test",translator->getTr("Being detected! Do not touch!"),4);
-    mTestListener->showFirewareInfo(2);
+    mTestListener->showFirewareInfo(0);
 
     signalInit(mTestDevice, SIGNAL_INIT_COMPLETE);
 
@@ -1550,7 +1550,6 @@ void TouchManager::HotplugThread::run()
         // find plugin, enumerate hid again, get new devices
         count = 0;
         device = hid_find_touchdevice(&count);
-//        TDEBUG("found %d devices", count);
         hotplug_dbg("found %d devices", count);
         hotplug_dbg("last: %x", last);
         // @device: new devices
@@ -1617,6 +1616,21 @@ void TouchManager::HotplugThread::run()
             hotplug_dbg("init device info");
             if (!same && manager->mHotplugListener != NULL) {
                 cur->touch.connected = 1;
+                //通过序列号来判断设备时需要更新VID PID以及BootLoader信息
+                touch_fireware_info touchFirmwareInfo;
+                if(manager->getFirewareInfo(cur,&touchFirmwareInfo) == 0)
+                {
+                    cur->info->vendor_id = toWord(touchFirmwareInfo.usb_vid_l,touchFirmwareInfo.usb_vid_h);
+                    cur->info->product_id = toWord(touchFirmwareInfo.usb_pid_l,touchFirmwareInfo.usb_pid_h);
+                    if(toWord(touchFirmwareInfo.type_l,touchFirmwareInfo.type_h) == 0x0001)
+                    {
+                        cur->touch.booloader = 1;
+                    }
+                    else
+                    {
+                        cur->touch.booloader = 0;
+                    }
+                }
                 manager->mHotplugListener->onTouchHotplug(cur, 1, NULL);
             }
 device_each_out:
@@ -1677,7 +1691,7 @@ int TouchManager::addPackageToQueue(touch_package *require, touch_package *reply
 //发送数据包package给某一个设备,并将设备的应答数据保存到reply中
 int TouchManager::sendPackageToDevice(touch_package *package, touch_package *reply, touch_device *device)
 {
-    if (device == NULL || device->touch.connected == 0 || device->hid == NULL) {
+    if (device == NULL || device->hid == NULL) {
         TDebug::error("no device for sendPackageToDevice");
         return -1;
     }

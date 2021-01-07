@@ -407,9 +407,11 @@ touch_device *HID_API_EXPORT HID_API_CALL hid_find_touchdevice(int *count)
     NTSTATUS nt_res;
     wchar_t wstr[WSTR_LEN]; // TODO: Determine Size
     size_t len;
-
+    int serialLen = 0;
+    char buf[sizeof(wstr)];
     char pathTemp[128];
     int pathLength;
+
 
     touch_vendor_list *vendor = NULL;
 
@@ -500,7 +502,7 @@ touch_device *HID_API_EXPORT HID_API_CALL hid_find_touchdevice(int *count)
 
                 if (temp_vendor->vid == attrib.VendorID && temp_vendor->pid == attrib.ProductID
                         && strstr(device_interface_detail_data->DevicePath, temp_vendor->path) != NULL) {
-                    found = 1;
+//                    found = 1;
                     break;
                 }
             }
@@ -511,7 +513,7 @@ touch_device *HID_API_EXPORT HID_API_CALL hid_find_touchdevice(int *count)
 
                 if (temp_vendor->vid == attrib.VendorID && temp_vendor->pid == attrib.ProductID
                         && strstr(device_interface_detail_data->DevicePath, temp_vendor->path) != NULL) {
-                    found = 1;
+//                    found = 1;
     //                qDebug("vid:=%x, pid=%x, bootloader=%d, repord_id=0x%x, path=%s\n",
     //                       temp_vendor->vid, temp_vendor->pid,
     //                       temp_vendor->bootloader, temp_vendor->rid, temp_vendor->path);
@@ -520,7 +522,30 @@ touch_device *HID_API_EXPORT HID_API_CALL hid_find_touchdevice(int *count)
                 vendor = vendor->next;
             }
         }
+        found = 0;
+        /* Serial Number */
+          memset(wstr,0,sizeof(wstr));
 
+          res = HidD_GetSerialNumberString(write_handle, wstr, sizeof(wstr));
+          wstr[WSTR_LEN-1] = 0x0000;
+          serialLen = 0;
+          if (res) {
+              memset(buf,-1,sizeof(wstr));
+              for(int i = 0; i < sizeof(wstr) - 1 && wstr[i] != 0;i++)
+              {
+                  buf[i] = (char)wstr[i];
+                  serialLen++;
+              }
+              if(strncmp(buf,"5BB217D8E3522DE3994C112A63D980BA",8) == 0 &&
+                      strstr(device_interface_detail_data->DevicePath, "col01") != NULL)
+              {
+                      found = 1;
+              }
+              else
+              {
+                  found = 0;
+              }
+          }
         if (found && temp_vendor != NULL) {
             TVERBOSE("## %d,  vid:=%x, pid=%x, bootloader=%d, repord_id=0x%x, path=%s\n",
                      found,
@@ -529,7 +554,6 @@ touch_device *HID_API_EXPORT HID_API_CALL hid_find_touchdevice(int *count)
         }
 
         if (found) {
-            TDEBUG("device_interface_detail_data->DevicePathh = %s",device_interface_detail_data->DevicePath);
             device = (touch_device*)malloc(sizeof(touch_device));
             memset(device, 0, sizeof(touch_device));
             /* VID/PID match. Create the record. */
@@ -566,6 +590,7 @@ touch_device *HID_API_EXPORT HID_API_CALL hid_find_touchdevice(int *count)
             else
                 cur_dev->path = NULL;
 
+            cur_dev->serial_number = _wcsdup(wstr);
             /* Serial Number */
 //            res = HidD_GetSerialNumberString(write_handle, wstr, sizeof(wstr));
 //            wstr[WSTR_LEN-1] = 0x0000;
@@ -620,6 +645,8 @@ touch_device *HID_API_EXPORT HID_API_CALL hid_find_touchdevice(int *count)
             }
             device->touch.connected = 1;
 
+            strncpy(device->touch.serial_number,buf,
+           serialLen > sizeof(device->touch.serial_number)?sizeof(device->touch.serial_number):serialLen);
             tmp_device = device;
 
             touchCount++;
@@ -640,7 +667,7 @@ cont:
     root_device = tmp_device;
     tmp_device = root_device;
     while (tmp_device) {
-        TDEBUG("try %s", tmp_device->info->path);
+//        TDEBUG("try %s", tmp_device->info->path);
         tmp_device->hid = hid_open_path(tmp_device->info->path);
         if (tmp_device->hid != NULL)
             tmp_device->touch.output_report_length = tmp_device->hid->output_report_length;
@@ -846,7 +873,6 @@ HID_API_EXPORT hid_device * HID_API_CALL hid_open_path(const char *path)
 err_pp_data:
         HidD_FreePreparsedData(pp_data);
 err:
-        TDEBUG("打开设备失败");
         CloseHandle(dev->device_handle);
         free(dev);
         return NULL;
@@ -910,11 +936,7 @@ int HID_API_EXPORT HID_API_CALL hid_read_timeout(hid_device *dev, unsigned char 
                 // Clean up and return error.
                 TERROR("ReadFile failed(%d)", GetLastError());
                 CancelIo(dev->device_handle);
-                if(dev != NULL)
-                {
-                    dev->read_pending = FALSE;
-                }
-
+                dev->read_pending = FALSE;
                 goto end_of_function;
             }
         }

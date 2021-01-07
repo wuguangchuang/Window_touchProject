@@ -7,6 +7,8 @@ INPUT(
 ./debug\drawpanel.o
 ./debug\tusbevent.o
 ./debug\singleapp.o
+./debug\systemtray.o
+./debug\json.o
 ./debug\qrc_qml.o
 ./debug\qrc_images.o
 ./debug\qrc_text.o
@@ -16,4 +18,5 @@ INPUT(
 ./debug\moc_drawpanel.o
 ./debug\moc_tusbevent.o
 ./debug\moc_singleapp.o
+./debug\moc_systemtray.o
 );

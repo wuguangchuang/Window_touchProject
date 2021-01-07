@@ -143,34 +143,185 @@
     </message>
 </context>
 <context>
-    <name>Settings</name>
+    <name>SettingCalibratePage</name>
     <message>
-        <location filename="../qml/ui/Settings.qml" line="335"/>
+        <location filename="../qml/ui/SettingCalibratePage.qml" line="21"/>
+        <source>calibrate</source>
+        <translation>Calibration</translation>
+    </message>
+    <message>
+        <location filename="../qml/ui/SettingCalibratePage.qml" line="28"/>
+        <source>calibration</source>
+        <translation>calibration</translation>
+    </message>
+    <message>
+        <location filename="../qml/ui/SettingCalibratePage.qml" line="37"/>
+        <source>refresh</source>
+        <translation>Reload</translation>
+    </message>
+    <message>
+        <location filename="../qml/ui/SettingCalibratePage.qml" line="47"/>
+        <source>set</source>
+        <translation>Apply</translation>
+    </message>
+    <message>
+        <location filename="../qml/ui/SettingCalibratePage.qml" line="55"/>
+        <source>save data failure</source>
+        <translation>Failed to apply calibrate data</translation>
+    </message>
+    <message>
+        <location filename="../qml/ui/SettingCalibratePage.qml" line="57"/>
+        <source>set success</source>
+        <translation>Calibrate data applied</translation>
+    </message>
+    <message>
+        <location filename="../qml/ui/SettingCalibratePage.qml" line="64"/>
+        <source>save</source>
+        <translation>Save</translation>
+    </message>
+    <message>
+        <location filename="../qml/ui/SettingCalibratePage.qml" line="76"/>
+        <source>read</source>
+        <translation>Open</translation>
+    </message>
+    <message>
+        <location filename="../qml/ui/SettingCalibratePage.qml" line="88"/>
+        <source>hide datas</source>
+        <translation>Hide</translation>
+    </message>
+    <message>
+        <location filename="../qml/ui/SettingCalibratePage.qml" line="88"/>
+        <source>show datas</source>
+        <translation>Show</translation>
+    </message>
+    <message>
+        <location filename="../qml/ui/SettingCalibratePage.qml" line="98"/>
+        <source>factory reset</source>
+        <translation>Factory reset</translation>
+    </message>
+    <message>
+        <location filename="../qml/ui/SettingCalibratePage.qml" line="129"/>
+        <source>Number</source>
+        <translation>Number</translation>
+    </message>
+    <message>
+        <location filename="../qml/ui/SettingCalibratePage.qml" line="135"/>
+        <location filename="../qml/ui/SettingCalibratePage.qml" line="141"/>
+        <source>target point %1</source>
+        <translation>Target %1</translation>
+    </message>
+    <message>
+        <location filename="../qml/ui/SettingCalibratePage.qml" line="147"/>
+        <location filename="../qml/ui/SettingCalibratePage.qml" line="153"/>
+        <source>collect point %1</source>
+        <translation>Captured %1</translation>
+    </message>
+</context>
+<context>
+    <name>SettingCoordsPage</name>
+    <message>
+        <location filename="../qml/ui/SettingCoordsPage.qml" line="24"/>
         <source>usb coordinate mode</source>
         <translation>USB output mode</translation>
     </message>
     <message>
-        <location filename="../qml/ui/Settings.qml" line="358"/>
+        <location filename="../qml/ui/SettingCoordsPage.qml" line="48"/>
         <source>simulate mouse</source>
         <translation>Mouse</translation>
     </message>
     <message>
-        <location filename="../qml/ui/Settings.qml" line="365"/>
+        <location filename="../qml/ui/SettingCoordsPage.qml" line="55"/>
         <source>multitouch</source>
         <translation>Multitouch</translation>
     </message>
     <message>
-        <location filename="../qml/ui/Settings.qml" line="382"/>
+        <location filename="../qml/ui/SettingCoordsPage.qml" line="75"/>
+        <source>uart coordinate mode</source>
+        <translation>UART output mode</translation>
+    </message>
+</context>
+<context>
+    <name>SettingPage</name>
+    <message>
+        <location filename="../qml/ui/SettingPage.qml" line="425"/>
+        <source>Coordinate</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../qml/ui/SettingPage.qml" line="439"/>
+        <source>Spin</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../qml/ui/SettingPage.qml" line="453"/>
+        <source>Calibrate</source>
+        <translation>Calibration</translation>
+    </message>
+</context>
+<context>
+    <name>SettingSpinPage</name>
+    <message>
+        <location filename="../qml/ui/SettingSpinPage.qml" line="24"/>
+        <source>turn over</source>
+        <translation>Mirror</translation>
+    </message>
+    <message>
+        <location filename="../qml/ui/SettingSpinPage.qml" line="32"/>
+        <source>turn over X</source>
+        <translation>Mirror X</translation>
+    </message>
+    <message>
+        <location filename="../qml/ui/SettingSpinPage.qml" line="41"/>
+        <source>turn over Y</source>
+        <translation>Mirror Y</translation>
+    </message>
+    <message>
+        <location filename="../qml/ui/SettingSpinPage.qml" line="49"/>
+        <location filename="../qml/ui/SettingSpinPage.qml" line="112"/>
+        <location filename="../qml/ui/SettingSpinPage.qml" line="176"/>
+        <source>factory reset</source>
+        <translation>Factory reset</translation>
+    </message>
+    <message>
+        <location filename="../qml/ui/SettingSpinPage.qml" line="82"/>
+        <source>touch clockwise rotation</source>
+        <translation>Touch CW rotation</translation>
+    </message>
+    <message>
+        <location filename="../qml/ui/SettingSpinPage.qml" line="147"/>
+        <source>screen clockwise rotation</source>
+        <translation>Screen CW rotation</translation>
+    </message>
+</context>
+<context>
+    <name>Settings</name>
+    <message>
+        <location filename="../qml/ui/Settings.qml" line="319"/>
+        <source>usb coordinate mode</source>
+        <translation>USB output mode</translation>
+    </message>
+    <message>
+        <location filename="../qml/ui/Settings.qml" line="342"/>
+        <source>simulate mouse</source>
+        <translation>Mouse</translation>
+    </message>
+    <message>
+        <location filename="../qml/ui/Settings.qml" line="349"/>
+        <source>multitouch</source>
+        <translation>Multitouch</translation>
+    </message>
+    <message>
+        <location filename="../qml/ui/Settings.qml" line="374"/>
         <source>uart coordinate mode</source>
         <translation>UART output mode</translation>
     </message>
     <message>
-        <location filename="../qml/ui/Settings.qml" line="405"/>
+        <location filename="../qml/ui/Settings.qml" line="397"/>
         <source>exclude touch size</source>
         <translation>Without touch size</translation>
     </message>
     <message>
-        <location filename="../qml/ui/Settings.qml" line="412"/>
+        <location filename="../qml/ui/Settings.qml" line="404"/>
         <source>include touch size</source>
         <translation>With touch size</translation>
     </message>
@@ -191,45 +342,46 @@
     </message>
     <message>
         <location filename="../qml/ui/Settings.qml" line="453"/>
-        <location filename="../qml/ui/Settings.qml" line="508"/>
-        <location filename="../qml/ui/Settings.qml" line="563"/>
-        <location filename="../qml/ui/Settings.qml" line="608"/>
-        <location filename="../qml/ui/Settings.qml" line="717"/>
+        <location filename="../qml/ui/Settings.qml" line="516"/>
+        <location filename="../qml/ui/Settings.qml" line="580"/>
+        <location filename="../qml/ui/Settings.qml" line="858"/>
         <source>factory reset</source>
         <translation>Factory reset</translation>
     </message>
     <message>
-        <location filename="../qml/ui/Settings.qml" line="479"/>
+        <location filename="../qml/ui/Settings.qml" line="487"/>
         <source>touch clockwise rotation</source>
         <translation>Touch CW rotation</translation>
     </message>
     <message>
-        <location filename="../qml/ui/Settings.qml" line="535"/>
+        <location filename="../qml/ui/Settings.qml" line="552"/>
         <source>screen clockwise rotation</source>
         <translation>Screen CW rotation</translation>
     </message>
     <message>
-        <location filename="../qml/ui/Settings.qml" line="598"/>
+        <source>MAC OS</source>
+        <translation type="vanished">MAC OS</translation>
+    </message>
+    <message>
         <source>mac os 10.9 or before</source>
-        <translation>MAC OS 10.9 or below</translation>
+        <translation type="vanished">MAC OS 10.9 or below</translation>
     </message>
     <message>
-        <location filename="../qml/ui/Settings.qml" line="604"/>
         <source>mac os 10.10 or later</source>
-        <translation>MAC OS 10.10 or above</translation>
+        <translation type="vanished">MAC OS 10.10 or above</translation>
     </message>
     <message>
-        <location filename="../qml/ui/Settings.qml" line="626"/>
+        <location filename="../qml/ui/Settings.qml" line="643"/>
         <source>Lock environmental parameters</source>
         <translation>Lock environmental data</translation>
     </message>
     <message>
-        <location filename="../qml/ui/Settings.qml" line="655"/>
+        <location filename="../qml/ui/Settings.qml" line="672"/>
         <source>calibrate</source>
         <translation>Calibration</translation>
     </message>
     <message>
-        <location filename="../qml/ui/Settings.qml" line="662"/>
+        <location filename="../qml/ui/Settings.qml" line="679"/>
         <source>recalibration</source>
         <translation>Calibrate</translation>
     </message>
@@ -238,61 +390,69 @@
         <translation type="vanished">Recalibrate</translation>
     </message>
     <message>
-        <location filename="../qml/ui/Settings.qml" line="673"/>
+        <location filename="../qml/ui/Settings.qml" line="712"/>
         <source>refresh</source>
         <translation>Reload</translation>
     </message>
     <message>
-        <location filename="../qml/ui/Settings.qml" line="679"/>
+        <location filename="../qml/ui/Settings.qml" line="738"/>
         <source>set</source>
         <translation>Apply</translation>
     </message>
     <message>
-        <location filename="../qml/ui/Settings.qml" line="685"/>
+        <location filename="../qml/ui/Settings.qml" line="746"/>
         <source>save data failure</source>
         <translation>Failed to apply calibrate data</translation>
     </message>
     <message>
-        <location filename="../qml/ui/Settings.qml" line="687"/>
+        <location filename="../qml/ui/Settings.qml" line="748"/>
         <source>set success</source>
         <translation>Calibrate data applied</translation>
     </message>
     <message>
-        <location filename="../qml/ui/Settings.qml" line="692"/>
+        <location filename="../qml/ui/Settings.qml" line="778"/>
         <source>save</source>
         <translation>Save</translation>
     </message>
     <message>
-        <location filename="../qml/ui/Settings.qml" line="700"/>
+        <location filename="../qml/ui/Settings.qml" line="809"/>
         <source>read</source>
         <translation>Open</translation>
     </message>
     <message>
-        <location filename="../qml/ui/Settings.qml" line="709"/>
+        <location filename="../qml/ui/Settings.qml" line="840"/>
         <source>hide datas</source>
         <translation>Hide</translation>
     </message>
     <message>
-        <location filename="../qml/ui/Settings.qml" line="709"/>
+        <location filename="../qml/ui/Settings.qml" line="840"/>
         <source>show datas</source>
         <translation>Show</translation>
     </message>
     <message>
-        <location filename="../qml/ui/Settings.qml" line="744"/>
+        <location filename="../qml/ui/Settings.qml" line="885"/>
         <source>Number</source>
         <translation>Number</translation>
     </message>
     <message>
-        <location filename="../qml/ui/Settings.qml" line="750"/>
-        <location filename="../qml/ui/Settings.qml" line="756"/>
+        <location filename="../qml/ui/Settings.qml" line="891"/>
+        <location filename="../qml/ui/Settings.qml" line="897"/>
         <source>target point %1</source>
         <translation>Target %1</translation>
     </message>
     <message>
-        <location filename="../qml/ui/Settings.qml" line="762"/>
-        <location filename="../qml/ui/Settings.qml" line="768"/>
+        <location filename="../qml/ui/Settings.qml" line="903"/>
+        <location filename="../qml/ui/Settings.qml" line="909"/>
         <source>collect point %1</source>
         <translation>Captured %1</translation>
+    </message>
+</context>
+<context>
+    <name>SystemTray</name>
+    <message>
+        <location filename="../src/systemtray.cpp" line="229"/>
+        <source>TouchAssistant</source>
+        <translation>TouchAssistant</translation>
     </message>
 </context>
 <context>
@@ -332,233 +492,269 @@
 <context>
     <name>Touch::TouchTools</name>
     <message>
-        <location filename="../src/TouchTools.cpp" line="41"/>
-        <location filename="../src/TouchTools.cpp" line="367"/>
+        <location filename="../src/TouchTools.cpp" line="43"/>
+        <location filename="../src/TouchTools.cpp" line="449"/>
         <source>connected</source>
         <translation>connected</translation>
     </message>
     <message>
-        <location filename="../src/TouchTools.cpp" line="41"/>
+        <location filename="../src/TouchTools.cpp" line="43"/>
         <source>disconnected</source>
         <translation>disconnected</translation>
     </message>
     <message>
-        <location filename="../src/TouchTools.cpp" line="158"/>
-        <location filename="../src/TouchTools.cpp" line="889"/>
+        <location filename="../src/TouchTools.cpp" line="231"/>
+        <location filename="../src/TouchTools.cpp" line="1052"/>
         <source>Cancel test</source>
         <translation>Cancel</translation>
     </message>
     <message>
-        <location filename="../src/TouchTools.cpp" line="167"/>
-        <location filename="../src/TouchTools.cpp" line="243"/>
+        <location filename="../src/TouchTools.cpp" line="240"/>
+        <location filename="../src/TouchTools.cpp" line="324"/>
         <source>Error</source>
         <translation>Error</translation>
     </message>
     <message>
-        <location filename="../src/TouchTools.cpp" line="167"/>
-        <location filename="../src/TouchTools.cpp" line="468"/>
-        <location filename="../src/TouchTools.cpp" line="539"/>
-        <location filename="../src/TouchTools.cpp" line="658"/>
+        <location filename="../src/TouchTools.cpp" line="240"/>
+        <location filename="../src/TouchTools.cpp" line="551"/>
+        <location filename="../src/TouchTools.cpp" line="622"/>
+        <location filename="../src/TouchTools.cpp" line="741"/>
         <source>No connected devices!</source>
         <translation>No device connected!</translation>
     </message>
     <message>
-        <location filename="../src/TouchTools.cpp" line="173"/>
-        <location filename="../src/TouchTools.cpp" line="884"/>
-        <location filename="../src/TouchTools.cpp" line="892"/>
-        <location filename="../src/TouchTools.cpp" line="894"/>
+        <location filename="../src/TouchTools.cpp" line="246"/>
+        <location filename="../src/TouchTools.cpp" line="1047"/>
+        <location filename="../src/TouchTools.cpp" line="1055"/>
+        <location filename="../src/TouchTools.cpp" line="1057"/>
         <source>Test</source>
         <translation>Test</translation>
     </message>
     <message>
-        <location filename="../src/TouchTools.cpp" line="181"/>
+        <location filename="../src/TouchTools.cpp" line="256"/>
         <source>Start test</source>
         <translation>Test started</translation>
     </message>
     <message>
-        <location filename="../src/TouchTools.cpp" line="240"/>
+        <location filename="../src/TouchTools.cpp" line="321"/>
         <source>Cancel upgrade</source>
         <translation>Cancel</translation>
     </message>
     <message>
-        <location filename="../src/TouchTools.cpp" line="243"/>
+        <location filename="../src/TouchTools.cpp" line="324"/>
         <source>Please plug in device</source>
         <translation>Please plug in the device</translation>
     </message>
     <message>
-        <location filename="../src/TouchTools.cpp" line="252"/>
-        <location filename="../src/TouchTools.cpp" line="266"/>
-        <location filename="../src/TouchTools.cpp" line="957"/>
-        <location filename="../src/TouchTools.cpp" line="960"/>
+        <location filename="../src/TouchTools.cpp" line="333"/>
+        <location filename="../src/TouchTools.cpp" line="348"/>
+        <location filename="../src/TouchTools.cpp" line="1122"/>
+        <location filename="../src/TouchTools.cpp" line="1125"/>
         <source>Upgrade</source>
         <translation>Upgrade</translation>
     </message>
     <message>
-        <location filename="../src/TouchTools.cpp" line="260"/>
+        <location filename="../src/TouchTools.cpp" line="342"/>
         <source>Upgrading! Do not disconnect the device</source>
         <translation>Upgrading! Do not disconnect the device</translation>
     </message>
     <message>
-        <location filename="../src/TouchTools.cpp" line="266"/>
+        <location filename="../src/TouchTools.cpp" line="348"/>
         <source>Uprade failure</source>
         <translation>Failed to upgrade the firmware</translation>
     </message>
     <message>
-        <location filename="../src/TouchTools.cpp" line="472"/>
-        <location filename="../src/TouchTools.cpp" line="523"/>
+        <location filename="../src/TouchTools.cpp" line="555"/>
+        <location filename="../src/TouchTools.cpp" line="606"/>
         <source>Device infomation</source>
         <translation>Device infomation</translation>
     </message>
     <message>
-        <location filename="../src/TouchTools.cpp" line="474"/>
-        <location filename="../src/TouchTools.cpp" line="524"/>
+        <location filename="../src/TouchTools.cpp" line="557"/>
+        <location filename="../src/TouchTools.cpp" line="607"/>
         <source>Device name:</source>
         <translation>Product name:</translation>
     </message>
     <message>
-        <location filename="../src/TouchTools.cpp" line="475"/>
-        <location filename="../src/TouchTools.cpp" line="525"/>
-        <location filename="../src/TouchTools.cpp" line="662"/>
+        <location filename="../src/TouchTools.cpp" line="52"/>
+        <location filename="../src/TouchTools.cpp" line="558"/>
+        <location filename="../src/TouchTools.cpp" line="608"/>
+        <location filename="../src/TouchTools.cpp" line="745"/>
         <source>Fireware version:</source>
         <translation>Fireware version:</translation>
     </message>
     <message>
-        <location filename="../src/TouchTools.cpp" line="476"/>
-        <location filename="../src/TouchTools.cpp" line="526"/>
-        <location filename="../src/TouchTools.cpp" line="663"/>
+        <location filename="../src/TouchTools.cpp" line="52"/>
+        <location filename="../src/TouchTools.cpp" line="559"/>
+        <location filename="../src/TouchTools.cpp" line="609"/>
+        <location filename="../src/TouchTools.cpp" line="746"/>
         <source>Fireware checksum:</source>
         <translation>Fireware checksum:</translation>
     </message>
     <message>
-        <location filename="../src/TouchTools.cpp" line="477"/>
-        <location filename="../src/TouchTools.cpp" line="527"/>
+        <location filename="../src/TouchTools.cpp" line="163"/>
+        <source>file does no exist</source>
+        <translation>file does not exist</translation>
+    </message>
+    <message>
+        <location filename="../src/TouchTools.cpp" line="560"/>
+        <location filename="../src/TouchTools.cpp" line="610"/>
         <source>Support touch number:</source>
         <translation>Touch point number:</translation>
     </message>
     <message>
-        <location filename="../src/TouchTools.cpp" line="486"/>
-        <location filename="../src/TouchTools.cpp" line="557"/>
+        <location filename="../src/TouchTools.cpp" line="569"/>
+        <location filename="../src/TouchTools.cpp" line="640"/>
         <source>Software information</source>
         <translation>Software information</translation>
     </message>
     <message>
-        <location filename="../src/TouchTools.cpp" line="487"/>
+        <location filename="../src/TouchTools.cpp" line="570"/>
         <source>Software Name</source>
         <translation>Software name</translation>
     </message>
     <message>
-        <location filename="../src/TouchTools.cpp" line="505"/>
-        <location filename="../src/TouchTools.cpp" line="559"/>
+        <location filename="../src/TouchTools.cpp" line="588"/>
+        <location filename="../src/TouchTools.cpp" line="642"/>
         <source>Software version:</source>
         <translation>Software version:</translation>
     </message>
     <message>
-        <location filename="../src/TouchTools.cpp" line="507"/>
-        <location filename="../src/TouchTools.cpp" line="560"/>
+        <location filename="../src/TouchTools.cpp" line="590"/>
+        <location filename="../src/TouchTools.cpp" line="643"/>
         <source>OS name:</source>
         <translation>OS name:</translation>
     </message>
     <message>
-        <location filename="../src/TouchTools.cpp" line="508"/>
-        <location filename="../src/TouchTools.cpp" line="561"/>
+        <location filename="../src/TouchTools.cpp" line="591"/>
+        <location filename="../src/TouchTools.cpp" line="644"/>
         <source>OS version:</source>
         <translation>OS version:</translation>
     </message>
     <message>
-        <location filename="../src/TouchTools.cpp" line="558"/>
+        <location filename="../src/TouchTools.cpp" line="641"/>
         <source>Software Name:</source>
         <translation>Software name:</translation>
     </message>
     <message>
-        <location filename="../src/TouchTools.cpp" line="838"/>
-        <location filename="../src/TouchTools.cpp" line="979"/>
+        <location filename="../src/TouchTools.cpp" line="1145"/>
         <source>Being detected! Do not touch!</source>
         <translation>Testing! Do not touch!</translation>
     </message>
     <message>
-        <location filename="../src/TouchTools.cpp" line="981"/>
+        <location filename="../src/TouchTools.cpp" line="1147"/>
         <source>Check the onboard test result failed</source>
         <translation>Failed to read the onboard test result</translation>
     </message>
     <message>
-        <location filename="../src/TouchTools.cpp" line="982"/>
+        <location filename="../src/TouchTools.cpp" line="1148"/>
         <source>Failed to get test item</source>
         <translation>Failed to get test item</translation>
     </message>
     <message>
-        <location filename="../src/TouchTools.cpp" line="983"/>
+        <location filename="../src/TouchTools.cpp" line="1149"/>
         <source>Failed to switch to touch mode</source>
         <translation>Failed to switch to touching mode</translation>
     </message>
     <message>
-        <location filename="../src/TouchTools.cpp" line="984"/>
+        <location filename="../src/TouchTools.cpp" line="1150"/>
         <source>Please draw a picture around the touch frame</source>
         <translation>Please draw around the screen edge</translation>
     </message>
     <message>
-        <location filename="../src/TouchTools.cpp" line="985"/>
+        <location filename="../src/TouchTools.cpp" line="1151"/>
         <source>The onboard test function is not activated</source>
         <translation>The onboard test did not activate</translation>
     </message>
     <message>
-        <location filename="../src/TouchTools.cpp" line="986"/>
+        <location filename="../src/TouchTools.cpp" line="1152"/>
         <source>Onboard test failed</source>
         <translation>Onboard test failed</translation>
     </message>
     <message>
-        <location filename="../src/TouchTools.cpp" line="987"/>
+        <location filename="../src/TouchTools.cpp" line="1153"/>
         <source>Onboard test passed</source>
         <translation>Onboard test passed</translation>
     </message>
     <message>
-        <location filename="../src/TouchTools.cpp" line="988"/>
+        <location filename="../src/TouchTools.cpp" line="1154"/>
         <source>The firmware package size is larger than the report package</source>
         <translation>Upgrade package oversize</translation>
     </message>
     <message>
-        <location filename="../src/TouchTools.cpp" line="989"/>
+        <location filename="../src/TouchTools.cpp" line="1155"/>
         <source>Failed to switch to upgrade mode</source>
         <translation>Failed to enter the upgrade mode</translation>
     </message>
     <message>
-        <location filename="../src/TouchTools.cpp" line="990"/>
+        <location filename="../src/TouchTools.cpp" line="1156"/>
         <source>Failed to verify firmware</source>
         <translation>Firmware verification failed</translation>
     </message>
     <message>
-        <location filename="../src/TouchTools.cpp" line="991"/>
+        <location filename="../src/TouchTools.cpp" line="1157"/>
         <source>Failed to download firmware</source>
         <translation>Failed to write upgrade package</translation>
     </message>
     <message>
-        <location filename="../src/TouchTools.cpp" line="992"/>
+        <location filename="../src/TouchTools.cpp" line="1158"/>
         <source>IAP failed</source>
         <translation>IAP failed</translation>
     </message>
     <message>
-        <location filename="../src/TouchTools.cpp" line="993"/>
+        <location filename="../src/TouchTools.cpp" line="1159"/>
         <source>Firmware error</source>
         <translation>Upgrade file error</translation>
     </message>
     <message>
-        <location filename="../src/TouchTools.cpp" line="980"/>
+        <location filename="../src/TouchTools.cpp" line="1160"/>
+        <source>Calibrate</source>
+        <translation>Calibrate</translation>
+    </message>
+    <message>
+        <location filename="../src/TouchTools.cpp" line="1161"/>
+        <source>Settings</source>
+        <translation>Settings</translation>
+    </message>
+    <message>
+        <location filename="../src/TouchTools.cpp" line="1162"/>
+        <source>About</source>
+        <translation>About</translation>
+    </message>
+    <message>
+        <location filename="../src/TouchTools.cpp" line="1163"/>
+        <source>Mode</source>
+        <translation>Mode</translation>
+    </message>
+    <message>
+        <location filename="../src/TouchTools.cpp" line="1164"/>
+        <source>Open</source>
+        <translation>Open</translation>
+    </message>
+    <message>
+        <location filename="../src/TouchTools.cpp" line="1165"/>
+        <source>Exit</source>
+        <translation>Exit</translation>
+    </message>
+    <message>
+        <location filename="../src/TouchTools.cpp" line="1146"/>
         <source>test failed</source>
         <translation>Test failed</translation>
     </message>
     <message>
-        <location filename="../src/TouchTools.cpp" line="881"/>
-        <location filename="../src/TouchTools.cpp" line="882"/>
+        <location filename="../src/TouchTools.cpp" line="1044"/>
+        <location filename="../src/TouchTools.cpp" line="1045"/>
         <source>Test pass</source>
         <translation>Test passed</translation>
     </message>
     <message>
-        <location filename="../src/TouchTools.cpp" line="881"/>
-        <location filename="../src/TouchTools.cpp" line="882"/>
+        <location filename="../src/TouchTools.cpp" line="1044"/>
+        <location filename="../src/TouchTools.cpp" line="1045"/>
         <source>Test failed</source>
         <translation>Test failed</translation>
     </message>
     <message>
-        <location filename="../src/TouchTools.cpp" line="890"/>
+        <location filename="../src/TouchTools.cpp" line="1053"/>
         <source>You have cancelled the test</source>
         <translation>Test cancelled</translation>
     </message>
@@ -567,34 +763,34 @@
         <translation type="vanished">Test</translation>
     </message>
     <message>
-        <location filename="../src/TouchTools.cpp" line="935"/>
+        <location filename="../src/TouchTools.cpp" line="1100"/>
         <source>Load fireware done</source>
         <translation>Upgrade file loaded</translation>
     </message>
     <message>
-        <location filename="../src/TouchTools.cpp" line="938"/>
+        <location filename="../src/TouchTools.cpp" line="1103"/>
         <source>Reboot device done</source>
         <translation>Device rebooted</translation>
     </message>
     <message>
-        <location filename="../src/TouchTools.cpp" line="941"/>
+        <location filename="../src/TouchTools.cpp" line="1106"/>
         <source>Enter download mode</source>
         <translation>Entered the upgrade mode</translation>
     </message>
     <message>
-        <location filename="../src/TouchTools.cpp" line="944"/>
+        <location filename="../src/TouchTools.cpp" line="1109"/>
         <source>Start download fireware</source>
         <translation>Device upgrading</translation>
     </message>
     <message>
-        <location filename="../src/TouchTools.cpp" line="957"/>
-        <location filename="../src/TouchTools.cpp" line="958"/>
+        <location filename="../src/TouchTools.cpp" line="1122"/>
+        <location filename="../src/TouchTools.cpp" line="1123"/>
         <source>Upgrade success</source>
         <translation>Device upgrade successed</translation>
     </message>
     <message>
-        <location filename="../src/TouchTools.cpp" line="960"/>
-        <location filename="../src/TouchTools.cpp" line="961"/>
+        <location filename="../src/TouchTools.cpp" line="1125"/>
+        <location filename="../src/TouchTools.cpp" line="1126"/>
         <source>Upgrade failed</source>
         <translation>Device upgrade failed</translation>
     </message>
@@ -609,12 +805,12 @@
 <context>
     <name>main</name>
     <message>
-        <location filename="../main.qml" line="53"/>
+        <location filename="../main.qml" line="60"/>
         <source>TouchAssistant</source>
         <translation>TouchAssistant</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="55"/>
+        <location filename="../main.qml" line="62"/>
         <source>sure to stop aging?</source>
         <translation>确定退出老化?</translation>
     </message>
@@ -623,25 +819,25 @@
         <translation type="vanished">Upgrade</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="137"/>
-        <location filename="../main.qml" line="175"/>
-        <location filename="../main.qml" line="183"/>
+        <location filename="../main.qml" line="147"/>
+        <location filename="../main.qml" line="185"/>
+        <location filename="../main.qml" line="193"/>
         <source>Upgrade</source>
         <translation>Upgrade</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="189"/>
+        <location filename="../main.qml" line="199"/>
         <source>During upgrade</source>
         <translation>Upgrading</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="243"/>
+        <location filename="../main.qml" line="253"/>
         <source>Select upgrade file</source>
         <translation>Browse</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="293"/>
-        <location filename="../main.qml" line="314"/>
+        <location filename="../main.qml" line="303"/>
+        <location filename="../main.qml" line="324"/>
         <source>clear history(up to ten)</source>
         <translation>Clear history(Up to 10)</translation>
     </message>
@@ -654,17 +850,17 @@
         <translation type="vanished">Cancel</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="405"/>
+        <location filename="../main.qml" line="415"/>
         <source>Test</source>
         <translation>Test</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="467"/>
+        <location filename="../main.qml" line="477"/>
         <source>Cancel test</source>
         <translation>Cancel</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="645"/>
+        <location filename="../main.qml" line="655"/>
         <source>Signal chart</source>
         <translation>Chart</translation>
     </message>
@@ -673,12 +869,12 @@
         <translation type="vanished">Aging</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="776"/>
+        <location filename="../main.qml" line="786"/>
         <source>stop accelerate aging</source>
         <translation>Stop aging</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="784"/>
+        <location filename="../main.qml" line="794"/>
         <source>Paint</source>
         <translation>Paint</translation>
     </message>
@@ -691,56 +887,68 @@
         <translation type="vanished">About</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="742"/>
+        <location filename="../main.qml" line="752"/>
         <source>Accelerate aging</source>
         <translation>Aging</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="805"/>
+        <location filename="../main.qml" line="815"/>
+        <location filename="../main.qml" line="983"/>
         <source>Settings</source>
         <translation>Settings</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="835"/>
+        <location filename="../main.qml" line="846"/>
         <source>About</source>
         <translation>About</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="1049"/>
-        <location filename="../main.qml" line="1131"/>
+        <location filename="../main.qml" line="1161"/>
         <source>Up to 10 pieces of firmware can be stored</source>
         <translation>Up to ten</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="1078"/>
+        <location filename="../main.qml" line="1108"/>
         <source>bin file</source>
         <translation>Bin file</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="1078"/>
-        <location filename="../main.qml" line="1098"/>
+        <location filename="../main.qml" line="1108"/>
+        <location filename="../main.qml" line="1128"/>
         <source>all files</source>
         <translation>All types</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="1098"/>
+        <location filename="../main.qml" line="1128"/>
         <source>json file</source>
         <translation>JSON file</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="1763"/>
+        <location filename="../main.qml" line="1798"/>
         <source>Saved successfully</source>
         <translation>File saved</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="1888"/>
+        <location filename="../main.qml" line="1923"/>
         <source>Upgrading! Please do not close the program</source>
         <translation>Upgrading! Do not close the window!</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="1892"/>
+        <location filename="../main.qml" line="1927"/>
         <source>Testing! Please do not close the program</source>
         <translation>Testing! Do not close the window!</translation>
+    </message>
+    <message>
+        <location filename="../main.qml" line="1957"/>
+        <location filename="../main.qml" line="1994"/>
+        <source>During upgrade,don&apos;t switch infterface</source>
+        <translation>During upgrade,don&apos;t switch infterface!</translation>
+    </message>
+    <message>
+        <location filename="../main.qml" line="1962"/>
+        <location filename="../main.qml" line="1999"/>
+        <source>During test,don&apos;t switch infterface</source>
+        <translation>During test,don&apos;t switch infterface!</translation>
     </message>
 </context>
 </TS>

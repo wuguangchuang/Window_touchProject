@@ -15,7 +15,9 @@ SOURCES += src/presenter/touchpresenter.cpp \
     main.cpp \
     src/drawpanel.cpp \
     src/tusbevent.cpp \
-    src/singleapp.cpp
+    src/singleapp.cpp \
+    src/systemtray.cpp \
+    src/jsonFile/json.cpp
 
 RESOURCES += qml.qrc \
     images.qrc \
@@ -56,7 +58,9 @@ HEADERS += \
     include/singleapp.h \
     include/sdk/hidapi.h \
     include/sdk/tPrintf.h \
-    include/sdk/tdebug.h
+    include/sdk/tdebug.h \
+    include/systemtray.h \
+    src/jsonFile/json.h
 
 win32 {
     LIBS += -lhid -lsetupapi
@@ -96,7 +100,11 @@ DISTFILES += \
     devices.json \
     qml/ui/PlateLoadTest.qml \
     qml/ui/OnboardTestInterface.qml \
-    qml/ui/InformationSign.qml
+    qml/ui/InformationSign.qml \
+    qml/ui/MyButton.qml \
+    qml/ui/CalibrationDrawLine.qml \
+    qml/ui/FineTune.qml \
+    qml/ui/ModeSetting.qml
 
 # Default rules for deployment.
 include(deployment.pri)

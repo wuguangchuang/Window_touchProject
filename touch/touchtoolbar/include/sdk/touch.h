@@ -97,6 +97,7 @@ typedef struct {
     unsigned char booloader;
     char model[64];
     unsigned int output_report_length;
+    char serial_number[256];
 }touch_info;
 
 typedef struct _touch_device{

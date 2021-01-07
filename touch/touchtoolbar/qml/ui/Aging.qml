@@ -1,5 +1,6 @@
 import QtQuick 2.5
 import QtQuick.Window 2.2
+import QtQuick.Layouts 1.3
 
 import QtQuick.Dialogs 1.1
 import "qrc:/"
@@ -101,21 +102,27 @@ Item {
         }
         }
     }
-    Item {
+    ColumnLayout{
         anchors.fill: parent
-        GridView {
-            anchors.fill: parent
-            cellWidth: itemWidth
-            cellHeight: itemHeigth
-            model: DeviceModel {
-                id: deviceModel
-                count: deviceCount
+
+        Item {
+            id:agingItem
+            Layout.fillHeight: true
+            Layout.fillWidth: true
+            anchors.bottomMargin: defaultMargin
+            GridView {
+                anchors.fill: parent
+                cellWidth: itemWidth
+                cellHeight: itemHeigth
+                model: DeviceModel {
+                    id: deviceModel
+                    count: deviceCount
+                }
+                delegate: deviceDelegate
             }
-            delegate: deviceDelegate
-
         }
-
     }
+
     function startAging() {
         countdown.start();
         console.log("start aging")

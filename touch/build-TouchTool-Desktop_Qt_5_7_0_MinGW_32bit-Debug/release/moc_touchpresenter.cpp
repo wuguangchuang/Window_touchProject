@@ -109,8 +109,8 @@ int ProcessStarter::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     return _id;
 }
 struct qt_meta_stringdata_TouchPresenter_t {
-    QByteArrayData data[99];
-    char stringdata0[1257];
+    QByteArrayData data[108];
+    char stringdata0[1373];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -178,46 +178,55 @@ QT_MOC_LITERAL(55, 635, 15), // "getRelativeInfo"
 QT_MOC_LITERAL(56, 651, 20), // "whetherDeviceConnect"
 QT_MOC_LITERAL(57, 672, 17), // "getDeviceInfoName"
 QT_MOC_LITERAL(58, 690, 13), // "getDeviceInfo"
-QT_MOC_LITERAL(59, 704, 19), // "getSoftwareInfoName"
-QT_MOC_LITERAL(60, 724, 15), // "getSoftwareInfo"
-QT_MOC_LITERAL(61, 740, 10), // "signalInit"
-QT_MOC_LITERAL(62, 751, 4), // "mode"
-QT_MOC_LITERAL(63, 756, 16), // "getSettingsValue"
-QT_MOC_LITERAL(64, 773, 15), // "getSettingsBool"
-QT_MOC_LITERAL(65, 789, 16), // "setSettingsValue"
-QT_MOC_LITERAL(66, 806, 19), // "getCalibrationDatas"
-QT_MOC_LITERAL(67, 826, 5), // "where"
-QT_MOC_LITERAL(68, 832, 19), // "setCalibrationDatas"
-QT_MOC_LITERAL(69, 852, 20), // "enterCalibrationMode"
-QT_MOC_LITERAL(70, 873, 19), // "exitCalibrationMode"
-QT_MOC_LITERAL(71, 893, 23), // "setCalibrationPointData"
-QT_MOC_LITERAL(72, 917, 4), // "data"
-QT_MOC_LITERAL(73, 922, 23), // "captureCalibrationIndex"
-QT_MOC_LITERAL(74, 946, 21), // "getCalibrationCapture"
-QT_MOC_LITERAL(75, 968, 15), // "saveCalibration"
-QT_MOC_LITERAL(76, 984, 15), // "testCaliCapture"
-QT_MOC_LITERAL(77, 1000, 14), // "testMultiPoint"
-QT_MOC_LITERAL(78, 1015, 5), // "debug"
-QT_MOC_LITERAL(79, 1021, 3), // "msg"
-QT_MOC_LITERAL(80, 1025, 5), // "error"
-QT_MOC_LITERAL(81, 1031, 17), // "isDeviceConnected"
-QT_MOC_LITERAL(82, 1049, 16), // "setCoordsEnabled"
-QT_MOC_LITERAL(83, 1066, 7), // "channel"
-QT_MOC_LITERAL(84, 1074, 7), // "enabled"
-QT_MOC_LITERAL(85, 1082, 15), // "isCoordsEnables"
-QT_MOC_LITERAL(86, 1098, 16), // "updateSignalList"
-QT_MOC_LITERAL(87, 1115, 4), // "list"
-QT_MOC_LITERAL(88, 1120, 10), // "getAppType"
-QT_MOC_LITERAL(89, 1131, 10), // "setAppType"
-QT_MOC_LITERAL(90, 1142, 3), // "run"
-QT_MOC_LITERAL(91, 1146, 3), // "app"
-QT_MOC_LITERAL(92, 1150, 18), // "resetXYOrientation"
-QT_MOC_LITERAL(93, 1169, 18), // "resetTouchRotation"
-QT_MOC_LITERAL(94, 1188, 19), // "resetScreenRotation"
-QT_MOC_LITERAL(95, 1208, 10), // "resetMacOs"
-QT_MOC_LITERAL(96, 1219, 15), // "showExitMessage"
-QT_MOC_LITERAL(97, 1235, 11), // "emitStopAll"
-QT_MOC_LITERAL(98, 1247, 9) // "isrunning"
+QT_MOC_LITERAL(59, 704, 17), // "getDeviceMainInfo"
+QT_MOC_LITERAL(60, 722, 19), // "getSoftwareInfoName"
+QT_MOC_LITERAL(61, 742, 15), // "getSoftwareInfo"
+QT_MOC_LITERAL(62, 758, 10), // "signalInit"
+QT_MOC_LITERAL(63, 769, 4), // "mode"
+QT_MOC_LITERAL(64, 774, 16), // "getSettingsValue"
+QT_MOC_LITERAL(65, 791, 15), // "getSettingsBool"
+QT_MOC_LITERAL(66, 807, 16), // "setSettingsValue"
+QT_MOC_LITERAL(67, 824, 19), // "getCalibrationDatas"
+QT_MOC_LITERAL(68, 844, 5), // "where"
+QT_MOC_LITERAL(69, 850, 19), // "setCalibrationDatas"
+QT_MOC_LITERAL(70, 870, 20), // "enterCalibrationMode"
+QT_MOC_LITERAL(71, 891, 19), // "exitCalibrationMode"
+QT_MOC_LITERAL(72, 911, 12), // "enableCoords"
+QT_MOC_LITERAL(73, 924, 6), // "enable"
+QT_MOC_LITERAL(74, 931, 23), // "setCalibrationPointData"
+QT_MOC_LITERAL(75, 955, 4), // "data"
+QT_MOC_LITERAL(76, 960, 23), // "captureCalibrationIndex"
+QT_MOC_LITERAL(77, 984, 21), // "getCalibrationCapture"
+QT_MOC_LITERAL(78, 1006, 15), // "saveCalibration"
+QT_MOC_LITERAL(79, 1022, 15), // "testCaliCapture"
+QT_MOC_LITERAL(80, 1038, 14), // "testMultiPoint"
+QT_MOC_LITERAL(81, 1053, 5), // "debug"
+QT_MOC_LITERAL(82, 1059, 3), // "msg"
+QT_MOC_LITERAL(83, 1063, 5), // "error"
+QT_MOC_LITERAL(84, 1069, 17), // "isDeviceConnected"
+QT_MOC_LITERAL(85, 1087, 16), // "setCoordsEnabled"
+QT_MOC_LITERAL(86, 1104, 7), // "channel"
+QT_MOC_LITERAL(87, 1112, 7), // "enabled"
+QT_MOC_LITERAL(88, 1120, 15), // "isCoordsEnables"
+QT_MOC_LITERAL(89, 1136, 16), // "updateSignalList"
+QT_MOC_LITERAL(90, 1153, 4), // "list"
+QT_MOC_LITERAL(91, 1158, 10), // "getAppType"
+QT_MOC_LITERAL(92, 1169, 10), // "setAppType"
+QT_MOC_LITERAL(93, 1180, 3), // "run"
+QT_MOC_LITERAL(94, 1184, 3), // "app"
+QT_MOC_LITERAL(95, 1188, 18), // "resetXYOrientation"
+QT_MOC_LITERAL(96, 1207, 18), // "resetTouchRotation"
+QT_MOC_LITERAL(97, 1226, 19), // "resetScreenRotation"
+QT_MOC_LITERAL(98, 1246, 10), // "resetMacOs"
+QT_MOC_LITERAL(99, 1257, 15), // "showExitMessage"
+QT_MOC_LITERAL(100, 1273, 11), // "emitStopAll"
+QT_MOC_LITERAL(101, 1285, 16), // "getUpgradeStatus"
+QT_MOC_LITERAL(102, 1302, 11), // "isUpgrading"
+QT_MOC_LITERAL(103, 1314, 9), // "isTesting"
+QT_MOC_LITERAL(104, 1324, 9), // "isrunning"
+QT_MOC_LITERAL(105, 1334, 11), // "modeSetting"
+QT_MOC_LITERAL(106, 1346, 7), // "startup"
+QT_MOC_LITERAL(107, 1354, 18) // "refreshModeSetting"
 
     },
     "TouchPresenter\0agingFinished\0\0index\0"
@@ -239,23 +248,26 @@ QT_MOC_LITERAL(98, 1247, 9) // "isrunning"
     "exitSignalMode\0getSettingsInfos\0"
     "setSettings\0key\0value\0getRelativeInfo\0"
     "whetherDeviceConnect\0getDeviceInfoName\0"
-    "getDeviceInfo\0getSoftwareInfoName\0"
-    "getSoftwareInfo\0signalInit\0mode\0"
-    "getSettingsValue\0getSettingsBool\0"
-    "setSettingsValue\0getCalibrationDatas\0"
-    "where\0setCalibrationDatas\0"
+    "getDeviceInfo\0getDeviceMainInfo\0"
+    "getSoftwareInfoName\0getSoftwareInfo\0"
+    "signalInit\0mode\0getSettingsValue\0"
+    "getSettingsBool\0setSettingsValue\0"
+    "getCalibrationDatas\0where\0setCalibrationDatas\0"
     "enterCalibrationMode\0exitCalibrationMode\0"
-    "setCalibrationPointData\0data\0"
-    "captureCalibrationIndex\0getCalibrationCapture\0"
-    "saveCalibration\0testCaliCapture\0"
-    "testMultiPoint\0debug\0msg\0error\0"
-    "isDeviceConnected\0setCoordsEnabled\0"
-    "channel\0enabled\0isCoordsEnables\0"
-    "updateSignalList\0list\0getAppType\0"
-    "setAppType\0run\0app\0resetXYOrientation\0"
-    "resetTouchRotation\0resetScreenRotation\0"
-    "resetMacOs\0showExitMessage\0emitStopAll\0"
-    "isrunning"
+    "enableCoords\0enable\0setCalibrationPointData\0"
+    "data\0captureCalibrationIndex\0"
+    "getCalibrationCapture\0saveCalibration\0"
+    "testCaliCapture\0testMultiPoint\0debug\0"
+    "msg\0error\0isDeviceConnected\0"
+    "setCoordsEnabled\0channel\0enabled\0"
+    "isCoordsEnables\0updateSignalList\0list\0"
+    "getAppType\0setAppType\0run\0app\0"
+    "resetXYOrientation\0resetTouchRotation\0"
+    "resetScreenRotation\0resetMacOs\0"
+    "showExitMessage\0emitStopAll\0"
+    "getUpgradeStatus\0isUpgrading\0isTesting\0"
+    "isrunning\0modeSetting\0startup\0"
+    "refreshModeSetting"
 };
 #undef QT_MOC_LITERAL
 
@@ -265,7 +277,7 @@ static const uint qt_meta_data_TouchPresenter[] = {
        7,       // revision
        0,       // classname
        0,    0, // classinfo
-      76,   14, // methods
+      84,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -273,86 +285,94 @@ static const uint qt_meta_data_TouchPresenter[] = {
       16,       // signalCount
 
  // signals: name, argc, parameters, tag, flags
-       1,    1,  394,    2, 0x06 /* Public */,
-       4,    1,  397,    2, 0x06 /* Public */,
-       6,    1,  400,    2, 0x06 /* Public */,
-       7,    1,  403,    2, 0x06 /* Public */,
-       9,    0,  406,    2, 0x06 /* Public */,
-      10,    1,  407,    2, 0x06 /* Public */,
-      12,    1,  410,    2, 0x06 /* Public */,
-      13,    0,  413,    2, 0x06 /* Public */,
-      14,    1,  414,    2, 0x06 /* Public */,
-      16,    2,  417,    2, 0x06 /* Public */,
-      18,    1,  422,    2, 0x06 /* Public */,
-      20,    0,  425,    2, 0x06 /* Public */,
-      21,    1,  426,    2, 0x06 /* Public */,
-      23,    0,  429,    2, 0x06 /* Public */,
-      24,    1,  430,    2, 0x06 /* Public */,
-      26,    1,  433,    2, 0x06 /* Public */,
+       1,    1,  434,    2, 0x06 /* Public */,
+       4,    1,  437,    2, 0x06 /* Public */,
+       6,    1,  440,    2, 0x06 /* Public */,
+       7,    1,  443,    2, 0x06 /* Public */,
+       9,    0,  446,    2, 0x06 /* Public */,
+      10,    1,  447,    2, 0x06 /* Public */,
+      12,    1,  450,    2, 0x06 /* Public */,
+      13,    0,  453,    2, 0x06 /* Public */,
+      14,    1,  454,    2, 0x06 /* Public */,
+      16,    2,  457,    2, 0x06 /* Public */,
+      18,    1,  462,    2, 0x06 /* Public */,
+      20,    0,  465,    2, 0x06 /* Public */,
+      21,    1,  466,    2, 0x06 /* Public */,
+      23,    0,  469,    2, 0x06 /* Public */,
+      24,    1,  470,    2, 0x06 /* Public */,
+      26,    1,  473,    2, 0x06 /* Public */,
 
  // slots: name, argc, parameters, tag, flags
-      27,    0,  436,    2, 0x0a /* Public */,
+      27,    0,  476,    2, 0x0a /* Public */,
 
  // methods: name, argc, parameters, tag, flags
-      28,    1,  437,    2, 0x02 /* Public */,
-      29,    2,  440,    2, 0x02 /* Public */,
-      29,    1,  445,    2, 0x22 /* Public | MethodCloned */,
-      31,    0,  448,    2, 0x02 /* Public */,
-      32,    1,  449,    2, 0x02 /* Public */,
-      33,    0,  452,    2, 0x02 /* Public */,
-      34,    0,  453,    2, 0x02 /* Public */,
-      35,    2,  454,    2, 0x02 /* Public */,
-      35,    1,  459,    2, 0x22 /* Public | MethodCloned */,
-      38,    0,  462,    2, 0x02 /* Public */,
-      39,    1,  463,    2, 0x02 /* Public */,
-      41,    0,  466,    2, 0x02 /* Public */,
-      42,    0,  467,    2, 0x02 /* Public */,
-      43,    0,  468,    2, 0x02 /* Public */,
-      44,    0,  469,    2, 0x02 /* Public */,
-      45,    1,  470,    2, 0x02 /* Public */,
-      47,    1,  473,    2, 0x02 /* Public */,
-      48,    1,  476,    2, 0x02 /* Public */,
-      49,    1,  479,    2, 0x02 /* Public */,
-      50,    1,  482,    2, 0x02 /* Public */,
-      51,    0,  485,    2, 0x02 /* Public */,
-      52,    2,  486,    2, 0x02 /* Public */,
-      55,    0,  491,    2, 0x02 /* Public */,
-      56,    0,  492,    2, 0x02 /* Public */,
-      57,    0,  493,    2, 0x02 /* Public */,
-      58,    0,  494,    2, 0x02 /* Public */,
-      59,    0,  495,    2, 0x02 /* Public */,
-      60,    0,  496,    2, 0x02 /* Public */,
-      61,    1,  497,    2, 0x02 /* Public */,
-      63,    1,  500,    2, 0x02 /* Public */,
-      64,    1,  503,    2, 0x02 /* Public */,
-      65,    2,  506,    2, 0x02 /* Public */,
-      66,    1,  511,    2, 0x02 /* Public */,
-      68,    1,  514,    2, 0x02 /* Public */,
-      69,    0,  517,    2, 0x02 /* Public */,
-      70,    0,  518,    2, 0x02 /* Public */,
-      71,    2,  519,    2, 0x02 /* Public */,
-      73,    1,  524,    2, 0x02 /* Public */,
-      74,    0,  527,    2, 0x02 /* Public */,
-      75,    0,  528,    2, 0x02 /* Public */,
-      76,    1,  529,    2, 0x02 /* Public */,
-      76,    0,  532,    2, 0x22 /* Public | MethodCloned */,
-      77,    0,  533,    2, 0x02 /* Public */,
-      78,    1,  534,    2, 0x02 /* Public */,
-      80,    1,  537,    2, 0x02 /* Public */,
-      81,    0,  540,    2, 0x02 /* Public */,
-      82,    2,  541,    2, 0x02 /* Public */,
-      85,    1,  546,    2, 0x02 /* Public */,
-      86,    1,  549,    2, 0x02 /* Public */,
-      88,    0,  552,    2, 0x02 /* Public */,
-      89,    1,  553,    2, 0x02 /* Public */,
-      90,    1,  556,    2, 0x02 /* Public */,
-      92,    0,  559,    2, 0x02 /* Public */,
-      93,    0,  560,    2, 0x02 /* Public */,
-      94,    0,  561,    2, 0x02 /* Public */,
-      95,    0,  562,    2, 0x02 /* Public */,
-      96,    0,  563,    2, 0x02 /* Public */,
-      97,    0,  564,    2, 0x02 /* Public */,
-      98,    0,  565,    2, 0x02 /* Public */,
+      28,    1,  477,    2, 0x02 /* Public */,
+      29,    2,  480,    2, 0x02 /* Public */,
+      29,    1,  485,    2, 0x22 /* Public | MethodCloned */,
+      31,    0,  488,    2, 0x02 /* Public */,
+      32,    1,  489,    2, 0x02 /* Public */,
+      33,    0,  492,    2, 0x02 /* Public */,
+      34,    0,  493,    2, 0x02 /* Public */,
+      35,    2,  494,    2, 0x02 /* Public */,
+      35,    1,  499,    2, 0x22 /* Public | MethodCloned */,
+      38,    0,  502,    2, 0x02 /* Public */,
+      39,    1,  503,    2, 0x02 /* Public */,
+      41,    0,  506,    2, 0x02 /* Public */,
+      42,    0,  507,    2, 0x02 /* Public */,
+      43,    0,  508,    2, 0x02 /* Public */,
+      44,    0,  509,    2, 0x02 /* Public */,
+      45,    1,  510,    2, 0x02 /* Public */,
+      47,    1,  513,    2, 0x02 /* Public */,
+      48,    1,  516,    2, 0x02 /* Public */,
+      49,    1,  519,    2, 0x02 /* Public */,
+      50,    1,  522,    2, 0x02 /* Public */,
+      51,    0,  525,    2, 0x02 /* Public */,
+      52,    2,  526,    2, 0x02 /* Public */,
+      55,    0,  531,    2, 0x02 /* Public */,
+      56,    0,  532,    2, 0x02 /* Public */,
+      57,    0,  533,    2, 0x02 /* Public */,
+      58,    0,  534,    2, 0x02 /* Public */,
+      59,    0,  535,    2, 0x02 /* Public */,
+      60,    0,  536,    2, 0x02 /* Public */,
+      61,    0,  537,    2, 0x02 /* Public */,
+      62,    1,  538,    2, 0x02 /* Public */,
+      64,    1,  541,    2, 0x02 /* Public */,
+      65,    1,  544,    2, 0x02 /* Public */,
+      66,    2,  547,    2, 0x02 /* Public */,
+      67,    1,  552,    2, 0x02 /* Public */,
+      69,    1,  555,    2, 0x02 /* Public */,
+      70,    0,  558,    2, 0x02 /* Public */,
+      71,    0,  559,    2, 0x02 /* Public */,
+      72,    1,  560,    2, 0x02 /* Public */,
+      74,    2,  563,    2, 0x02 /* Public */,
+      76,    1,  568,    2, 0x02 /* Public */,
+      77,    0,  571,    2, 0x02 /* Public */,
+      78,    0,  572,    2, 0x02 /* Public */,
+      79,    1,  573,    2, 0x02 /* Public */,
+      79,    0,  576,    2, 0x22 /* Public | MethodCloned */,
+      80,    0,  577,    2, 0x02 /* Public */,
+      81,    1,  578,    2, 0x02 /* Public */,
+      83,    1,  581,    2, 0x02 /* Public */,
+      84,    0,  584,    2, 0x02 /* Public */,
+      85,    2,  585,    2, 0x02 /* Public */,
+      88,    1,  590,    2, 0x02 /* Public */,
+      89,    1,  593,    2, 0x02 /* Public */,
+      91,    0,  596,    2, 0x02 /* Public */,
+      92,    1,  597,    2, 0x02 /* Public */,
+      93,    1,  600,    2, 0x02 /* Public */,
+      95,    0,  603,    2, 0x02 /* Public */,
+      96,    0,  604,    2, 0x02 /* Public */,
+      97,    0,  605,    2, 0x02 /* Public */,
+      98,    0,  606,    2, 0x02 /* Public */,
+      99,    0,  607,    2, 0x02 /* Public */,
+     100,    0,  608,    2, 0x02 /* Public */,
+     101,    0,  609,    2, 0x02 /* Public */,
+     102,    0,  610,    2, 0x02 /* Public */,
+     103,    0,  611,    2, 0x02 /* Public */,
+     104,    0,  612,    2, 0x02 /* Public */,
+     105,    1,  613,    2, 0x02 /* Public */,
+     105,    0,  616,    2, 0x22 /* Public | MethodCloned */,
+     107,    0,  617,    2, 0x02 /* Public */,
 
  // signals: parameters
     QMetaType::Void, QMetaType::Int,    3,
@@ -404,37 +424,45 @@ static const uint qt_meta_data_TouchPresenter[] = {
     QMetaType::QVariant,
     QMetaType::QVariant,
     QMetaType::QVariant,
-    QMetaType::Void, QMetaType::QVariant,   62,
+    QMetaType::QVariant,
+    QMetaType::Void, QMetaType::QVariant,   63,
     QMetaType::QVariant, QMetaType::QVariant,   53,
     QMetaType::QVariant, QMetaType::QVariant,   53,
     QMetaType::Void, QMetaType::QVariant, QMetaType::QVariant,   53,   54,
-    QMetaType::QVariantMap, QMetaType::QVariant,   67,
+    QMetaType::QVariantMap, QMetaType::QVariant,   68,
     QMetaType::QVariant, QMetaType::QVariantMap,   22,
     QMetaType::QVariant,
     QMetaType::QVariant,
-    QMetaType::QVariant, QMetaType::QVariant, QMetaType::QVariantMap,    3,   72,
+    QMetaType::QVariant, QMetaType::Bool,   73,
+    QMetaType::QVariant, QMetaType::QVariant, QMetaType::QVariantMap,    3,   75,
     QMetaType::QVariant, QMetaType::QVariant,    3,
     QMetaType::QVariantMap,
     QMetaType::QVariant,
     QMetaType::QVariant, QMetaType::QVariant,   40,
     QMetaType::QVariant,
     QMetaType::QVariant,
-    QMetaType::Void, QMetaType::QVariant,   79,
-    QMetaType::Void, QMetaType::QVariant,   79,
+    QMetaType::Void, QMetaType::QVariant,   82,
+    QMetaType::Void, QMetaType::QVariant,   82,
     QMetaType::QVariant,
-    QMetaType::Void, QMetaType::QVariant, QMetaType::QVariant,   83,   84,
-    QMetaType::Bool, QMetaType::QVariant,   83,
-    QMetaType::Void, QMetaType::QVariant,   87,
+    QMetaType::Void, QMetaType::QVariant, QMetaType::QVariant,   86,   87,
+    QMetaType::Bool, QMetaType::QVariant,   86,
+    QMetaType::Void, QMetaType::QVariant,   90,
     QMetaType::Int,
     QMetaType::Void, QMetaType::Int,   17,
-    QMetaType::Void, QMetaType::QVariant,   91,
+    QMetaType::Void, QMetaType::QVariant,   94,
     QMetaType::Int,
     QMetaType::Int,
     QMetaType::Int,
     QMetaType::Int,
+    QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void,
     QMetaType::Bool,
+    QMetaType::Bool,
+    QMetaType::Bool,
+    QMetaType::Void, QMetaType::Bool,  106,
+    QMetaType::Void,
+    QMetaType::QVariantMap,
 
        0        // eod
 };
@@ -498,62 +526,75 @@ void TouchPresenter::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _
             if (_a[0]) *reinterpret_cast< QVariant*>(_a[0]) = _r; }  break;
         case 42: { QVariant _r = _t->getDeviceInfo();
             if (_a[0]) *reinterpret_cast< QVariant*>(_a[0]) = _r; }  break;
-        case 43: { QVariant _r = _t->getSoftwareInfoName();
+        case 43: { QVariant _r = _t->getDeviceMainInfo();
             if (_a[0]) *reinterpret_cast< QVariant*>(_a[0]) = _r; }  break;
-        case 44: { QVariant _r = _t->getSoftwareInfo();
+        case 44: { QVariant _r = _t->getSoftwareInfoName();
             if (_a[0]) *reinterpret_cast< QVariant*>(_a[0]) = _r; }  break;
-        case 45: _t->signalInit((*reinterpret_cast< QVariant(*)>(_a[1]))); break;
-        case 46: { QVariant _r = _t->getSettingsValue((*reinterpret_cast< QVariant(*)>(_a[1])));
+        case 45: { QVariant _r = _t->getSoftwareInfo();
             if (_a[0]) *reinterpret_cast< QVariant*>(_a[0]) = _r; }  break;
-        case 47: { QVariant _r = _t->getSettingsBool((*reinterpret_cast< QVariant(*)>(_a[1])));
+        case 46: _t->signalInit((*reinterpret_cast< QVariant(*)>(_a[1]))); break;
+        case 47: { QVariant _r = _t->getSettingsValue((*reinterpret_cast< QVariant(*)>(_a[1])));
             if (_a[0]) *reinterpret_cast< QVariant*>(_a[0]) = _r; }  break;
-        case 48: _t->setSettingsValue((*reinterpret_cast< QVariant(*)>(_a[1])),(*reinterpret_cast< QVariant(*)>(_a[2]))); break;
-        case 49: { QVariantMap _r = _t->getCalibrationDatas((*reinterpret_cast< QVariant(*)>(_a[1])));
+        case 48: { QVariant _r = _t->getSettingsBool((*reinterpret_cast< QVariant(*)>(_a[1])));
+            if (_a[0]) *reinterpret_cast< QVariant*>(_a[0]) = _r; }  break;
+        case 49: _t->setSettingsValue((*reinterpret_cast< QVariant(*)>(_a[1])),(*reinterpret_cast< QVariant(*)>(_a[2]))); break;
+        case 50: { QVariantMap _r = _t->getCalibrationDatas((*reinterpret_cast< QVariant(*)>(_a[1])));
             if (_a[0]) *reinterpret_cast< QVariantMap*>(_a[0]) = _r; }  break;
-        case 50: { QVariant _r = _t->setCalibrationDatas((*reinterpret_cast< QVariantMap(*)>(_a[1])));
+        case 51: { QVariant _r = _t->setCalibrationDatas((*reinterpret_cast< QVariantMap(*)>(_a[1])));
             if (_a[0]) *reinterpret_cast< QVariant*>(_a[0]) = _r; }  break;
-        case 51: { QVariant _r = _t->enterCalibrationMode();
+        case 52: { QVariant _r = _t->enterCalibrationMode();
             if (_a[0]) *reinterpret_cast< QVariant*>(_a[0]) = _r; }  break;
-        case 52: { QVariant _r = _t->exitCalibrationMode();
+        case 53: { QVariant _r = _t->exitCalibrationMode();
             if (_a[0]) *reinterpret_cast< QVariant*>(_a[0]) = _r; }  break;
-        case 53: { QVariant _r = _t->setCalibrationPointData((*reinterpret_cast< QVariant(*)>(_a[1])),(*reinterpret_cast< QVariantMap(*)>(_a[2])));
+        case 54: { QVariant _r = _t->enableCoords((*reinterpret_cast< bool(*)>(_a[1])));
             if (_a[0]) *reinterpret_cast< QVariant*>(_a[0]) = _r; }  break;
-        case 54: { QVariant _r = _t->captureCalibrationIndex((*reinterpret_cast< QVariant(*)>(_a[1])));
+        case 55: { QVariant _r = _t->setCalibrationPointData((*reinterpret_cast< QVariant(*)>(_a[1])),(*reinterpret_cast< QVariantMap(*)>(_a[2])));
             if (_a[0]) *reinterpret_cast< QVariant*>(_a[0]) = _r; }  break;
-        case 55: { QVariantMap _r = _t->getCalibrationCapture();
+        case 56: { QVariant _r = _t->captureCalibrationIndex((*reinterpret_cast< QVariant(*)>(_a[1])));
+            if (_a[0]) *reinterpret_cast< QVariant*>(_a[0]) = _r; }  break;
+        case 57: { QVariantMap _r = _t->getCalibrationCapture();
             if (_a[0]) *reinterpret_cast< QVariantMap*>(_a[0]) = _r; }  break;
-        case 56: { QVariant _r = _t->saveCalibration();
+        case 58: { QVariant _r = _t->saveCalibration();
             if (_a[0]) *reinterpret_cast< QVariant*>(_a[0]) = _r; }  break;
-        case 57: { QVariant _r = _t->testCaliCapture((*reinterpret_cast< QVariant(*)>(_a[1])));
+        case 59: { QVariant _r = _t->testCaliCapture((*reinterpret_cast< QVariant(*)>(_a[1])));
             if (_a[0]) *reinterpret_cast< QVariant*>(_a[0]) = _r; }  break;
-        case 58: { QVariant _r = _t->testCaliCapture();
+        case 60: { QVariant _r = _t->testCaliCapture();
             if (_a[0]) *reinterpret_cast< QVariant*>(_a[0]) = _r; }  break;
-        case 59: { QVariant _r = _t->testMultiPoint();
+        case 61: { QVariant _r = _t->testMultiPoint();
             if (_a[0]) *reinterpret_cast< QVariant*>(_a[0]) = _r; }  break;
-        case 60: _t->debug((*reinterpret_cast< QVariant(*)>(_a[1]))); break;
-        case 61: _t->error((*reinterpret_cast< QVariant(*)>(_a[1]))); break;
-        case 62: { QVariant _r = _t->isDeviceConnected();
+        case 62: _t->debug((*reinterpret_cast< QVariant(*)>(_a[1]))); break;
+        case 63: _t->error((*reinterpret_cast< QVariant(*)>(_a[1]))); break;
+        case 64: { QVariant _r = _t->isDeviceConnected();
             if (_a[0]) *reinterpret_cast< QVariant*>(_a[0]) = _r; }  break;
-        case 63: _t->setCoordsEnabled((*reinterpret_cast< QVariant(*)>(_a[1])),(*reinterpret_cast< QVariant(*)>(_a[2]))); break;
-        case 64: { bool _r = _t->isCoordsEnables((*reinterpret_cast< QVariant(*)>(_a[1])));
+        case 65: _t->setCoordsEnabled((*reinterpret_cast< QVariant(*)>(_a[1])),(*reinterpret_cast< QVariant(*)>(_a[2]))); break;
+        case 66: { bool _r = _t->isCoordsEnables((*reinterpret_cast< QVariant(*)>(_a[1])));
             if (_a[0]) *reinterpret_cast< bool*>(_a[0]) = _r; }  break;
-        case 65: _t->updateSignalList((*reinterpret_cast< QVariant(*)>(_a[1]))); break;
-        case 66: { int _r = _t->getAppType();
+        case 67: _t->updateSignalList((*reinterpret_cast< QVariant(*)>(_a[1]))); break;
+        case 68: { int _r = _t->getAppType();
             if (_a[0]) *reinterpret_cast< int*>(_a[0]) = _r; }  break;
-        case 67: _t->setAppType((*reinterpret_cast< int(*)>(_a[1]))); break;
-        case 68: _t->run((*reinterpret_cast< QVariant(*)>(_a[1]))); break;
-        case 69: { int _r = _t->resetXYOrientation();
+        case 69: _t->setAppType((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 70: _t->run((*reinterpret_cast< QVariant(*)>(_a[1]))); break;
+        case 71: { int _r = _t->resetXYOrientation();
             if (_a[0]) *reinterpret_cast< int*>(_a[0]) = _r; }  break;
-        case 70: { int _r = _t->resetTouchRotation();
+        case 72: { int _r = _t->resetTouchRotation();
             if (_a[0]) *reinterpret_cast< int*>(_a[0]) = _r; }  break;
-        case 71: { int _r = _t->resetScreenRotation();
+        case 73: { int _r = _t->resetScreenRotation();
             if (_a[0]) *reinterpret_cast< int*>(_a[0]) = _r; }  break;
-        case 72: { int _r = _t->resetMacOs();
+        case 74: { int _r = _t->resetMacOs();
             if (_a[0]) *reinterpret_cast< int*>(_a[0]) = _r; }  break;
-        case 73: _t->showExitMessage(); break;
-        case 74: _t->emitStopAll(); break;
-        case 75: { bool _r = _t->isrunning();
+        case 75: _t->showExitMessage(); break;
+        case 76: _t->emitStopAll(); break;
+        case 77: _t->getUpgradeStatus(); break;
+        case 78: { bool _r = _t->isUpgrading();
             if (_a[0]) *reinterpret_cast< bool*>(_a[0]) = _r; }  break;
+        case 79: { bool _r = _t->isTesting();
+            if (_a[0]) *reinterpret_cast< bool*>(_a[0]) = _r; }  break;
+        case 80: { bool _r = _t->isrunning();
+            if (_a[0]) *reinterpret_cast< bool*>(_a[0]) = _r; }  break;
+        case 81: _t->modeSetting((*reinterpret_cast< bool(*)>(_a[1]))); break;
+        case 82: _t->modeSetting(); break;
+        case 83: { QVariantMap _r = _t->refreshModeSetting();
+            if (_a[0]) *reinterpret_cast< QVariantMap*>(_a[0]) = _r; }  break;
         default: ;
         }
     } else if (_c == QMetaObject::IndexOfMethod) {
@@ -699,13 +740,13 @@ int TouchPresenter::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 76)
+        if (_id < 84)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 76;
+        _id -= 84;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 76)
+        if (_id < 84)
             *reinterpret_cast<int*>(_a[0]) = -1;
-        _id -= 76;
+        _id -= 84;
     }
     return _id;
 }
