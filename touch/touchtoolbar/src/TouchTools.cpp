@@ -231,6 +231,9 @@ void TouchTools::startTest()
 //    case APP_PCBA:
 //        mode = STE_PCBA_CUSTOMER_TEST;
 //        break;
+//    case APP_CLIENT_FACTORY:
+//        mode = STE_END_USER_FACTORY_TEST;
+//        break;
 //    }
 
 //    mTouchManager->startTest(mTouchManager->firstConnectedDevice(),
@@ -288,6 +291,9 @@ void TouchTools::TestThread::run()
         break;
     case APP_PCBA:
         mode = STE_PCBA_CUSTOMER_TEST;
+        break;
+    case APP_CLIENT_FACTORY:
+        mode = STE_END_USER_FACTORY_TEST;
         break;
     }
 
@@ -599,6 +605,9 @@ QVariant TouchTools::getRelativeInfo()
     case APP_RD:
         versionType = "R";
         break;
+    case APP_CLIENT_FACTORY:
+        versionType = "CF";
+        break;
     default:
         break;
     }
@@ -711,6 +720,9 @@ QVariant TouchTools::getSoftwareInfo()
     case APP_RD:
         versionType = "R";
         break;
+    case APP_CLIENT_FACTORY:
+        versionType = "CF";
+        break;
     default:
         break;
     }
@@ -814,6 +826,9 @@ QVariantMap TouchTools::getSignalItems()
         break;
     case APP_PCBA:
         mode = STE_PCBA_CUSTOMER_GRAPH;
+        break;
+    case APP_CLIENT_FACTORY:
+        mode = STE_END_USER_FACTORY_GRAPH;
         break;
     }
 
@@ -931,8 +946,8 @@ TouchTools::TouchTools(QObject *parent, TouchPresenter *presenter,int argc,char 
                      this, SLOT(startTest()));
     QObject::connect(tray,SIGNAL(signal_close()),this,SLOT(exitProject()));
 
-//    QObject::connect(timer,SIGNAL(timeout()),this,SLOT(timeoutWorking()));
-//    timer->start(25000);
+    QObject::connect(timer,SIGNAL(timeout()),this,SLOT(timeoutWorking()));
+    timer->start(25000);
 
     QObject::connect(argcTimer,SIGNAL(timeout()),this,SLOT(exitProject()));
     if(argc > 1 && strcmp(argv[1],"-changeCoordsMode") == 0)

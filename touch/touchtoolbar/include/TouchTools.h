@@ -27,7 +27,8 @@ struct TouchData {
 
 //#define THIS_APP_TYPE (APP_FACTORY)
 //#define THIS_APP_TYPE (APP_CLIENT)
-#define THIS_APP_TYPE (APP_RD)
+//#define THIS_APP_TYPE (APP_RD)
+#define THIS_APP_TYPE (APP_CLIENT_FACTORY)
 //#define THIS_APP_TYPE (APP_PCBA)
 // see also: main.qml(appFactory...)
 typedef enum {
@@ -35,6 +36,7 @@ typedef enum {
     APP_CLIENT,
     APP_RD,
     APP_PCBA,
+    APP_CLIENT_FACTORY
 }AppType;
 
 

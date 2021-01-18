@@ -16,6 +16,7 @@ typedef enum {
     Standard_Client = STE_END_USER_TEST,
     Standard_RD = STE_DEV_TEST,
     Standard_PCBA = STE_PCBA_CUSTOMER_TEST,
+    Standard_Client_Factory = STE_END_USER_FACTORY_TEST
 }StandardType;
 typedef struct _onboard_test_data_result
 {

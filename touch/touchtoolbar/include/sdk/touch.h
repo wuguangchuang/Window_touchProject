@@ -193,6 +193,8 @@ static struct touch_vendor_info vendor_touchs[] = {
 #define	STE_PCBA_CUSTOMER_TEST	0x00000020
 #define	STE_END_USER_GRAPH	0x00000040
 #define	STE_END_USER_TEST	0x00000080
+#define STE_END_USER_FACTORY_GRAPH 0x00000100
+#define STE_END_USER_FACTORY_TEST  0x00000200
 #define STE_ALL_ITEMS   0xFFFFFFF
 
 //onboard

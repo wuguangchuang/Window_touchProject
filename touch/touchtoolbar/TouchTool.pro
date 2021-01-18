@@ -66,7 +66,7 @@ win32 {
     LIBS += -lhid -lsetupapi
 }
 
-LIBS += -LD:\qt\TouchProject\touch D:\qt\TouchProject\touch\touch.dll
+LIBS += -LD:\qt\PC_TouchProject\touch D:\qt\PC_TouchProject\touch\touch.dll
 #D:\work\qt\touchtool\TouchTool\lib\libusb.a
 #LIBS += -L lib\ -lusb
 
