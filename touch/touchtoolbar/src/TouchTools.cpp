@@ -52,6 +52,16 @@ void TouchTools::onTouchHotplug(touch_device *dev, const int attached, const voi
         appendMessageText(message,0);
     }
     qint8 mode = 0;
+    printf("abc\n");
+    if(argc > 1 && strcmp(argv[1],"-cal") == 0)
+    {
+        if(dev->touch.connected && !dev->touch.booloader)
+        {
+            QThread::sleep(1);
+            presenter->calibration();
+
+        }
+    }
     if(argc > 1 && strcmp(argv[1],"-changeCoordsMode") == 0)
     {
         argcTimer->stop();

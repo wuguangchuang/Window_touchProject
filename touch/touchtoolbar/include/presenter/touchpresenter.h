@@ -362,6 +362,7 @@ public:
     void setUpgradeButtonText(QString text);
     void setTextButtonText(QString text);
     void refreshSettings();
+    void calibration();
     void destroyQml();
     void destroyDialog();
 
@@ -436,6 +437,7 @@ private:
     ProcessStarter starter;
 public:
     bool initSdkDone;
+    bool calibrationMode;
 };
 
 #endif // TOUCHPRESENTER_H

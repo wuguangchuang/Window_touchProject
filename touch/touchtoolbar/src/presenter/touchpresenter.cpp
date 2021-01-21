@@ -11,7 +11,7 @@
 
 TouchPresenter::TouchPresenter(QObject *parent, QObject *component) : QObject(parent),
     signalThread(this), sem(0), settings("newskyer", "TouchAssistant"),paintSem(0),touchManager(NULL),
-    initSdkDone(false)
+    initSdkDone(false), calibrationMode(false)
 {
 
     this->component = component;
@@ -551,6 +551,15 @@ void TouchPresenter::refreshSettings()
     return;
 }
 
+void TouchPresenter::calibration()
+{
+    if (component == NULL) {
+        return;
+    }
+    QMetaObject::invokeMethod(component, "calibration");
+    return;
+}
+
 void TouchPresenter::newRunner()
 {
     if (component == NULL) {
@@ -686,6 +695,9 @@ QVariant TouchPresenter::exitCalibrationMode()
     if (ret != 0)
         return QVariant::fromValue(false);
 
+    if (calibrationMode) {
+        exit(0);
+    }
     return QVariant::fromValue(true);
 }
 

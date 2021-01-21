@@ -84,6 +84,10 @@ public:
     QVariant getSoftwareInfoName();
     QVariant getSoftwareInfo();
     bool getTestIsFinished();
+    void setCalicationMode(bool enable) {
+        presenter->calibrationMode = enable;
+    }
+
     //onboard
     QVariantMap map;
     QVariantMap getBoardAttribyteData();

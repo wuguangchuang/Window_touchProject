@@ -420,6 +420,11 @@ int main(int argc, char *argv[])
     {
         currentIndex = 0;
     }
+    if(argc > 1 && strcmp(argv[1],"-cal") == 0)
+    {
+        currentIndex = 5;
+        manager.setCalicationMode(true);
+    }
     while(1)
     {
         if(touch->initSdkDone)

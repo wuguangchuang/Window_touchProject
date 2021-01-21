@@ -838,6 +838,12 @@ Window {
 //                            settingsId.caliDataDelegate = calibrationDataDelegate;
                             settingsId.caliDataModel = calibrationDataModel;
                         }
+                        function enterCalibration() {
+                            calibrationUi.visible = true;
+                            lastVisibility = mainPage.visibility;
+                            showFullScreen();
+                        }
+
                         onClickCalibration: {
                             calibrationUi.visible = true;
                             lastVisibility = mainPage.visibility;
@@ -1491,9 +1497,21 @@ QMessageBox::Critical	3	an icon indicating that the message represents a critica
     function refreshSettings() {
         if (settingsTabId.settingsPage != null)
             settingsTabId.settingsPage.refreshSettings();
-        if (calibrationUi.visible) {
+        if (calibrationUi.visible && !calibrationFirst) {
             calibrationUi.exitPanel();
         }
+        calibrationFirst = false
+    }
+    property bool calibrationFirst: false
+    function calibration() {
+        if (settingsTabId.settingsPage != null) {
+            calibrationFirst = true
+            calibrationUi.visible = true;
+            lastVisibility = mainPage.visibility;
+            showFullScreen();
+        }
+            //settingsTabId.enterCalibration()
+            //settingsTabId.settingsPage.clickCalibration();
     }
 
     function startAging() {
