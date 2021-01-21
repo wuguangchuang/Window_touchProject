@@ -321,6 +321,22 @@ public:
         return false;
     }
 
+    //calibration
+    Q_INVOKABLE QVariantMap getCalibrationSettings(){
+        QVariantMap map;
+        CalibrationSettings settings;
+        int ret = touchManager->getCalibrationSettings(NULL, &settings);
+        if (ret != 0) {
+            TWARNING("%s: get settings failed", __func__);
+            return map;
+        }
+        map.insert("calibrationMode", settings.mode);
+        map.insert("calibrationCount", settings.pointCount);
+        map.insert("calibrationDefMode", settings.defMode);
+        map.insert("calibrationDefCount", settings.defPointCount);
+        return map;
+    }
+
     QObject* getComponent() { return component;}
     void setTouchManager(TouchManager *tm) {touchManager = tm;}
 

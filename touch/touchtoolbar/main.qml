@@ -96,6 +96,10 @@ Window {
     property var upgradeShowStr:""
     property int tabViewHeight:Math.max(Math.min(windowHeight / 5.0,tabHeight),20)
 
+    //calibration
+    property int calibrateMode:1
+    property int calibrationPoints : 4
+
 
     signal sendOnboardTestFinish(var title,var message,var type);
     signal sendRefreshOnboardTestData(var map);
@@ -1720,7 +1724,7 @@ QMessageBox::Critical	3	an icon indicating that the message represents a critica
     Component.onCompleted: {
         showUpgradePage();
         var i;
-        for (i = 0; i < 4; i++) {
+        for (i = 0; i < calibrationUi.calibratePoints; i++) {
             calibrationDataModel.append({
                 index: i,
                 targetX: 0,
@@ -1804,6 +1808,9 @@ QMessageBox::Critical	3	an icon indicating that the message represents a critica
         touch.debug(JSON.stringify(datas));
         if (datas.count === undefined || datas.count <= 0)
             return;
+        calibrationUi.calibratePoints = datas.count;
+        calibrateMode = datas.mode;
+        calibrationPoints = datas.count;
         var i;
         var points = datas.points;
         calibrationDataModel.clear();

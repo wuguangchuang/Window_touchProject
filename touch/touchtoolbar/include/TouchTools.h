@@ -21,7 +21,7 @@ struct TouchData {
     unsigned char data[HID_REPORT_DATA_LENGTH];
 };
 
-#define APP_VERSION_NAME ("v1.12.25")
+#define APP_VERSION_NAME ("v1.12.26")
 #define APP_VERSION_CODE (15)
 
 //#define THIS_APP_TYPE (APP_FACTORY)

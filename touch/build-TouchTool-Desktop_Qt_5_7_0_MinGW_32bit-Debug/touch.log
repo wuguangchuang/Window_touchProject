@@ -53483,3 +53483,155 @@ file:///D:/qt/FirmwareBin/G-100WHD-GR-E1-L13.4+16.5KC.bin
 2021-01-07 19:14:40:free: bf4f8e1dffbfe7a3306d4fa5878107f8
 2021-01-07 19:14:40:upgradeThread and testThread and commandThread to be delete
 2021-01-07 19:14:40:TouchTools end
+2021-01-19 23:57:47:软件路径：D:/qt/PC_TouchProject/touch/build-TouchTool-Desktop_Qt_5_7_0_MinGW_32bit-Debug/release
+2021-01-19 23:57:47:@@@@@@@@@ tabWidth = 2.0
+2021-01-19 23:57:47:设置为中文
+2021-01-19 23:57:47:vid=0xaed7, pid=0x0013, path=col01, rid=0xcd, bootloader=0
+2021-01-19 23:57:47:vid=0x14e1, pid=0x3500, path=col01, rid=0xcd, bootloader=0
+2021-01-19 23:57:47:vid=0x14e1, pid=0x3400, path=col01, rid=0xcd, bootloader=0
+2021-01-19 23:57:47:vid=0x14e1, pid=0x2500, path=col01, rid=0xcd, bootloader=0
+2021-01-19 23:57:47:vid=0x1ff7, pid=0x0013, path=col01, rid=0xcd, bootloader=0
+2021-01-19 23:57:47:vid=0xaed7, pid=0xfedc, path=col01, rid=0xcd, bootloader=1
+2021-01-19 23:57:47:vid=0x24b8, pid=0x0040, path=col01, rid=0xcd, bootloader=0
+2021-01-19 23:57:47:vid=0x1101, pid=0x0010, path=col01, rid=0xcd, bootloader=0
+2021-01-19 23:57:47:vid=0x1ff7, pid=0x001d, path=col01, rid=0xcd, bootloader=0
+2021-01-19 23:57:48:TouchManager() this:0xb3b6398
+2021-01-19 23:57:48:start upgrade test command thread.
+2021-01-19 23:57:48:TouchManager::TouchManager(): TestThread  = 0xb4523e8
+2021-01-19 23:57:48:start hogplug service
+2021-01-19 23:57:48:init TouchManager
+2021-01-19 23:57:48:getInstance mTouchManager : 0xb3b6398
+2021-01-19 23:57:48:command thread running
+2021-01-19 23:57:48:found 0
+2021-01-19 23:57:48:hotplug thread running
+2021-01-19 23:57:48:read count 165
+2021-01-19 23:57:48:Upgrade file: file:///D:/FirmwareBin/版本0x0007/G-55WHD-QG-C1-W15.bin
+file:///D:/FirmwareBin/G-86WHD-GR-D1-L13.4KC.bin
+file:///D:/qt/FirmwareBin/G-100WHD-GR-E1-L13.4+16.5KC.bin
+
+2021-01-19 23:57:48:Upgrade file tmp: file:///D:/FirmwareBin/版本0x0007/G-55WHD-QG-C1-W15.bin
+2021-01-19 23:57:48:Upgrade file tmp: file:///D:/FirmwareBin/G-86WHD-GR-D1-L13.4KC.bin
+2021-01-19 23:57:48:Upgrade file tmp: file:///D:/qt/FirmwareBin/G-100WHD-GR-E1-L13.4+16.5KC.bin
+2021-01-19 23:57:48:aging time = 10
+2021-01-19 23:57:48:hotplug thread run: 800
+2021-01-19 23:57:48:device_interface_detail_data->DevicePathh = \\?\hid#vid_14e1&pid_3500&col01#9&338c22d8&0&0000#{4d1e55b2-f16f-11cf-88cb-001111000030}
+2021-01-19 23:57:48:try \\?\hid#vid_14e1&pid_3500&col01#9&338c22d8&0&0000#{4d1e55b2-f16f-11cf-88cb-001111000030}
+2021-01-19 23:57:48:hotplug: G-55WHD-QG-C1-W15, B:0, 0x14e1:0x3500 [1][0xb488298]
+2021-01-19 23:57:49:getOnboardTestboardCount board count = 8
+2021-01-19 23:57:49:autoTestSwitch = 0
+2021-01-19 23:57:54:hotplug thread end
+2021-01-19 23:57:54:command thread end
+2021-01-19 23:57:54:free 1 devices
+2021-01-19 23:57:54:free: bf4f8e1dffbfe7a3306d4fa5878107f8
+2021-01-19 23:57:54:upgradeThread and testThread and commandThread to be delete
+2021-01-19 23:57:54:TouchTools end
+2021-01-20 01:32:41:软件路径：D:/qt/PC_TouchProject/touch/build-TouchTool-Desktop_Qt_5_7_0_MinGW_32bit-Debug/release
+2021-01-20 01:32:41:@@@@@@@@@ tabWidth = 2.0
+2021-01-20 01:32:41:设置为中文
+2021-01-20 01:32:41:vid=0xaed7, pid=0x0013, path=col01, rid=0xcd, bootloader=0
+2021-01-20 01:32:41:vid=0x14e1, pid=0x3500, path=col01, rid=0xcd, bootloader=0
+2021-01-20 01:32:41:vid=0x14e1, pid=0x3400, path=col01, rid=0xcd, bootloader=0
+2021-01-20 01:32:41:vid=0x14e1, pid=0x2500, path=col01, rid=0xcd, bootloader=0
+2021-01-20 01:32:41:vid=0x1ff7, pid=0x0013, path=col01, rid=0xcd, bootloader=0
+2021-01-20 01:32:41:vid=0xaed7, pid=0xfedc, path=col01, rid=0xcd, bootloader=1
+2021-01-20 01:32:41:vid=0x24b8, pid=0x0040, path=col01, rid=0xcd, bootloader=0
+2021-01-20 01:32:41:vid=0x1101, pid=0x0010, path=col01, rid=0xcd, bootloader=0
+2021-01-20 01:32:41:vid=0x1ff7, pid=0x001d, path=col01, rid=0xcd, bootloader=0
+2021-01-20 01:32:43:TouchManager() this:0xb4d99e8
+2021-01-20 01:32:43:start upgrade test command thread.
+2021-01-20 01:32:43:TouchManager::TouchManager(): TestThread  = 0xb542c88
+2021-01-20 01:32:43:start hogplug service
+2021-01-20 01:32:43:init TouchManager
+2021-01-20 01:32:43:getInstance mTouchManager : 0xb4d99e8
+2021-01-20 01:32:43:found 0
+2021-01-20 01:32:43:command thread running
+2021-01-20 01:32:43:read count 165
+2021-01-20 01:32:43:Upgrade file: file:///D:/FirmwareBin/版本0x0007/G-55WHD-QG-C1-W15.bin
+file:///D:/FirmwareBin/G-86WHD-GR-D1-L13.4KC.bin
+file:///D:/qt/FirmwareBin/G-100WHD-GR-E1-L13.4+16.5KC.bin
+
+2021-01-20 01:32:43:hotplug thread running
+2021-01-20 01:32:43:Upgrade file tmp: file:///D:/FirmwareBin/版本0x0007/G-55WHD-QG-C1-W15.bin
+2021-01-20 01:32:43:Upgrade file tmp: file:///D:/FirmwareBin/G-86WHD-GR-D1-L13.4KC.bin
+2021-01-20 01:32:43:Upgrade file tmp: file:///D:/qt/FirmwareBin/G-100WHD-GR-E1-L13.4+16.5KC.bin
+2021-01-20 01:32:43:aging time = 10
+2021-01-20 01:32:43:hotplug thread run: 800
+2021-01-20 01:32:43:device_interface_detail_data->DevicePathh = \\?\hid#vid_14e1&pid_3500&col01#9&338c22d8&0&0000#{4d1e55b2-f16f-11cf-88cb-001111000030}
+2021-01-20 01:32:43:try \\?\hid#vid_14e1&pid_3500&col01#9&338c22d8&0&0000#{4d1e55b2-f16f-11cf-88cb-001111000030}
+2021-01-20 01:32:43:hotplug: G-55WHD-QG-C1-W15, B:0, 0x14e1:0x3500 [1][0xb5c2bb0]
+2021-01-20 01:32:43:getOnboardTestboardCount board count = 8
+2021-01-20 01:32:43:autoTestSwitch = 0
+2021-01-20 01:32:47:hotplug thread end
+2021-01-20 01:32:47:command thread end
+2021-01-20 01:32:47:free 1 devices
+2021-01-20 01:32:47:free: bf4f8e1dffbfe7a3306d4fa5878107f8
+2021-01-20 01:32:47:upgradeThread and testThread and commandThread to be delete
+2021-01-20 01:32:47:TouchTools end
+2021-01-20 16:49:29:软件路径：D:/qt/PC_TouchProject/touch/build-TouchTool-Desktop_Qt_5_7_0_MinGW_32bit-Debug/release
+2021-01-20 16:49:29:@@@@@@@@@ tabWidth = 2.0
+2021-01-20 16:49:29:设置为中文
+2021-01-20 16:49:29:vid=0xaed7, pid=0x0013, path=col01, rid=0xcd, bootloader=0
+2021-01-20 16:49:29:vid=0x14e1, pid=0x3500, path=col01, rid=0xcd, bootloader=0
+2021-01-20 16:49:29:vid=0x14e1, pid=0x3400, path=col01, rid=0xcd, bootloader=0
+2021-01-20 16:49:29:vid=0x14e1, pid=0x2500, path=col01, rid=0xcd, bootloader=0
+2021-01-20 16:49:29:vid=0x1ff7, pid=0x0013, path=col01, rid=0xcd, bootloader=0
+2021-01-20 16:49:29:vid=0xaed7, pid=0xfedc, path=col01, rid=0xcd, bootloader=1
+2021-01-20 16:49:29:vid=0x24b8, pid=0x0040, path=col01, rid=0xcd, bootloader=0
+2021-01-20 16:49:29:vid=0x1101, pid=0x0010, path=col01, rid=0xcd, bootloader=0
+2021-01-20 16:49:29:vid=0x1ff7, pid=0x001d, path=col01, rid=0xcd, bootloader=0
+2021-01-20 16:49:30:TouchManager() this:0xac77e30
+2021-01-20 16:49:30:start upgrade test command thread.
+2021-01-20 16:49:30:TouchManager::TouchManager(): TestThread  = 0xac34f48
+2021-01-20 16:49:30:start hogplug service
+2021-01-20 16:49:30:init TouchManager
+2021-01-20 16:49:30:getInstance mTouchManager : 0xac77e30
+2021-01-20 16:49:30:found 0
+2021-01-20 16:49:30:command thread running
+2021-01-20 16:49:30:read count 165
+2021-01-20 16:49:30:hotplug thread running
+2021-01-20 16:49:30:Upgrade file: file:///D:/FirmwareBin/版本0x0007/G-55WHD-QG-C1-W15.bin
+file:///D:/FirmwareBin/G-86WHD-GR-D1-L13.4KC.bin
+file:///D:/qt/FirmwareBin/G-100WHD-GR-E1-L13.4+16.5KC.bin
+
+2021-01-20 16:49:30:Upgrade file tmp: file:///D:/FirmwareBin/版本0x0007/G-55WHD-QG-C1-W15.bin
+2021-01-20 16:49:30:Upgrade file tmp: file:///D:/FirmwareBin/G-86WHD-GR-D1-L13.4KC.bin
+2021-01-20 16:49:30:Upgrade file tmp: file:///D:/qt/FirmwareBin/G-100WHD-GR-E1-L13.4+16.5KC.bin
+2021-01-20 16:49:30:aging time = 10
+2021-01-20 16:49:30:hotplug thread run: 800
+2021-01-20 16:49:35:device_interface_detail_data->DevicePathh = \\?\hid#vid_aed7&pid_fedc&col01#9&2e2cd191&0&0000#{4d1e55b2-f16f-11cf-88cb-001111000030}
+2021-01-20 16:49:35:try \\?\hid#vid_aed7&pid_fedc&col01#9&2e2cd191&0&0000#{4d1e55b2-f16f-11cf-88cb-001111000030}
+2021-01-20 16:49:37:hotplug:  , B:1, 0xaed7:0xfedc [1][0xab7ee30]
+2021-01-20 16:49:37:autoTestSwitch = 0
+2021-01-20 16:49:40:unplug####################
+2021-01-20 16:49:40:hotplug:  , B:1, 0xaed7:0xfedc [0][0xab7ee30]
+2021-01-20 16:49:40:autoTestSwitch = 0
+2021-01-20 16:49:40:device_interface_detail_data->DevicePathh = \\?\hid#vid_14e1&pid_3500&col01#9&338c22d8&0&0000#{4d1e55b2-f16f-11cf-88cb-001111000030}
+2021-01-20 16:49:40:try \\?\hid#vid_14e1&pid_3500&col01#9&338c22d8&0&0000#{4d1e55b2-f16f-11cf-88cb-001111000030}
+2021-01-20 16:49:43:old one device with same usb port, ab7ee30
+2021-01-20 16:49:43:hotplug: G-55WHD-QG-C1-W15, B:0, 0x14e1:0x3500 [1][0xab7ee30]
+2021-01-20 16:49:43:getOnboardTestboardCount board count = 8
+2021-01-20 16:49:43:autoTestSwitch = 0
+2021-01-20 16:49:43:Warning: isLockAGC reply failed[254,1], require[4,13]
+2021-01-20 16:49:43:校准模式 = 1
+2021-01-20 16:49:43:校准点的个数 = 4
+2021-01-20 16:49:43:默认校准模式 = 1
+2021-01-20 16:49:43:默认校准点个数 = 4
+2021-01-20 16:49:43:{"count":4,"mode":1,"points":[{"collectX":3085,"collectY":1765,"index":0,"maxX":12225,"maxY":6932,"targetX":3056,"targetY":1700},{"collectX":9130,"collectY":1765,"index":1,"maxX":12225,"maxY":6932,"targetX":9168,"targetY":1733},{"collectX":3085,"collectY":5158,"index":2,"maxX":12225,"maxY":6932,"targetX":3056,"targetY":5199},{"collectX":9130,"collectY":5158,"index":3,"maxX":12225,"maxY":6932,"targetX":9168,"targetY":5199}]}
+2021-01-20 16:49:43:setCoordsEnabled 2 1
+2021-01-20 16:49:43:setCoordsEnabled 1 1
+2021-01-20 16:50:04:Warning: isLockAGC reply failed[254,1], require[4,13]
+2021-01-20 16:50:04:校准模式 = 1
+2021-01-20 16:50:04:校准点的个数 = 4
+2021-01-20 16:50:04:默认校准模式 = 1
+2021-01-20 16:50:04:默认校准点个数 = 4
+�{�2021-01-20 16:52:15:校准模式 = 1
+2021-01-20 16:52:15:校准点的个数 = 4
+2021-01-20 16:52:15:默认校准模式 = 1
+2021-01-20 16:52:15:默认校准点个数 = 4
+2021-01-20 16:52:15:{"count":4,"mode":1,"points":[{"collectX":3085,"collectY":1765,"index":0,"maxX":12225,"maxY":6932,"targetX":3056,"targetY":1733},{"collectX":9130,"collectY":1765,"index":1,"maxX":12225,"maxY":6932,"targetX":9168,"targetY":1733},{"collectX":3085,"collectY":5158,"index":2,"maxX":12225,"maxY":6932,"targetX":3056,"targetY":5199},{"collectX":9130,"collectY":5158,"index":3,"maxX":12225,"maxY":6932,"targetX":9168,"targetY":5199}]}
+2021-01-20 16:52:22:hotplug thread end
+2021-01-20 16:52:22:command thread end
+2021-01-20 16:52:22:free 1 devices
+2021-01-20 16:52:22:free: bf4f8e1dffbfe7a3306d4fa5878107f8
+2021-01-20 16:52:22:upgradeThread and testThread and commandThread to be delete
+2021-01-20 16:52:22:TouchTools end

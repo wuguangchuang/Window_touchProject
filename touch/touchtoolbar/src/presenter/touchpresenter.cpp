@@ -627,6 +627,11 @@ QVariantMap TouchPresenter::getCalibrationDatas(QVariant where)
         return map;
     }
     CalibrationData data;
+    TDEBUG("校准模式 = %d",settings.mode);
+    TDEBUG("校准点的个数 = %d",settings.pointCount);
+    TDEBUG("默认校准模式 = %d",settings.defMode);
+    TDEBUG("默认校准点个数 = %d",settings.defPointCount);
+    map.insert("mode", settings.mode);
     map.insert("count", settings.pointCount);
     QVariantList points;
     for (int i = 0; i < settings.pointCount; i++) {
@@ -645,6 +650,7 @@ QVariantMap TouchPresenter::getCalibrationDatas(QVariant where)
     map.insert("points", points);
     return map;
 }
+
 
 QVariant TouchPresenter::enterCalibrationMode()
 {

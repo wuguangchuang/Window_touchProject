@@ -109,8 +109,8 @@ int ProcessStarter::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     return _id;
 }
 struct qt_meta_stringdata_TouchPresenter_t {
-    QByteArrayData data[99];
-    char stringdata0[1257];
+    QByteArrayData data[100];
+    char stringdata0[1280];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -217,7 +217,8 @@ QT_MOC_LITERAL(94, 1188, 19), // "resetScreenRotation"
 QT_MOC_LITERAL(95, 1208, 10), // "resetMacOs"
 QT_MOC_LITERAL(96, 1219, 15), // "showExitMessage"
 QT_MOC_LITERAL(97, 1235, 11), // "emitStopAll"
-QT_MOC_LITERAL(98, 1247, 9) // "isrunning"
+QT_MOC_LITERAL(98, 1247, 9), // "isrunning"
+QT_MOC_LITERAL(99, 1257, 22) // "getCalibrationSettings"
 
     },
     "TouchPresenter\0agingFinished\0\0index\0"
@@ -255,7 +256,7 @@ QT_MOC_LITERAL(98, 1247, 9) // "isrunning"
     "setAppType\0run\0app\0resetXYOrientation\0"
     "resetTouchRotation\0resetScreenRotation\0"
     "resetMacOs\0showExitMessage\0emitStopAll\0"
-    "isrunning"
+    "isrunning\0getCalibrationSettings"
 };
 #undef QT_MOC_LITERAL
 
@@ -265,7 +266,7 @@ static const uint qt_meta_data_TouchPresenter[] = {
        7,       // revision
        0,       // classname
        0,    0, // classinfo
-      76,   14, // methods
+      77,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -273,86 +274,87 @@ static const uint qt_meta_data_TouchPresenter[] = {
       16,       // signalCount
 
  // signals: name, argc, parameters, tag, flags
-       1,    1,  394,    2, 0x06 /* Public */,
-       4,    1,  397,    2, 0x06 /* Public */,
-       6,    1,  400,    2, 0x06 /* Public */,
-       7,    1,  403,    2, 0x06 /* Public */,
-       9,    0,  406,    2, 0x06 /* Public */,
-      10,    1,  407,    2, 0x06 /* Public */,
-      12,    1,  410,    2, 0x06 /* Public */,
-      13,    0,  413,    2, 0x06 /* Public */,
-      14,    1,  414,    2, 0x06 /* Public */,
-      16,    2,  417,    2, 0x06 /* Public */,
-      18,    1,  422,    2, 0x06 /* Public */,
-      20,    0,  425,    2, 0x06 /* Public */,
-      21,    1,  426,    2, 0x06 /* Public */,
-      23,    0,  429,    2, 0x06 /* Public */,
-      24,    1,  430,    2, 0x06 /* Public */,
-      26,    1,  433,    2, 0x06 /* Public */,
+       1,    1,  399,    2, 0x06 /* Public */,
+       4,    1,  402,    2, 0x06 /* Public */,
+       6,    1,  405,    2, 0x06 /* Public */,
+       7,    1,  408,    2, 0x06 /* Public */,
+       9,    0,  411,    2, 0x06 /* Public */,
+      10,    1,  412,    2, 0x06 /* Public */,
+      12,    1,  415,    2, 0x06 /* Public */,
+      13,    0,  418,    2, 0x06 /* Public */,
+      14,    1,  419,    2, 0x06 /* Public */,
+      16,    2,  422,    2, 0x06 /* Public */,
+      18,    1,  427,    2, 0x06 /* Public */,
+      20,    0,  430,    2, 0x06 /* Public */,
+      21,    1,  431,    2, 0x06 /* Public */,
+      23,    0,  434,    2, 0x06 /* Public */,
+      24,    1,  435,    2, 0x06 /* Public */,
+      26,    1,  438,    2, 0x06 /* Public */,
 
  // slots: name, argc, parameters, tag, flags
-      27,    0,  436,    2, 0x0a /* Public */,
+      27,    0,  441,    2, 0x0a /* Public */,
 
  // methods: name, argc, parameters, tag, flags
-      28,    1,  437,    2, 0x02 /* Public */,
-      29,    2,  440,    2, 0x02 /* Public */,
-      29,    1,  445,    2, 0x22 /* Public | MethodCloned */,
-      31,    0,  448,    2, 0x02 /* Public */,
-      32,    1,  449,    2, 0x02 /* Public */,
-      33,    0,  452,    2, 0x02 /* Public */,
-      34,    0,  453,    2, 0x02 /* Public */,
-      35,    2,  454,    2, 0x02 /* Public */,
-      35,    1,  459,    2, 0x22 /* Public | MethodCloned */,
-      38,    0,  462,    2, 0x02 /* Public */,
-      39,    1,  463,    2, 0x02 /* Public */,
-      41,    0,  466,    2, 0x02 /* Public */,
-      42,    0,  467,    2, 0x02 /* Public */,
-      43,    0,  468,    2, 0x02 /* Public */,
-      44,    0,  469,    2, 0x02 /* Public */,
-      45,    1,  470,    2, 0x02 /* Public */,
-      47,    1,  473,    2, 0x02 /* Public */,
-      48,    1,  476,    2, 0x02 /* Public */,
-      49,    1,  479,    2, 0x02 /* Public */,
-      50,    1,  482,    2, 0x02 /* Public */,
-      51,    0,  485,    2, 0x02 /* Public */,
-      52,    2,  486,    2, 0x02 /* Public */,
-      55,    0,  491,    2, 0x02 /* Public */,
-      56,    0,  492,    2, 0x02 /* Public */,
-      57,    0,  493,    2, 0x02 /* Public */,
-      58,    0,  494,    2, 0x02 /* Public */,
-      59,    0,  495,    2, 0x02 /* Public */,
-      60,    0,  496,    2, 0x02 /* Public */,
-      61,    1,  497,    2, 0x02 /* Public */,
-      63,    1,  500,    2, 0x02 /* Public */,
-      64,    1,  503,    2, 0x02 /* Public */,
-      65,    2,  506,    2, 0x02 /* Public */,
-      66,    1,  511,    2, 0x02 /* Public */,
-      68,    1,  514,    2, 0x02 /* Public */,
-      69,    0,  517,    2, 0x02 /* Public */,
-      70,    0,  518,    2, 0x02 /* Public */,
-      71,    2,  519,    2, 0x02 /* Public */,
-      73,    1,  524,    2, 0x02 /* Public */,
-      74,    0,  527,    2, 0x02 /* Public */,
-      75,    0,  528,    2, 0x02 /* Public */,
-      76,    1,  529,    2, 0x02 /* Public */,
-      76,    0,  532,    2, 0x22 /* Public | MethodCloned */,
-      77,    0,  533,    2, 0x02 /* Public */,
-      78,    1,  534,    2, 0x02 /* Public */,
-      80,    1,  537,    2, 0x02 /* Public */,
-      81,    0,  540,    2, 0x02 /* Public */,
-      82,    2,  541,    2, 0x02 /* Public */,
-      85,    1,  546,    2, 0x02 /* Public */,
-      86,    1,  549,    2, 0x02 /* Public */,
-      88,    0,  552,    2, 0x02 /* Public */,
-      89,    1,  553,    2, 0x02 /* Public */,
-      90,    1,  556,    2, 0x02 /* Public */,
-      92,    0,  559,    2, 0x02 /* Public */,
-      93,    0,  560,    2, 0x02 /* Public */,
-      94,    0,  561,    2, 0x02 /* Public */,
-      95,    0,  562,    2, 0x02 /* Public */,
-      96,    0,  563,    2, 0x02 /* Public */,
-      97,    0,  564,    2, 0x02 /* Public */,
-      98,    0,  565,    2, 0x02 /* Public */,
+      28,    1,  442,    2, 0x02 /* Public */,
+      29,    2,  445,    2, 0x02 /* Public */,
+      29,    1,  450,    2, 0x22 /* Public | MethodCloned */,
+      31,    0,  453,    2, 0x02 /* Public */,
+      32,    1,  454,    2, 0x02 /* Public */,
+      33,    0,  457,    2, 0x02 /* Public */,
+      34,    0,  458,    2, 0x02 /* Public */,
+      35,    2,  459,    2, 0x02 /* Public */,
+      35,    1,  464,    2, 0x22 /* Public | MethodCloned */,
+      38,    0,  467,    2, 0x02 /* Public */,
+      39,    1,  468,    2, 0x02 /* Public */,
+      41,    0,  471,    2, 0x02 /* Public */,
+      42,    0,  472,    2, 0x02 /* Public */,
+      43,    0,  473,    2, 0x02 /* Public */,
+      44,    0,  474,    2, 0x02 /* Public */,
+      45,    1,  475,    2, 0x02 /* Public */,
+      47,    1,  478,    2, 0x02 /* Public */,
+      48,    1,  481,    2, 0x02 /* Public */,
+      49,    1,  484,    2, 0x02 /* Public */,
+      50,    1,  487,    2, 0x02 /* Public */,
+      51,    0,  490,    2, 0x02 /* Public */,
+      52,    2,  491,    2, 0x02 /* Public */,
+      55,    0,  496,    2, 0x02 /* Public */,
+      56,    0,  497,    2, 0x02 /* Public */,
+      57,    0,  498,    2, 0x02 /* Public */,
+      58,    0,  499,    2, 0x02 /* Public */,
+      59,    0,  500,    2, 0x02 /* Public */,
+      60,    0,  501,    2, 0x02 /* Public */,
+      61,    1,  502,    2, 0x02 /* Public */,
+      63,    1,  505,    2, 0x02 /* Public */,
+      64,    1,  508,    2, 0x02 /* Public */,
+      65,    2,  511,    2, 0x02 /* Public */,
+      66,    1,  516,    2, 0x02 /* Public */,
+      68,    1,  519,    2, 0x02 /* Public */,
+      69,    0,  522,    2, 0x02 /* Public */,
+      70,    0,  523,    2, 0x02 /* Public */,
+      71,    2,  524,    2, 0x02 /* Public */,
+      73,    1,  529,    2, 0x02 /* Public */,
+      74,    0,  532,    2, 0x02 /* Public */,
+      75,    0,  533,    2, 0x02 /* Public */,
+      76,    1,  534,    2, 0x02 /* Public */,
+      76,    0,  537,    2, 0x22 /* Public | MethodCloned */,
+      77,    0,  538,    2, 0x02 /* Public */,
+      78,    1,  539,    2, 0x02 /* Public */,
+      80,    1,  542,    2, 0x02 /* Public */,
+      81,    0,  545,    2, 0x02 /* Public */,
+      82,    2,  546,    2, 0x02 /* Public */,
+      85,    1,  551,    2, 0x02 /* Public */,
+      86,    1,  554,    2, 0x02 /* Public */,
+      88,    0,  557,    2, 0x02 /* Public */,
+      89,    1,  558,    2, 0x02 /* Public */,
+      90,    1,  561,    2, 0x02 /* Public */,
+      92,    0,  564,    2, 0x02 /* Public */,
+      93,    0,  565,    2, 0x02 /* Public */,
+      94,    0,  566,    2, 0x02 /* Public */,
+      95,    0,  567,    2, 0x02 /* Public */,
+      96,    0,  568,    2, 0x02 /* Public */,
+      97,    0,  569,    2, 0x02 /* Public */,
+      98,    0,  570,    2, 0x02 /* Public */,
+      99,    0,  571,    2, 0x02 /* Public */,
 
  // signals: parameters
     QMetaType::Void, QMetaType::Int,    3,
@@ -435,6 +437,7 @@ static const uint qt_meta_data_TouchPresenter[] = {
     QMetaType::Void,
     QMetaType::Void,
     QMetaType::Bool,
+    QMetaType::QVariantMap,
 
        0        // eod
 };
@@ -554,6 +557,8 @@ void TouchPresenter::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _
         case 74: _t->emitStopAll(); break;
         case 75: { bool _r = _t->isrunning();
             if (_a[0]) *reinterpret_cast< bool*>(_a[0]) = _r; }  break;
+        case 76: { QVariantMap _r = _t->getCalibrationSettings();
+            if (_a[0]) *reinterpret_cast< QVariantMap*>(_a[0]) = _r; }  break;
         default: ;
         }
     } else if (_c == QMetaObject::IndexOfMethod) {
@@ -699,13 +704,13 @@ int TouchPresenter::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 76)
+        if (_id < 77)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 76;
+        _id -= 77;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 76)
+        if (_id < 77)
             *reinterpret_cast<int*>(_a[0]) = -1;
-        _id -= 76;
+        _id -= 77;
     }
     return _id;
 }
