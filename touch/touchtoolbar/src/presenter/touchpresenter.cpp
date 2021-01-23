@@ -771,4 +771,15 @@ QVariant TouchPresenter::testCaliCapture(QVariant time)
     touchManager->testCalibrationCapture(NULL, time.toInt());
     return QVariant::fromValue(true);
 }
+//响应托盘
+void TouchPresenter::openProgress(bool isOpen)
+{
+    if (component == NULL) {
+        return;
+    }
+    QMetaObject::invokeMethod(component, "setWindowHidden",
+                              Q_ARG(QVariant, isOpen));
+    return;
+}
+
 

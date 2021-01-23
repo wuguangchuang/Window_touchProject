@@ -88,6 +88,8 @@ int main(int argc, char *argv[])
 int main(int argc, char *argv[])
 {
 
+//    argc = 2;
+//    argv[1] = "-cal";
 //    libusb_context *ctx;
 //    libusb_init(&ctx);
 
@@ -357,7 +359,7 @@ int main(int argc, char *argv[])
     TINFO("autoDisableCoordinate=%d", autoDisableCoordinate);
     QObject *object = NULL;
 
-    if(argc > 1 && QString::compare(argv[1],"-changeCoordsMode") == 0)
+    if(argc > 1 && strncmp(argv[1],"-changeCoordsMode",sizeof("-changeCoordsMode")) == 0)
     {
 
     }
@@ -368,6 +370,17 @@ int main(int argc, char *argv[])
             TDebug::debug("main.qml error:" + component.errorString());
         object = component.create();
         touch->setComponent(object);
+    }
+
+    if(argc > 1 && (strncmp(argv[1],"-selfStarting",sizeof("-selfStarting")) == 0 ||
+                strncmp(argv[1],"-cal",sizeof("-cal")) == 0))
+    {
+        TDEBUG(" 有两个参数");
+        touch->openProgress(false);
+    }
+    else
+    {
+        touch->openProgress(true);
     }
 
 
@@ -420,7 +433,8 @@ int main(int argc, char *argv[])
     {
         currentIndex = 0;
     }
-    if(argc > 1 && strcmp(argv[1],"-cal") == 0)
+
+    if((argc > 1 && (strcmp(argv[1],"-cal") == 0)))
     {
         currentIndex = 5;
         manager.setCalicationMode(true);

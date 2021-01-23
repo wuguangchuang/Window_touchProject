@@ -46,3 +46,1594 @@
 2021-01-22 11:01:08:free 0 devices
 2021-01-22 11:01:08:upgradeThread and testThread and commandThread to be delete
 2021-01-22 11:01:08:TouchTools end
+2021-01-23 12:41:39:软件路径：D:/qt/PC_TouchProject/touch/build-TouchTool-Desktop_Qt_5_7_0_MinGW_32bit-Debug/release
+2021-01-23 12:41:39:@@@@@@@@@ tabWidth = 2.0
+2021-01-23 12:41:39:设置为中文
+2021-01-23 12:41:39:vid=0x14e1, pid=0x3500, path=col01, rid=0xcd, bootloader=0
+2021-01-23 12:41:39:vid=0xaed7, pid=0x0013, path=col01, rid=0xcd, bootloader=0
+2021-01-23 12:41:39:vid=0xaed7, pid=0xfedc, path=col01, rid=0xcd, bootloader=1
+2021-01-23 12:41:41: 有两个参数
+2021-01-23 12:41:41:TouchManager() this:0xac6c058
+2021-01-23 12:41:41:start upgrade test command thread.
+2021-01-23 12:41:41:TouchManager::TouchManager(): TestThread  = 0xac24358
+2021-01-23 12:41:41:start hogplug service
+2021-01-23 12:41:41:init TouchManager
+2021-01-23 12:41:41:getInstance mTouchManager : 0xac6c058
+2021-01-23 12:41:41:found 0
+2021-01-23 12:41:41:command thread running
+2021-01-23 12:41:41:can not open upgrade file:No such file or directory
+2021-01-23 12:41:41:hotplug thread running
+2021-01-23 12:41:41:aging time = 10
+2021-01-23 12:41:41:hotplug thread run: 800
+2021-01-23 12:41:41:device_interface_detail_data->DevicePathh = \\?\hid#vid_14e1&pid_3500&col01#9&338c22d8&0&0000#{4d1e55b2-f16f-11cf-88cb-001111000030}
+2021-01-23 12:41:41:try \\?\hid#vid_14e1&pid_3500&col01#9&338c22d8&0&0000#{4d1e55b2-f16f-11cf-88cb-001111000030}
+2021-01-23 12:41:41:hotplug: G-55WHD-QG-C1-W15, B:0, 0x14e1:0x3500 [1][0xaca4228]
+2021-01-23 12:41:42:enter calibration
+2021-01-23 12:41:42:getOnboardTestboardCount board count = 8
+2021-01-23 12:41:42:set calibration data: 0
+2021-01-23 12:41:42:setCalibrationPointData: index: 0, tx:480,ty:270,cx:65535,cy:65535,mx:1920,my:1080
+2021-01-23 12:41:42:{"count":250,"finished":0,"index":0}
+2021-01-23 12:41:42:autoTestSwitch = 0
+2021-01-23 12:41:42:Warning: isLockAGC reply failed[254,1], require[4,13]
+2021-01-23 12:41:42:校准模式 = 1
+2021-01-23 12:41:42:校准点的个数 = 4
+2021-01-23 12:41:42:默认校准模式 = 1
+2021-01-23 12:41:42:默认校准点个数 = 4
+2021-01-23 12:41:42:{"count":4,"mode":1,"points":[{"collectX":3085,"collectY":1765,"index":0,"maxX":12225,"maxY":6932,"targetX":3056,"targetY":1733},{"collectX":9130,"collectY":1765,"index":1,"maxX":12225,"maxY":6932,"targetX":9168,"targetY":1733},{"collectX":3085,"collectY":5158,"index":2,"maxX":12225,"maxY":6932,"targetX":3056,"targetY":5199},{"collectX":9130,"collectY":5158,"index":3,"maxX":12225,"maxY":6932,"targetX":9168,"targetY":5199}]}
+2021-01-23 12:41:42:setCoordsEnabled 2 1
+2021-01-23 12:41:42:setCoordsEnabled 1 1
+2021-01-23 12:41:42:setCoordsEnabled 1 0
+2021-01-23 12:41:42:setCoordsEnabled 2 0
+2021-01-23 12:41:48:eixt calibration
+2021-01-23 12:41:59:软件路径：D:/qt/PC_TouchProject/touch/build-TouchTool-Desktop_Qt_5_7_0_MinGW_32bit-Debug/release
+2021-01-23 12:41:59:@@@@@@@@@ tabWidth = 2.0
+2021-01-23 12:41:59:设置为中文
+2021-01-23 12:41:59:vid=0x14e1, pid=0x3500, path=col01, rid=0xcd, bootloader=0
+2021-01-23 12:41:59:vid=0xaed7, pid=0x0013, path=col01, rid=0xcd, bootloader=0
+2021-01-23 12:41:59:vid=0xaed7, pid=0xfedc, path=col01, rid=0xcd, bootloader=1
+2021-01-23 12:42:01: 有两个参数
+2021-01-23 12:42:01:TouchManager() this:0xac2ead0
+2021-01-23 12:42:01:start upgrade test command thread.
+2021-01-23 12:42:01:TouchManager::TouchManager(): TestThread  = 0xabee388
+2021-01-23 12:42:01:start hogplug service
+2021-01-23 12:42:01:init TouchManager
+2021-01-23 12:42:01:getInstance mTouchManager : 0xac2ead0
+2021-01-23 12:42:01:found 0
+2021-01-23 12:42:01:can not open upgrade file:No such file or directory
+2021-01-23 12:42:01:hotplug thread running
+2021-01-23 12:42:01:aging time = 10
+2021-01-23 12:42:01:command thread running
+2021-01-23 12:42:01:hotplug thread run: 800
+2021-01-23 12:42:01:device_interface_detail_data->DevicePathh = \\?\hid#vid_14e1&pid_3500&col01#9&338c22d8&0&0000#{4d1e55b2-f16f-11cf-88cb-001111000030}
+2021-01-23 12:42:01:try \\?\hid#vid_14e1&pid_3500&col01#9&338c22d8&0&0000#{4d1e55b2-f16f-11cf-88cb-001111000030}
+2021-01-23 12:42:01:hotplug: G-55WHD-QG-C1-W15, B:0, 0x14e1:0x3500 [1][0xac6e4b0]
+2021-01-23 12:42:02:enter calibration
+2021-01-23 12:42:02:getOnboardTestboardCount board count = 8
+2021-01-23 12:42:02:set calibration data: 0
+2021-01-23 12:42:02:setCalibrationPointData: index: 0, tx:480,ty:270,cx:65535,cy:65535,mx:1920,my:1080
+2021-01-23 12:42:02:{"count":250,"finished":0,"index":0}
+2021-01-23 12:42:02:autoTestSwitch = 0
+2021-01-23 12:42:03:Warning: isLockAGC reply failed[254,1], require[4,13]
+2021-01-23 12:42:03:校准模式 = 1
+2021-01-23 12:42:03:校准点的个数 = 4
+2021-01-23 12:42:03:默认校准模式 = 1
+2021-01-23 12:42:03:默认校准点个数 = 4
+2021-01-23 12:42:03:{"count":4,"mode":1,"points":[{"collectX":3085,"collectY":1765,"index":0,"maxX":12225,"maxY":6932,"targetX":3056,"targetY":1733},{"collectX":9130,"collectY":1765,"index":1,"maxX":12225,"maxY":6932,"targetX":9168,"targetY":1733},{"collectX":3085,"collectY":5158,"index":2,"maxX":12225,"maxY":6932,"targetX":3056,"targetY":5199},{"collectX":9130,"collectY":5158,"index":3,"maxX":12225,"maxY":6932,"targetX":9168,"targetY":5199}]}
+2021-01-23 12:42:03:setCoordsEnabled 2 1
+2021-01-23 12:42:03:setCoordsEnabled 1 1
+2021-01-23 12:42:03:setCoordsEnabled 1 0
+2021-01-23 12:42:03:setCoordsEnabled 2 0
+2021-01-23 12:42:17:eixt calibration
+2021-01-23 12:42:43:软件路径：D:/qt/PC_TouchProject/touch/build-TouchTool-Desktop_Qt_5_7_0_MinGW_32bit-Debug/release
+2021-01-23 12:42:43:@@@@@@@@@ tabWidth = 2.0
+2021-01-23 12:42:43:设置为中文
+2021-01-23 12:42:43:vid=0x14e1, pid=0x3500, path=col01, rid=0xcd, bootloader=0
+2021-01-23 12:42:43:vid=0xaed7, pid=0x0013, path=col01, rid=0xcd, bootloader=0
+2021-01-23 12:42:43:vid=0xaed7, pid=0xfedc, path=col01, rid=0xcd, bootloader=1
+2021-01-23 12:42:44: 有两个参数
+2021-01-23 12:42:44:aging time = 10
+2021-01-23 12:42:44:TouchManager() this:0xac03a88
+2021-01-23 12:42:44:start upgrade test command thread.
+2021-01-23 12:42:44:TouchManager::TouchManager(): TestThread  = 0xac075d0
+2021-01-23 12:42:44:start hogplug service
+2021-01-23 12:42:44:init TouchManager
+2021-01-23 12:42:44:getInstance mTouchManager : 0xac03a88
+2021-01-23 12:42:44:found 0
+2021-01-23 12:42:44:can not open upgrade file:No such file or directory
+2021-01-23 12:42:44:hotplug thread running
+2021-01-23 12:42:44:command thread running
+2021-01-23 12:42:44:hotplug thread run: 800
+2021-01-23 12:43:06:device_interface_detail_data->DevicePathh = \\?\hid#vid_aed7&pid_fedc&col01#9&2e2cd191&0&0000#{4d1e55b2-f16f-11cf-88cb-001111000030}
+2021-01-23 12:43:06:try \\?\hid#vid_aed7&pid_fedc&col01#9&2e2cd191&0&0000#{4d1e55b2-f16f-11cf-88cb-001111000030}
+2021-01-23 12:43:08:hotplug:  , B:1, 0xaed7:0xfedc [1][0xac47210]
+2021-01-23 12:43:08:autoTestSwitch = 0
+2021-01-23 12:43:10:unplug####################
+2021-01-23 12:43:11:hotplug:  , B:1, 0xaed7:0xfedc [0][0xac47210]
+2021-01-23 12:43:11:autoTestSwitch = 0
+2021-01-23 12:43:11:device_interface_detail_data->DevicePathh = \\?\hid#vid_14e1&pid_3500&col01#9&338c22d8&0&0000#{4d1e55b2-f16f-11cf-88cb-001111000030}
+2021-01-23 12:43:11:try \\?\hid#vid_14e1&pid_3500&col01#9&338c22d8&0&0000#{4d1e55b2-f16f-11cf-88cb-001111000030}
+2021-01-23 12:43:13:old one device with same usb port, ac47210
+2021-01-23 12:43:13:hotplug: G-55WHD-QG-C1-W15, B:0, 0x14e1:0x3500 [1][0xac47210]
+2021-01-23 12:43:14:enter calibration
+2021-01-23 12:43:14:getOnboardTestboardCount board count = 8
+2021-01-23 12:43:15:set calibration data: 0
+2021-01-23 12:43:15:setCalibrationPointData: index: 0, tx:480,ty:270,cx:65535,cy:65535,mx:1920,my:1080
+2021-01-23 12:43:15:{"count":250,"finished":0,"index":0}
+2021-01-23 12:43:15:autoTestSwitch = 0
+2021-01-23 12:43:15:Warning: isLockAGC reply failed[254,1], require[4,13]
+2021-01-23 12:43:15:校准模式 = 1
+2021-01-23 12:43:15:校准点的个数 = 4
+2021-01-23 12:43:15:默认校准模式 = 1
+2021-01-23 12:43:15:默认校准点个数 = 4
+2021-01-23 12:43:15:{"count":4,"mode":1,"points":[{"collectX":3085,"collectY":1765,"index":0,"maxX":12225,"maxY":6932,"targetX":3056,"targetY":1733},{"collectX":9130,"collectY":1765,"index":1,"maxX":12225,"maxY":6932,"targetX":9168,"targetY":1733},{"collectX":3085,"collectY":5158,"index":2,"maxX":12225,"maxY":6932,"targetX":3056,"targetY":5199},{"collectX":9130,"collectY":5158,"index":3,"maxX":12225,"maxY":6932,"targetX":9168,"targetY":5199}]}
+2021-01-23 12:43:15:setCoordsEnabled 2 1
+2021-01-23 12:43:15:setCoordsEnabled 1 1
+2021-01-23 12:43:15:setCoordsEnabled 1 0
+2021-01-23 12:43:15:setCoordsEnabled 2 0
+2021-01-23 12:43:19:eixt calibration
+2021-01-23 12:43:27:软件路径：D:/qt/PC_TouchProject/touch/build-TouchTool-Desktop_Qt_5_7_0_MinGW_32bit-Debug/release
+2021-01-23 12:43:27:@@@@@@@@@ tabWidth = 2.0
+2021-01-23 12:43:27:设置为中文
+2021-01-23 12:43:27:vid=0x14e1, pid=0x3500, path=col01, rid=0xcd, bootloader=0
+2021-01-23 12:43:27:vid=0xaed7, pid=0x0013, path=col01, rid=0xcd, bootloader=0
+2021-01-23 12:43:27:vid=0xaed7, pid=0xfedc, path=col01, rid=0xcd, bootloader=1
+2021-01-23 12:43:29: 有两个参数
+2021-01-23 12:43:29:TouchManager() this:0xac1e4c0
+2021-01-23 12:43:29:start upgrade test command thread.
+2021-01-23 12:43:29:TouchManager::TouchManager(): TestThread  = 0xac33d78
+2021-01-23 12:43:29:start hogplug service
+2021-01-23 12:43:29:aging time = 10
+2021-01-23 12:43:29:init TouchManager
+2021-01-23 12:43:29:getInstance mTouchManager : 0xac1e4c0
+2021-01-23 12:43:29:found 0
+2021-01-23 12:43:29:can not open upgrade file:No such file or directory
+2021-01-23 12:43:29:hotplug thread running
+2021-01-23 12:43:29:command thread running
+2021-01-23 12:43:29:hotplug thread run: 800
+2021-01-23 12:43:29:device_interface_detail_data->DevicePathh = \\?\hid#vid_14e1&pid_3500&col01#9&338c22d8&0&0000#{4d1e55b2-f16f-11cf-88cb-001111000030}
+2021-01-23 12:43:29:try \\?\hid#vid_14e1&pid_3500&col01#9&338c22d8&0&0000#{4d1e55b2-f16f-11cf-88cb-001111000030}
+2021-01-23 12:43:29:hotplug: G-55WHD-QG-C1-W15, B:0, 0x14e1:0x3500 [1][0xac61d80]
+2021-01-23 12:43:30:enter calibration
+2021-01-23 12:43:30:getOnboardTestboardCount board count = 8
+2021-01-23 12:43:30:set calibration data: 0
+2021-01-23 12:43:30:setCalibrationPointData: index: 0, tx:480,ty:270,cx:65535,cy:65535,mx:1920,my:1080
+2021-01-23 12:43:30:{"count":250,"finished":0,"index":0}
+2021-01-23 12:43:30:autoTestSwitch = 0
+2021-01-23 12:43:30:Warning: isLockAGC reply failed[254,1], require[4,13]
+2021-01-23 12:43:30:校准模式 = 1
+2021-01-23 12:43:30:校准点的个数 = 4
+2021-01-23 12:43:30:默认校准模式 = 1
+2021-01-23 12:43:30:默认校准点个数 = 4
+2021-01-23 12:43:30:{"count":4,"mode":1,"points":[{"collectX":3085,"collectY":1765,"index":0,"maxX":12225,"maxY":6932,"targetX":3056,"targetY":1733},{"collectX":9130,"collectY":1765,"index":1,"maxX":12225,"maxY":6932,"targetX":9168,"targetY":1733},{"collectX":3085,"collectY":5158,"index":2,"maxX":12225,"maxY":6932,"targetX":3056,"targetY":5199},{"collectX":9130,"collectY":5158,"index":3,"maxX":12225,"maxY":6932,"targetX":9168,"targetY":5199}]}
+2021-01-23 12:43:30:setCoordsEnabled 2 1
+2021-01-23 12:43:30:setCoordsEnabled 1 1
+2021-01-23 12:43:30:setCoordsEnabled 1 0
+2021-01-23 12:43:30:setCoordsEnabled 2 0
+2021-01-23 12:43:33:eixt calibration
+2021-01-23 12:43:44:软件路径：D:/qt/PC_TouchProject/touch/build-TouchTool-Desktop_Qt_5_7_0_MinGW_32bit-Debug/release
+2021-01-23 12:43:44:@@@@@@@@@ tabWidth = 2.0
+2021-01-23 12:43:44:设置为中文
+2021-01-23 12:43:44:vid=0x14e1, pid=0x3500, path=col01, rid=0xcd, bootloader=0
+2021-01-23 12:43:44:vid=0xaed7, pid=0x0013, path=col01, rid=0xcd, bootloader=0
+2021-01-23 12:43:44:vid=0xaed7, pid=0xfedc, path=col01, rid=0xcd, bootloader=1
+2021-01-23 12:43:46: 有两个参数
+2021-01-23 12:43:46:aging time = 10
+2021-01-23 12:43:46:TouchManager() this:0x4b36058
+2021-01-23 12:43:46:start upgrade test command thread.
+2021-01-23 12:43:46:TouchManager::TouchManager(): TestThread  = 0xabcd0c8
+2021-01-23 12:43:46:start hogplug service
+2021-01-23 12:43:46:init TouchManager
+2021-01-23 12:43:46:getInstance mTouchManager : 0x4b36058
+2021-01-23 12:43:46:found 0
+2021-01-23 12:43:46:can not open upgrade file:No such file or directory
+2021-01-23 12:43:46:hotplug thread running
+2021-01-23 12:43:46:command thread running
+2021-01-23 12:43:46:hotplug thread run: 800
+2021-01-23 12:43:46:device_interface_detail_data->DevicePathh = \\?\hid#vid_14e1&pid_3500&col01#9&338c22d8&0&0000#{4d1e55b2-f16f-11cf-88cb-001111000030}
+2021-01-23 12:43:46:try \\?\hid#vid_14e1&pid_3500&col01#9&338c22d8&0&0000#{4d1e55b2-f16f-11cf-88cb-001111000030}
+2021-01-23 12:43:46:hotplug: G-55WHD-QG-C1-W15, B:0, 0x14e1:0x3500 [1][0xac939d8]
+2021-01-23 12:43:47:enter calibration
+2021-01-23 12:43:47:getOnboardTestboardCount board count = 8
+2021-01-23 12:43:47:set calibration data: 0
+2021-01-23 12:43:47:setCalibrationPointData: index: 0, tx:480,ty:270,cx:65535,cy:65535,mx:1920,my:1080
+2021-01-23 12:43:47:{"count":250,"finished":0,"index":0}
+2021-01-23 12:43:47:autoTestSwitch = 0
+2021-01-23 12:43:47:Warning: isLockAGC reply failed[254,1], require[4,13]
+2021-01-23 12:43:47:校准模式 = 1
+2021-01-23 12:43:47:校准点的个数 = 4
+2021-01-23 12:43:47:默认校准模式 = 1
+2021-01-23 12:43:47:默认校准点个数 = 4
+2021-01-23 12:43:47:{"count":4,"mode":1,"points":[{"collectX":3085,"collectY":1765,"index":0,"maxX":12225,"maxY":6932,"targetX":3056,"targetY":1733},{"collectX":9130,"collectY":1765,"index":1,"maxX":12225,"maxY":6932,"targetX":9168,"targetY":1733},{"collectX":3085,"collectY":5158,"index":2,"maxX":12225,"maxY":6932,"targetX":3056,"targetY":5199},{"collectX":9130,"collectY":5158,"index":3,"maxX":12225,"maxY":6932,"targetX":9168,"targetY":5199}]}
+2021-01-23 12:43:47:setCoordsEnabled 2 1
+2021-01-23 12:43:47:setCoordsEnabled 1 1
+2021-01-23 12:43:47:setCoordsEnabled 1 0
+2021-01-23 12:43:47:setCoordsEnabled 2 0
+2021-01-23 12:43:54:eixt calibration
+2021-01-23 12:44:33:软件路径：D:/qt/PC_TouchProject/touch/build-TouchTool-Desktop_Qt_5_7_0_MinGW_32bit-Debug/release
+2021-01-23 12:44:33:@@@@@@@@@ tabWidth = 2.0
+2021-01-23 12:44:33:设置为中文
+2021-01-23 12:44:33:vid=0x14e1, pid=0x3500, path=col01, rid=0xcd, bootloader=0
+2021-01-23 12:44:33:vid=0xaed7, pid=0x0013, path=col01, rid=0xcd, bootloader=0
+2021-01-23 12:44:33:vid=0xaed7, pid=0xfedc, path=col01, rid=0xcd, bootloader=1
+2021-01-23 12:44:35: 有两个参数
+2021-01-23 12:44:35:TouchManager() this:0xab4d0e8
+2021-01-23 12:44:35:start upgrade test command thread.
+2021-01-23 12:44:35:TouchManager::TouchManager(): TestThread  = 0xac3c128
+2021-01-23 12:44:35:start hogplug service
+2021-01-23 12:44:35:init TouchManager
+2021-01-23 12:44:35:getInstance mTouchManager : 0xab4d0e8
+2021-01-23 12:44:35:found 0
+2021-01-23 12:44:35:can not open upgrade file:No such file or directory
+2021-01-23 12:44:35:command thread running
+2021-01-23 12:44:35:hotplug thread running
+2021-01-23 12:44:35:aging time = 10
+2021-01-23 12:44:35:hotplug thread run: 800
+2021-01-23 12:44:48:device_interface_detail_data->DevicePathh = \\?\hid#vid_aed7&pid_fedc&col01#9&2e2cd191&0&0000#{4d1e55b2-f16f-11cf-88cb-001111000030}
+2021-01-23 12:44:48:try \\?\hid#vid_aed7&pid_fedc&col01#9&2e2cd191&0&0000#{4d1e55b2-f16f-11cf-88cb-001111000030}
+2021-01-23 12:44:50:hotplug:  , B:1, 0xaed7:0xfedc [1][0xac3a400]
+2021-01-23 12:44:50:autoTestSwitch = 0
+2021-01-23 12:44:52:unplug####################
+2021-01-23 12:44:52:hotplug:  , B:1, 0xaed7:0xfedc [0][0xac3a400]
+2021-01-23 12:44:52:autoTestSwitch = 0
+2021-01-23 12:44:53:device_interface_detail_data->DevicePathh = \\?\hid#vid_14e1&pid_3500&col01#9&338c22d8&0&0000#{4d1e55b2-f16f-11cf-88cb-001111000030}
+2021-01-23 12:44:53:try \\?\hid#vid_14e1&pid_3500&col01#9&338c22d8&0&0000#{4d1e55b2-f16f-11cf-88cb-001111000030}
+2021-01-23 12:44:55:old one device with same usb port, ac3a400
+2021-01-23 12:44:55:hotplug: G-55WHD-QG-C1-W15, B:0, 0x14e1:0x3500 [1][0xac3a400]
+2021-01-23 12:44:56:enter calibration
+2021-01-23 12:44:56:getOnboardTestboardCount board count = 8
+2021-01-23 12:44:56:set calibration data: 0
+2021-01-23 12:44:56:setCalibrationPointData: index: 0, tx:480,ty:270,cx:65535,cy:65535,mx:1920,my:1080
+2021-01-23 12:44:56:{"count":250,"finished":0,"index":0}
+2021-01-23 12:44:56:autoTestSwitch = 0
+2021-01-23 12:44:56:Warning: isLockAGC reply failed[254,1], require[4,13]
+2021-01-23 12:44:56:校准模式 = 1
+2021-01-23 12:44:56:校准点的个数 = 4
+2021-01-23 12:44:56:默认校准模式 = 1
+2021-01-23 12:44:56:默认校准点个数 = 4
+hy�
+h��
+23 12:44:56:{"count":4,"mode":1,"points":[{"collectX":3085,"collectY":1765,"index":0,"maxX":12225,"maxY":6932,"targetX":3056,"targetY":1733},{"collectX":9130,"collectY":1765,"index":1,"maxX":12225,"maxY":6932,"targetX":9168,"targetY":1733},{"collectX":3085,"collectY":5158,"index":2,"maxX":12225,"maxY":6932,"targetX":3056,"targetY":5199},{"collectX":9130,"collectY":5158,"index":3,"maxX":12225,"maxY":6932,"targetX":9168,"targetY":5199}]}
+2021-01-23 12:44:56:setCoordsEnabled 2 1
+2021-01-23 12:44:56:setCoordsEnabled 1 1
+2021-01-23 12:44:56:setCoordsEnabled 1 0
+2021-01-23 12:44:56:setCoordsEnabled 2 0
+2021-01-23 12:45:07:eixt calibration
+2021-01-23 12:55:04:软件路径：D:/qt/PC_TouchProject/touch/build-TouchTool-Desktop_Qt_5_7_0_MinGW_32bit-Debug/release
+2021-01-23 12:55:04:@@@@@@@@@ tabWidth = 2.0
+2021-01-23 12:55:04:设置为中文
+2021-01-23 12:55:04:vid=0x14e1, pid=0x3500, path=col01, rid=0xcd, bootloader=0
+2021-01-23 12:55:04:vid=0xaed7, pid=0x0013, path=col01, rid=0xcd, bootloader=0
+2021-01-23 12:55:04:vid=0xaed7, pid=0xfedc, path=col01, rid=0xcd, bootloader=1
+2021-01-23 12:55:05:TouchManager() this:0x8ba6ae8
+2021-01-23 12:55:05:start upgrade test command thread.
+2021-01-23 12:55:05:TouchManager::TouchManager(): TestThread  = 0x8c154a0
+2021-01-23 12:55:05:start hogplug service
+2021-01-23 12:55:05:init TouchManager
+2021-01-23 12:55:05:getInstance mTouchManager : 0x8ba6ae8
+2021-01-23 12:55:05:found 0
+2021-01-23 12:55:05:command thread running
+2021-01-23 12:55:05:can not open upgrade file:No such file or directory
+2021-01-23 12:55:05:hotplug thread running
+2021-01-23 12:55:05:aging time = 10
+2021-01-23 12:55:05:hotplug thread run: 800
+2021-01-23 12:55:05:device_interface_detail_data->DevicePathh = \\?\hid#vid_14e1&pid_3500&col01#9&338c22d8&0&0000#{4d1e55b2-f16f-11cf-88cb-001111000030}
+2021-01-23 12:55:05:try \\?\hid#vid_14e1&pid_3500&col01#9&338c22d8&0&0000#{4d1e55b2-f16f-11cf-88cb-001111000030}
+2021-01-23 12:55:05:hotplug: G-55WHD-QG-C1-W15, B:0, 0x14e1:0x3500 [1][0x8ba7af0]
+2021-01-23 12:55:05:getOnboardTestboardCount board count = 8
+2021-01-23 12:55:05:autoTestSwitch = 0
+2021-01-23 12:55:46:start upgrade running
+2021-01-23 12:55:46:start upgrade end
+2021-01-23 12:55:46:run upgrade thread
+2021-01-23 12:55:47:Fireware D:/install/weixin/自动下载内容/WeChat Files/wxid_xcvyam3jt8o421/FileStorage/File/2021-01/TouchApp_Encoded.bin
+2021-01-23 12:55:47:version: 0x0001, header size: 18, file size: 97721, fireware count: 1
+2021-01-23 12:55:47:file info crc: 0xcd4a210f
+2021-01-23 12:55:47:1111 m_CrcValue = 0xffffffff
+2021-01-23 12:55:47:@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+2021-01-23 12:55:47:pData[0] = 1,pData[97721] = 126
+2021-01-23 12:55:47:pData[1] = 0,pData[2] = 64
+2021-01-23 12:55:47:pData[3] = 0,pData[4] = 0
+2021-01-23 12:55:47:pData[5] = 0,pData[6] = 0
+2021-01-23 12:55:47:pData[7] = 0,pData[8] = 0
+2021-01-23 12:55:47:@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+2021-01-23 12:55:47:Fireware:Calculate: m_CrcValue = 0x32b5def0
+2021-01-23 12:55:47:#################calculate crc: 0xcd4a210f
+2021-01-23 12:55:47:readSize = 51
+2021-01-23 12:55:47:Fireware 0
+2021-01-23 12:55:47:version: 0x0001, header size: 64, device range [0x0000 - 0x0000]
+2021-01-23 12:55:47:package size: 49, package count: 1993, verify code size: 9
+2021-01-23 12:55:47:fireware->header.verifyCodeSize = 9
+2021-01-23 12:55:47:sizeof(fireware->header.firmwareDataCRC32) = 4
+2021-01-23 12:55:47:sizeof(fireware->header.firmwareDataCRC32) = 4
+2021-01-23 12:55:47:fireware->header.firmwareDataCRC32 = 2554b23c0x
+2021-01-23 12:55:47:header->firmwareDataCRC32 = 2554b23c0x
+2021-01-23 12:55:47:Warning: 2fireware  crc: 0x2554b23c
+2021-01-23 12:55:47:1111 m_CrcValue = 0xffffffff
+2021-01-23 12:55:47:@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+2021-01-23 12:55:47:pData[0] = 1,pData[97657] = 126
+2021-01-23 12:55:47:pData[1] = 32,pData[2] = 155
+2021-01-23 12:55:47:pData[3] = 185,pData[4] = 50
+2021-01-23 12:55:47:pData[5] = 234,pData[6] = 153
+2021-01-23 12:55:47:pData[7] = 161,pData[8] = 174
+2021-01-23 12:55:47:@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+2021-01-23 12:55:47:Fireware:Calculate: m_CrcValue = 0xdaab4dc3
+2021-01-23 12:55:47:unplug####################
+2021-01-23 12:55:47:hotplug: G-55WHD-QG-C1-W15, B:0, 0x14e1:0x3500 [0][0x8ba7af0]
+2021-01-23 12:55:47:autoTestSwitch = 0
+2021-01-23 12:55:49:device_interface_detail_data->DevicePathh = \\?\hid#vid_aed7&pid_fedc&col01#9&2e2cd191&0&0000#{4d1e55b2-f16f-11cf-88cb-001111000030}
+2021-01-23 12:55:49:try \\?\hid#vid_aed7&pid_fedc&col01#9&2e2cd191&0&0000#{4d1e55b2-f16f-11cf-88cb-001111000030}
+2021-01-23 12:55:51:old one device with same usb port, 8ba7af0
+2021-01-23 12:55:51:hotplug:  , B:1, 0xaed7:0xfedc [1][0x8ba7af0]
+2021-01-23 12:55:51:autoTestSwitch = 0
+2021-01-23 12:55:51:uprade: findex = 0,firewarePackage.header.packSize = 49,firewarePackage.header.packCount = 1993
+2021-01-23 12:55:51:start IAP
+2021-01-23 12:55:58:IAP vVerify
+2021-01-23 12:55:59:IAP set finished
+2021-01-23 12:55:59:reset to app
+2021-01-23 12:56:00:unplug####################
+2021-01-23 12:56:00:hotplug:  , B:1, 0xaed7:0xfedc [0][0x8ba7af0]
+2021-01-23 12:56:00:autoTestSwitch = 0
+2021-01-23 12:56:01:upgrade thread end
+2021-01-23 12:56:03:device_interface_detail_data->DevicePathh = \\?\hid#vid_14e1&pid_3500&col01#9&338c22d8&0&0000#{4d1e55b2-f16f-11cf-88cb-001111000030}
+2021-01-23 12:56:03:try \\?\hid#vid_14e1&pid_3500&col01#9&338c22d8&0&0000#{4d1e55b2-f16f-11cf-88cb-001111000030}
+2021-01-23 12:56:05:old one device with same usb port, 8ba7af0
+2021-01-23 12:56:05:hotplug: G-55WHD-QG-C1-W15, B:0, 0x14e1:0x3500 [1][0x8ba7af0]
+2021-01-23 12:56:05:getOnboardTestboardCount board count = 8
+2021-01-23 12:56:05:autoTestSwitch = 0
+2021-01-23 12:56:06:Warning: isLockAGC reply failed[254,1], require[4,13]
+2021-01-23 12:56:06:校准模式 = 2
+2021-01-23 12:56:06:校准点的个数 = 9
+2021-01-23 12:56:06:默认校准模式 = 2
+2021-01-23 12:56:06:默认校准点个数 = 9
+(�H	23 12:56:07:{"count":9,"mode":2,"points":[{"collectX":0,"collectY":0,"index":0,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":1,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":2,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":3,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":4,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":5,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":6,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":7,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":8,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0}]}
+2021-01-23 12:56:07:setCoordsEnabled 2 1
+2021-01-23 12:56:07:setCoordsEnabled 1 1
+2021-01-23 12:56:11:enter calibration
+2021-01-23 12:56:11:set calibration data: 0
+2021-01-23 12:56:11:setCalibrationPointData: index: 0, tx:0,ty:0,cx:65535,cy:65535,mx:1920,my:1080
+2021-01-23 12:56:11:{"count":250,"finished":0,"index":0}
+2021-01-23 12:56:42:eixt calibration
+2021-01-23 12:57:30:hotplug thread end
+2021-01-23 12:57:30:command thread end
+2021-01-23 12:57:30:free 1 devices
+2021-01-23 12:57:30:free: bf4f8e1dffbfe7a3306d4fa5878107f8
+2021-01-23 12:57:30:upgradeThread and testThread and commandThread to be delete
+2021-01-23 12:57:30:TouchTools end
+2021-01-23 12:57:57:软件路径：D:/qt/PC_TouchProject/touch/build-TouchTool-Desktop_Qt_5_7_0_MinGW_32bit-Debug/release
+2021-01-23 12:57:57:@@@@@@@@@ tabWidth = 2.0
+2021-01-23 12:57:57:设置为中文
+2021-01-23 12:57:57:vid=0x14e1, pid=0x3500, path=col01, rid=0xcd, bootloader=0
+2021-01-23 12:57:57:vid=0xaed7, pid=0x0013, path=col01, rid=0xcd, bootloader=0
+2021-01-23 12:57:57:vid=0xaed7, pid=0xfedc, path=col01, rid=0xcd, bootloader=1
+2021-01-23 12:57:59:TouchManager() this:0x8c34448
+2021-01-23 12:57:59:start upgrade test command thread.
+2021-01-23 12:57:59:TouchManager::TouchManager(): TestThread  = 0x8bd5068
+2021-01-23 12:57:59:start hogplug service
+2021-01-23 12:57:59:init TouchManager
+2021-01-23 12:57:59:getInstance mTouchManager : 0x8c34448
+2021-01-23 12:57:59:found 0
+2021-01-23 12:57:59:command thread running
+2021-01-23 12:57:59:hotplug thread running
+2021-01-23 12:57:59:read count 124
+2021-01-23 12:57:59:Upgrade file: file:///D:/install/weixin/自动下载内容/WeChat Files/wxid_xcvyam3jt8o421/FileStorage/File/2021-01/TouchApp_Encoded.bin
+
+2021-01-23 12:57:59:Upgrade file tmp: file:///D:/install/weixin/自动下载内容/WeChat Files/wxid_xcvyam3jt8o421/FileStorage/File/2021-01/TouchApp_Encoded.bin
+2021-01-23 12:57:59:aging time = 10
+2021-01-23 12:57:59:hotplug thread run: 800
+2021-01-23 12:57:59:device_interface_detail_data->DevicePathh = \\?\hid#vid_14e1&pid_3500&col01#9&338c22d8&0&0000#{4d1e55b2-f16f-11cf-88cb-001111000030}
+2021-01-23 12:57:59:try \\?\hid#vid_14e1&pid_3500&col01#9&338c22d8&0&0000#{4d1e55b2-f16f-11cf-88cb-001111000030}
+2021-01-23 12:57:59:hotplug: G-55WHD-QG-C1-W15, B:0, 0x14e1:0x3500 [1][0x8c61ee8]
+2021-01-23 12:57:59:getOnboardTestboardCount board count = 8
+2021-01-23 12:57:59:autoTestSwitch = 0
+2021-01-23 12:58:02:hotplug thread end
+2021-01-23 12:58:02:command thread end
+2021-01-23 12:58:02:free 1 devices
+2021-01-23 12:58:02:free: bf4f8e1dffbfe7a3306d4fa5878107f8
+2021-01-23 12:58:02:upgradeThread and testThread and commandThread to be delete
+2021-01-23 12:58:02:TouchTools end
+2021-01-23 13:06:55:软件路径：D:/qt/PC_TouchProject/touch/build-TouchTool-Desktop_Qt_5_7_0_MinGW_32bit-Debug/release
+2021-01-23 13:06:55:@@@@@@@@@ tabWidth = 2.0
+2021-01-23 13:06:55:设置为中文
+2021-01-23 13:06:55:vid=0x14e1, pid=0x3500, path=col01, rid=0xcd, bootloader=0
+2021-01-23 13:06:55:vid=0xaed7, pid=0x0013, path=col01, rid=0xcd, bootloader=0
+2021-01-23 13:06:55:vid=0xaed7, pid=0xfedc, path=col01, rid=0xcd, bootloader=1
+2021-01-23 13:06:57:TouchManager() this:0xab875d8
+2021-01-23 13:06:57:start upgrade test command thread.
+2021-01-23 13:06:57:TouchManager::TouchManager(): TestThread  = 0xac49580
+2021-01-23 13:06:57:start hogplug service
+2021-01-23 13:06:57:init TouchManager
+2021-01-23 13:06:57:getInstance mTouchManager : 0xab875d8
+2021-01-23 13:06:57:found 0
+2021-01-23 13:06:57:command thread running
+2021-01-23 13:06:57:read count 124
+2021-01-23 13:06:57:Upgrade file: file:///D:/install/weixin/自动下载内容/WeChat Files/wxid_xcvyam3jt8o421/FileStorage/File/2021-01/TouchApp_Encoded.bin
+
+2021-01-23 13:06:57:Upgrade file tmp: file:///D:/install/weixin/自动下载内容/WeChat Files/wxid_xcvyam3jt8o421/FileStorage/File/2021-01/TouchApp_Encoded.bin
+2021-01-23 13:06:57:hotplug thread running
+2021-01-23 13:06:57:aging time = 10
+2021-01-23 13:06:57:hotplug thread run: 800
+2021-01-23 13:06:57:device_interface_detail_data->DevicePathh = \\?\hid#vid_14e1&pid_3500&col01#9&338c22d8&0&0000#{4d1e55b2-f16f-11cf-88cb-001111000030}
+2021-01-23 13:06:57:try \\?\hid#vid_14e1&pid_3500&col01#9&338c22d8&0&0000#{4d1e55b2-f16f-11cf-88cb-001111000030}
+2021-01-23 13:06:57:hotplug: G-55WHD-QG-C1-W15, B:0, 0x14e1:0x3500 [1][0xab8b198]
+2021-01-23 13:06:57:getOnboardTestboardCount board count = 8
+2021-01-23 13:06:57:autoTestSwitch = 0
+2021-01-23 13:06:58:Warning: isLockAGC reply failed[254,1], require[4,13]
+2021-01-23 13:06:58:校准模式 = 2
+2021-01-23 13:06:58:校准点的个数 = 9
+2021-01-23 13:06:58:默认校准模式 = 2
+2021-01-23 13:06:58:默认校准点个数 = 9
+�=��"23 13:06:58:{"count":9,"mode":2,"points":[{"collectX":0,"collectY":0,"index":0,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":1,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":2,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":3,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":4,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":5,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":6,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":7,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":8,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0}]}
+2021-01-23 13:06:58:setCoordsEnabled 2 1
+2021-01-23 13:06:58:setCoordsEnabled 1 1
+2021-01-23 13:07:00:enter calibration
+2021-01-23 13:07:00:set calibration data: 0
+2021-01-23 13:07:00:setCalibrationPointData: index: 0, tx:0,ty:0,cx:65535,cy:65535,mx:1920,my:1080
+2021-01-23 13:07:00:{"count":250,"finished":0,"index":0}
+2021-01-23 13:07:29:eixt calibration
+2021-01-23 13:08:12:start upgrade running
+2021-01-23 13:08:12:start upgrade end
+2021-01-23 13:08:12:run upgrade thread
+2021-01-23 13:08:12:Fireware D:/qt/FirmwareBin/小房间地上55/G-55WHD-QG-C1-W15.bin
+2021-01-23 13:08:12:version: 0x0001, header size: 18, file size: 90567, fireware count: 1
+2021-01-23 13:08:12:file info crc: 0x54ad5ea6
+2021-01-23 13:08:12:1111 m_CrcValue = 0xffffffff
+2021-01-23 13:08:12:@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+2021-01-23 13:08:12:pData[0] = 1,pData[90567] = 149
+2021-01-23 13:08:12:pData[1] = 0,pData[2] = 64
+2021-01-23 13:08:12:pData[3] = 0,pData[4] = 0
+2021-01-23 13:08:12:pData[5] = 0,pData[6] = 0
+2021-01-23 13:08:12:pData[7] = 0,pData[8] = 0
+2021-01-23 13:08:12:@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+2021-01-23 13:08:12:Fireware:Calculate: m_CrcValue = 0xab52a159
+2021-01-23 13:08:12:#################calculate crc: 0x54ad5ea6
+2021-01-23 13:08:12:readSize = 51
+2021-01-23 13:08:12:Fireware 0
+2021-01-23 13:08:12:version: 0x0001, header size: 64, device range [0x0000 - 0x0000]
+2021-01-23 13:08:12:package size: 49, package count: 1847, verify code size: 9
+2021-01-23 13:08:12:fireware->header.verifyCodeSize = 9
+2021-01-23 13:08:12:sizeof(fireware->header.firmwareDataCRC32) = 4
+2021-01-23 13:08:12:sizeof(fireware->header.firmwareDataCRC32) = 4
+2021-01-23 13:08:12:fireware->header.firmwareDataCRC32 = edfa9a140x
+2021-01-23 13:08:12:header->firmwareDataCRC32 = edfa9a140x
+2021-01-23 13:08:12:Warning: 2fireware  crc: 0xedfa9a14
+2021-01-23 13:08:12:1111 m_CrcValue = 0xffffffff
+2021-01-23 13:08:12:@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+2021-01-23 13:08:12:pData[0] = 81,pData[90503] = 149
+2021-01-23 13:08:12:pData[1] = 55,pData[2] = 171
+2021-01-23 13:08:12:pData[3] = 201,pData[4] = 38
+2021-01-23 13:08:12:pData[5] = 250,pData[6] = 169
+2021-01-23 13:08:12:pData[7] = 177,pData[8] = 88
+2021-01-23 13:08:12:@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+2021-01-23 13:08:12:Fireware:Calculate: m_CrcValue = 0x120565eb
+2021-01-23 13:08:12:unplug####################
+2021-01-23 13:08:12:hotplug: G-55WHD-QG-C1-W15, B:0, 0x14e1:0x3500 [0][0xab8b198]
+2021-01-23 13:08:12:autoTestSwitch = 0
+2021-01-23 13:08:14:device_interface_detail_data->DevicePathh = \\?\hid#vid_aed7&pid_fedc&col01#9&2e2cd191&0&0000#{4d1e55b2-f16f-11cf-88cb-001111000030}
+2021-01-23 13:08:14:try \\?\hid#vid_aed7&pid_fedc&col01#9&2e2cd191&0&0000#{4d1e55b2-f16f-11cf-88cb-001111000030}
+2021-01-23 13:08:16:old one device with same usb port, ab8b198
+2021-01-23 13:08:16:hotplug:  , B:1, 0xaed7:0xfedc [1][0xab8b198]
+2021-01-23 13:08:16:autoTestSwitch = 0
+2021-01-23 13:08:16:uprade: findex = 0,firewarePackage.header.packSize = 49,firewarePackage.header.packCount = 1847
+2021-01-23 13:08:16:start IAP
+2021-01-23 13:08:23:IAP vVerify
+2021-01-23 13:08:24:IAP set finished
+2021-01-23 13:08:24:reset to app
+2021-01-23 13:08:24:unplug####################
+2021-01-23 13:08:24:hotplug:  , B:1, 0xaed7:0xfedc [0][0xab8b198]
+2021-01-23 13:08:24:autoTestSwitch = 0
+2021-01-23 13:08:26:upgrade thread end
+2021-01-23 13:08:27:device_interface_detail_data->DevicePathh = \\?\hid#vid_14e1&pid_3500&col01#9&338c22d8&0&0000#{4d1e55b2-f16f-11cf-88cb-001111000030}
+2021-01-23 13:08:27:try \\?\hid#vid_14e1&pid_3500&col01#9&338c22d8&0&0000#{4d1e55b2-f16f-11cf-88cb-001111000030}
+2021-01-23 13:08:29:old one device with same usb port, ab8b198
+2021-01-23 13:08:29:hotplug: G-55WHD-QG-C1-W15, B:0, 0x14e1:0x3500 [1][0xab8b198]
+2021-01-23 13:08:29:getOnboardTestboardCount board count = 8
+2021-01-23 13:08:29:Warning: isLockAGC reply failed[254,1], require[4,13]
+2021-01-23 13:08:29:autoTestSwitch = 0
+2021-01-23 13:08:29:校准模式 = 1
+2021-01-23 13:08:29:校准点的个数 = 4
+2021-01-23 13:08:29:默认校准模式 = 1
+2021-01-23 13:08:29:默认校准点个数 = 4
+2021-01-23 13:08:30:{"count":4,"mode":1,"points":[{"collectX":3085,"collectY":1765,"index":0,"maxX":12225,"maxY":6932,"targetX":3056,"targetY":1733},{"collectX":9130,"collectY":1765,"index":1,"maxX":12225,"maxY":6932,"targetX":9168,"targetY":1733},{"collectX":3085,"collectY":5158,"index":2,"maxX":12225,"maxY":6932,"targetX":3056,"targetY":5199},{"collectX":9130,"collectY":5158,"index":3,"maxX":12225,"maxY":6932,"targetX":9168,"targetY":5199}]}
+2021-01-23 13:08:46:Warning: isLockAGC reply failed[254,1], require[4,13]
+2021-01-23 13:08:46:校准模式 = 1
+2021-01-23 13:08:46:校准点的个数 = 4
+2021-01-23 13:08:46:默认校准模式 = 1
+2021-01-23 13:08:46:默认校准点个数 = 4
+2021-01-23 13:08:46:{"count":4,"mode":1,"points":[{"collectX":3085,"collectY":1765,"index":0,"maxX":12225,"maxY":6932,"targetX":3056,"targetY":1733},{"collectX":9130,"collectY":1765,"index":1,"maxX":12225,"maxY":6932,"targetX":9168,"targetY":1733},{"collectX":3085,"collectY":5158,"index":2,"maxX":12225,"maxY":6932,"targetX":3056,"targetY":5199},{"collectX":9130,"collectY":5158,"index":3,"maxX":12225,"maxY":6932,"targetX":9168,"targetY":5199}]}
+2021-01-23 13:08:47:enter calibration
+2021-01-23 13:08:47:set calibration data: 0
+2021-01-23 13:08:47:setCalibrationPointData: index: 0, tx:480,ty:270,cx:65535,cy:65535,mx:1920,my:1080
+2021-01-23 13:08:47:{"count":250,"finished":0,"index":0}
+2021-01-23 13:08:48:set calibration data: 0
+2021-01-23 13:08:48:setCalibrationPointData: index: 0, tx:469,ty:264,cx:65535,cy:65535,mx:1920,my:1080
+2021-01-23 13:08:48:set calibration data: 0
+2021-01-23 13:08:48:setCalibrationPointData: index: 0, tx:469,ty:264,cx:65535,cy:65535,mx:1920,my:1080
+2021-01-23 13:08:48:set calibration data: 0
+2021-01-23 13:08:48:setCalibrationPointData: index: 0, tx:457,ty:258,cx:65535,cy:65535,mx:1920,my:1080
+2021-01-23 13:08:48:set calibration data: 0
+2021-01-23 13:08:48:setCalibrationPointData: index: 0, tx:457,ty:258,cx:65535,cy:65535,mx:1920,my:1080
+2021-01-23 13:08:48:set calibration data: 0
+2021-01-23 13:08:48:setCalibrationPointData: index: 0, tx:419,ty:237,cx:65535,cy:65535,mx:1920,my:1080
+2021-01-23 13:08:48:set calibration data: 0
+2021-01-23 13:08:48:setCalibrationPointData: index: 0, tx:419,ty:237,cx:65535,cy:65535,mx:1920,my:1080
+2021-01-23 13:08:48:set calibration data: 0
+2021-01-23 13:08:48:setCalibrationPointData: index: 0, tx:394,ty:226,cx:65535,cy:65535,mx:1920,my:1080
+2021-01-23 13:08:48:set calibration data: 0
+2021-01-23 13:08:48:setCalibrationPointData: index: 0, tx:394,ty:226,cx:65535,cy:65535,mx:1920,my:1080
+2021-01-23 13:08:48:set calibration data: 0
+2021-01-23 13:08:48:setCalibrationPointData: index: 0, tx:374,ty:219,cx:65535,cy:65535,mx:1920,my:1080
+2021-01-23 13:08:48:set calibration data: 0
+2021-01-23 13:08:48:setCalibrationPointData: index: 0, tx:374,ty:219,cx:65535,cy:65535,mx:1920,my:1080
+2021-01-23 13:08:48:set calibration data: 0
+2021-01-23 13:08:48:setCalibrationPointData: index: 0, tx:373,ty:219,cx:65535,cy:65535,mx:1920,my:1080
+2021-01-23 13:08:48:set calibration data: 0
+2021-01-23 13:08:48:setCalibrationPointData: index: 0, tx:373,ty:219,cx:65535,cy:65535,mx:1920,my:1080
+2021-01-23 13:08:49:set calibration data: 0
+2021-01-23 13:08:49:setCalibrationPointData: index: 0, tx:373,ty:154,cx:65535,cy:65535,mx:1920,my:1080
+2021-01-23 13:08:51:set calibration data: 0
+2021-01-23 13:08:51:setCalibrationPointData: index: 0, tx:312,ty:154,cx:65535,cy:65535,mx:1920,my:1080
+2021-01-23 13:08:53:eixt calibration
+2021-01-23 13:08:57:hotplug thread end
+2021-01-23 13:08:57:command thread end
+2021-01-23 13:08:57:free 1 devices
+2021-01-23 13:08:57:free: bf4f8e1dffbfe7a3306d4fa5878107f8
+2021-01-23 13:08:57:upgradeThread and testThread and commandThread to be delete
+2021-01-23 13:08:57:TouchTools end
+2021-01-23 13:09:08:软件路径：D:/qt/PC_TouchProject/touch/build-TouchTool-Desktop_Qt_5_7_0_MinGW_32bit-Debug/release
+2021-01-23 13:09:08:@@@@@@@@@ tabWidth = 2.0
+2021-01-23 13:09:08:设置为中文
+2021-01-23 13:09:08:vid=0x14e1, pid=0x3500, path=col01, rid=0xcd, bootloader=0
+2021-01-23 13:09:08:vid=0xaed7, pid=0x0013, path=col01, rid=0xcd, bootloader=0
+2021-01-23 13:09:08:vid=0xaed7, pid=0xfedc, path=col01, rid=0xcd, bootloader=1
+2021-01-23 13:09:10:TouchManager() this:0xabe0be0
+2021-01-23 13:09:10:start upgrade test command thread.
+2021-01-23 13:09:10:TouchManager::TouchManager(): TestThread  = 0xaca8270
+2021-01-23 13:09:10:start hogplug service
+2021-01-23 13:09:10:init TouchManager
+2021-01-23 13:09:10:getInstance mTouchManager : 0xabe0be0
+2021-01-23 13:09:10:command thread running
+2021-01-23 13:09:10:found 0
+2021-01-23 13:09:10:hotplug thread running
+2021-01-23 13:09:10:read count 190
+2021-01-23 13:09:10:Upgrade file: file:///D:/install/weixin/自动下载内容/WeChat Files/wxid_xcvyam3jt8o421/FileStorage/File/2021-01/TouchApp_Encoded.bin
+file:///D:/qt/FirmwareBin/小房间地上55/G-55WHD-QG-C1-W15.bin
+
+2021-01-23 13:09:10:Upgrade file tmp: file:///D:/install/weixin/自动下载内容/WeChat Files/wxid_xcvyam3jt8o421/FileStorage/File/2021-01/TouchApp_Encoded.bin
+2021-01-23 13:09:10:Upgrade file tmp: file:///D:/qt/FirmwareBin/小房间地上55/G-55WHD-QG-C1-W15.bin
+2021-01-23 13:09:10:aging time = 10
+2021-01-23 13:09:10:hotplug thread run: 800
+2021-01-23 13:09:10:device_interface_detail_data->DevicePathh = \\?\hid#vid_14e1&pid_3500&col01#9&338c22d8&0&0000#{4d1e55b2-f16f-11cf-88cb-001111000030}
+2021-01-23 13:09:10:try \\?\hid#vid_14e1&pid_3500&col01#9&338c22d8&0&0000#{4d1e55b2-f16f-11cf-88cb-001111000030}
+2021-01-23 13:09:10:hotplug: G-55WHD-QG-C1-W15, B:0, 0x14e1:0x3500 [1][0xabf9898]
+2021-01-23 13:09:10:getOnboardTestboardCount board count = 8
+2021-01-23 13:09:10:autoTestSwitch = 0
+2021-01-23 13:09:13:start upgrade running
+2021-01-23 13:09:13:start upgrade end
+2021-01-23 13:09:13:run upgrade thread
+2021-01-23 13:09:13:Fireware D:/install/weixin/自动下载内容/WeChat Files/wxid_xcvyam3jt8o421/FileStorage/File/2021-01/TouchApp_Encoded.bin
+2021-01-23 13:09:13:version: 0x0001, header size: 18, file size: 97721, fireware count: 1
+2021-01-23 13:09:13:file info crc: 0xcd4a210f
+2021-01-23 13:09:13:1111 m_CrcValue = 0xffffffff
+2021-01-23 13:09:13:@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+2021-01-23 13:09:13:pData[0] = 1,pData[97721] = 126
+2021-01-23 13:09:13:pData[1] = 0,pData[2] = 64
+2021-01-23 13:09:13:pData[3] = 0,pData[4] = 0
+2021-01-23 13:09:13:pData[5] = 0,pData[6] = 0
+2021-01-23 13:09:13:pData[7] = 0,pData[8] = 0
+2021-01-23 13:09:13:@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+2021-01-23 13:09:13:Fireware:Calculate: m_CrcValue = 0x32b5def0
+2021-01-23 13:09:13:#################calculate crc: 0xcd4a210f
+2021-01-23 13:09:13:readSize = 51
+2021-01-23 13:09:13:Fireware 0
+2021-01-23 13:09:13:version: 0x0001, header size: 64, device range [0x0000 - 0x0000]
+2021-01-23 13:09:13:package size: 49, package count: 1993, verify code size: 9
+2021-01-23 13:09:13:fireware->header.verifyCodeSize = 9
+2021-01-23 13:09:13:sizeof(fireware->header.firmwareDataCRC32) = 4
+2021-01-23 13:09:13:sizeof(fireware->header.firmwareDataCRC32) = 4
+2021-01-23 13:09:13:fireware->header.firmwareDataCRC32 = 2554b23c0x
+2021-01-23 13:09:13:header->firmwareDataCRC32 = 2554b23c0x
+2021-01-23 13:09:13:Warning: 2fireware  crc: 0x2554b23c
+2021-01-23 13:09:13:1111 m_CrcValue = 0xffffffff
+2021-01-23 13:09:13:@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+2021-01-23 13:09:13:pData[0] = 1,pData[97657] = 126
+2021-01-23 13:09:13:pData[1] = 32,pData[2] = 155
+2021-01-23 13:09:13:pData[3] = 185,pData[4] = 50
+2021-01-23 13:09:13:pData[5] = 234,pData[6] = 153
+2021-01-23 13:09:13:pData[7] = 161,pData[8] = 174
+2021-01-23 13:09:13:@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+2021-01-23 13:09:13:Fireware:Calculate: m_CrcValue = 0xdaab4dc3
+2021-01-23 13:09:14:unplug####################
+2021-01-23 13:09:14:hotplug: G-55WHD-QG-C1-W15, B:0, 0x14e1:0x3500 [0][0xabf9898]
+2021-01-23 13:09:14:autoTestSwitch = 0
+2021-01-23 13:09:16:device_interface_detail_data->DevicePathh = \\?\hid#vid_aed7&pid_fedc&col01#9&2e2cd191&0&0000#{4d1e55b2-f16f-11cf-88cb-001111000030}
+2021-01-23 13:09:16:try \\?\hid#vid_aed7&pid_fedc&col01#9&2e2cd191&0&0000#{4d1e55b2-f16f-11cf-88cb-001111000030}
+2021-01-23 13:09:18:old one device with same usb port, abf9898
+2021-01-23 13:09:18:hotplug:  , B:1, 0xaed7:0xfedc [1][0xabf9898]
+2021-01-23 13:09:18:autoTestSwitch = 0
+2021-01-23 13:09:18:uprade: findex = 0,firewarePackage.header.packSize = 49,firewarePackage.header.packCount = 1993
+2021-01-23 13:09:18:start IAP
+2021-01-23 13:09:25:IAP vVerify
+2021-01-23 13:09:25:IAP set finished
+2021-01-23 13:09:26:reset to app
+2021-01-23 13:09:26:unplug####################
+2021-01-23 13:09:26:hotplug:  , B:1, 0xaed7:0xfedc [0][0xabf9898]
+2021-01-23 13:09:26:autoTestSwitch = 0
+2021-01-23 13:09:28:upgrade thread end
+2021-01-23 13:09:30:device_interface_detail_data->DevicePathh = \\?\hid#vid_14e1&pid_3500&col01#9&338c22d8&0&0000#{4d1e55b2-f16f-11cf-88cb-001111000030}
+2021-01-23 13:09:30:try \\?\hid#vid_14e1&pid_3500&col01#9&338c22d8&0&0000#{4d1e55b2-f16f-11cf-88cb-001111000030}
+2021-01-23 13:09:31:old one device with same usb port, abf9898
+2021-01-23 13:09:31:hotplug: G-55WHD-QG-C1-W15, B:0, 0x14e1:0x3500 [1][0xabf9898]
+2021-01-23 13:09:31:getOnboardTestboardCount board count = 8
+2021-01-23 13:09:31:autoTestSwitch = 0
+2021-01-23 13:09:37:Warning: isLockAGC reply failed[254,1], require[4,13]
+2021-01-23 13:09:37:校准模式 = 2
+2021-01-23 13:09:37:校准点的个数 = 9
+2021-01-23 13:09:37:默认校准模式 = 2
+2021-01-23 13:09:37:默认校准点个数 = 9
+�8��=23 13:09:37:{"count":9,"mode":2,"points":[{"collectX":0,"collectY":0,"index":0,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":1,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":2,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":3,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":4,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":5,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":6,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":7,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":8,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0}]}
+2021-01-23 13:09:37:setCoordsEnabled 2 1
+2021-01-23 13:09:37:setCoordsEnabled 1 1
+2021-01-23 13:09:39:enter calibration
+2021-01-23 13:09:39:set calibration data: 0
+2021-01-23 13:09:39:setCalibrationPointData: index: 0, tx:0,ty:0,cx:65535,cy:65535,mx:1920,my:1080
+2021-01-23 13:09:39:{"count":250,"finished":0,"index":0}
+2021-01-23 13:09:42:eixt calibration
+2021-01-23 13:09:49:hotplug thread end
+2021-01-23 13:09:49:command thread end
+2021-01-23 13:09:49:free 1 devices
+2021-01-23 13:09:49:free: bf4f8e1dffbfe7a3306d4fa5878107f8
+2021-01-23 13:09:49:upgradeThread and testThread and commandThread to be delete
+2021-01-23 13:09:49:TouchTools end
+2021-01-23 13:10:36:软件路径：D:/qt/PC_TouchProject/touch/build-TouchTool-Desktop_Qt_5_7_0_MinGW_32bit-Debug/release
+2021-01-23 13:10:36:@@@@@@@@@ tabWidth = 2.0
+2021-01-23 13:10:36:设置为中文
+2021-01-23 13:10:36:vid=0x14e1, pid=0x3500, path=col01, rid=0xcd, bootloader=0
+2021-01-23 13:10:36:vid=0xaed7, pid=0x0013, path=col01, rid=0xcd, bootloader=0
+2021-01-23 13:10:36:vid=0xaed7, pid=0xfedc, path=col01, rid=0xcd, bootloader=1
+2021-01-23 13:10:38:TouchManager() this:0xab7a588
+2021-01-23 13:10:38:start upgrade test command thread.
+2021-01-23 13:10:38:TouchManager::TouchManager(): TestThread  = 0xabf7f40
+2021-01-23 13:10:38:start hogplug service
+2021-01-23 13:10:38:init TouchManager
+2021-01-23 13:10:38:getInstance mTouchManager : 0xab7a588
+2021-01-23 13:10:38:found 0
+2021-01-23 13:10:38:command thread running
+2021-01-23 13:10:38:read count 190
+2021-01-23 13:10:38:Upgrade file: file:///D:/install/weixin/自动下载内容/WeChat Files/wxid_xcvyam3jt8o421/FileStorage/File/2021-01/TouchApp_Encoded.bin
+file:///D:/qt/FirmwareBin/小房间地上55/G-55WHD-QG-C1-W15.bin
+
+2021-01-23 13:10:38:Upgrade file tmp: file:///D:/install/weixin/自动下载内容/WeChat Files/wxid_xcvyam3jt8o421/FileStorage/File/2021-01/TouchApp_Encoded.bin
+2021-01-23 13:10:38:hotplug thread running
+2021-01-23 13:10:38:Upgrade file tmp: file:///D:/qt/FirmwareBin/小房间地上55/G-55WHD-QG-C1-W15.bin
+2021-01-23 13:10:38:aging time = 10
+2021-01-23 13:10:38:hotplug thread run: 800
+2021-01-23 13:10:38:device_interface_detail_data->DevicePathh = \\?\hid#vid_14e1&pid_3500&col01#9&338c22d8&0&0000#{4d1e55b2-f16f-11cf-88cb-001111000030}
+2021-01-23 13:10:38:try \\?\hid#vid_14e1&pid_3500&col01#9&338c22d8&0&0000#{4d1e55b2-f16f-11cf-88cb-001111000030}
+2021-01-23 13:10:38:hotplug: G-55WHD-QG-C1-W15, B:0, 0x14e1:0x3500 [1][0xabb7d50]
+2021-01-23 13:10:38:getOnboardTestboardCount board count = 8
+2021-01-23 13:10:38:autoTestSwitch = 0
+2021-01-23 13:10:40:Warning: isLockAGC reply failed[254,1], require[4,13]
+2021-01-23 13:10:40:校准模式 = 2
+2021-01-23 13:10:40:校准点的个数 = 9
+2021-01-23 13:10:40:默认校准模式 = 2
+2021-01-23 13:10:40:默认校准点个数 = 9
+��23 13:10:40:{"count":9,"mode":2,"points":[{"collectX":0,"collectY":0,"index":0,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":1,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":2,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":3,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":4,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":5,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":6,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":7,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":8,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0}]}
+2021-01-23 13:10:40:setCoordsEnabled 2 1
+2021-01-23 13:10:40:setCoordsEnabled 1 1
+2021-01-23 13:10:42:hotplug thread end
+2021-01-23 13:10:42:command thread end
+2021-01-23 13:10:42:free 1 devices
+2021-01-23 13:10:42:free: bf4f8e1dffbfe7a3306d4fa5878107f8
+2021-01-23 13:10:42:upgradeThread and testThread and commandThread to be delete
+2021-01-23 13:10:42:TouchTools end
+2021-01-23 14:54:08:软件路径：D:/qt/PC_TouchProject/touch/build-TouchTool-Desktop_Qt_5_7_0_MinGW_32bit-Debug/release
+2021-01-23 14:54:08:@@@@@@@@@ tabWidth = 2.0
+2021-01-23 14:54:08:设置为中文
+2021-01-23 14:54:08:vid=0x14e1, pid=0x3500, path=col01, rid=0xcd, bootloader=0
+2021-01-23 14:54:08:vid=0xaed7, pid=0x0013, path=col01, rid=0xcd, bootloader=0
+2021-01-23 14:54:08:vid=0xaed7, pid=0xfedc, path=col01, rid=0xcd, bootloader=1
+2021-01-23 14:54:09:TouchManager() this:0xb076000
+2021-01-23 14:54:09:start upgrade test command thread.
+2021-01-23 14:54:09:TouchManager::TouchManager(): TestThread  = 0xafe4f18
+2021-01-23 14:54:09:start hogplug service
+2021-01-23 14:54:09:init TouchManager
+2021-01-23 14:54:09:command thread running
+2021-01-23 14:54:09:getInstance mTouchManager : 0xb076000
+2021-01-23 14:54:09:found 0
+2021-01-23 14:54:09:read count 190
+2021-01-23 14:54:09:Upgrade file: file:///D:/install/weixin/自动下载内容/WeChat Files/wxid_xcvyam3jt8o421/FileStorage/File/2021-01/TouchApp_Encoded.bin
+file:///D:/qt/FirmwareBin/小房间地上55/G-55WHD-QG-C1-W15.bin
+
+2021-01-23 14:54:09:hotplug thread running
+2021-01-23 14:54:09:Upgrade file tmp: file:///D:/install/weixin/自动下载内容/WeChat Files/wxid_xcvyam3jt8o421/FileStorage/File/2021-01/TouchApp_Encoded.bin
+2021-01-23 14:54:09:Upgrade file tmp: file:///D:/qt/FirmwareBin/小房间地上55/G-55WHD-QG-C1-W15.bin
+2021-01-23 14:54:09:aging time = 10
+2021-01-23 14:54:09:hotplug thread run: 800
+2021-01-23 14:54:09:device_interface_detail_data->DevicePathh = \\?\hid#vid_14e1&pid_3500&col01#9&338c22d8&0&0000#{4d1e55b2-f16f-11cf-88cb-001111000030}
+2021-01-23 14:54:09:try \\?\hid#vid_14e1&pid_3500&col01#9&338c22d8&0&0000#{4d1e55b2-f16f-11cf-88cb-001111000030}
+2021-01-23 14:54:09:hotplug: G-55WHD-QG-C1-W15, B:0, 0x14e1:0x3500 [1][0xb083460]
+2021-01-23 14:54:09:getOnboardTestboardCount board count = 8
+2021-01-23 14:54:09:autoTestSwitch = 0
+2021-01-23 14:54:16:Warning: isLockAGC reply failed[254,1], require[4,13]
+2021-01-23 14:54:16:校准模式 = 2
+2021-01-23 14:54:16:校准点的个数 = 9
+2021-01-23 14:54:16:默认校准模式 = 2
+2021-01-23 14:54:16:默认校准点个数 = 9
+����E23 14:54:16:{"count":9,"mode":2,"points":[{"collectX":0,"collectY":0,"index":0,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":1,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":2,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":3,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":4,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":5,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":6,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":7,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":8,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0}]}
+2021-01-23 14:54:16:setCoordsEnabled 2 1
+2021-01-23 14:54:16:setCoordsEnabled 1 1
+2021-01-23 14:54:19:hotplug thread end
+2021-01-23 14:54:19:command thread end
+2021-01-23 14:54:19:free 1 devices
+2021-01-23 14:54:19:free: bf4f8e1dffbfe7a3306d4fa5878107f8
+2021-01-23 14:54:19:upgradeThread and testThread and commandThread to be delete
+2021-01-23 14:54:19:TouchTools end
+2021-01-23 14:55:12:软件路径：D:/qt/PC_TouchProject/touch/build-TouchTool-Desktop_Qt_5_7_0_MinGW_32bit-Debug/release
+2021-01-23 14:55:12:@@@@@@@@@ tabWidth = 2.0
+2021-01-23 14:55:12:设置为中文
+2021-01-23 14:55:12:vid=0x14e1, pid=0x3500, path=col01, rid=0xcd, bootloader=0
+2021-01-23 14:55:12:vid=0xaed7, pid=0x0013, path=col01, rid=0xcd, bootloader=0
+2021-01-23 14:55:12:vid=0xaed7, pid=0xfedc, path=col01, rid=0xcd, bootloader=1
+2021-01-23 14:55:13:TouchManager() this:0xaeea380
+2021-01-23 14:55:13:start upgrade test command thread.
+2021-01-23 14:55:13:TouchManager::TouchManager(): TestThread  = 0xaf560b0
+2021-01-23 14:55:13:start hogplug service
+2021-01-23 14:55:13:init TouchManager
+2021-01-23 14:55:13:getInstance mTouchManager : 0xaeea380
+2021-01-23 14:55:13:found 0
+2021-01-23 14:55:13:read count 190
+2021-01-23 14:55:13:command thread running
+2021-01-23 14:55:13:Upgrade file: file:///D:/install/weixin/自动下载内容/WeChat Files/wxid_xcvyam3jt8o421/FileStorage/File/2021-01/TouchApp_Encoded.bin
+file:///D:/qt/FirmwareBin/小房间地上55/G-55WHD-QG-C1-W15.bin
+
+2021-01-23 14:55:13:Upgrade file tmp: file:///D:/install/weixin/自动下载内容/WeChat Files/wxid_xcvyam3jt8o421/FileStorage/File/2021-01/TouchApp_Encoded.bin
+2021-01-23 14:55:13:Upgrade file tmp: file:///D:/qt/FirmwareBin/小房间地上55/G-55WHD-QG-C1-W15.bin
+2021-01-23 14:55:13:hotplug thread running
+2021-01-23 14:55:13:aging time = 10
+2021-01-23 14:55:13:hotplug thread run: 800
+2021-01-23 14:55:13:device_interface_detail_data->DevicePathh = \\?\hid#vid_14e1&pid_3500&col01#9&338c22d8&0&0000#{4d1e55b2-f16f-11cf-88cb-001111000030}
+2021-01-23 14:55:13:try \\?\hid#vid_14e1&pid_3500&col01#9&338c22d8&0&0000#{4d1e55b2-f16f-11cf-88cb-001111000030}
+2021-01-23 14:55:13:hotplug: G-55WHD-QG-C1-W15, B:0, 0x14e1:0x3500 [1][0xafc5280]
+2021-01-23 14:55:14:getOnboardTestboardCount board count = 8
+2021-01-23 14:55:14:autoTestSwitch = 0
+2021-01-23 14:55:14:Warning: isLockAGC reply failed[254,1], require[4,13]
+2021-01-23 14:55:14:校准模式 = 2
+2021-01-23 14:55:14:校准点的个数 = 9
+2021-01-23 14:55:14:默认校准模式 = 2
+2021-01-23 14:55:14:默认校准点个数 = 9
+��G@�G23 14:55:14:{"count":9,"mode":2,"points":[{"collectX":0,"collectY":0,"index":0,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":1,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":2,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":3,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":4,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":5,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":6,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":7,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":8,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0}]}
+2021-01-23 14:55:14:setCoordsEnabled 2 1
+2021-01-23 14:55:14:setCoordsEnabled 1 1
+2021-01-23 14:55:21:enter calibration
+2021-01-23 14:55:21:set calibration data: 0
+2021-01-23 14:55:21:setCalibrationPointData: index: 0, tx:0,ty:0,cx:65535,cy:65535,mx:1920,my:1080
+2021-01-23 14:55:21:{"count":250,"finished":0,"index":0}
+2021-01-23 14:55:23:eixt calibration
+2021-01-23 14:56:03:软件路径：D:/qt/PC_TouchProject/touch/build-TouchTool-Desktop_Qt_5_7_0_MinGW_32bit-Debug/release
+2021-01-23 14:56:03:@@@@@@@@@ tabWidth = 2.0
+2021-01-23 14:56:03:设置为中文
+2021-01-23 14:56:03:vid=0x14e1, pid=0x3500, path=col01, rid=0xcd, bootloader=0
+2021-01-23 14:56:03:vid=0xaed7, pid=0x0013, path=col01, rid=0xcd, bootloader=0
+2021-01-23 14:56:03:vid=0xaed7, pid=0xfedc, path=col01, rid=0xcd, bootloader=1
+2021-01-23 14:56:04:TouchManager() this:0xac74a70
+2021-01-23 14:56:04:start upgrade test command thread.
+2021-01-23 14:56:04:TouchManager::TouchManager(): TestThread  = 0xac051a0
+2021-01-23 14:56:04:start hogplug service
+2021-01-23 14:56:04:init TouchManager
+2021-01-23 14:56:04:getInstance mTouchManager : 0xac74a70
+2021-01-23 14:56:04:found 0
+2021-01-23 14:56:04:command thread running
+2021-01-23 14:56:04:read count 190
+2021-01-23 14:56:04:Upgrade file: file:///D:/install/weixin/自动下载内容/WeChat Files/wxid_xcvyam3jt8o421/FileStorage/File/2021-01/TouchApp_Encoded.bin
+file:///D:/qt/FirmwareBin/小房间地上55/G-55WHD-QG-C1-W15.bin
+
+2021-01-23 14:56:04:Upgrade file tmp: file:///D:/install/weixin/自动下载内容/WeChat Files/wxid_xcvyam3jt8o421/FileStorage/File/2021-01/TouchApp_Encoded.bin
+2021-01-23 14:56:04:hotplug thread running
+2021-01-23 14:56:04:Upgrade file tmp: file:///D:/qt/FirmwareBin/小房间地上55/G-55WHD-QG-C1-W15.bin
+2021-01-23 14:56:04:aging time = 10
+2021-01-23 14:56:04:hotplug thread run: 800
+2021-01-23 14:56:04:device_interface_detail_data->DevicePathh = \\?\hid#vid_14e1&pid_3500&col01#9&338c22d8&0&0000#{4d1e55b2-f16f-11cf-88cb-001111000030}
+2021-01-23 14:56:04:try \\?\hid#vid_14e1&pid_3500&col01#9&338c22d8&0&0000#{4d1e55b2-f16f-11cf-88cb-001111000030}
+2021-01-23 14:56:04:hotplug: G-55WHD-QG-C1-W15, B:0, 0x14e1:0x3500 [1][0xabc1520]
+2021-01-23 14:56:04:getOnboardTestboardCount board count = 8
+2021-01-23 14:56:04:autoTestSwitch = 0
+2021-01-23 14:56:05:Warning: isLockAGC reply failed[254,1], require[4,13]
+2021-01-23 14:56:05:校准模式 = 2
+2021-01-23 14:56:05:校准点的个数 = 9
+2021-01-23 14:56:05:默认校准模式 = 2
+2021-01-23 14:56:05:默认校准点个数 = 9
+H�|23 14:56:05:{"count":9,"mode":2,"points":[{"collectX":0,"collectY":0,"index":0,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":1,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":2,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":3,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":4,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":5,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":6,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":7,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":8,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0}]}
+2021-01-23 14:56:05:setCoordsEnabled 2 1
+2021-01-23 14:56:05:setCoordsEnabled 1 1
+2021-01-23 14:56:11:hotplug thread end
+2021-01-23 14:56:11:command thread end
+2021-01-23 14:56:11:free 1 devices
+2021-01-23 14:56:11:free: bf4f8e1dffbfe7a3306d4fa5878107f8
+2021-01-23 14:56:11:upgradeThread and testThread and commandThread to be delete
+2021-01-23 14:56:11:TouchTools end
+2021-01-23 15:28:01:软件路径：D:/qt/PC_TouchProject/touch/build-TouchTool-Desktop_Qt_5_7_0_MinGW_32bit-Debug/release
+2021-01-23 15:28:01:@@@@@@@@@ tabWidth = 2.0
+2021-01-23 15:28:01:设置为中文
+2021-01-23 15:28:01:vid=0x14e1, pid=0x3500, path=col01, rid=0xcd, bootloader=0
+2021-01-23 15:28:01:vid=0xaed7, pid=0x0013, path=col01, rid=0xcd, bootloader=0
+2021-01-23 15:28:01:vid=0xaed7, pid=0xfedc, path=col01, rid=0xcd, bootloader=1
+2021-01-23 15:28:03: 有两个参数
+2021-01-23 15:28:03:aging time = 10
+2021-01-23 15:28:03:TouchManager() this:0xac10c40
+2021-01-23 15:28:03:start upgrade test command thread.
+2021-01-23 15:28:03:TouchManager::TouchManager(): TestThread  = 0xac1aa00
+2021-01-23 15:28:03:start hogplug service
+2021-01-23 15:28:03:init TouchManager
+2021-01-23 15:28:03:getInstance mTouchManager : 0xac10c40
+2021-01-23 15:28:03:found 0
+2021-01-23 15:28:03:command thread running
+2021-01-23 15:28:03:read count 190
+2021-01-23 15:28:03:Upgrade file: file:///D:/install/weixin/自动下载内容/WeChat Files/wxid_xcvyam3jt8o421/FileStorage/File/2021-01/TouchApp_Encoded.bin
+file:///D:/qt/FirmwareBin/小房间地上55/G-55WHD-QG-C1-W15.bin
+
+2021-01-23 15:28:03:hotplug thread running
+2021-01-23 15:28:03:Upgrade file tmp: file:///D:/install/weixin/自动下载内容/WeChat Files/wxid_xcvyam3jt8o421/FileStorage/File/2021-01/TouchApp_Encoded.bin
+2021-01-23 15:28:03:Upgrade file tmp: file:///D:/qt/FirmwareBin/小房间地上55/G-55WHD-QG-C1-W15.bin
+2021-01-23 15:28:04:hotplug thread run: 800
+2021-01-23 15:28:04:device_interface_detail_data->DevicePathh = \\?\hid#vid_14e1&pid_3500&col01#9&338c22d8&0&0000#{4d1e55b2-f16f-11cf-88cb-001111000030}
+2021-01-23 15:28:04:try \\?\hid#vid_14e1&pid_3500&col01#9&338c22d8&0&0000#{4d1e55b2-f16f-11cf-88cb-001111000030}
+2021-01-23 15:28:04:hotplug: G-55WHD-QG-C1-W15, B:0, 0x14e1:0x3500 [1][0xab91090]
+2021-01-23 15:28:04:Warning: isLockAGC reply failed[254,1], require[4,13]
+2021-01-23 15:28:04:校准模式 = 2
+2021-01-23 15:28:04:校准点的个数 = 9
+2021-01-23 15:28:04:默认校准模式 = 2
+2021-01-23 15:28:04:默认校准点个数 = 9
+�V�
+���
+23 15:28:04:{"count":9,"mode":2,"points":[{"collectX":0,"collectY":0,"index":0,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":1,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":2,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":3,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":4,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":5,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":6,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":7,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":8,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0}]}
+2021-01-23 15:28:04:setCoordsEnabled 2 1
+2021-01-23 15:28:04:setCoordsEnabled 1 1
+2021-01-23 15:28:05:enter calibration
+2021-01-23 15:28:05:getOnboardTestboardCount board count = 8
+2021-01-23 15:28:05:set calibration data: 0
+2021-01-23 15:28:05:setCalibrationPointData: index: 0, tx:0,ty:0,cx:65535,cy:65535,mx:1920,my:1080
+2021-01-23 15:28:05:{"count":250,"finished":0,"index":0}
+2021-01-23 15:28:05:autoTestSwitch = 0
+2021-01-23 15:28:05:Warning: isLockAGC reply failed[254,1], require[4,13]
+2021-01-23 15:28:05:校准模式 = 2
+2021-01-23 15:28:05:校准点的个数 = 9
+2021-01-23 15:28:05:默认校准模式 = 2
+2021-01-23 15:28:05:默认校准点个数 = 9
+�1�
+؟�
+23 15:28:05:{"count":9,"mode":2,"points":[{"collectX":0,"collectY":0,"index":0,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":1,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":2,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":3,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":4,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":5,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":6,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":7,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":8,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0}]}
+2021-01-23 15:28:05:setCoordsEnabled 1 0
+2021-01-23 15:28:05:setCoordsEnabled 2 0
+2021-01-23 15:28:08:eixt calibration
+2021-01-23 15:34:53:软件路径：D:/qt/PC_TouchProject/touch/build-TouchTool-Desktop_Qt_5_7_0_MinGW_32bit-Debug/release
+2021-01-23 15:34:53:@@@@@@@@@ tabWidth = 2.0
+2021-01-23 15:34:53:设置为中文
+2021-01-23 15:34:53:vid=0x14e1, pid=0x3500, path=col01, rid=0xcd, bootloader=0
+2021-01-23 15:34:53:vid=0xaed7, pid=0x0013, path=col01, rid=0xcd, bootloader=0
+2021-01-23 15:34:53:vid=0xaed7, pid=0xfedc, path=col01, rid=0xcd, bootloader=1
+2021-01-23 15:34:54: 有两个参数
+2021-01-23 15:34:54:TouchManager() this:0xac84128
+2021-01-23 15:34:54:start upgrade test command thread.
+2021-01-23 15:34:54:TouchManager::TouchManager(): TestThread  = 0xac39ac8
+2021-01-23 15:34:54:start hogplug service
+2021-01-23 15:34:54:init TouchManager
+2021-01-23 15:34:54:getInstance mTouchManager : 0xac84128
+2021-01-23 15:34:54:aging time = 10
+2021-01-23 15:34:54:found 0
+2021-01-23 15:34:54:read count 190
+2021-01-23 15:34:54:Upgrade file: file:///D:/install/weixin/自动下载内容/WeChat Files/wxid_xcvyam3jt8o421/FileStorage/File/2021-01/TouchApp_Encoded.bin
+file:///D:/qt/FirmwareBin/小房间地上55/G-55WHD-QG-C1-W15.bin
+
+2021-01-23 15:34:54:Upgrade file tmp: file:///D:/install/weixin/自动下载内容/WeChat Files/wxid_xcvyam3jt8o421/FileStorage/File/2021-01/TouchApp_Encoded.bin
+2021-01-23 15:34:54:Upgrade file tmp: file:///D:/qt/FirmwareBin/小房间地上55/G-55WHD-QG-C1-W15.bin
+2021-01-23 15:34:54:command thread running
+2021-01-23 15:34:54:hotplug thread running
+2021-01-23 15:34:54:hotplug thread run: 800
+2021-01-23 15:34:54:device_interface_detail_data->DevicePathh = \\?\hid#vid_14e1&pid_3500&col01#9&338c22d8&0&0000#{4d1e55b2-f16f-11cf-88cb-001111000030}
+2021-01-23 15:34:54:try \\?\hid#vid_14e1&pid_3500&col01#9&338c22d8&0&0000#{4d1e55b2-f16f-11cf-88cb-001111000030}
+2021-01-23 15:34:54:hotplug: G-55WHD-QG-C1-W15, B:0, 0x14e1:0x3500 [1][0xacca8d0]
+2021-01-23 15:34:55:enter calibration
+2021-01-23 15:34:55:getOnboardTestboardCount board count = 8
+2021-01-23 15:34:55:set calibration data: 0
+2021-01-23 15:34:55:setCalibrationPointData: index: 0, tx:0,ty:0,cx:65535,cy:65535,mx:1920,my:1080
+2021-01-23 15:34:55:{"count":250,"finished":0,"index":0}
+2021-01-23 15:34:55:autoTestSwitch = 0
+2021-01-23 15:34:55:Warning: isLockAGC reply failed[254,1], require[4,13]
+2021-01-23 15:34:56:校准模式 = 2
+2021-01-23 15:34:56:校准点的个数 = 9
+2021-01-23 15:34:56:默认校准模式 = 2
+2021-01-23 15:34:56:默认校准点个数 = 9
+2021-01-23 15:34:56:{"count":9,"mode":2,"points":[{"collectX":0,"collectY":0,"index":0,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":1,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":2,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":3,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":4,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":5,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":6,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":7,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":8,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0}]}
+2021-01-23 15:34:56:setCoordsEnabled 2 1
+2021-01-23 15:34:56:setCoordsEnabled 1 1
+2021-01-23 15:34:56:setCoordsEnabled 1 0
+2021-01-23 15:34:56:setCoordsEnabled 2 0
+2021-01-23 15:35:18:软件路径：D:/qt/PC_TouchProject/touch/build-TouchTool-Desktop_Qt_5_7_0_MinGW_32bit-Debug/release
+2021-01-23 15:35:18:@@@@@@@@@ tabWidth = 2.0
+2021-01-23 15:35:18:设置为中文
+2021-01-23 15:35:18:vid=0x14e1, pid=0x3500, path=col01, rid=0xcd, bootloader=0
+2021-01-23 15:35:18:vid=0xaed7, pid=0x0013, path=col01, rid=0xcd, bootloader=0
+2021-01-23 15:35:18:vid=0xaed7, pid=0xfedc, path=col01, rid=0xcd, bootloader=1
+2021-01-23 15:35:20: 有两个参数
+2021-01-23 15:35:20:TouchManager() this:0xabbd220
+2021-01-23 15:35:20:start upgrade test command thread.
+2021-01-23 15:35:20:TouchManager::TouchManager(): TestThread  = 0xac2fde8
+2021-01-23 15:35:20:start hogplug service
+2021-01-23 15:35:20:init TouchManager
+2021-01-23 15:35:20:getInstance mTouchManager : 0xabbd220
+2021-01-23 15:35:20:found 0
+2021-01-23 15:35:20:read count 190
+2021-01-23 15:35:20:Upgrade file: file:///D:/install/weixin/自动下载内容/WeChat Files/wxid_xcvyam3jt8o421/FileStorage/File/2021-01/TouchApp_Encoded.bin
+file:///D:/qt/FirmwareBin/小房间地上55/G-55WHD-QG-C1-W15.bin
+
+2021-01-23 15:35:20:Upgrade file tmp: file:///D:/install/weixin/自动下载内容/WeChat Files/wxid_xcvyam3jt8o421/FileStorage/File/2021-01/TouchApp_Encoded.bin
+2021-01-23 15:35:20:hotplug thread running
+2021-01-23 15:35:20:Upgrade file tmp: file:///D:/qt/FirmwareBin/小房间地上55/G-55WHD-QG-C1-W15.bin
+2021-01-23 15:35:20:aging time = 10
+2021-01-23 15:35:20:command thread running
+2021-01-23 15:35:20:hotplug thread run: 800
+2021-01-23 15:35:20:device_interface_detail_data->DevicePathh = \\?\hid#vid_14e1&pid_3500&col01#9&338c22d8&0&0000#{4d1e55b2-f16f-11cf-88cb-001111000030}
+2021-01-23 15:35:20:try \\?\hid#vid_14e1&pid_3500&col01#9&338c22d8&0&0000#{4d1e55b2-f16f-11cf-88cb-001111000030}
+2021-01-23 15:35:20:hotplug: G-55WHD-QG-C1-W15, B:0, 0x14e1:0x3500 [1][0xabbf2a8]
+2021-01-23 15:35:21:enter calibration
+2021-01-23 15:35:21:getOnboardTestboardCount board count = 8
+2021-01-23 15:35:21:set calibration data: 0
+2021-01-23 15:35:21:setCalibrationPointData: index: 0, tx:0,ty:0,cx:65535,cy:65535,mx:1920,my:1080
+2021-01-23 15:35:21:{"count":250,"finished":0,"index":0}
+2021-01-23 15:35:21:autoTestSwitch = 0
+2021-01-23 15:35:21:Warning: isLockAGC reply failed[254,1], require[4,13]
+2021-01-23 15:35:21:校准模式 = 2
+2021-01-23 15:35:21:校准点的个数 = 9
+2021-01-23 15:35:21:默认校准模式 = 2
+2021-01-23 15:35:21:默认校准点个数 = 9
+P�
+��
+23 15:35:21:{"count":9,"mode":2,"points":[{"collectX":0,"collectY":0,"index":0,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":1,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":2,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":3,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":4,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":5,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":6,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":7,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":8,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0}]}
+2021-01-23 15:35:21:setCoordsEnabled 2 1
+2021-01-23 15:35:21:setCoordsEnabled 1 1
+2021-01-23 15:35:21:setCoordsEnabled 1 0
+2021-01-23 15:35:21:setCoordsEnabled 2 0
+2021-01-23 15:39:13:软件路径：D:/qt/PC_TouchProject/touch/build-TouchTool-Desktop_Qt_5_7_0_MinGW_32bit-Debug/release
+2021-01-23 15:39:13:@@@@@@@@@ tabWidth = 2.0
+2021-01-23 15:39:13:设置为中文
+2021-01-23 15:39:13:vid=0x14e1, pid=0x3500, path=col01, rid=0xcd, bootloader=0
+2021-01-23 15:39:13:vid=0xaed7, pid=0x0013, path=col01, rid=0xcd, bootloader=0
+2021-01-23 15:39:13:vid=0xaed7, pid=0xfedc, path=col01, rid=0xcd, bootloader=1
+2021-01-23 15:39:14:TouchManager() this:0xac750f8
+2021-01-23 15:39:14:start upgrade test command thread.
+2021-01-23 15:39:14:TouchManager::TouchManager(): TestThread  = 0xac4a6e0
+2021-01-23 15:39:14:start hogplug service
+2021-01-23 15:39:14:init TouchManager
+2021-01-23 15:39:14:getInstance mTouchManager : 0xac750f8
+2021-01-23 15:39:14:command thread running
+2021-01-23 15:39:14:found 0
+2021-01-23 15:39:14:hotplug thread running
+2021-01-23 15:39:14:read count 190
+2021-01-23 15:39:14:Upgrade file: file:///D:/install/weixin/自动下载内容/WeChat Files/wxid_xcvyam3jt8o421/FileStorage/File/2021-01/TouchApp_Encoded.bin
+file:///D:/qt/FirmwareBin/小房间地上55/G-55WHD-QG-C1-W15.bin
+
+2021-01-23 15:39:14:Upgrade file tmp: file:///D:/install/weixin/自动下载内容/WeChat Files/wxid_xcvyam3jt8o421/FileStorage/File/2021-01/TouchApp_Encoded.bin
+2021-01-23 15:39:14:Upgrade file tmp: file:///D:/qt/FirmwareBin/小房间地上55/G-55WHD-QG-C1-W15.bin
+2021-01-23 15:39:14:aging time = 10
+2021-01-23 15:39:14:hotplug thread run: 800
+2021-01-23 15:39:14:device_interface_detail_data->DevicePathh = \\?\hid#vid_14e1&pid_3500&col01#9&338c22d8&0&0000#{4d1e55b2-f16f-11cf-88cb-001111000030}
+2021-01-23 15:39:14:try \\?\hid#vid_14e1&pid_3500&col01#9&338c22d8&0&0000#{4d1e55b2-f16f-11cf-88cb-001111000030}
+2021-01-23 15:39:14:hotplug: G-55WHD-QG-C1-W15, B:0, 0x14e1:0x3500 [1][0xac9e0d0]
+2021-01-23 15:39:14:getOnboardTestboardCount board count = 8
+2021-01-23 15:39:14:autoTestSwitch = 0
+2021-01-23 15:39:16:Warning: isLockAGC reply failed[254,1], require[4,13]
+2021-01-23 15:39:16:校准模式 = 2
+2021-01-23 15:39:16:校准点的个数 = 9
+2021-01-23 15:39:16:默认校准模式 = 2
+2021-01-23 15:39:16:默认校准点个数 = 9
+ȝzp��
+23 15:39:16:{"count":9,"mode":2,"points":[{"collectX":0,"collectY":0,"index":0,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":1,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":2,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":3,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":4,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":5,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":6,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":7,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":8,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0}]}
+2021-01-23 15:39:16:setCoordsEnabled 2 1
+2021-01-23 15:39:16:setCoordsEnabled 1 1
+2021-01-23 15:39:16:setCoordsEnabled 1 0
+2021-01-23 15:39:16:setCoordsEnabled 2 0
+2021-01-23 15:39:21:hotplug thread end
+2021-01-23 15:39:21:command thread end
+2021-01-23 15:39:21:free 1 devices
+2021-01-23 15:39:21:free: bf4f8e1dffbfe7a3306d4fa5878107f8
+2021-01-23 15:39:21:upgradeThread and testThread and commandThread to be delete
+2021-01-23 15:39:21:TouchTools end
+2021-01-23 15:39:45:软件路径：D:/qt/PC_TouchProject/touch/build-TouchTool-Desktop_Qt_5_7_0_MinGW_32bit-Debug/release
+2021-01-23 15:39:45:@@@@@@@@@ tabWidth = 2.0
+2021-01-23 15:39:45:设置为中文
+2021-01-23 15:39:45:vid=0x14e1, pid=0x3500, path=col01, rid=0xcd, bootloader=0
+2021-01-23 15:39:45:vid=0xaed7, pid=0x0013, path=col01, rid=0xcd, bootloader=0
+2021-01-23 15:39:45:vid=0xaed7, pid=0xfedc, path=col01, rid=0xcd, bootloader=1
+2021-01-23 15:39:46: 有两个参数
+2021-01-23 15:39:46:TouchManager() this:0xab8f690
+2021-01-23 15:39:46:start upgrade test command thread.
+2021-01-23 15:39:46:TouchManager::TouchManager(): TestThread  = 0xabe2348
+2021-01-23 15:39:46:start hogplug service
+2021-01-23 15:39:46:init TouchManager
+2021-01-23 15:39:46:getInstance mTouchManager : 0xab8f690
+2021-01-23 15:39:46:found 0
+2021-01-23 15:39:46:read count 190
+2021-01-23 15:39:46:Upgrade file: file:///D:/install/weixin/自动下载内容/WeChat Files/wxid_xcvyam3jt8o421/FileStorage/File/2021-01/TouchApp_Encoded.bin
+file:///D:/qt/FirmwareBin/小房间地上55/G-55WHD-QG-C1-W15.bin
+
+2021-01-23 15:39:46:Upgrade file tmp: file:///D:/install/weixin/自动下载内容/WeChat Files/wxid_xcvyam3jt8o421/FileStorage/File/2021-01/TouchApp_Encoded.bin
+2021-01-23 15:39:46:Upgrade file tmp: file:///D:/qt/FirmwareBin/小房间地上55/G-55WHD-QG-C1-W15.bin
+2021-01-23 15:39:46:command thread running
+2021-01-23 15:39:46:hotplug thread running
+2021-01-23 15:39:46:aging time = 10
+2021-01-23 15:39:46:hotplug thread run: 800
+2021-01-23 15:39:46:device_interface_detail_data->DevicePathh = \\?\hid#vid_14e1&pid_3500&col01#9&338c22d8&0&0000#{4d1e55b2-f16f-11cf-88cb-001111000030}
+2021-01-23 15:39:46:try \\?\hid#vid_14e1&pid_3500&col01#9&338c22d8&0&0000#{4d1e55b2-f16f-11cf-88cb-001111000030}
+2021-01-23 15:39:46:hotplug: G-55WHD-QG-C1-W15, B:0, 0x14e1:0x3500 [1][0xac717a0]
+2021-01-23 15:39:47:enter calibration
+2021-01-23 15:39:47:getOnboardTestboardCount board count = 8
+2021-01-23 15:39:47:set calibration data: 0
+2021-01-23 15:39:47:setCalibrationPointData: index: 0, tx:0,ty:0,cx:65535,cy:65535,mx:1920,my:1080
+2021-01-23 15:39:47:{"count":250,"finished":0,"index":0}
+2021-01-23 15:39:47:autoTestSwitch = 0
+2021-01-23 15:39:48:Warning: isLockAGC reply failed[254,1], require[4,13]
+2021-01-23 15:39:48:校准模式 = 2
+2021-01-23 15:39:48:校准点的个数 = 9
+2021-01-23 15:39:48:默认校准模式 = 2
+2021-01-23 15:39:48:默认校准点个数 = 9
+���p�
+23 15:39:48:{"count":9,"mode":2,"points":[{"collectX":0,"collectY":0,"index":0,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":1,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":2,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":3,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":4,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":5,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":6,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":7,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":8,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0}]}
+2021-01-23 15:39:48:setCoordsEnabled 2 1
+2021-01-23 15:39:48:setCoordsEnabled 1 1
+2021-01-23 15:39:48:setCoordsEnabled 1 0
+2021-01-23 15:39:48:setCoordsEnabled 2 0
+2021-01-23 15:42:51:软件路径：D:/qt/PC_TouchProject/touch/build-TouchTool-Desktop_Qt_5_7_0_MinGW_32bit-Debug/release
+2021-01-23 15:42:51:@@@@@@@@@ tabWidth = 2.0
+2021-01-23 15:42:51:设置为中文
+2021-01-23 15:42:51:vid=0x14e1, pid=0x3500, path=col01, rid=0xcd, bootloader=0
+2021-01-23 15:42:51:vid=0xaed7, pid=0x0013, path=col01, rid=0xcd, bootloader=0
+2021-01-23 15:42:51:vid=0xaed7, pid=0xfedc, path=col01, rid=0xcd, bootloader=1
+2021-01-23 15:42:52: 有两个参数
+2021-01-23 15:42:52:TouchManager() this:0xac7ea18
+2021-01-23 15:42:52:start upgrade test command thread.
+2021-01-23 15:42:52:TouchManager::TouchManager(): TestThread  = 0xac14f58
+2021-01-23 15:42:52:start hogplug service
+2021-01-23 15:42:52:init TouchManager
+2021-01-23 15:42:52:getInstance mTouchManager : 0xac7ea18
+2021-01-23 15:42:52:found 0
+2021-01-23 15:42:52:read count 190
+2021-01-23 15:42:52:Upgrade file: file:///D:/install/weixin/自动下载内容/WeChat Files/wxid_xcvyam3jt8o421/FileStorage/File/2021-01/TouchApp_Encoded.bin
+file:///D:/qt/FirmwareBin/小房间地上55/G-55WHD-QG-C1-W15.bin
+
+2021-01-23 15:42:52:Upgrade file tmp: file:///D:/install/weixin/自动下载内容/WeChat Files/wxid_xcvyam3jt8o421/FileStorage/File/2021-01/TouchApp_Encoded.bin
+2021-01-23 15:42:52:Upgrade file tmp: file:///D:/qt/FirmwareBin/小房间地上55/G-55WHD-QG-C1-W15.bin
+2021-01-23 15:42:52:command thread running
+2021-01-23 15:42:52:aging time = 10
+2021-01-23 15:42:52:hotplug thread running
+2021-01-23 15:42:52:hotplug thread run: 800
+2021-01-23 15:42:52:device_interface_detail_data->DevicePathh = \\?\hid#vid_14e1&pid_3500&col01#9&338c22d8&0&0000#{4d1e55b2-f16f-11cf-88cb-001111000030}
+2021-01-23 15:42:52:try \\?\hid#vid_14e1&pid_3500&col01#9&338c22d8&0&0000#{4d1e55b2-f16f-11cf-88cb-001111000030}
+2021-01-23 15:42:52:hotplug: G-55WHD-QG-C1-W15, B:0, 0x14e1:0x3500 [1][0xacc4830]
+2021-01-23 15:42:53:enter calibration
+2021-01-23 15:42:54:getOnboardTestboardCount board count = 8
+2021-01-23 15:42:54:set calibration data: 0
+2021-01-23 15:42:54:setCalibrationPointData: index: 0, tx:0,ty:0,cx:65535,cy:65535,mx:1920,my:1080
+2021-01-23 15:42:54:{"count":250,"finished":0,"index":0}
+2021-01-23 15:42:54:autoTestSwitch = 0
+2021-01-23 15:42:54:Warning: isLockAGC reply failed[254,1], require[4,13]
+2021-01-23 15:42:54:校准模式 = 2
+2021-01-23 15:42:54:校准点的个数 = 9
+2021-01-23 15:42:54:默认校准模式 = 2
+2021-01-23 15:42:54:默认校准点个数 = 9
+`��
+��23 15:42:54:{"count":9,"mode":2,"points":[{"collectX":0,"collectY":0,"index":0,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":1,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":2,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":3,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":4,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":5,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":6,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":7,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":8,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0}]}
+2021-01-23 15:42:54:setCoordsEnabled 2 1
+2021-01-23 15:42:54:setCoordsEnabled 1 1
+2021-01-23 15:42:54:setCoordsEnabled 1 0
+2021-01-23 15:42:54:setCoordsEnabled 2 0
+2021-01-23 15:42:58:eixt calibration
+2021-01-23 15:43:06:软件路径：D:/qt/PC_TouchProject/touch/build-TouchTool-Desktop_Qt_5_7_0_MinGW_32bit-Debug/release
+2021-01-23 15:43:06:@@@@@@@@@ tabWidth = 2.0
+2021-01-23 15:43:06:设置为中文
+2021-01-23 15:43:06:vid=0x14e1, pid=0x3500, path=col01, rid=0xcd, bootloader=0
+2021-01-23 15:43:06:vid=0xaed7, pid=0x0013, path=col01, rid=0xcd, bootloader=0
+2021-01-23 15:43:06:vid=0xaed7, pid=0xfedc, path=col01, rid=0xcd, bootloader=1
+2021-01-23 15:43:08: 有两个参数
+2021-01-23 15:43:08:TouchManager() this:0xad77068
+2021-01-23 15:43:08:start upgrade test command thread.
+2021-01-23 15:43:08:TouchManager::TouchManager(): TestThread  = 0xad81118
+2021-01-23 15:43:08:start hogplug service
+2021-01-23 15:43:08:init TouchManager
+2021-01-23 15:43:08:getInstance mTouchManager : 0xad77068
+2021-01-23 15:43:08:found 0
+2021-01-23 15:43:08:command thread running
+2021-01-23 15:43:08:read count 190
+2021-01-23 15:43:08:Upgrade file: file:///D:/install/weixin/自动下载内容/WeChat Files/wxid_xcvyam3jt8o421/FileStorage/File/2021-01/TouchApp_Encoded.bin
+file:///D:/qt/FirmwareBin/小房间地上55/G-55WHD-QG-C1-W15.bin
+
+2021-01-23 15:43:08:hotplug thread running
+2021-01-23 15:43:08:Upgrade file tmp: file:///D:/install/weixin/自动下载内容/WeChat Files/wxid_xcvyam3jt8o421/FileStorage/File/2021-01/TouchApp_Encoded.bin
+2021-01-23 15:43:08:Upgrade file tmp: file:///D:/qt/FirmwareBin/小房间地上55/G-55WHD-QG-C1-W15.bin
+2021-01-23 15:43:08:aging time = 10
+2021-01-23 15:43:08:hotplug thread run: 800
+2021-01-23 15:43:08:device_interface_detail_data->DevicePathh = \\?\hid#vid_14e1&pid_3500&col01#9&338c22d8&0&0000#{4d1e55b2-f16f-11cf-88cb-001111000030}
+2021-01-23 15:43:08:try \\?\hid#vid_14e1&pid_3500&col01#9&338c22d8&0&0000#{4d1e55b2-f16f-11cf-88cb-001111000030}
+2021-01-23 15:43:08:hotplug: G-55WHD-QG-C1-W15, B:0, 0x14e1:0x3500 [1][0xad952e0]
+2021-01-23 15:43:09:enter calibration
+2021-01-23 15:43:09:getOnboardTestboardCount board count = 8
+2021-01-23 15:43:09:set calibration data: 0
+2021-01-23 15:43:09:setCalibrationPointData: index: 0, tx:0,ty:0,cx:65535,cy:65535,mx:1920,my:1080
+2021-01-23 15:43:09:{"count":250,"finished":0,"index":0}
+2021-01-23 15:43:09:autoTestSwitch = 0
+2021-01-23 15:43:09:Warning: isLockAGC reply failed[254,1], require[4,13]
+2021-01-23 15:43:09:校准模式 = 2
+2021-01-23 15:43:09:校准点的个数 = 9
+2021-01-23 15:43:09:默认校准模式 = 2
+2021-01-23 15:43:09:默认校准点个数 = 9
+�
+p3�
+23 15:43:09:{"count":9,"mode":2,"points":[{"collectX":0,"collectY":0,"index":0,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":1,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":2,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":3,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":4,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":5,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":6,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":7,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":8,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0}]}
+2021-01-23 15:43:09:setCoordsEnabled 2 1
+2021-01-23 15:43:09:setCoordsEnabled 1 1
+2021-01-23 15:43:09:setCoordsEnabled 1 0
+2021-01-23 15:43:09:setCoordsEnabled 2 0
+2021-01-23 15:43:21:eixt calibration
+2021-01-23 15:47:15:软件路径：D:/qt/PC_TouchProject/touch/build-TouchTool-Desktop_Qt_5_7_0_MinGW_32bit-Debug/release
+2021-01-23 15:47:15:@@@@@@@@@ tabWidth = 2.0
+2021-01-23 15:47:15:设置为中文
+2021-01-23 15:47:15:vid=0x14e1, pid=0x3500, path=col01, rid=0xcd, bootloader=0
+2021-01-23 15:47:15:vid=0xaed7, pid=0x0013, path=col01, rid=0xcd, bootloader=0
+2021-01-23 15:47:15:vid=0xaed7, pid=0xfedc, path=col01, rid=0xcd, bootloader=1
+2021-01-23 15:47:17: 有两个参数
+2021-01-23 15:47:17:TouchManager() this:0xac658c0
+2021-01-23 15:47:17:start upgrade test command thread.
+2021-01-23 15:47:17:TouchManager::TouchManager(): TestThread  = 0xab87350
+2021-01-23 15:47:17:start hogplug service
+2021-01-23 15:47:17:init TouchManager
+2021-01-23 15:47:17:getInstance mTouchManager : 0xac658c0
+2021-01-23 15:47:17:found 0
+2021-01-23 15:47:17:command thread running
+2021-01-23 15:47:17:hotplug thread running
+2021-01-23 15:47:17:read count 190
+2021-01-23 15:47:17:Upgrade file: file:///D:/install/weixin/自动下载内容/WeChat Files/wxid_xcvyam3jt8o421/FileStorage/File/2021-01/TouchApp_Encoded.bin
+file:///D:/qt/FirmwareBin/小房间地上55/G-55WHD-QG-C1-W15.bin
+
+2021-01-23 15:47:17:Upgrade file tmp: file:///D:/install/weixin/自动下载内容/WeChat Files/wxid_xcvyam3jt8o421/FileStorage/File/2021-01/TouchApp_Encoded.bin
+2021-01-23 15:47:17:Upgrade file tmp: file:///D:/qt/FirmwareBin/小房间地上55/G-55WHD-QG-C1-W15.bin
+2021-01-23 15:47:17:aging time = 10
+2021-01-23 15:47:17:hotplug thread run: 800
+2021-01-23 15:47:17:device_interface_detail_data->DevicePathh = \\?\hid#vid_14e1&pid_3500&col01#9&338c22d8&0&0000#{4d1e55b2-f16f-11cf-88cb-001111000030}
+2021-01-23 15:47:17:try \\?\hid#vid_14e1&pid_3500&col01#9&338c22d8&0&0000#{4d1e55b2-f16f-11cf-88cb-001111000030}
+2021-01-23 15:47:17:hotplug: G-55WHD-QG-C1-W15, B:0, 0x14e1:0x3500 [1][0xac7b400]
+2021-01-23 15:47:17:enter calibration
+2021-01-23 15:47:17:getOnboardTestboardCount board count = 8
+2021-01-23 15:47:17:set calibration data: 0
+2021-01-23 15:47:17:setCalibrationPointData: index: 0, tx:0,ty:0,cx:65535,cy:65535,mx:1920,my:1080
+2021-01-23 15:47:17:{"count":250,"finished":0,"index":0}
+2021-01-23 15:47:17:autoTestSwitch = 0
+2021-01-23 15:47:17:Warning: isLockAGC reply failed[254,1], require[4,13]
+2021-01-23 15:47:17:校准模式 = 2
+2021-01-23 15:47:17:校准点的个数 = 9
+2021-01-23 15:47:17:默认校准模式 = 2
+2021-01-23 15:47:17:默认校准点个数 = 9
+8C�
+P��
+23 15:47:17:{"count":9,"mode":2,"points":[{"collectX":0,"collectY":0,"index":0,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":1,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":2,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":3,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":4,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":5,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":6,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":7,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":8,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0}]}
+2021-01-23 15:47:17:setCoordsEnabled 2 1
+2021-01-23 15:47:17:setCoordsEnabled 1 1
+2021-01-23 15:47:17:setCoordsEnabled 1 0
+2021-01-23 15:47:17:setCoordsEnabled 2 0
+2021-01-23 15:47:25:eixt calibration
+2021-01-23 15:47:31:软件路径：D:/qt/PC_TouchProject/touch/build-TouchTool-Desktop_Qt_5_7_0_MinGW_32bit-Debug/release
+2021-01-23 15:47:31:@@@@@@@@@ tabWidth = 2.0
+2021-01-23 15:47:31:设置为中文
+2021-01-23 15:47:31:vid=0x14e1, pid=0x3500, path=col01, rid=0xcd, bootloader=0
+2021-01-23 15:47:31:vid=0xaed7, pid=0x0013, path=col01, rid=0xcd, bootloader=0
+2021-01-23 15:47:31:vid=0xaed7, pid=0xfedc, path=col01, rid=0xcd, bootloader=1
+2021-01-23 15:47:33: 有两个参数
+2021-01-23 15:47:33:TouchManager() this:0xababc38
+2021-01-23 15:47:33:start upgrade test command thread.
+2021-01-23 15:47:33:TouchManager::TouchManager(): TestThread  = 0xabef668
+2021-01-23 15:47:33:start hogplug service
+2021-01-23 15:47:33:init TouchManager
+2021-01-23 15:47:33:getInstance mTouchManager : 0xababc38
+2021-01-23 15:47:33:found 0
+2021-01-23 15:47:33:command thread running
+2021-01-23 15:47:33:read count 190
+2021-01-23 15:47:33:Upgrade file: file:///D:/install/weixin/自动下载内容/WeChat Files/wxid_xcvyam3jt8o421/FileStorage/File/2021-01/TouchApp_Encoded.bin
+file:///D:/qt/FirmwareBin/小房间地上55/G-55WHD-QG-C1-W15.bin
+
+2021-01-23 15:47:33:Upgrade file tmp: file:///D:/install/weixin/自动下载内容/WeChat Files/wxid_xcvyam3jt8o421/FileStorage/File/2021-01/TouchApp_Encoded.bin
+2021-01-23 15:47:33:Upgrade file tmp: file:///D:/qt/FirmwareBin/小房间地上55/G-55WHD-QG-C1-W15.bin
+2021-01-23 15:47:33:hotplug thread running
+2021-01-23 15:47:33:aging time = 10
+2021-01-23 15:47:33:hotplug thread run: 800
+2021-01-23 15:47:33:device_interface_detail_data->DevicePathh = \\?\hid#vid_14e1&pid_3500&col01#9&338c22d8&0&0000#{4d1e55b2-f16f-11cf-88cb-001111000030}
+2021-01-23 15:47:33:try \\?\hid#vid_14e1&pid_3500&col01#9&338c22d8&0&0000#{4d1e55b2-f16f-11cf-88cb-001111000030}
+2021-01-23 15:47:33:hotplug: G-55WHD-QG-C1-W15, B:0, 0x14e1:0x3500 [1][0xac9a168]
+2021-01-23 15:47:33:enter calibration
+2021-01-23 15:47:33:getOnboardTestboardCount board count = 8
+2021-01-23 15:47:33:set calibration data: 0
+2021-01-23 15:47:33:setCalibrationPointData: index: 0, tx:0,ty:0,cx:65535,cy:65535,mx:1920,my:1080
+2021-01-23 15:47:33:{"count":250,"finished":0,"index":0}
+2021-01-23 15:47:33:autoTestSwitch = 0
+2021-01-23 15:47:33:Warning: isLockAGC reply failed[254,1], require[4,13]
+2021-01-23 15:47:33:校准模式 = 2
+2021-01-23 15:47:33:校准点的个数 = 9
+2021-01-23 15:47:33:默认校准模式 = 2
+2021-01-23 15:47:33:默认校准点个数 = 9
+@�p�
+23 15:47:33:{"count":9,"mode":2,"points":[{"collectX":0,"collectY":0,"index":0,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":1,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":2,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":3,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":4,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":5,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":6,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":7,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":8,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0}]}
+2021-01-23 15:47:33:setCoordsEnabled 2 1
+2021-01-23 15:47:33:setCoordsEnabled 1 1
+2021-01-23 15:47:33:setCoordsEnabled 1 0
+2021-01-23 15:47:33:setCoordsEnabled 2 0
+2021-01-23 15:47:35:eixt calibration
+2021-01-23 15:47:45:软件路径：D:/qt/PC_TouchProject/touch/build-TouchTool-Desktop_Qt_5_7_0_MinGW_32bit-Debug/release
+2021-01-23 15:47:45:@@@@@@@@@ tabWidth = 2.0
+2021-01-23 15:47:45:设置为中文
+2021-01-23 15:47:45:vid=0x14e1, pid=0x3500, path=col01, rid=0xcd, bootloader=0
+2021-01-23 15:47:45:vid=0xaed7, pid=0x0013, path=col01, rid=0xcd, bootloader=0
+2021-01-23 15:47:45:vid=0xaed7, pid=0xfedc, path=col01, rid=0xcd, bootloader=1
+2021-01-23 15:47:46: 有两个参数
+2021-01-23 15:47:46:TouchManager() this:0xab98c98
+2021-01-23 15:47:46:start upgrade test command thread.
+2021-01-23 15:47:46:TouchManager::TouchManager(): TestThread  = 0xac75878
+2021-01-23 15:47:46:start hogplug service
+2021-01-23 15:47:46:init TouchManager
+2021-01-23 15:47:46:getInstance mTouchManager : 0xab98c98
+2021-01-23 15:47:46:found 0
+2021-01-23 15:47:46:command thread running
+2021-01-23 15:47:46:read count 190
+2021-01-23 15:47:46:Upgrade file: file:///D:/install/weixin/自动下载内容/WeChat Files/wxid_xcvyam3jt8o421/FileStorage/File/2021-01/TouchApp_Encoded.bin
+file:///D:/qt/FirmwareBin/小房间地上55/G-55WHD-QG-C1-W15.bin
+
+2021-01-23 15:47:46:hotplug thread running
+2021-01-23 15:47:46:Upgrade file tmp: file:///D:/install/weixin/自动下载内容/WeChat Files/wxid_xcvyam3jt8o421/FileStorage/File/2021-01/TouchApp_Encoded.bin
+2021-01-23 15:47:46:Upgrade file tmp: file:///D:/qt/FirmwareBin/小房间地上55/G-55WHD-QG-C1-W15.bin
+2021-01-23 15:47:46:aging time = 10
+2021-01-23 15:47:46:hotplug thread run: 800
+2021-01-23 15:47:46:device_interface_detail_data->DevicePathh = \\?\hid#vid_14e1&pid_3500&col01#9&338c22d8&0&0000#{4d1e55b2-f16f-11cf-88cb-001111000030}
+2021-01-23 15:47:46:try \\?\hid#vid_14e1&pid_3500&col01#9&338c22d8&0&0000#{4d1e55b2-f16f-11cf-88cb-001111000030}
+2021-01-23 15:47:46:hotplug: G-55WHD-QG-C1-W15, B:0, 0x14e1:0x3500 [1][0xac9d4e8]
+2021-01-23 15:47:46:enter calibration
+2021-01-23 15:47:46:getOnboardTestboardCount board count = 8
+2021-01-23 15:47:46:set calibration data: 0
+2021-01-23 15:47:46:setCalibrationPointData: index: 0, tx:0,ty:0,cx:65535,cy:65535,mx:1920,my:1080
+2021-01-23 15:47:46:{"count":250,"finished":0,"index":0}
+2021-01-23 15:47:46:autoTestSwitch = 0
+2021-01-23 15:47:46:Warning: isLockAGC reply failed[254,1], require[4,13]
+2021-01-23 15:47:46:校准模式 = 2
+2021-01-23 15:47:46:校准点的个数 = 9
+2021-01-23 15:47:46:默认校准模式 = 2
+2021-01-23 15:47:46:默认校准点个数 = 9
+�O�
+d�
+23 15:47:46:{"count":9,"mode":2,"points":[{"collectX":0,"collectY":0,"index":0,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":1,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":2,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":3,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":4,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":5,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":6,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":7,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":8,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0}]}
+2021-01-23 15:47:46:setCoordsEnabled 2 1
+2021-01-23 15:47:46:setCoordsEnabled 1 1
+2021-01-23 15:47:46:setCoordsEnabled 1 0
+2021-01-23 15:47:46:setCoordsEnabled 2 0
+2021-01-23 15:47:49:eixt calibration
+2021-01-23 15:55:57:软件路径：D:/qt/PC_TouchProject/touch/build-TouchTool-Desktop_Qt_5_7_0_MinGW_32bit-Debug/release
+2021-01-23 15:55:57:@@@@@@@@@ tabWidth = 2.0
+2021-01-23 15:55:57:设置为中文
+2021-01-23 15:55:57:vid=0x14e1, pid=0x3500, path=col01, rid=0xcd, bootloader=0
+2021-01-23 15:55:57:vid=0xaed7, pid=0x0013, path=col01, rid=0xcd, bootloader=0
+2021-01-23 15:55:57:vid=0xaed7, pid=0xfedc, path=col01, rid=0xcd, bootloader=1
+2021-01-23 15:55:59: 有两个参数
+2021-01-23 15:55:59:TouchManager() this:0x8babc68
+2021-01-23 15:55:59:start upgrade test command thread.
+2021-01-23 15:55:59:TouchManager::TouchManager(): TestThread  = 0x8b94650
+2021-01-23 15:55:59:start hogplug service
+2021-01-23 15:55:59:init TouchManager
+2021-01-23 15:55:59:getInstance mTouchManager : 0x8babc68
+2021-01-23 15:55:59:found 0
+2021-01-23 15:55:59:command thread running
+2021-01-23 15:55:59:read count 190
+2021-01-23 15:55:59:Upgrade file: file:///D:/install/weixin/自动下载内容/WeChat Files/wxid_xcvyam3jt8o421/FileStorage/File/2021-01/TouchApp_Encoded.bin
+file:///D:/qt/FirmwareBin/小房间地上55/G-55WHD-QG-C1-W15.bin
+
+2021-01-23 15:55:59:hotplug thread running
+2021-01-23 15:55:59:Upgrade file tmp: file:///D:/install/weixin/自动下载内容/WeChat Files/wxid_xcvyam3jt8o421/FileStorage/File/2021-01/TouchApp_Encoded.bin
+2021-01-23 15:55:59:Upgrade file tmp: file:///D:/qt/FirmwareBin/小房间地上55/G-55WHD-QG-C1-W15.bin
+2021-01-23 15:55:59:aging time = 10
+2021-01-23 15:55:59:hotplug thread run: 800
+2021-01-23 15:55:59:device_interface_detail_data->DevicePathh = \\?\hid#vid_14e1&pid_3500&col01#9&338c22d8&0&0000#{4d1e55b2-f16f-11cf-88cb-001111000030}
+2021-01-23 15:55:59:try \\?\hid#vid_14e1&pid_3500&col01#9&338c22d8&0&0000#{4d1e55b2-f16f-11cf-88cb-001111000030}
+2021-01-23 15:55:59:hotplug: G-55WHD-QG-C1-W15, B:0, 0x14e1:0x3500 [1][0x8c6ca18]
+2021-01-23 15:55:59:enter calibration
+2021-01-23 15:55:59:getOnboardTestboardCount board count = 8
+2021-01-23 15:55:59:set calibration data: 0
+2021-01-23 15:55:59:setCalibrationPointData: index: 0, tx:0,ty:0,cx:65535,cy:65535,mx:1920,my:1080
+2021-01-23 15:55:59:{"count":250,"finished":0,"index":0}
+2021-01-23 15:55:59:autoTestSwitch = 0
+2021-01-23 15:55:59:Warning: isLockAGC reply failed[254,1], require[4,13]
+2021-01-23 15:55:59:校准模式 = 2
+2021-01-23 15:55:59:校准点的个数 = 9
+2021-01-23 15:55:59:默认校准模式 = 2
+2021-01-23 15:55:59:默认校准点个数 = 9
+���8\�23 15:55:59:{"count":9,"mode":2,"points":[{"collectX":0,"collectY":0,"index":0,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":1,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":2,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":3,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":4,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":5,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":6,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":7,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":8,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0}]}
+2021-01-23 15:55:59:setCoordsEnabled 2 1
+2021-01-23 15:55:59:setCoordsEnabled 1 1
+2021-01-23 15:55:59:setCoordsEnabled 1 0
+2021-01-23 15:55:59:setCoordsEnabled 2 0
+2021-01-23 15:56:02:eixt calibration
+2021-01-23 15:56:14:软件路径：D:/qt/PC_TouchProject/touch/build-TouchTool-Desktop_Qt_5_7_0_MinGW_32bit-Debug/release
+2021-01-23 15:56:14:@@@@@@@@@ tabWidth = 2.0
+2021-01-23 15:56:14:设置为中文
+2021-01-23 15:56:14:vid=0x14e1, pid=0x3500, path=col01, rid=0xcd, bootloader=0
+2021-01-23 15:56:14:vid=0xaed7, pid=0x0013, path=col01, rid=0xcd, bootloader=0
+2021-01-23 15:56:14:vid=0xaed7, pid=0xfedc, path=col01, rid=0xcd, bootloader=1
+2021-01-23 15:56:15: 有两个参数
+2021-01-23 15:56:15:TouchManager() this:0xad3f5e8
+2021-01-23 15:56:15:start upgrade test command thread.
+2021-01-23 15:56:15:TouchManager::TouchManager(): TestThread  = 0x30872d0
+2021-01-23 15:56:15:start hogplug service
+2021-01-23 15:56:15:init TouchManager
+2021-01-23 15:56:15:getInstance mTouchManager : 0xad3f5e8
+2021-01-23 15:56:15:found 0
+2021-01-23 15:56:15:command thread running
+2021-01-23 15:56:15:read count 190
+2021-01-23 15:56:15:Upgrade file: file:///D:/install/weixin/自动下载内容/WeChat Files/wxid_xcvyam3jt8o421/FileStorage/File/2021-01/TouchApp_Encoded.bin
+file:///D:/qt/FirmwareBin/小房间地上55/G-55WHD-QG-C1-W15.bin
+
+2021-01-23 15:56:15:Upgrade file tmp: file:///D:/install/weixin/自动下载内容/WeChat Files/wxid_xcvyam3jt8o421/FileStorage/File/2021-01/TouchApp_Encoded.bin
+2021-01-23 15:56:15:hotplug thread running
+2021-01-23 15:56:15:Upgrade file tmp: file:///D:/qt/FirmwareBin/小房间地上55/G-55WHD-QG-C1-W15.bin
+2021-01-23 15:56:15:aging time = 10
+2021-01-23 15:56:15:hotplug thread run: 800
+2021-01-23 15:56:27:软件路径：D:/qt/PC_TouchProject/touch/build-TouchTool-Desktop_Qt_5_7_0_MinGW_32bit-Debug/release
+2021-01-23 15:56:27:@@@@@@@@@ tabWidth = 2.0
+2021-01-23 15:56:27:设置为中文
+2021-01-23 15:56:27:vid=0x14e1, pid=0x3500, path=col01, rid=0xcd, bootloader=0
+2021-01-23 15:56:27:vid=0xaed7, pid=0x0013, path=col01, rid=0xcd, bootloader=0
+2021-01-23 15:56:27:vid=0xaed7, pid=0xfedc, path=col01, rid=0xcd, bootloader=1
+2021-01-23 15:56:28: 有两个参数
+2021-01-23 15:56:28:TouchManager() this:0xac19610
+2021-01-23 15:56:28:start upgrade test command thread.
+2021-01-23 15:56:28:TouchManager::TouchManager(): TestThread  = 0xabba4e0
+2021-01-23 15:56:28:start hogplug service
+2021-01-23 15:56:28:init TouchManager
+2021-01-23 15:56:28:getInstance mTouchManager : 0xac19610
+2021-01-23 15:56:28:found 0
+2021-01-23 15:56:28:command thread running
+2021-01-23 15:56:28:read count 190
+2021-01-23 15:56:28:Upgrade file: file:///D:/install/weixin/自动下载内容/WeChat Files/wxid_xcvyam3jt8o421/FileStorage/File/2021-01/TouchApp_Encoded.bin
+file:///D:/qt/FirmwareBin/小房间地上55/G-55WHD-QG-C1-W15.bin
+
+2021-01-23 15:56:28:Upgrade file tmp: file:///D:/install/weixin/自动下载内容/WeChat Files/wxid_xcvyam3jt8o421/FileStorage/File/2021-01/TouchApp_Encoded.bin
+2021-01-23 15:56:28:hotplug thread running
+2021-01-23 15:56:28:Upgrade file tmp: file:///D:/qt/FirmwareBin/小房间地上55/G-55WHD-QG-C1-W15.bin
+2021-01-23 15:56:28:aging time = 10
+2021-01-23 15:56:28:hotplug thread run: 800
+2021-01-23 15:56:28:device_interface_detail_data->DevicePathh = \\?\hid#vid_14e1&pid_3500&col01#9&338c22d8&0&0000#{4d1e55b2-f16f-11cf-88cb-001111000030}
+2021-01-23 15:56:28:try \\?\hid#vid_14e1&pid_3500&col01#9&338c22d8&0&0000#{4d1e55b2-f16f-11cf-88cb-001111000030}
+2021-01-23 15:56:29:hotplug: G-55WHD-QG-C1-W15, B:0, 0x14e1:0x3500 [1][0xac4c038]
+2021-01-23 15:56:29:enter calibration
+2021-01-23 15:56:29:getOnboardTestboardCount board count = 8
+2021-01-23 15:56:29:set calibration data: 0
+2021-01-23 15:56:29:setCalibrationPointData: index: 0, tx:0,ty:0,cx:65535,cy:65535,mx:1920,my:1080
+2021-01-23 15:56:29:{"count":250,"finished":0,"index":0}
+2021-01-23 15:56:29:autoTestSwitch = 0
+2021-01-23 15:56:29:Warning: isLockAGC reply failed[254,1], require[4,13]
+2021-01-23 15:56:29:校准模式 = 2
+2021-01-23 15:56:29:校准点的个数 = 9
+2021-01-23 15:56:29:默认校准模式 = 2
+2021-01-23 15:56:29:默认校准点个数 = 9
+��
+Ш�
+23 15:56:29:{"count":9,"mode":2,"points":[{"collectX":0,"collectY":0,"index":0,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":1,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":2,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":3,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":4,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":5,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":6,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":7,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":8,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0}]}
+2021-01-23 15:56:29:setCoordsEnabled 2 1
+2021-01-23 15:56:29:setCoordsEnabled 1 1
+2021-01-23 15:56:29:setCoordsEnabled 1 0
+2021-01-23 15:56:29:setCoordsEnabled 2 0
+2021-01-23 15:56:36:eixt calibration
+2021-01-23 15:58:41:软件路径：D:/qt/PC_TouchProject/touch/build-TouchTool-Desktop_Qt_5_7_0_MinGW_32bit-Debug/release
+2021-01-23 15:58:41:@@@@@@@@@ tabWidth = 2.0
+2021-01-23 15:58:41:设置为中文
+2021-01-23 15:58:41:vid=0x14e1, pid=0x3500, path=col01, rid=0xcd, bootloader=0
+2021-01-23 15:58:41:vid=0xaed7, pid=0x0013, path=col01, rid=0xcd, bootloader=0
+2021-01-23 15:58:41:vid=0xaed7, pid=0xfedc, path=col01, rid=0xcd, bootloader=1
+2021-01-23 15:58:42: 有两个参数
+2021-01-23 15:58:42:TouchManager() this:0xab8b900
+2021-01-23 15:58:42:start upgrade test command thread.
+2021-01-23 15:58:42:TouchManager::TouchManager(): TestThread  = 0xabe30b8
+2021-01-23 15:58:42:start hogplug service
+2021-01-23 15:58:42:init TouchManager
+2021-01-23 15:58:42:getInstance mTouchManager : 0xab8b900
+2021-01-23 15:58:42:found 0
+2021-01-23 15:58:42:read count 190
+2021-01-23 15:58:42:Upgrade file: file:///D:/install/weixin/自动下载内容/WeChat Files/wxid_xcvyam3jt8o421/FileStorage/File/2021-01/TouchApp_Encoded.bin
+file:///D:/qt/FirmwareBin/小房间地上55/G-55WHD-QG-C1-W15.bin
+
+2021-01-23 15:58:42:Upgrade file tmp: file:///D:/install/weixin/自动下载内容/WeChat Files/wxid_xcvyam3jt8o421/FileStorage/File/2021-01/TouchApp_Encoded.bin
+2021-01-23 15:58:42:Upgrade file tmp: file:///D:/qt/FirmwareBin/小房间地上55/G-55WHD-QG-C1-W15.bin
+2021-01-23 15:58:42:command thread running
+2021-01-23 15:58:42:hotplug thread running
+2021-01-23 15:58:42:aging time = 10
+2021-01-23 15:58:42:hotplug thread run: 800
+2021-01-23 15:58:42:device_interface_detail_data->DevicePathh = \\?\hid#vid_14e1&pid_3500&col01#9&338c22d8&0&0000#{4d1e55b2-f16f-11cf-88cb-001111000030}
+2021-01-23 15:58:42:try \\?\hid#vid_14e1&pid_3500&col01#9&338c22d8&0&0000#{4d1e55b2-f16f-11cf-88cb-001111000030}
+2021-01-23 15:58:42:hotplug: G-55WHD-QG-C1-W15, B:0, 0x14e1:0x3500 [1][0xaba8258]
+2021-01-23 15:58:42:enter calibration
+2021-01-23 15:58:42:getOnboardTestboardCount board count = 8
+2021-01-23 15:58:43:set calibration data: 0
+2021-01-23 15:58:43:setCalibrationPointData: index: 0, tx:0,ty:0,cx:65535,cy:65535,mx:1920,my:1080
+2021-01-23 15:58:43:{"count":250,"finished":0,"index":0}
+2021-01-23 15:58:43:autoTestSwitch = 0
+2021-01-23 15:58:43:Warning: isLockAGC reply failed[254,1], require[4,13]
+2021-01-23 15:58:43:校准模式 = 2
+2021-01-23 15:58:43:校准点的个数 = 9
+2021-01-23 15:58:43:默认校准模式 = 2
+2021-01-23 15:58:43:默认校准点个数 = 9
+�t�
+Pz�
+23 15:58:43:{"count":9,"mode":2,"points":[{"collectX":0,"collectY":0,"index":0,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":1,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":2,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":3,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":4,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":5,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":6,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":7,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":8,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0}]}
+2021-01-23 15:58:43:setCoordsEnabled 2 1
+2021-01-23 15:58:43:setCoordsEnabled 1 1
+2021-01-23 15:58:43:setCoordsEnabled 1 0
+2021-01-23 15:58:43:setCoordsEnabled 2 0
+2021-01-23 15:58:47:eixt calibration
+2021-01-23 16:05:32:软件路径：D:/qt/PC_TouchProject/touch/build-TouchTool-Desktop_Qt_5_7_0_MinGW_32bit-Debug/release
+2021-01-23 16:05:32:@@@@@@@@@ tabWidth = 2.0
+2021-01-23 16:05:32:设置为中文
+2021-01-23 16:05:32:vid=0x14e1, pid=0x3500, path=col01, rid=0xcd, bootloader=0
+2021-01-23 16:05:32:vid=0xaed7, pid=0x0013, path=col01, rid=0xcd, bootloader=0
+2021-01-23 16:05:32:vid=0xaed7, pid=0xfedc, path=col01, rid=0xcd, bootloader=1
+2021-01-23 16:05:34: 有两个参数
+2021-01-23 16:05:34:TouchManager() this:0xafddff0
+2021-01-23 16:05:34:start upgrade test command thread.
+2021-01-23 16:05:34:TouchManager::TouchManager(): TestThread  = 0xafb89f8
+2021-01-23 16:05:34:start hogplug service
+2021-01-23 16:05:34:init TouchManager
+2021-01-23 16:05:34:getInstance mTouchManager : 0xafddff0
+2021-01-23 16:05:34:found 0
+2021-01-23 16:05:34:command thread running
+2021-01-23 16:05:34:hotplug thread running
+2021-01-23 16:05:34:read count 190
+2021-01-23 16:05:34:Upgrade file: file:///D:/install/weixin/自动下载内容/WeChat Files/wxid_xcvyam3jt8o421/FileStorage/File/2021-01/TouchApp_Encoded.bin
+file:///D:/qt/FirmwareBin/小房间地上55/G-55WHD-QG-C1-W15.bin
+
+2021-01-23 16:05:34:Upgrade file tmp: file:///D:/install/weixin/自动下载内容/WeChat Files/wxid_xcvyam3jt8o421/FileStorage/File/2021-01/TouchApp_Encoded.bin
+2021-01-23 16:05:34:Upgrade file tmp: file:///D:/qt/FirmwareBin/小房间地上55/G-55WHD-QG-C1-W15.bin
+2021-01-23 16:05:34:aging time = 10
+2021-01-23 16:05:34:hotplug thread run: 800
+2021-01-23 16:05:34:device_interface_detail_data->DevicePathh = \\?\hid#vid_14e1&pid_3500&col01#9&338c22d8&0&0000#{4d1e55b2-f16f-11cf-88cb-001111000030}
+2021-01-23 16:05:34:try \\?\hid#vid_14e1&pid_3500&col01#9&338c22d8&0&0000#{4d1e55b2-f16f-11cf-88cb-001111000030}
+2021-01-23 16:05:34:hotplug: G-55WHD-QG-C1-W15, B:0, 0x14e1:0x3500 [1][0xafc1348]
+2021-01-23 16:05:34:enter calibration
+2021-01-23 16:05:34:getOnboardTestboardCount board count = 8
+2021-01-23 16:05:34:set calibration data: 0
+2021-01-23 16:05:34:setCalibrationPointData: index: 0, tx:0,ty:0,cx:65535,cy:65535,mx:1920,my:1080
+2021-01-23 16:05:35:{"count":250,"finished":0,"index":0}
+2021-01-23 16:05:35:autoTestSwitch = 0
+2021-01-23 16:05:35:Warning: isLockAGC reply failed[254,1], require[4,13]
+2021-01-23 16:05:35:校准模式 = 2
+2021-01-23 16:05:35:校准点的个数 = 9
+2021-01-23 16:05:35:默认校准模式 = 2
+2021-01-23 16:05:35:默认校准点个数 = 9
+2021-01-23 16:05:35:{"count":9,"mode":2,"points":[{"collectX":0,"collectY":0,"index":0,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":1,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":2,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":3,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":4,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":5,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":6,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":7,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":8,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0}]}
+2021-01-23 16:05:35:setCoordsEnabled 2 1
+2021-01-23 16:05:35:setCoordsEnabled 1 1
+2021-01-23 16:05:35:setCoordsEnabled 1 0
+2021-01-23 16:05:35:setCoordsEnabled 2 0
+2021-01-23 16:05:37:eixt calibration
+2021-01-23 16:05:48:软件路径：D:/qt/PC_TouchProject/touch/build-TouchTool-Desktop_Qt_5_7_0_MinGW_32bit-Debug/release
+2021-01-23 16:05:48:@@@@@@@@@ tabWidth = 2.0
+2021-01-23 16:05:48:设置为中文
+2021-01-23 16:05:48:vid=0x14e1, pid=0x3500, path=col01, rid=0xcd, bootloader=0
+2021-01-23 16:05:48:vid=0xaed7, pid=0x0013, path=col01, rid=0xcd, bootloader=0
+2021-01-23 16:05:48:vid=0xaed7, pid=0xfedc, path=col01, rid=0xcd, bootloader=1
+2021-01-23 16:05:50: 有两个参数
+2021-01-23 16:05:50:TouchManager() this:0xabd5318
+2021-01-23 16:05:50:start upgrade test command thread.
+2021-01-23 16:05:50:TouchManager::TouchManager(): TestThread  = 0x49eb2b0
+2021-01-23 16:05:50:start hogplug service
+2021-01-23 16:05:50:init TouchManager
+2021-01-23 16:05:50:getInstance mTouchManager : 0xabd5318
+2021-01-23 16:05:50:found 0
+2021-01-23 16:05:50:read count 190
+2021-01-23 16:05:50:command thread running
+2021-01-23 16:05:50:Upgrade file: file:///D:/install/weixin/自动下载内容/WeChat Files/wxid_xcvyam3jt8o421/FileStorage/File/2021-01/TouchApp_Encoded.bin
+file:///D:/qt/FirmwareBin/小房间地上55/G-55WHD-QG-C1-W15.bin
+
+2021-01-23 16:05:50:Upgrade file tmp: file:///D:/install/weixin/自动下载内容/WeChat Files/wxid_xcvyam3jt8o421/FileStorage/File/2021-01/TouchApp_Encoded.bin
+2021-01-23 16:05:50:Upgrade file tmp: file:///D:/qt/FirmwareBin/小房间地上55/G-55WHD-QG-C1-W15.bin
+2021-01-23 16:05:50:hotplug thread running
+2021-01-23 16:05:50:aging time = 10
+2021-01-23 16:05:50:hotplug thread run: 800
+2021-01-23 16:05:50:device_interface_detail_data->DevicePathh = \\?\hid#vid_14e1&pid_3500&col01#9&338c22d8&0&0000#{4d1e55b2-f16f-11cf-88cb-001111000030}
+2021-01-23 16:05:50:try \\?\hid#vid_14e1&pid_3500&col01#9&338c22d8&0&0000#{4d1e55b2-f16f-11cf-88cb-001111000030}
+2021-01-23 16:05:50:hotplug: G-55WHD-QG-C1-W15, B:0, 0x14e1:0x3500 [1][0xabd22a0]
+2021-01-23 16:05:50:enter calibration
+2021-01-23 16:05:50:getOnboardTestboardCount board count = 8
+2021-01-23 16:05:50:set calibration data: 0
+2021-01-23 16:05:50:setCalibrationPointData: index: 0, tx:0,ty:0,cx:65535,cy:65535,mx:1920,my:1080
+2021-01-23 16:05:50:{"count":250,"finished":0,"index":0}
+2021-01-23 16:05:50:autoTestSwitch = 0
+2021-01-23 16:05:51:Warning: isLockAGC reply failed[254,1], require[4,13]
+2021-01-23 16:05:51:校准模式 = 2
+2021-01-23 16:05:51:校准点的个数 = 9
+2021-01-23 16:05:51:默认校准模式 = 2
+2021-01-23 16:05:51:默认校准点个数 = 9
+�v؛23 16:05:51:{"count":9,"mode":2,"points":[{"collectX":0,"collectY":0,"index":0,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":1,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":2,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":3,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":4,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":5,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":6,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":7,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":8,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0}]}
+2021-01-23 16:05:51:setCoordsEnabled 2 1
+2021-01-23 16:05:51:setCoordsEnabled 1 1
+2021-01-23 16:05:51:setCoordsEnabled 1 0
+2021-01-23 16:05:51:setCoordsEnabled 2 0
+2021-01-23 16:05:52:eixt calibration
+2021-01-23 16:06:39:软件路径：D:/qt/PC_TouchProject/touch/build-TouchTool-Desktop_Qt_5_7_0_MinGW_32bit-Debug/release
+2021-01-23 16:06:39:@@@@@@@@@ tabWidth = 2.0
+2021-01-23 16:06:39:设置为中文
+2021-01-23 16:06:39:vid=0x14e1, pid=0x3500, path=col01, rid=0xcd, bootloader=0
+2021-01-23 16:06:39:vid=0xaed7, pid=0x0013, path=col01, rid=0xcd, bootloader=0
+2021-01-23 16:06:39:vid=0xaed7, pid=0xfedc, path=col01, rid=0xcd, bootloader=1
+2021-01-23 16:06:41: 有两个参数
+2021-01-23 16:06:41:TouchManager() this:0xab6e750
+2021-01-23 16:06:41:start upgrade test command thread.
+2021-01-23 16:06:41:TouchManager::TouchManager(): TestThread  = 0xabe6888
+2021-01-23 16:06:41:start hogplug service
+2021-01-23 16:06:41:init TouchManager
+2021-01-23 16:06:41:getInstance mTouchManager : 0xab6e750
+2021-01-23 16:06:41:found 0
+2021-01-23 16:06:41:command thread running
+2021-01-23 16:06:41:read count 190
+2021-01-23 16:06:41:Upgrade file: file:///D:/install/weixin/自动下载内容/WeChat Files/wxid_xcvyam3jt8o421/FileStorage/File/2021-01/TouchApp_Encoded.bin
+file:///D:/qt/FirmwareBin/小房间地上55/G-55WHD-QG-C1-W15.bin
+
+2021-01-23 16:06:41:Upgrade file tmp: file:///D:/install/weixin/自动下载内容/WeChat Files/wxid_xcvyam3jt8o421/FileStorage/File/2021-01/TouchApp_Encoded.bin
+2021-01-23 16:06:41:Upgrade file tmp: file:///D:/qt/FirmwareBin/小房间地上55/G-55WHD-QG-C1-W15.bin
+2021-01-23 16:06:41:hotplug thread running
+2021-01-23 16:06:41:aging time = 10
+2021-01-23 16:06:41:hotplug thread run: 800
+2021-01-23 16:06:41:device_interface_detail_data->DevicePathh = \\?\hid#vid_14e1&pid_3500&col01#9&338c22d8&0&0000#{4d1e55b2-f16f-11cf-88cb-001111000030}
+2021-01-23 16:06:41:try \\?\hid#vid_14e1&pid_3500&col01#9&338c22d8&0&0000#{4d1e55b2-f16f-11cf-88cb-001111000030}
+2021-01-23 16:06:41:hotplug: G-55WHD-QG-C1-W15, B:0, 0x14e1:0x3500 [1][0xac58c18]
+2021-01-23 16:06:41:enter calibration
+2021-01-23 16:06:41:getOnboardTestboardCount board count = 8
+2021-01-23 16:06:41:set calibration data: 0
+2021-01-23 16:06:41:setCalibrationPointData: index: 0, tx:0,ty:0,cx:65535,cy:65535,mx:1920,my:1080
+2021-01-23 16:06:41:{"count":250,"finished":0,"index":0}
+2021-01-23 16:06:41:autoTestSwitch = 0
+2021-01-23 16:06:41:Warning: isLockAGC reply failed[254,1], require[4,13]
+2021-01-23 16:06:41:校准模式 = 2
+2021-01-23 16:06:41:校准点的个数 = 9
+2021-01-23 16:06:41:默认校准模式 = 2
+2021-01-23 16:06:41:默认校准点个数 = 9
+X)�
+�v�
+23 16:06:42:{"count":9,"mode":2,"points":[{"collectX":0,"collectY":0,"index":0,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":1,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":2,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":3,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":4,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":5,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":6,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":7,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0},{"collectX":0,"collectY":0,"index":8,"maxX":12225,"maxY":6932,"targetX":0,"targetY":0}]}
+2021-01-23 16:06:42:setCoordsEnabled 2 1
+2021-01-23 16:06:42:setCoordsEnabled 1 1
+2021-01-23 16:06:42:setCoordsEnabled 1 0
+2021-01-23 16:06:42:setCoordsEnabled 2 0
+2021-01-23 16:06:44:eixt calibration
+2021-01-23 16:17:05:软件路径：D:/qt/PC_TouchProject/touch/build-TouchTool-Desktop_Qt_5_7_0_MinGW_32bit-Debug/release
+2021-01-23 16:17:05:@@@@@@@@@ tabWidth = 2.0
+2021-01-23 16:17:05:设置为中文
+2021-01-23 16:17:05:vid=0x14e1, pid=0x3500, path=col01, rid=0xcd, bootloader=0
+2021-01-23 16:17:05:vid=0xaed7, pid=0x0013, path=col01, rid=0xcd, bootloader=0
+2021-01-23 16:17:05:vid=0xaed7, pid=0xfedc, path=col01, rid=0xcd, bootloader=1
+2021-01-23 16:17:07:TouchManager() this:0x8bc4990
+2021-01-23 16:17:07:start upgrade test command thread.
+2021-01-23 16:17:07:TouchManager::TouchManager(): TestThread  = 0x8ca57e8
+2021-01-23 16:17:07:start hogplug service
+2021-01-23 16:17:07:init TouchManager
+2021-01-23 16:17:07:getInstance mTouchManager : 0x8bc4990
+2021-01-23 16:17:07:found 0
+2021-01-23 16:17:07:command thread running
+2021-01-23 16:17:07:read count 190
+2021-01-23 16:17:07:Upgrade file: file:///D:/install/weixin/自动下载内容/WeChat Files/wxid_xcvyam3jt8o421/FileStorage/File/2021-01/TouchApp_Encoded.bin
+file:///D:/qt/FirmwareBin/小房间地上55/G-55WHD-QG-C1-W15.bin
+
+2021-01-23 16:17:07:Upgrade file tmp: file:///D:/install/weixin/自动下载内容/WeChat Files/wxid_xcvyam3jt8o421/FileStorage/File/2021-01/TouchApp_Encoded.bin
+2021-01-23 16:17:07:hotplug thread running
+2021-01-23 16:17:07:Upgrade file tmp: file:///D:/qt/FirmwareBin/小房间地上55/G-55WHD-QG-C1-W15.bin
+2021-01-23 16:17:07:aging time = 10
+2021-01-23 16:17:07:hotplug thread run: 800
+2021-01-23 16:17:07:device_interface_detail_data->DevicePathh = \\?\hid#vid_14e1&pid_3500&col01#9&338c22d8&0&0000#{4d1e55b2-f16f-11cf-88cb-001111000030}
+2021-01-23 16:17:07:try \\?\hid#vid_14e1&pid_3500&col01#9&338c22d8&0&0000#{4d1e55b2-f16f-11cf-88cb-001111000030}
+2021-01-23 16:17:07:hotplug: G-55WHD-QG-C1-W15, B:0, 0x14e1:0x3500 [1][0x8c33020]
+2021-01-23 16:17:07:getOnboardTestboardCount board count = 8
+2021-01-23 16:17:07:autoTestSwitch = 0
+2021-01-23 16:17:12:hotplug thread end
+2021-01-23 16:17:12:command thread end
+2021-01-23 16:17:12:free 1 devices
+2021-01-23 16:17:12:free: bf4f8e1dffbfe7a3306d4fa5878107f8
+2021-01-23 16:17:12:upgradeThread and testThread and commandThread to be delete
+2021-01-23 16:17:12:TouchTools end

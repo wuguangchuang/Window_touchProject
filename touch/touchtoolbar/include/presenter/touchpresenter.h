@@ -437,6 +437,7 @@ private:
     ProcessStarter starter;
 public:
     bool initSdkDone;
+    void openProgress(bool isOpen);
     bool calibrationMode;
 };
 

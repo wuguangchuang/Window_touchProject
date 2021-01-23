@@ -32,10 +32,10 @@ Window {
     property bool setTest: defaultSetTest
 
     id: mainPage
-    visible:true
+    visible:false
     width: mWidth
     height: mHeight
-    visibility: Window.Maximized
+//    visibility: Window.Maximized
 
     // see also TouchTool.h
     property int mAPP_Factory: 0
@@ -1964,6 +1964,7 @@ QMessageBox::Critical	3	an icon indicating that the message represents a critica
         }
         mainTabView.currentIndex = index;
     }
+
     function setWindowHidden(visibled)
     {
         if(mainPage.visible && visibled)

@@ -70,6 +70,10 @@ public:
 
     void onCommandDone(touch_device *dev, touch_package *require, touch_package *reply);
     QString getTr(QString str);
+
+    //托盘
+    void openProgress(bool isOpen);
+
     void onTouchHotplug(touch_device* dev, const int attached, const void *val);
     void setHotplugInterval(unsigned int interval) {
         hotplugInterval = interval;

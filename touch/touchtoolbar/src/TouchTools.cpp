@@ -52,12 +52,12 @@ void TouchTools::onTouchHotplug(touch_device *dev, const int attached, const voi
         appendMessageText(message,0);
     }
     qint8 mode = 0;
-    printf("abc\n");
     if(argc > 1 && strcmp(argv[1],"-cal") == 0)
     {
+        argcTimer->stop();
         if(dev->touch.connected && !dev->touch.booloader)
         {
-            QThread::sleep(1);
+//            QThread::sleep(1);
             presenter->calibration();
 
         }
@@ -893,9 +893,9 @@ TouchTools::TouchTools(QObject *parent, TouchPresenter *presenter,int argc,char 
 //    timer->start(25000);
 
     QObject::connect(argcTimer,SIGNAL(timeout()),this,SLOT(exitProject()));
-    if(argc > 1 && strcmp(argv[1],"-changeCoordsMode") == 0)
+    if(argc > 1 && (strncmp(argv[1],"-changeCoordsMode",sizeof("-changeCoordsMode")) == 0 || strncmp(argv[1],"-cal",sizeof("-cal")) == 0))
     {
-        argcTimer->start(2000);
+        argcTimer->start(1500);
     }
     TINFO("start init thread");
     addTouchManagerTr();
@@ -962,6 +962,10 @@ QString TouchTools::getTr(QString str)
         return NULL;
     }
     return tr(str.toStdString().c_str());
+}
+void TouchTools::openProgress(bool isOpen)
+{
+    presenter->openProgress(isOpen);
 }
 
 void TouchTools::TestListener::inProgress(int progress, QString message)

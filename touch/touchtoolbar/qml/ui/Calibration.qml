@@ -10,8 +10,10 @@ Item {
     id: root
 //    anchors.fill: parent
     property int calibratePoints:4
-    property real calDefRectWidth: (calibratePoints === 9) ? root.width / 3.0 * 2 : root.width / 2
-    property real calDefRectHeight:(calibratePoints === 9) ? root.height / 3.0 * 2: root.height / 2
+//    property real calDefRectWidth: (calibratePoints === 9) ? root.width / 3.0 * 2 : root.width / 2
+//    property real calDefRectHeight:(calibratePoints === 9) ? root.height / 3.0 * 2: root.height / 2
+    property real calDefRectWidth: (calibratePoints === 9) ? root.width : root.width / 2
+    property real calDefRectHeight:(calibratePoints === 9) ? root.height: root.height / 2
     property real moveStep: 4
 
 
@@ -528,6 +530,7 @@ Item {
             color: (calMouseArea.pressed ? pressedRectColor : (calRect.hover ? hoverRectColor : defaultRectColor))
             MouseArea {
                 id: calMouseArea
+                visible: calibratePoints === 9 ? false : true
                 drag.target: calRect
                 drag.axis: Drag.XAndYAxis
                 drag.minimumX: 0
@@ -709,6 +712,7 @@ Item {
         color: (leftLineMouseArea.pressed ? pressedRectColor : (leftLineRect.hover ? hoverRectColor : defaultRectColor))
         MouseArea {
             id: leftLineMouseArea
+            visible: calibratePoints === 9 ? false : true
             anchors.fill: parent
             hoverEnabled: true
             drag.target: leftLineRect
@@ -752,6 +756,7 @@ Item {
         color: (rightLineMouseArea.pressed ? pressedRectColor : (rightLineRect.hover ? hoverRectColor : defaultRectColor))
         MouseArea {
             id: rightLineMouseArea
+            visible: calibratePoints === 9 ? false : true
             anchors.fill: parent
             hoverEnabled: true
             drag.target: rightLineRect
@@ -800,6 +805,7 @@ Item {
         color: (upLineMouseArea.pressed ? pressedRectColor : (upLineRect.hover ? hoverRectColor : defaultRectColor))
         MouseArea {
             id: upLineMouseArea
+            visible: calibratePoints === 9 ? false : true
             anchors.fill: parent
             hoverEnabled: true
             drag.target: upLineRect
@@ -845,6 +851,7 @@ Item {
         color: (downLineMouseArea.pressed ? pressedRectColor : (downLineRect.hover ? hoverRectColor : defaultRectColor))
         MouseArea {
             id: downLineMouseArea
+            visible: calibratePoints === 9 ? false : true
             anchors.fill: parent
             hoverEnabled: true
             drag.target: downLineRect
