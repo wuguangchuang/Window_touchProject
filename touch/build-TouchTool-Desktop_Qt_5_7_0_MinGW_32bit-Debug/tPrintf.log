@@ -555,3 +555,48 @@
 2021-01-23 16:17:07:  升级模式:
 2021-01-23 16:17:10:  关于界面
 2021-01-23 16:17:11:  升级模式:
+2021-01-25 17:00:19:  升级模式:
+2021-01-25 17:00:21:  设置模式:
+2021-01-25 17:00:21:setCoordsEnabled enable Serial channel
+2021-01-25 17:00:21:set successfully
+2021-01-25 17:00:21:  设置 checked = true
+2021-01-25 17:00:21:setCoordsEnabled enable USB channel
+2021-01-25 17:00:21:set successfully
+2021-01-25 17:00:25:  校准模式
+2021-01-25 17:00:25:setCoordsEnabled disenable Serial channel
+2021-01-25 17:00:25:set successfully
+2021-01-25 17:00:25:setCoordsEnabled disenable USB channel
+2021-01-25 17:00:25:set successfully
+2021-01-25 17:00:40:退出校准模式:
+2021-01-25 17:00:40:setCoordsEnabled enable Serial channel
+2021-01-25 17:00:40:set successfully
+2021-01-25 17:00:40:setCoordsEnabled enable USB channel
+2021-01-25 17:00:40:set successfully
+2021-01-25 17:04:41:  升级模式:
+2021-01-25 17:04:41:  设置模式:
+2021-01-25 17:04:41:setCoordsEnabled disenable Serial channel
+2021-01-25 17:04:42:set successfully
+2021-01-25 17:04:42:setCoordsEnabled disenable USB channel
+2021-01-25 17:04:42:set successfully
+2021-01-25 17:04:42:setCoordsEnabled enable Serial channel
+2021-01-25 17:04:42:set successfully
+2021-01-25 17:04:42:  设置 checked = true
+2021-01-25 17:04:42:setCoordsEnabled enable USB channel
+2021-01-25 17:04:42:set successfully
+2021-01-25 17:04:42:  设置 checked = false
+2021-01-25 17:04:42:setCoordsEnabled disenable USB channel
+2021-01-25 17:04:42:set successfully
+2021-01-25 17:04:42:setCoordsEnabled disenable Serial channel
+2021-01-25 17:04:42:set successfully
+2021-01-25 17:04:46:退出校准模式:
+2021-01-25 17:04:46:setCoordsEnabled enable Serial channel
+2021-01-25 17:04:46:set successfully
+2021-01-25 17:04:46:setCoordsEnabled enable USB channel
+2021-01-25 17:04:47:set successfully
+2021-01-25 21:09:53:  升级模式:
+2021-01-25 21:09:57:  设置模式:
+2021-01-25 21:09:57:setCoordsEnabled enable Serial channel
+2021-01-25 21:09:57:set successfully
+2021-01-25 21:09:57:  设置 checked = true
+2021-01-25 21:09:57:setCoordsEnabled enable USB channel
+2021-01-25 21:09:57:set successfully

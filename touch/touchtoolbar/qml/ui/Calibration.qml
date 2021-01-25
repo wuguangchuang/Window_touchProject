@@ -12,8 +12,8 @@ Item {
     property int calibratePoints:4
 //    property real calDefRectWidth: (calibratePoints === 9) ? root.width / 3.0 * 2 : root.width / 2
 //    property real calDefRectHeight:(calibratePoints === 9) ? root.height / 3.0 * 2: root.height / 2
-    property real calDefRectWidth: (calibratePoints === 9) ? root.width : root.width / 2
-    property real calDefRectHeight:(calibratePoints === 9) ? root.height: root.height / 2
+    property real calDefRectWidth: (calibratePoints === 9) ? root.width - root.width / 35 : root.width / 2
+    property real calDefRectHeight:(calibratePoints === 9) ? root.height - root.width / 35: root.height / 2
     property real moveStep: 4
 
 

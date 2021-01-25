@@ -323,7 +323,9 @@ int main(int argc, char *argv[])
     }
 
     // get config veondor touch devices
-    QFile loadFile(QStringLiteral("config/devices.json"));
+    char devicesJson[strlen(appPath.toStdString().c_str()) + sizeof("/config/devices.json") + 1];
+    sprintf(devicesJson,"%s/config/devices.json",appPath.toStdString().c_str());
+    QFile loadFile(devicesJson);
 
     if (loadFile.open(QIODevice::ReadOnly)) {
         TINFO("devices device json");
