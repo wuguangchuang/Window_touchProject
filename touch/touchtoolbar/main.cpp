@@ -94,7 +94,8 @@ int main(int argc, char *argv[])
 //    libusb_init(&ctx);
 
 //    QCoreApplication::setAttribute(Qt::AA_UseDesktopOpenGL, true);
-    TINFO(QLocale().name().toStdString().c_str());
+    QString defLang = QLocale().name().toStdString().c_str();
+    TINFO("defLang = %s",defLang.toStdString().c_str());
 //    QLocale curLocale(QLocale("zh_CN"));
 //    QLocale::setDefault(curLocale);
 
@@ -110,7 +111,7 @@ int main(int argc, char *argv[])
     QApplication app(argc, argv);
     QTranslator translator;
     //bool ok = translator.load(":lang/zh_CN.qm");
-    bool ok;
+    bool ok = false;
     TINFO("start %s: %s, %d", __DATE__, APP_VERSION_NAME, APP_VERSION_CODE);
     SingleApp *singleApp = NULL;
     if (isAlreadyRunning(&singleApp)) {
@@ -147,10 +148,9 @@ int main(int argc, char *argv[])
 //        ok = false;
     if (lang == "")
         TDEBUG("lang false");
-    if (lang != "en_US") {
+    if(lang == "zh_CN")
+    {
         if (!ok) {
-            lang = "zh_CN";
-            //        ok = translator.load(":lang/" + QLocale().name() + ".qm");
             ok = translator.load(":lang/" + lang + ".qm");
         }
         TINFO("load translator %s %s", lang.toStdString().c_str(), ok ? "success" : "fail");
@@ -161,14 +161,23 @@ int main(int argc, char *argv[])
             lang = "zh_CN";
             app.installTranslator(&translator);
         }
-    }else
+    }
+    else
     {
-        if (!ok) {
+        if(lang != "en_US")
+        {
+            lang = defLang;
+            TINFO("==============lang = %s",lang.toStdString().c_str());
+        }
+        if(lang != "en_US" && lang != "zh_CN")
+        {
             lang = "en_US";
+        }
+        if (!ok) {
             //        ok = translator.load(":lang/" + QLocale().name() + ".qm");
             ok = translator.load(":lang/" + lang + ".qm");
         }
-        TINFO("load translator %s %s", lang.toStdString().c_str(), ok ? "success" : "fail");
+
         if (ok) {
             app.installTranslator(&translator);
         } else {
@@ -176,6 +185,7 @@ int main(int argc, char *argv[])
             lang = "en_US";
             app.installTranslator(&translator);
         }
+        TINFO("load translator %s %s", lang.toStdString().c_str(), ok ? "success" : "fail");
     }
     //用于语言之间的转换
     QLocale curLocale(lang);

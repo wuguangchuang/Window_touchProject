@@ -10,8 +10,8 @@ QtObject {
     // VERBOSE: 4, DEBUG: 3, INFO: 2, WARNING: 1, ERROR: 0
     property int logLevel: 3
 
-    property string lang: "zh_CN"
-	//property string lang: "en_US"
+    //property string lang: "zh_CN"
+	//roperty string lang: "en_US"
 
     // 硬件加速， openGL
     property bool hardwareAcceleration:true
