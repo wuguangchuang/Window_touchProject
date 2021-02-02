@@ -13,10 +13,13 @@
 
 #define UPGRADE_FILE_DIR  "config/"
 #define MODE_SETTING_FILE "modeSetting.json"
+#define BATCH_FINISH_SUCCESS    2
+#define BATCH_FINISH_ERROR      3
+#define BATCH_CANCEL            5
 
 TouchPresenter::TouchPresenter(QObject *parent, QObject *component) : QObject(parent),
     signalThread(this), sem(0), settings("newskyer", "TouchAssistant"),paintSem(0),touchManager(NULL),
-    initSdkDone(false)
+    initSdkDone(false),batchCancel(false)
 {
 
     this->component = component;
@@ -491,6 +494,22 @@ void TouchPresenter::setWindowHidden(bool visibled)
     QMetaObject::invokeMethod(component, "setCurrentIndex",Q_ARG(QVariant, visibled));
 }
 
+void TouchPresenter::startBatchTest(int index)
+{
+    touch->startBatchTest(index);
+}
+
+void TouchPresenter::startBatchUpgrade(int index,QString batchUpgradeFile)
+{
+    touch->startBatchUpgrade(index,batchUpgradeFile);
+}
+
+void TouchPresenter::setBatchCancel(bool batchCancel)
+{
+    this->batchCancel = batchCancel;
+    touch->setBatchCancel(batchCancel);
+}
+
 void TouchPresenter::updateSignalList(QVariant list)
 {
     if (!list.canConvert<QVariantList>()) {
@@ -545,6 +564,36 @@ QVariantMap TouchPresenter::refreshModeSetting()
     return map;
 }
 
+void TouchPresenter::batchProgress(int batchIndex, int progress)
+{
+    if (component == NULL) {
+        return;
+    }
+    QMetaObject::invokeMethod(component, "refreshBatchProgress",
+        Q_ARG(QVariant, batchIndex),
+        Q_ARG(QVariant, progress));
+    return;
+
+}
+
+
+void TouchPresenter::onBatchFinish(int index, bool result, QString message)
+{
+    if (component == NULL) {
+        return;
+    }
+    QMetaObject::invokeMethod(component, "refreshBatchResult",
+        Q_ARG(QVariant, index),
+        Q_ARG(QVariant, batchCancel ? BATCH_CANCEL : (result ? BATCH_FINISH_SUCCESS : BATCH_FINISH_ERROR)));
+//    QMetaObject::invokeMethod(component, "refreshBatchProgress",
+//        Q_ARG(QVariant, index),
+//        Q_ARG(QVariant, 100));
+    QMetaObject::invokeMethod(component, "refreshBatchInfo",
+        Q_ARG(QVariant, index),
+        Q_ARG(QVariant, message));
+    return;
+}
+
 
 int TouchPresenter::getDeviceCount()
 {
@@ -566,11 +615,15 @@ void TouchPresenter::setAgingTime(int time)
 
 void TouchPresenter::setDeviceStatus(int index, int status)
 {
+    if(status != 1)
+    {
+        TDEBUG("改变设备的状态status = %d",status);
+    }
+
     //setDeviceStatus
     if (component == NULL) {
         return;
     }
-    QVariant returnedValue;
     QMetaObject::invokeMethod(component, "setDeviceStatus",
         Q_ARG(QVariant, index),
         Q_ARG(QVariant, status));

@@ -28,6 +28,7 @@
 class TouchInterface {
 public:
     TouchInterface(){}
+//    virtual touch_device *getDevices() = 0;
     virtual QVariantMap getSignalData(QVariant index, int count) = 0;
     virtual QVariantMap getSignalItems() = 0;
     virtual QVariant getRelativeInfo() = 0;
@@ -43,6 +44,12 @@ public:
     virtual QString getTr(QString info) = 0;
     virtual void AutoRun(bool isAutoRun) = 0;
     virtual QString getAppPath() = 0;
+    virtual QVariantMap getConnectDeviceInfo() = 0;
+    virtual touch_device *getDevice(int index) = 0;
+    virtual void startBatchTest(int testIndex) = 0;
+    virtual void startBatchUpgrade(int testIndex,QString batchUpgradeFile) = 0;
+    virtual void setBatchCancel(bool batchCancel) = 0;
+
 };
 class ProcessStarter : public QProcess {
     Q_OBJECT
@@ -343,9 +350,21 @@ public:
     QObject* getComponent() { return component;}
     void setTouchManager(TouchManager *tm) {touchManager = tm;}
 
+
     //更多设置
     Q_INVOKABLE void modeSetting(bool startup = false);
     Q_INVOKABLE QVariantMap refreshModeSetting();
+
+    //批处理
+    Q_INVOKABLE void batchProgress(int batchIndex,int progress);
+    Q_INVOKABLE QVariantMap getConnectDeviceInfo(){
+        return touch->getConnectDeviceInfo();
+    }
+    Q_INVOKABLE void startBatchTest(int index);
+    Q_INVOKABLE void startBatchUpgrade(int index,QString batchUpgradeFile);
+    Q_INVOKABLE void setBatchCancel(bool batchCancel);
+
+
 
     // call qml
     void showDialog(QString title, QString message, int type = 0);
@@ -385,6 +404,11 @@ public:
     void setCurrentIndex(int index);
     void setWindowHidden(bool visibled);
 
+    //批处理
+    void onBatchFinish(int index,bool result,QString message = "");
+
+
+
 signals:
     void agingFinished(int index);
     void setUpgradeProgress(QVariant p);
@@ -407,6 +431,9 @@ signals:
     void stopAll();
     void setTestThreadStop(bool stop);
     void setUpdatePath(QString path);
+
+
+
 
 public slots:
     void newRunner();
@@ -447,7 +474,8 @@ public:
     void changeTabIndex(int index);
     void enterCalibratePage();
     void getScreenOrientation();
-
+    QMutex batchMutex;
+    bool batchCancel;
 };
 
 #endif // TOUCHPRESENTER_H

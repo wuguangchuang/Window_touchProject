@@ -104,7 +104,8 @@ DISTFILES += \
     qml/ui/MyButton.qml \
     qml/ui/CalibrationDrawLine.qml \
     qml/ui/FineTune.qml \
-    qml/ui/ModeSetting.qml
+    qml/ui/ModeSetting.qml \
+    qml/ui/MyComboBox.qml
 
 # Default rules for deployment.
 include(deployment.pri)

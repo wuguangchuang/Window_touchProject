@@ -29,6 +29,7 @@ using namespace Touch;
 #define zh_CN 1
 #define en_US 0
 
+
 void SetProcessAutoRunSelf(const QString &appPath);
 void AutoRun(bool isAutoRun);
 
@@ -96,6 +97,7 @@ int main(int argc, char *argv[])
 //    libusb_init(&ctx);
 
 //    QCoreApplication::setAttribute(Qt::AA_UseDesktopOpenGL, true);
+    QString defLang = QLocale().name().toStdString().c_str();
     TINFO(QLocale().name().toStdString().c_str());
 //    QLocale curLocale(QLocale("zh_CN"));
 //    QLocale::setDefault(curLocale);
@@ -147,10 +149,9 @@ int main(int argc, char *argv[])
 //        ok = false;
     if (lang == "")
         TDEBUG("lang false");
-    if (lang != "en_US") {
+    if(lang == "zh_CN")
+    {
         if (!ok) {
-            lang = "zh_CN";
-            //        ok = translator.load(":lang/" + QLocale().name() + ".qm");
             ok = translator.load(":lang/" + lang + ".qm");
         }
         TINFO("load translator %s %s", lang.toStdString().c_str(), ok ? "success" : "fail");
@@ -161,10 +162,18 @@ int main(int argc, char *argv[])
             lang = "zh_CN";
             app.installTranslator(&translator);
         }
-    }else
+    }
+    else
     {
-        if (!ok) {
+        if(lang != "en_US")
+        {
+            lang = defLang;
+        }
+        if(lang != "en_US" && lang != "zh_CN")
+        {
             lang = "en_US";
+        }
+        if (!ok) {
             //        ok = translator.load(":lang/" + QLocale().name() + ".qm");
             ok = translator.load(":lang/" + lang + ".qm");
         }
@@ -177,6 +186,36 @@ int main(int argc, char *argv[])
             app.installTranslator(&translator);
         }
     }
+//    if (lang != "en_US") {
+//        if (!ok) {
+//            lang = "zh_CN";
+//            //        ok = translator.load(":lang/" + QLocale().name() + ".qm");
+//            ok = translator.load(":lang/" + lang + ".qm");
+//        }
+//        TINFO("load translator %s %s", lang.toStdString().c_str(), ok ? "success" : "fail");
+//        if (ok) {
+//            app.installTranslator(&translator);
+//        } else {
+//            ok = translator.load(":lang/zh_CN.qm");
+//            lang = "zh_CN";
+//            app.installTranslator(&translator);
+//        }
+//    }else
+//    {
+//        if (!ok) {
+//            lang = "en_US";
+//            //        ok = translator.load(":lang/" + QLocale().name() + ".qm");
+//            ok = translator.load(":lang/" + lang + ".qm");
+//        }
+//        TINFO("load translator %s %s", lang.toStdString().c_str(), ok ? "success" : "fail");
+//        if (ok) {
+//            app.installTranslator(&translator);
+//        } else {
+//            ok = translator.load(":lang/en_US.qm");
+//            lang = "en_US";
+//            app.installTranslator(&translator);
+//        }
+//    }
     //用于语言之间的转换
     QLocale curLocale(lang);
     QLocale::setDefault(curLocale);
@@ -323,7 +362,11 @@ int main(int argc, char *argv[])
     }
 
     // get config veondor touch devices
-    QFile loadFile(QStringLiteral("config/devices.json"));
+    int len = strlen(appPath.toStdString().c_str()) + sizeof("/config/devices.json");
+    char deviceJson[len];
+    sprintf(deviceJson,"%s/config/devices.json",appPath.toStdString().c_str());
+//    TDEBUG("len = %d,路径 = %s",len, deviceJson);
+    QFile loadFile(deviceJson);
 
     if (loadFile.open(QIODevice::ReadOnly)) {
         TINFO("devices device json");
@@ -359,7 +402,7 @@ int main(int argc, char *argv[])
     TINFO("autoDisableCoordinate=%d", autoDisableCoordinate);
     QObject *object = NULL;
 
-    if(argc > 1 && QString::compare(argv[1],"-changeCoordsMode") == 0)
+    if(argc > 1 && strncmp(argv[1],"-changeCoordsMode",sizeof("-changeCoordsMode")) == 0)
     {
 
     }
@@ -371,7 +414,8 @@ int main(int argc, char *argv[])
         object = component.create();
         touch->setComponent(object);
     }
-    if(argc > 1 && QString::compare(argv[1],"-selfStarting") == 0)
+    if(argc > 1 && (strncmp(argv[1],"-selfStarting",sizeof("-selfStarting")) == 0 ||
+            strncmp(argv[1],"-cal",sizeof("-cal")) == 0))
     {
         TDEBUG(" 有两个参数");
         touch->openProgress(false);

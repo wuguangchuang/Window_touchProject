@@ -103,6 +103,7 @@ int TouchAging::startAging(AgingItem *item)
     retVal = setDeviceAging(item->device, true);
     if (retVal != 0) {
         item->status = AGING_ERROR;
+        TDEBUG("序号%d 老化失败",item->index);
         presenter->setDeviceStatus(item->index, AGING_ERROR);
         return retVal;
     }
@@ -110,8 +111,8 @@ int TouchAging::startAging(AgingItem *item)
         item->status = AGING_CONNECTED;
         presenter->setDeviceStatus(item->index, AGING_CONNECTED);
     }
-    TPRINTF("开始加速老化 itemIndex = %d",item->index);
-    TDEBUG("%s disable coords, save usb=%d, serival=%d", __func__, item->usb_status, item->serial_status);
+    TPRINTF("开始加速老化 itemIndex = %d,status = %d",item->index,item->status);
+//    TDEBUG("%s disable coords, save usb=%d, serival=%d", __func__, item->usb_status, item->serial_status);
     mManager->setCoordsEnabled(item->device, COORDS_CHANNEL_SERIAL, COORDS_CHANNEL_DISABLE);
     mManager->setCoordsEnabled(item->device, COORDS_CHANNEL_USB, COORDS_CHANNEL_DISABLE);
     return 0;
@@ -136,6 +137,7 @@ int TouchAging::pauseAging(AgingItem *item)
 {
     if (item->status == AGING_CONNECTED) {
         item->status = AGING_DISCONNECTED;
+        TDEBUG("暂停老化");
         presenter->setDeviceStatus(item->index, 2);
     }
     return 0;
@@ -167,6 +169,7 @@ void TouchAging::onTouchHotplug(touch_device *dev, const int attached, const voi
 {
     if (!running || dev->touch.booloader) return;
 
+    TDEBUG("@@@@@@@@@@@@@@@@@@@@@onTouchHotplug");
     AgingItem *item;
     for (int i = 0; i < mTestDeviceCount; i++) {
         item = &mAgingItems[i];

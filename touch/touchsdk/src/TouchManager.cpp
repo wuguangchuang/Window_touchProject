@@ -13,6 +13,8 @@
 #define SERVICE_NAME "touch_hotplug"
 #undef TVERBOSE
 #define TVERBOSE(format, ...)
+#define DEVICE_CONNECT 1
+#define DEVICE_DISCONNECT 2
 
 static char *signal_test_name[] = {
     "ADC_X_TB",
@@ -201,7 +203,7 @@ void TouchManager::freeInstance()
 TouchManager::TouchManager() : mTesting(false), mUpgrading(false),
     mHotplugThread(this), mHotplugListener(NULL), untDataBuf(NULL),
     mDevices(NULL), mCount(0), hotplugInterval(800), hotplugSem(0),
-    mPauseHotplug(false),mtestStop(false),translator(NULL)
+    mPauseHotplug(false),mtestStop(false),translator(NULL),batchCancal(false)
 {
 #if 1
     //mDevices = hid_find_touchdevice(&mCount);
@@ -318,6 +320,19 @@ bool TouchManager::startTest(touch_device *device, TestListener *listener, Stand
     mTestDevice = device;
     testThread->setStandardType(st);
     testThread->start();
+}
+
+bool TouchManager::startBatchTest(int index,touch_device *device, TouchManager::BatchTestListener *listener, StandardType st)
+{
+    if(device == NULL)
+        return false;
+    batchTestListenter = listener;
+    TouchManager::BathchTestThread *batchTestThread = new BathchTestThread(this);
+    batchTestThread->setStandardType(st);
+    batchTestThread->setTestDevice(device);
+    batchTestThread->setTestIndex(index);
+    batchTestThread->start();
+
 }
 TouchTestData *TouchManager::getSignalDatas(touch_device *device, qint32 index, int dataCount,
                                             bool useOldData)
@@ -610,12 +625,12 @@ bool TouchManager::testSignal(touch_device *device, int testNo, StandardType sta
     bool result = true, allTestResult = true;
     unsigned char standardMin, standardMax;
     int retVal;
-    int tledState = isTLedOn(mTestDevice);
+    int tledState = isTLedOn(device);
     if (tledState < 0)
         tledState = 1;
 
     retVal = getSignalTestStandard(
-                mTestDevice,
+                device,
                 testNo, &standard, standardType);
 //    if(retVal == -3)
 //        goto test_signal_end;
@@ -642,10 +657,10 @@ bool TouchManager::testSignal(touch_device *device, int testNo, StandardType sta
         // old method
         if (standard.method_enum == 0 && !mtestStop) {
         if (isSingleSignalTest(testNo)) {
-            setTLed(mTestDevice, 1);
+            setTLed(device, 1);
             result = true;
 
-            retVal = getSignalTestData(mTestDevice, testNo, testData, dataCount, &readDataCount);
+            retVal = getSignalTestData(device, testNo, testData, dataCount, &readDataCount);
             if (retVal != 0) {
                 TWARNING("test no 0x%02x, get datas failed[%d]", testNo, retVal);
                 result = false;
@@ -672,7 +687,7 @@ bool TouchManager::testSignal(touch_device *device, int testNo, StandardType sta
 
             }
         } else if (isUNT(testNo) && !mtestStop) {
-            setTLed(mTestDevice, 1);
+            setTLed(device, 1);
             unsigned char *bufData;
             const int TEST_COUNT = 25;
             bufData = (unsigned char*)malloc(TEST_COUNT * dataCount);
@@ -687,7 +702,7 @@ bool TouchManager::testSignal(touch_device *device, int testNo, StandardType sta
                     goto test_signal_end;
                 }
                 untData = oneBuf + (dataCount * ti);
-                retVal = getSignalTestData(mTestDevice, testNo,
+                retVal = getSignalTestData(device, testNo,
                         oneBuf + (dataCount * ti), dataCount, &readDataCount);
                 if (retVal != 0) {
                     TWARNING("test number 0x%02x, get data command failed[%d]", testNo, retVal);
@@ -752,9 +767,9 @@ bool TouchManager::testSignal(touch_device *device, int testNo, StandardType sta
             free(bufData);
 
         } else if (isRVR(testNo) &&  !mtestStop) {
-            setTLed(mTestDevice, 0);
+            setTLed(device, 0);
 
-            retVal = getSignalTestData(mTestDevice, testNo, testData, dataCount, &readDataCount);
+            retVal = getSignalTestData(device, testNo, testData, dataCount, &readDataCount);
             if (retVal != 0) {
                 TWARNING("RVR test no 0x%02x, get datas failed[%d]", testNo, retVal);
                 result = false;
@@ -789,12 +804,12 @@ bool TouchManager::testSignal(touch_device *device, int testNo, StandardType sta
             {
                 goto test_signal_end;
             }
-            setTLed(mTestDevice, setTled);
+            setTLed(device, setTled);
             switch (testMethod) {
             case STM_RAW_RANGE: {
                 int testCount = isRepeat ? 25 : 1;
                 for (int tc = 0; tc < testCount &&  !mtestStop; tc++) {
-                    retVal = getSignalTestData(mTestDevice, testNo, testData, dataCount, &readDataCount);
+                    retVal = getSignalTestData(device, testNo, testData, dataCount, &readDataCount);
                     if (retVal != 0) {
                         TWARNING("RAW RANGE test no 0x%02x, get datas failed[%d]", testNo, retVal);
                         result = false;
@@ -831,7 +846,7 @@ bool TouchManager::testSignal(touch_device *device, int testNo, StandardType sta
                 // get all datas, TEST_COUNT * dataCount
                 for (int ti = 0; ti < TEST_COUNT && !mtestStop; ti++) {
                     untData = oneBuf + (dataCount * ti);
-                    retVal = getSignalTestData(mTestDevice, testNo,
+                    retVal = getSignalTestData(device, testNo,
                                                oneBuf + (dataCount * ti), dataCount, &readDataCount);
                     if (retVal != 0) {
                         TWARNING("test number 0x%02x, get data command failed[%d]", testNo, retVal);
@@ -911,7 +926,7 @@ bool TouchManager::testSignal(touch_device *device, int testNo, StandardType sta
         goto test_signal_end;
     }
 test_signal_end:
-    setTLed(mTestDevice, tledState);
+    setTLed(device, tledState);
 
     if (mIgnoreFailedTestItem) {
         result = allTestResult;
@@ -1084,6 +1099,7 @@ onboard_test_retry:
 
         if (mIgnoreFailedTestItem) {
             result = testSignal(mTestDevice, testNo, testThread->standardType);
+//            TDEBUG("测试项testNo = %d, result = %d",testNo,result ? 1 : 0);
             if (finalResult && !result)
                 finalResult = result;
             if (!result) {
@@ -1295,7 +1311,7 @@ do_test_end:
     if (mTestListener != NULL)
         mTestListener->onTestDone(finalResult, info,mtestStop,isSupport);
     mTesting = false;
-
+    mtestStop = false;
 }
 
 void TouchManager::checkOnboardtestDataAbnormal(onboard_test_data_result *onboardTestData,unsigned char *onboardTestItem,int count)
@@ -1578,7 +1594,6 @@ void TouchManager::HotplugThread::run()
 //                    device->touch.connected = 1;
 
 //                    manager->freeHidDevice(tmp);    // free old device
-                    //将设备device信息复制给tmp
                     manager->deepCloneDevice(tmp, device);
 //                    tmp->mutex.unlock();
 
@@ -1603,36 +1618,38 @@ void TouchManager::HotplugThread::run()
 
             // new one
             if (found_old == 0 && !same) {
-                hotplug_dbg("new one device");
-                if (last == NULL) {
-                    manager->setDevices(device);
-                    device = device->next;
-                } else {
-                    last->next = device;
-                    last = device;
-                    device = device->next;
-                }
+            hotplug_dbg("new one device");
+            if (last == NULL) {
+                manager->setDevices(device);
+                device = device->next;
+            } else {
+                last->next = device;
+                last = device;
+                device = device->next;
             }
-            hotplug_dbg("init device info");
-            if (!same && manager->mHotplugListener != NULL) {
-                cur->touch.connected = 1;
-                //通过序列号来判断设备时需要更新VID PID以及BootLoader信息
-                touch_fireware_info touchFirmwareInfo;
-                if(manager->getFirewareInfo(cur,&touchFirmwareInfo) == 0)
+        }
+        hotplug_dbg("init device info");
+        if (!same && manager->mHotplugListener != NULL) {
+            cur->touch.connected = 1;
+            //通过序列号来判断设备时需要更新VID PID以及BootLoader信息
+            touch_fireware_info touchFirmwareInfo;
+            if(manager->getFirewareInfo(cur,&touchFirmwareInfo) == 0)
+            {
+                cur->info->vendor_id = toWord(touchFirmwareInfo.usb_vid_l,touchFirmwareInfo.usb_vid_h);
+                cur->info->product_id = toWord(touchFirmwareInfo.usb_pid_l,touchFirmwareInfo.usb_pid_h);
+                if(toWord(touchFirmwareInfo.type_l,touchFirmwareInfo.type_h) == 0x0001)
                 {
-                    cur->info->vendor_id = toWord(touchFirmwareInfo.usb_vid_l,touchFirmwareInfo.usb_vid_h);
-                    cur->info->product_id = toWord(touchFirmwareInfo.usb_pid_l,touchFirmwareInfo.usb_pid_h);
-                    if(toWord(touchFirmwareInfo.type_l,touchFirmwareInfo.type_h) == 0x0001)
-                    {
-                        cur->touch.booloader = 1;
-                    }
-                    else
-                    {
-                        cur->touch.booloader = 0;
-                    }
+                    cur->touch.booloader = 1;
                 }
-                manager->mHotplugListener->onTouchHotplug(cur, 1, NULL);
+                else
+                {
+                    cur->touch.booloader = 0;
+                }
             }
+            manager->mHotplugListener->onTouchHotplug(cur, 1, NULL);
+        }
+
+            
 device_each_out:
             hotplug_dbg("next device: %p", device);
 
@@ -1650,7 +1667,6 @@ device_each_out:
 void TouchManager::initDeviceInfo(touch_device *dev)
 {
     memset(dev->touch.model, 0, sizeof(dev->touch.model));
-//    QThread::msleep(10000);
     getStringInfo(dev, TOUCH_STRING_TYPE_MODEL, dev->touch.model, sizeof(dev->touch.model));
     memset(&dev->touch.mcu, 0, sizeof(mcu_info));
     getMcuInfo(dev, &dev->touch.mcu);
@@ -1721,6 +1737,64 @@ touch_device *TouchManager::firstConnectedDevice()
     return NULL;
 }
 
+QVariantMap TouchManager::getBatchDevicesInfo()
+{
+    QVariantMap map;
+    QVariantList deviceInfoList;
+    int count = 0;
+    touch_device *tmp = devices();
+
+    while (tmp) {
+        if(tmp->touch.id_str == NULL || tmp->touch.id_str == ""  || strncmp(tmp->touch.id_str,"0000000000000000",sizeof("00000000000000")) == 0)
+        {
+            continue;
+        }
+        QVariantMap deviceMap;
+        deviceMap.insert("deviceStatus",tmp->touch.connected ? DEVICE_CONNECT : DEVICE_DISCONNECT);
+        deviceMap.insert("mcuID",tmp->touch.id_str);
+        deviceMap.insert("bootloader",tmp->touch.booloader ? 1 : 0);
+        TDEBUG("connectIndex = %d,vid = %x,pid = %x,mcuId = %s",count,tmp->info->vendor_id,tmp->info->product_id,tmp->touch.id_str);
+
+        char number[10];
+        memset(number,0,sizeof(number));
+        sprintf(number,"%d",count);
+        deviceInfoList.append(deviceMap);
+        count++;
+        tmp = tmp->next;
+    }
+    if(count > 0)
+    {
+        map.insert("deviceInfoList",deviceInfoList);
+        map.insert("count",count);
+    }
+    else
+    {
+        map.insert("count",0);
+    }
+    TDEBUG("连接设备的个数 = %d",count);
+    return map;
+}
+
+touch_device *TouchManager::getDevice(int index)
+{
+    int tmpIndex = 0;
+    touch_device *tmp = devices();
+    while (tmp) {
+
+        if(tmp->touch.id_str == NULL || tmp->touch.id_str == "" || strncmp(tmp->touch.id_str,"0000000000000000",sizeof("00000000000000")) == 0)
+        {
+            continue;
+        }
+        if(tmpIndex == index)
+        {
+            return tmp;
+        }
+        tmpIndex++;
+        tmp = tmp->next;
+    }
+    return NULL;
+}
+
 //-------------------
 
 
@@ -1745,7 +1819,7 @@ bool TouchManager::isBootloaderDevice(touch_device *dev)
 #if 1
     if (dev == NULL)
         return false;
-    return !!dev->touch.booloader == 1;
+    return dev->touch.booloader == 1;
 #else
     if (dev && dev->touch.connected && dev->info->vendor_id == 0xAED7 && dev->info->product_id == 0xFEDC) {
 //    if (dev && dev->touch.connected) {
@@ -1915,6 +1989,11 @@ void TouchManager::setStop(bool stop)
     TDEBUG("this: %p", this);
 
 
+}
+
+void TouchManager::setBatchCancal(bool cancel)
+{
+    batchCancal = cancel;
 }
 void TouchManager::TestThread::run()
 {
@@ -2708,11 +2787,13 @@ int TouchManager::getSignalTestStandard(touch_device *device, unsigned char inde
 
 int TouchManager::setAging(touch_device *device, bool on)
 {
+    TDEBUG(on ? "进入老化模式":"退出老化模式");
     unsigned char data = on ? 0x01 : 0x00;
     DEFINE_PACKAGE(require, TOUCH_M_CMD_HARDWARE, TOUCH_S_CMD_SET_AGING, 1, &data);
     DEFINE_PACKAGE(reply, 0, 0, 0, NULL);
 
     int ret = sendPackage(&require, &reply, device);
+    TDEBUG(on ? "进入老化模式命令执行结束":"退出老化模式命令执行结束");
     if (ret < 0) return ret;
     if (!isCommandReplySuccessful(&require, &reply, ret, __func__)) {
         return -2;
@@ -3322,6 +3403,21 @@ bool TouchManager::isSameDeviceInPort(touch_device *a, touch_device *b)
 #endif
 }
 
+int TouchManager::startBatchUpgrade(int upgradeIndex, touch_device *device,QString path, TouchManager::BatchUpgradeListener *listener)
+{
+    if(device == NULL)
+    {
+        return -1;
+    }
+    batchUpgradeListenter = listener;
+    BatchUpgradeThread *batchUpgradeThread = new BatchUpgradeThread(this);
+    batchUpgradeThread->path = path;
+    batchUpgradeThread->setBatchUpgradeDevice(device);
+    batchUpgradeThread->setBatchUpgradeIndex(upgradeIndex);
+    batchUpgradeThread->start();
+    return 0;
+}
+
 bool TouchManager::mShowTestData = false;
 bool TouchManager::mIgnoreFailedTestItem = false;
 bool TouchManager::mIgnoreFailedOnboardTestItem = false;
@@ -3351,3 +3447,451 @@ void TouchManager::setShowTestData(bool show)
     mShowTestData = show;
 }
 
+
+TouchManager::BathchTestThread::BathchTestThread(TouchManager *manager):standardType(Standard_Factory)
+{
+    this->manager = manager;
+}
+
+void TouchManager::BathchTestThread::run()
+{
+    TDEBUG("开始批量测试 index = %d",testIndex);
+    // get test info
+    int testCount = 0;
+    unsigned char items[128];
+    int testNo;
+    onboard_test_data_result onboardTestDataResult;
+    onboard_test_data_result onboardTestData;
+    bool onboardTestResult = true;
+    int retVal;
+    bool result = true;
+    bool finalResult = true;
+    QString info = "";
+    QString errTmp;
+    int retryCount = 4;
+    int maxTestItem = sizeof(signal_test_name) / sizeof(char *);
+    int maxOnboardTestItem = sizeof(onboardTestItemName) / sizeof(char *);
+    unsigned char onboardTestItem[64];
+    QVariantList failResult;
+    int failItem = 0;
+    bool failFlag = false;
+    int onboardTestItemCount = 0;
+    int touchIndex  = 0;
+    unsigned char testItem;
+    bool isSupport = false;
+    int i = 0;
+    unsigned char buffer[6];
+    unsigned char onboardResult[3];
+    int firewareVersion = 0;
+    touch_fireware_info firewareInfo;
+
+    if (manager->batchTestListenter  != NULL)
+    {
+        manager->batchMutex.lock();
+        manager->batchTestListenter->inProgress(testIndex,1);
+        manager->batchMutex.unlock();
+    }
+
+
+
+    if(switchOnboardTest && !manager->batchCancal)
+    {
+        if(manager->getFirewareInfo(testDevice,&firewareInfo) == 0)
+        {
+            firewareVersion = toWord(firewareInfo.version_l,firewareInfo.version_h);
+        }
+        if(firewareVersion >= 0x0007)
+        {
+            buffer[0] = ONBOARD_TEST_SWITCH_START;
+            buffer[1] = ONBOARD_TEST_MODE_CLOSE;
+            qToLittleEndian(standardType, &(buffer[2]));
+            isSupport = manager->setOnboardTeststatus(testDevice,buffer);
+        }
+
+    }
+
+    int ret = manager->signalInit(testDevice, SIGNAL_INIT_COMPLETE);
+    if(ret < 0)
+    {
+        finalResult = false;
+        errTmp = manager->translator->getTr("Init signal error");
+    }
+
+test_retry:
+    if(manager->batchCancal)
+        goto do_test_end;
+    QThread::msleep(500);
+    testCount = manager->getSignalTestItems(
+                    testDevice,
+                    items, sizeof(items), standardType);
+    if (testCount <= 0) {
+        if (retryCount > 0 && !manager->batchCancal) {
+            retryCount--;
+            goto test_retry;
+        }
+        info = manager->translator->getTr("Failed to get test item");
+        finalResult = false;
+        goto do_test_end;
+    }
+    if(manager->batchCancal)
+    {
+        goto do_test_end;
+    }
+    //======================================================
+    //======================================================
+    //启动板载测试无触摸模式
+    if(isSupport)
+    {
+        buffer[0] = ONBOARD_TEST_SWITCH_START;
+        buffer[1] = ONBOARD_TEST_MODE_NOTOUCH;
+        qToLittleEndian(standardType, &(buffer[2]));
+        manager->setOnboardTeststatus(testDevice,buffer);
+    }
+
+    if(isSupport && !manager->batchCancal)
+    {
+
+       retryCount = 4;
+onboard_test_retry:
+
+        onboardTestItemCount = manager->getOnboardTestItems(testDevice,onboardTestItem,sizeof(onboardTestItem),standardType);
+        if(onboardTestItemCount <= 0)
+        {
+            if (retryCount > 0) {
+                retryCount--;
+                goto onboard_test_retry;
+            }
+            info = manager->translator->getTr("Failed to get onboard test item");
+            finalResult = false;
+            goto do_test_end;
+        }
+        TDEBUG("###onboardTestItemCount = %d",onboardTestItemCount);
+        for(i = 0;i < onboardTestItemCount;i++)
+        {
+            TDEBUG("###onboardTestItem[%d] = %d",i,onboardTestItem[i]);
+        }
+    }
+
+    //======================================================
+    //======================================================
+    qint8 usb_status, serial_status;
+    retVal = manager->getCoordsEnabled(testDevice, COORDS_CHANNEL_USB, &usb_status);
+    if (retVal != 0) {
+        if (retryCount > 0 && !manager->batchCancal) {
+            retryCount--;
+            goto test_retry;
+        }
+        TERROR("%s usb coords status failed, %d", __func__, retVal);
+        info = manager->translator->getTr("Failed to get coordinate status");
+        finalResult = false;
+        usb_status = -1;
+        serial_status = -1;
+        goto do_test_end;
+    }
+    retVal = manager->getCoordsEnabled(testDevice, COORDS_CHANNEL_SERIAL, &serial_status);
+    if (retVal != 0) {
+        if (retryCount > 0 && !manager->batchCancal) {
+            retryCount--;
+            goto test_retry;
+        }
+        TERROR("%s serial coords status failed, %d", __func__, retVal);
+        info =manager-> translator->getTr("Failed to get coordinate status");
+        finalResult = false;
+        usb_status = -1;
+        serial_status = -1;
+        goto do_test_end;
+    }
+    TDEBUG("%s get coords status, usb status=%d, serial status=%d",
+           __func__, usb_status, serial_status);
+
+    manager->enableCoords(testDevice, false);
+
+    for (int index = 0; index < testCount && !manager->batchCancal; index++) {
+        testNo = items[index];
+//        TDEBUG("TouchManager :manager->mtestStop = %d, %p",mtestStop, testThread);
+//        TDEBUG("TouchManager :testThread->m_stop = %d", testThread->getTestStopped());
+
+        if (mIgnoreFailedTestItem) {
+            result = manager->testSignal(testDevice, testNo, standardType);
+//            TDEBUG("测试项testNo = %d, result = %d",testNo,result ? 1 : 0);
+            if (finalResult && !result)
+                finalResult = result;
+            if (!result) {
+                if (testNo >= 0 && testNo < maxTestItem) {
+                    errTmp = QString().sprintf("%s %s",(signalIndexToString((int)testNo & 0xff)),manager->translator->getTr("test failed").toStdString().c_str());
+                } else {
+                    info = QString().sprintf("找不到0x%x测试项, 最大0x%x", testNo, maxTestItem);
+                }
+                TWARNING("%s", errTmp.toStdString().c_str());
+            } else  {
+                errTmp = "";
+            }
+            if (manager->batchTestListenter != NULL)
+            {
+                if(isSupport)
+                {
+                    manager->batchMutex.lock();
+                    manager->batchTestListenter->inProgress(this->testIndex,(index + 1) * 90 / testCount);
+                    manager->batchMutex.unlock();
+//                    TDEBUG("测试进度 %d",(index + 1) * 90 / testCount);
+                }
+
+                else
+                {
+                    manager->batchMutex.lock();
+                    manager->batchTestListenter->inProgress(this->testIndex,(index + 1) * 100 / testCount);
+                    manager->batchMutex.unlock();
+//                    TDEBUG("测试进度 %d",(index + 1) * 100 / testCount);
+                }
+            }
+
+        } else {
+            if (manager->testSignal(testDevice, testNo, standardType)) {
+                if (manager->batchTestListenter != NULL)
+                {
+                    if(isSupport)
+                    {
+                        manager->batchMutex.lock();
+                        manager->batchTestListenter->inProgress(this->testIndex,(index + 1) * 90 / testCount);
+                        manager->batchMutex.unlock();
+//                        TDEBUG("测试进度 %d",(index + 1) * 90 / testCount);
+                    }
+
+                    else
+                    {
+                        manager->batchMutex.lock();
+                        manager->batchTestListenter->inProgress(this->testIndex,(index + 1) * 100 / testCount);
+                        manager->batchMutex.unlock();
+//                        TDEBUG("测试进度 %d",(index + 1) * 100 / testCount);
+                    }
+
+
+                }
+
+            } else {
+                if (testNo >= 0 && testNo < maxTestItem) {
+                    info = QString().sprintf("%s %s",(signalIndexToString((int)testNo & 0xff)),manager->translator->getTr("test failed").toStdString().c_str());
+                } else {
+                    info = QString().sprintf("找不到0x%x测试项, 最大0x%x", testNo, maxTestItem);
+                }
+                TDEBUG("Test %d faild", testNo);
+                TDEBUG("%s", info.toStdString().c_str());
+                finalResult = false;
+
+                goto do_test_end;
+            }
+        }
+
+    }
+
+    //======================================================
+    //======================================================
+do_test_end:
+    if(!manager->batchCancal)
+    {
+        TDEBUG("设置进度为100");
+        manager->batchMutex.lock();
+        manager->batchTestListenter->inProgress(this->testIndex,100);
+        manager->batchMutex.unlock();
+    }
+
+
+    memset(buffer,0,sizeof(buffer));
+    buffer[0] = ONBOARD_TEST_SWITCH_STOP;
+    buffer[1] = ONBOARD_TEST_MODE_CLOSE;
+    qToLittleEndian(standardType, &(buffer[2]));
+    manager->setOnboardTeststatus(testDevice,buffer);
+
+    TDEBUG("%s resume coords status, usb status=%d, serial status=%d",
+           __func__, usb_status, serial_status);
+    manager->setCoordsEnabled(testDevice, COORDS_CHANNEL_USB, usb_status);
+    manager->setCoordsEnabled(testDevice, COORDS_CHANNEL_SERIAL, serial_status);
+
+    if (manager->batchTestListenter != NULL  && !manager->batchCancal)
+    {
+        if(finalResult)
+        {
+            info = manager->translator->getTr("Test success");
+        }
+        else
+        {
+            info = errTmp;
+        }
+        manager->batchTestListenter->onTestDone(testIndex,finalResult, info);
+    }
+    if(manager->batchCancal)
+    {
+        info = manager->translator->getTr("Cancel Test");
+        manager->batchTestListenter->onTestDone(testIndex,finalResult, info);
+    }
+
+
+}
+
+void TouchManager::BatchUpgradeThread::run()
+{
+    TDEBUG("开始批量升级 upgradeIndex = %d",upgradeIndex);
+    QString upgradePath = path.replace(0, 8, "");
+    Fireware fireware(upgradePath);
+    const FirewareHeader *firewareHeader;
+    const FirewareFileHeader *fileHeader;
+    bool result = true;
+    touch_device *dev;
+    QString info = "";
+    int pIndex = 0, fIndex = 0;
+    int ret = 0;
+    unsigned char buf[64];
+    int packageCount = 0;
+    int firewareCount = 0;
+    int allPackageIndex = 0;
+    int allPackageCount = 0;
+    int precent, tmpPrecent;
+    const long waitBootloaderTime = 10 * 1000;
+    QTime time;
+
+    const FirewarePackage *package;
+    if (!fireware.isReady()) {
+        result = false;
+        info = manager->translator->getTr("Firmware error");
+        goto do_upgrade_end;
+    }
+
+    fileHeader = fireware.getFileHeader();
+    firewareCount = fileHeader->firewareCount;
+    for (fIndex = 0; fIndex < firewareCount; fIndex++) {
+        package = fireware.getFirewarePackage(fIndex);
+        allPackageCount += package->header.packCount;
+    }
+    allPackageCount += 10;
+
+    precent = 1;
+    if(manager->batchUpgradeListenter != NULL)
+    {
+       manager->batchMutex.lock();
+        manager->batchUpgradeListenter->inProgress(upgradeIndex,precent);
+        manager->batchMutex.unlock();
+    }
+
+    TVERBOSE("upgradeIndex = %d,fireware is ok, start wait bootloader",upgradeIndex);
+
+    manager->reset(upgradeDev, RESET_DST_BOOLOADER, 1);
+    QThread::msleep(100); // wait for reset
+
+    precent = 2;
+    if(manager->batchUpgradeListenter != NULL)
+    {
+        manager->batchMutex.lock();
+        manager->batchUpgradeListenter->inProgress(upgradeIndex,precent);
+        manager->batchMutex.unlock();
+    }
+
+
+    time.start();
+    while (!manager->isBootloaderDevice(manager->getDevice(upgradeIndex))) {
+        if (time.elapsed() > waitBootloaderTime)
+            break;
+        QThread::msleep(100);
+    }
+    TVERBOSE("upgradeIndex = %d,booloader ? %d",upgradeIndex, isBootloaderDevice(manager->getDevice(upgradeIndex)));
+    dev = manager->getDevice(upgradeIndex);
+    precent = 3;
+    if(manager->batchUpgradeListenter != NULL)
+    {
+        manager->batchMutex.lock();
+        manager->batchUpgradeListenter->inProgress(upgradeIndex,precent);
+        manager->batchMutex.unlock();
+    }
+
+    if (!manager->isBootloaderDevice(dev)) {
+        result = false;
+        info = manager->translator->getTr("Failed to switch to upgrade mode");
+        goto do_upgrade_end;
+    }
+    for (fIndex = 0; fIndex < firewareCount; fIndex++) {
+        package = fireware.getFirewarePackage(fIndex);
+        TDEBUG("upgradeIndex = %d,uprade: findex = %d,firewarePackage.header.packSize = %d,firewarePackage.header.packCount = %d",upgradeIndex,fIndex,
+               package->header.packSize,package->header.packCount);
+        firewareHeader = &package->header;
+        if (firewareHeader->packSize + 4 + 1 > dev->touch.output_report_length) {
+            TERROR("upgradeIndex = %d,package size is bigger than report length",upgradeIndex);
+            result = false;
+            info = manager->translator->getTr("The firmware package size is larger than the report package");
+            goto do_upgrade_end;
+        }
+
+        TDEBUG("upgradeIndex = %d,start IAP",upgradeIndex);
+        ret = manager->startIAP(dev, firewareHeader);
+        if (ret) {
+            TWARNING("upgradeIndex = %d,startIAP failed, return %d",upgradeIndex, ret);
+            result = false;
+            info = manager->translator->getTr("IAP failed");
+            goto do_upgrade_end;
+        }
+        packageCount = package->header.packCount;
+        for (pIndex = 0; pIndex < packageCount; pIndex++) {
+            memcpy(buf, package->data + (pIndex * package->header.packSize), package->header.packSize);
+            ret = manager->IAPDownload(dev, pIndex, buf, package->header.packSize);
+            TVERBOSE("upgradeIndex = %d,IAP download %d",upgradeIndex, pIndex);
+            if (ret != 0) {
+                TWARNING("upgradeIndex = %d,IAP Download %d packaged failed",upgradeIndex, pIndex);
+                result = false;
+                info = manager->translator->getTr("Failed to download firmware");
+                goto do_upgrade_end;
+            }
+
+            allPackageIndex++;
+
+            tmpPrecent = (int)(allPackageIndex * 97 / allPackageCount) + 3;
+            if (precent != tmpPrecent) {
+                precent = tmpPrecent;
+                if(manager->batchUpgradeListenter != NULL)
+                {
+                    manager->batchMutex.lock();
+                    manager->batchUpgradeListenter->inProgress(upgradeIndex,precent);
+                    manager->batchMutex.unlock();
+                }
+
+            }
+        }
+        TDEBUG("upgradeIndex = %d,IAP vVerify",upgradeIndex);
+        ret = manager->IAPVerify(dev, package->header.packCount * package->header.packSize,
+                  package->header.verifyCodeSize, (const unsigned char *)package->header.verifyCode);
+        if (ret != 0) {
+            TWARNING("upgradeIndex = %d,IAP Verify %d packaged failed",upgradeIndex, pIndex);
+            result = false;
+            info = manager->translator->getTr("Failed to verify firmware");
+            goto do_upgrade_end;
+        }
+    }
+
+    TDEBUG("upgradeIndex = %d,IAP set finished",upgradeIndex);
+    ret = manager->IAPSetFinished(dev);
+    if (ret != 0) {
+        TWARNING("upgradeIndex = %d,IAP Set Finished failed",upgradeIndex);
+        result = false;
+        info = "IAP FINISHED " + manager->translator->getTr("failed");
+        goto do_upgrade_end;
+    }
+    TDEBUG("upgradeIndex = %d,reset to app",upgradeIndex);
+    manager->reset(dev, RESET_DST_APP, 0);
+    if(manager->batchUpgradeListenter != NULL)
+    {
+        manager->batchMutex.lock();
+        manager->batchUpgradeListenter->inProgress(upgradeIndex,100);
+        manager->batchMutex.unlock();
+    }
+
+
+do_upgrade_end:
+//    mUpgradeListener->destroyDialog();
+    if(manager->batchUpgradeListenter != NULL){
+        if(result)
+        {
+            info = manager->translator->getTr("Upgrade success");
+
+        }
+        manager->batchUpgradeListenter->onUpgradeDone(upgradeIndex,result,info);
+    }
+
+
+}

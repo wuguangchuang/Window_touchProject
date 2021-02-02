@@ -67,7 +67,8 @@ void TDebug::debug(QString message)
 {
     if (TDebug::level < TLOG_DEBUG)
         return;
-    qDebug(message.toStdString().c_str());
+    QString infos = QString("" + QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss.zzz") + ":" + message);
+    qDebug(infos.toStdString().c_str());
     writeLogToFile(message);
 
 }
@@ -75,21 +76,24 @@ void TDebug::info(QString message)
 {
     if (TDebug::level < TLOG_INFO)
         return;
-    qInfo(message.toStdString().c_str());
+    QString infos = QString("" + QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss.zzz") + ":" + message );
+    qInfo(infos.toStdString().c_str());
 //    writeLogToFile(message);
 }
 void TDebug::warning(QString message)
 {
     if (TDebug::level < TLOG_WARNING)
         return;
-    qWarning(message.toStdString().c_str());
+    QString infos = QString("" + QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss.zzz") + ":" + message);
+    qWarning(infos.toStdString().c_str());
     writeLogToFile("Warning: " + message);
 }
 void TDebug::error(QString message)
 {
     if (TDebug::level < TLOG_ERROR)
         return;
-    qErrnoWarning(("Error:" + message).toStdString().c_str());
+     QString infos = QString("" + QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss.zzz") + ": Error:" + message + "\n");
+    qErrnoWarning(infos.toStdString().c_str());
     writeLogToFile("Error: " + message);
 }
 void TDebug::setLogLevel(TLOG_LEVEL level)

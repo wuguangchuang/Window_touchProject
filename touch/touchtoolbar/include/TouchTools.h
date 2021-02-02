@@ -27,8 +27,8 @@ struct TouchData {
 
 //#define THIS_APP_TYPE (APP_FACTORY)
 //#define THIS_APP_TYPE (APP_CLIENT)
-//#define THIS_APP_TYPE (APP_RD)
-#define THIS_APP_TYPE (APP_CLIENT_FACTORY)
+#define THIS_APP_TYPE (APP_RD)
+//#define THIS_APP_TYPE (APP_CLIENT_FACTORY)
 //#define THIS_APP_TYPE (APP_PCBA)
 // see also: main.qml(appFactory...)
 typedef enum {
@@ -56,6 +56,7 @@ public:
                         char *argv[] = 0,QString appPath = "");
     ~TouchTools();
     bool stopTestIsFinished;
+    touch_device *getDevices();
     void addTouchManagerTr();
     void setUpgradeProgess(int progess);
     void setTestProgess(int progess) {emit presenter->setTestProgress(progess);}
@@ -74,6 +75,13 @@ public:
 
     void onCommandDone(touch_device *dev, touch_package *require, touch_package *reply);
     QString getTr(QString str);
+    //批处理
+    QVariantMap getConnectDeviceInfo();
+    touch_device *getDevice(int index);
+    void startBatchTest(int testIndex);
+    void startBatchUpgrade(int upgradeIndex,QString path);
+    void setBatchCancel(bool batchCancel);
+    virtual
     //托盘
     void openProgress(bool isOpen);
     void setPageIndex(int index);
@@ -196,6 +204,15 @@ private:
     private:
         TouchTools *manager;
     };
+    class BatchTestListener:public TouchManager::BatchTestListener{
+    public:
+        BatchTestListener(TouchTools *manager) { this->manager = manager;}
+        void inProgress(int index,int progress);
+        void onTestDone(int index,bool result, QString message);
+    private:
+        TouchTools *manager;
+
+    };
 
     class UpgradeListener : public TouchManager::UpgradeListener {
     public:
@@ -207,10 +224,20 @@ private:
     private:
         TouchTools *manager;
     };
+    class BatchUpgradeListener:public TouchManager::BatchUpgradeListener{
+    public:
+        BatchUpgradeListener(TouchTools *manager) { this->manager = manager;}
+        void inProgress(int index,int progress);
+        void onUpgradeDone(int index,bool result, QString message) ;
+    private:
+        TouchTools *manager;
+    };
 
 
     TestListener mTestLstener;
+    BatchTestListener batchTestListener;
     UpgradeListener mUpgradeListener;
+    BatchUpgradeListener batchUpgradeListener;
     InitSdkThread initSdkThread;
     UpgradeThread upgradeThread;
     TestThread testThread;

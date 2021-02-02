@@ -7,22 +7,62 @@ import "qrc:/"
 import "qrc:/qml/ui/"
 
 Item {
+    id:batchPage
     property int deviceCount: 40
     property int columns: 8
     property int rows: 5
     property int itemWidth: width / columns
     property int itemHeigth: height / rows
-    property int passAgingTime: 10
+    property int passAgingTime: 20
+    property var deviceModel:deviceModel
     visible: true
 
     function getDeviceCount() {
         return deviceCount;
     }
-
+    function getDeviceStatus(dev)
+    {
+        return deviceModel.get(dev).deviceStatus;
+    }
     function setDeviceStatus(dev, status) {
         deviceModel.get(dev).deviceStatus = status;
     }
-
+    function setDeviceMcdId(dev,mcu)
+    {
+        deviceModel.get(dev).mcuID = mcu;
+    }
+    function setDeviceProgress(dev,progress)
+    {
+        deviceModel.get(dev).inProgress  = progress;
+    }
+    function setDeviceInfo(dev,info)
+    {
+        deviceModel.get(dev).info = info;
+    }
+    function setDeviceResult(dev,result)
+    {
+        deviceModel.get(dev).result = result;
+    }
+    function getDeviceResult(dev)
+    {
+        return deviceModel.get(dev).result;
+    }
+    function setDeviceBootloader(dev,bool)
+    {
+        deviceModel.get(dev).bootloader = bool;
+    }
+    function getDeviceBootloader(dev)
+    {
+        return deviceModel.get(dev).bootloader;
+    }
+    function getDeviceTime(dev)
+    {
+        return deviceModel.get(dev).time;
+    }
+    function setDeviceTime(dev,time)
+    {
+        deviceModel.get(dev).time = time;
+    }
     signal agingFinished(int index);
 
     /**
@@ -37,10 +77,43 @@ Item {
     property int deviceConnected: 1
     property int deviceDisconnected: 2
     property int deviceError: 3
-    property int deviceFinished: 4
+
+    //批处理的结果
+    /*
+      result:
+      batchRuning                   : default
+      deviceFinished                : aging finish
+      batchSuccess  or batchError   : upgrade and test result
+      batchRunning                  : upgrade and test is running
+    */
+    property int batchResult:0
+    property int deviceFinished: 1
+    property int batchSuccess:2
+    property int batchError:3
+    property int batchRunning:4
+    property int batchCancel:5
+
 
     property int defaultMargin: 10
-    property var timeFlag : [];
+    property var timeFlag : []
+    /*
+      functionIndex:
+      0:加速老化
+      1：升级
+      2：测试
+    */
+    property int functionAging:0
+    property int functionUpgrade:1
+    property int functionTest:2
+
+    property int functionIndex:functionAging
+    signal setFunctionIndex(int index);
+    property Item deviceItem:deviceItem
+
+    onSetFunctionIndex: {
+        console.log("切换功能：" + index);
+        functionIndex = index;
+    }
 
     Component {
         id: deviceDelegate;
@@ -73,34 +146,48 @@ Item {
                 anchors.leftMargin: defaultMargin
                 anchors.rightMargin: defaultMargin
                 Text {
-                    font.pixelSize: itemWidth / 12
+
+                    font.pixelSize: itemWidth / 10
                     text: "#" + number + "# " +
-                          (deviceStatus === deviceConnected ? qsTr("accelerated aging") :
-                                                    (deviceStatus == deviceDisconnected ?  qsTr("disconnected") :
-                                                    (deviceStatus == deviceError ? qsTr("device error") :
-                                                    (deviceStatus == deviceFinished ? qsTr("aging completed") : ""))))
-                    color: deviceStatus == deviceConnected ? cConnected :
-                          (deviceStatus == deviceDisconnected ?  cDisconnected :
-                          (deviceStatus == deviceError ? cError :
-                          (deviceStatus == deviceFinished ? cFinished : cNc)))
+                          (deviceStatus === deviceConnected ? (functionIndex === functionAging) ? qsTr("accelerated aging"):(functionIndex === functionUpgrade ? qsTr("Upgrade"):qsTr("Test")):
+                                                    (deviceStatus === deviceDisconnected ?  qsTr("disconnected") :
+                                                    (deviceStatus === deviceError ? qsTr("device error") :"")))
+//                    text:deviceItem.textOneLineStr
+                    color: (result === deviceFinished ? cFinished :
+                           (result ===  batchSuccess? cFinished :
+                           (result ===  batchError? cError :
+                           (result ===  batchCancel? cError :cConnected))))
                 }
                 Text{
-                    font.pixelSize: itemWidth / 12
-                    text:((deviceStatus === deviceConnected || deviceStatus === deviceFinished)? (qsTr("total time:") + totalTime):" ")
-                    color: "red"
+                    font.pixelSize: itemWidth / 10
+//                    text:((deviceStatus === deviceConnected || deviceStatus === deviceFinished)? (qsTr("total time:") + totalTime):" ")
+                    text:((deviceStatus === deviceConnected || inProgress !== 0)? (functionIndex === 0) ? (qsTr("total time:") + totalTime) : qsTr("Progress: ") + inProgress + "%":" ")
+//                    text:deviceItem.textTwoLineStr
+                    color: (result === deviceFinished ? cFinished :
+                           (result ===  batchSuccess? cFinished :
+                           (result ===  batchError? cError :
+                           (result ===  batchCancel? cError :"red"))))
                 }
                 Text {
-                    font.pointSize: itemWidth / 10
+                    font.pointSize: itemWidth / ((result ===  batchSuccess ||
+                                                 result === deviceFinished || functionIndex === functionAging)? 12 : 18)
                     text: info
-                    color: deviceStatus == deviceConnected ? cConnected :
-                          (deviceStatus == deviceDisconnected ?  cDisconnected :
-                          (deviceStatus == deviceError ? cError :
-                          (deviceStatus == deviceFinished ? cFinished : cNc)))
+                    wrapMode: Text.Wrap
+                    color: (result === deviceFinished ? cFinished :
+                           (result ===  batchSuccess? cFinished :
+                           (result ===  batchError? cError :
+                           (result ===  batchCancel?cError:cConnected))))
                 }
 
             }
+
+
         }
+        onVisibleChanged: {
         }
+
+        }
+
     }
     ColumnLayout{
         anchors.fill: parent
@@ -129,14 +216,16 @@ Item {
     }
 
     function stopAging() {
-        console.log("stop aging, clear models");
+        console.log("################stop aging, clear models");
 //        timeFlag = true;
         countdown.stop();
         for (var i = 0; i < deviceCount; i++) {
+
             var model = deviceModel.get(i);
             model.time = 0;
-            model.deviceStatus = deviceNc;
+//            model.deviceStatus = deviceNc;
             model.info = "";
+            model.result = batchCancel;
         }
     }
 
@@ -155,6 +244,7 @@ Item {
 
                 //console.log("#" + i + " status: " + model.deviceStatus + " time: " + model.time)
                 if (model && model.deviceStatus === deviceConnected) {
+//                    console.log("#" + i + " status: " + model.deviceStatus + " time: " + model.time)
                     if(timeFlag[i])
                     {
                         model.time = passAgingTime;
@@ -175,13 +265,15 @@ Item {
                     model.info = prefixInteger(hour, 2) + ":" + prefixInteger(minute,2) + ":" + prefixInteger(second,2);
 //                    console.log(hour + ":" + minute + ":" + second + " pass:" + passAgingTime);
                     if (model.time <= 0) {
-                        model.deviceStatus = deviceFinished;
+                        model.result = deviceFinished;
                         agingFinished(i);
                         timeFlag[i] = false;
                     }
                 }
             }
+
         }
+
     }
     function prefixInteger(num, n) {
         return (new Array(n).join(0) + num).slice(-n);

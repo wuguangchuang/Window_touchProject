@@ -537,7 +537,7 @@ touch_device *HID_API_EXPORT HID_API_CALL hid_find_touchdevice(int *count)
                   serialLen++;
               }
               if(strncmp(buf,"5BB217D8E3522DE3994C112A63D980BA",8) == 0 &&
-                      strstr(device_interface_detail_data->DevicePath, "col01") != NULL)
+                      strstr(device_interface_detail_data->DevicePath, "col01") != NULL && attrib.VendorID != 0 && attrib.ProductID != 0)
               {
                       found = 1;
               }

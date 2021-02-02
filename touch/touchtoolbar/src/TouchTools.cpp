@@ -239,7 +239,56 @@ void TouchTools::startTest()
 //    mTouchManager->startTest(mTouchManager->firstConnectedDevice(),
 //                             &mTestLstener,
 //                             (StandardType)mode);
-//    appendMessageText(tr("开始测试"));
+    //    appendMessageText(tr("开始测试"));
+}
+
+void TouchTools::startBatchTest(int testIndex)
+{
+    touch_device *testDev =  mTouchManager->getDevice(testIndex);
+    if(testDev == NULL)
+    {
+        //测试失败
+        mTouchManager->batchTestListenter->onTestDone(testIndex,false,tr("Device disconnect"));
+        return;
+    }
+
+    uint32_t mode = STE_ALL_ITEMS;
+    switch (getAppType()) {
+    case APP_CLIENT:
+        mode = STE_END_USER_TEST;
+        break;
+    case APP_FACTORY:
+        mode = STE_FACTORY_TEST;
+        break;
+    case APP_RD:
+        mode = STE_DEV_TEST;
+        break;
+    case APP_PCBA:
+        mode = STE_PCBA_CUSTOMER_TEST;
+        break;
+    case APP_CLIENT_FACTORY:
+        mode = STE_END_USER_FACTORY_TEST;
+        break;
+    }
+
+    bool ret = mTouchManager->startBatchTest(testIndex,testDev,&batchTestListener,(StandardType)mode);
+
+}
+
+void TouchTools::startBatchUpgrade(int upgradeIndex,QString path)
+{
+    touch_device *upgradeDev =  mTouchManager->getDevice(upgradeIndex);
+    if(upgradeDev == NULL)
+    {
+        mTouchManager->batchUpgradeListenter->onUpgradeDone(upgradeIndex,false,tr("Device disconnect"));
+        return;
+    }
+    bool ret =  mTouchManager->startBatchUpgrade(upgradeIndex,upgradeDev,path,&batchUpgradeListener);
+}
+
+void TouchTools::setBatchCancel(bool batchCancel)
+{
+    mTouchManager->setBatchCancal(batchCancel);
 }
 
 void TouchTools::TestThread::run()
@@ -903,7 +952,7 @@ bool TouchTools::testing = false;
 bool TouchTools::autoTestSwitch = false;
 #define show_line() TDEBUG("%s [%d]", __func__, __LINE__);
 TouchTools::TouchTools(QObject *parent, TouchPresenter *presenter,int argc,char **argv,QString appPath) : QObject(parent),
-    mTestLstener(this), mUpgradeListener(this), initSdkThread(this), upgradeThread(this),
+    mTestLstener(this),batchTestListener(this), mUpgradeListener(this),batchUpgradeListener(this),initSdkThread(this), upgradeThread(this),
     touchAging(presenter, NULL), appType(APP_FACTORY), hotplugInterval(0),testThread(this)
 {
     this->appPath = appPath;
@@ -946,8 +995,8 @@ TouchTools::TouchTools(QObject *parent, TouchPresenter *presenter,int argc,char 
                      this, SLOT(startTest()));
     QObject::connect(tray,SIGNAL(signal_close()),this,SLOT(exitProject()));
 
-    QObject::connect(timer,SIGNAL(timeout()),this,SLOT(timeoutWorking()));
-    timer->start(25000);
+//    QObject::connect(timer,SIGNAL(timeout()),this,SLOT(timeoutWorking()));
+//    timer->start(25000);
 
     QObject::connect(argcTimer,SIGNAL(timeout()),this,SLOT(exitProject()));
     if(argc > 1 && strcmp(argv[1],"-changeCoordsMode") == 0)
@@ -1013,6 +1062,11 @@ TouchTools::~TouchTools()
     TDEBUG("TouchTools end");
 }
 
+touch_device *TouchTools::getDevices()
+{
+//    return mTouchManager;
+}
+
 void TouchTools::onCommandDone(touch_device *dev, touch_package *require, touch_package *reply)
 {
 
@@ -1025,6 +1079,16 @@ QString TouchTools::getTr(QString str)
         return NULL;
     }
     return tr(str.toStdString().c_str());
+}
+
+QVariantMap TouchTools::getConnectDeviceInfo()
+{
+    return mTouchManager->getBatchDevicesInfo();
+}
+
+touch_device *TouchTools::getDevice(int index)
+{
+
 }
 void TouchTools::openProgress(bool isOpen)
 {
@@ -1265,5 +1329,26 @@ void TouchTools::addTouchManagerTr(){
     tr("Mode");
     tr("Open");
     tr("Exit");
+    tr("Init signal error");
 }
 
+
+void TouchTools::BatchTestListener::inProgress(int index, int progress)
+{
+    manager->presenter->batchProgress(index,progress);
+}
+
+void TouchTools::BatchTestListener::onTestDone(int index, bool result, QString message)
+{
+    manager->presenter->onBatchFinish(index,result,message);
+}
+
+void TouchTools::BatchUpgradeListener::inProgress(int index, int progress)
+{
+    manager->presenter->batchProgress(index,progress);
+}
+
+void TouchTools::BatchUpgradeListener::onUpgradeDone(int index, bool result, QString message)
+{
+    manager->presenter->onBatchFinish(index,result,message);
+}

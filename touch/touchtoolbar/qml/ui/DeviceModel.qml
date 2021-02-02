@@ -5,7 +5,7 @@ ListModel {
     Component.onCompleted: loadDatas()
     function loadDatas() {
         for (var i = 0; i < count; i++) {
-            append({"number" : i, "deviceStatus": 0, "time" : 0, "info": ""});
+            append({"number" : i, "deviceStatus": 0,"mcuID":"","bootloader":0, "time" : 0, "info": "","inProgress":0,"result":0});
         }
     }
 }

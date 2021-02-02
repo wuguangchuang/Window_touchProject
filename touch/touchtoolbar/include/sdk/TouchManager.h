@@ -141,6 +141,44 @@ public:
             TouchManager *manager;
 
         };
+    class BathchTestThread : public QThread
+    {
+    public:
+        BathchTestThread(TouchManager *manager);
+        void setStandardType(StandardType st = Standard_Factory) { standardType = st; }
+        StandardType standardType;
+        int testIndex;
+        void setTestIndex(int index){this->testIndex = index;}
+    protected:
+        void run();
+    private:
+
+        TouchManager *manager;
+    };
+    class BatchTestListener {
+    public:
+        virtual void inProgress(int index,int progress) = 0;
+        virtual void onTestDone(int index,bool result, QString message) = 0;
+    };
+    class BatchUpgradeThread : public QThread
+    {
+    public:
+        BatchUpgradeThread(TouchManager *manager){this->manager = manager;}
+        QString path;
+        void setUpgradeIndex(int index){this->upgradeIndex = index;}
+        void setUpgradeDevice(touch_device *dev){this->upgradeDev = dev;}
+    protected:
+        void run();
+    private:
+        TouchManager *manager;
+        int upgradeIndex;
+        touch_device *upgradeDev;
+    };
+    class BatchUpgradeListener {
+    public:
+        virtual void inProgress(int index,int progress) = 0;
+        virtual void onUpgradeDone(int index,bool result, QString message) = 0;
+    };
 private:
     TouchManager();
     static int instanceCount;
@@ -177,6 +215,8 @@ public:
     void onCommandDone(touch_device *dev, touch_package *require, touch_package *reply);
 
     bool startTest(touch_device *device, TestListener *listener, StandardType st = Standard_Factory);
+    TOUCHSHARED_EXPORT bool startBatchTest(int index,touch_device *device, BatchTestListener *listener,
+                                           StandardType st = Standard_Factory);
 
     void doTest();
     void checkOnboardtestDataAbnormal(onboard_test_data_result *onboardTestData,
@@ -189,13 +229,18 @@ public:
 
     static bool isSameDeviceInPort(touch_device *a, touch_device *b);
 
+    //批处理升级部分
+    TOUCHSHARED_EXPORT int startBatchUpgrade(int upgradeIndex,touch_device *device,QString path, BatchUpgradeListener *listener = NULL);
+
     /**
      * @brief device get the default(first) device
      * @return
      */
-    touch_device *device() { return mDevices;}
+    TOUCHSHARED_EXPORT touch_device *device() { return mDevices;}
 
     touch_device *firstConnectedDevice();
+    TOUCHSHARED_EXPORT QVariantMap getBatchDevicesInfo();
+    TOUCHSHARED_EXPORT touch_device * getDevice(int index);
 
     /**
      * @brief deviceByPath get device byt path
@@ -329,6 +374,7 @@ private:
     UpgradeThread *upgradeThread;
 
     TestListener *mTestListener;
+
     touch_device *mTestDevice;
     bool mTesting;
 
@@ -347,8 +393,13 @@ public:
     HotplugThread mHotplugThread;
     CommandThread *commandThread;
     TestThread *testThread;
+    BatchTestListener *batchTestListenter;
+    BatchUpgradeListener *batchUpgradeListenter;
+    QMutex batchMutex;
     bool mtestStop;
     TOUCHSHARED_EXPORT void setStop(bool stop);
+    bool batchCancal;
+    TOUCHSHARED_EXPORT void setBatchCancal(bool cancel);
     //onboard
     int boardCount = 0;
     unsigned char boardIndexBuf[128];
