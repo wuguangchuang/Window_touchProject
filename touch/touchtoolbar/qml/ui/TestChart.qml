@@ -1300,13 +1300,40 @@ Item {
                    anchors.left: parent.left
                    anchors.leftMargin: defaultMargin
                }
-               Text {
-                   id: signalChartDeviceInfo
-                   text: deviceMainInfo
+//               Text {
+//                   id: signalChartDeviceInfo
+//                   text: deviceMainInfo
+//                   anchors.left: signalChartDeviceImage.right
+//                   anchors.leftMargin: defaultMargin
+//                   anchors.verticalCenter: parent.verticalCenter
+//               }
+               MyLabel{
+                   id:signalChartDeviceInfo
+                   textStr: deviceMainInfo
+                   fontSize: 10
+                   height: signalChartDeviceImage.height
+                   width: 600
                    anchors.left: signalChartDeviceImage.right
-                   anchors.leftMargin: defaultMargin
-                   anchors.verticalCenter: parent.verticalCenter
                }
+//               Cont1.TextArea {
+//                   id: signalChartDeviceInfo
+//                   visible: true
+//                   Layout.fillHeight: true
+//                   Layout.fillWidth: true
+//                   anchors.left: signalChartDeviceImage.right
+//                   anchors.leftMargin: defaultMargin
+//                   anchors.verticalCenter: parent.verticalCenter
+//                   verticalScrollBarPolicy: Qt.ScrollBarAlwaysOff
+//                   antialiasing: true          //是否抗锯齿
+//                   readOnly: true
+//                   frameVisible : false        //去掉边框
+//                   backgroundVisible : false   //去掉背景
+//                   text:textStr
+//                   font.pointSize: fontSize
+//                   textFormat: Text.AutoText
+//                   textMargin: 1.5
+
+//               }
            }
         }
     }

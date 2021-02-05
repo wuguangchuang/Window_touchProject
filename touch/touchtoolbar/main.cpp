@@ -485,6 +485,7 @@ int main(int argc, char *argv[])
         QThread::msleep(20);
     }
 
+
     //开机自启动
 //    manager.AutoRun(false);
 //    touch->SetProcessAutoRunSelf(qApp->applicationFilePath());

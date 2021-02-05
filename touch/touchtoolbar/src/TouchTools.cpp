@@ -110,7 +110,6 @@ void TouchTools::onTouchHotplug(touch_device *dev, const int attached, const voi
         getBoardAttribyteData();
 
 
-
         //此处是自动选择升级文件升级的入口
         if(firstTimeUpdate)
         {
@@ -593,6 +592,80 @@ void TouchTools::InitSdkThread::run(void)
    touchTool->presenter->initSdkDone = true;
 }
 
+//QVariant TouchTools::getRelativeInfo()
+//{
+//    QString info = "";
+//    touch_device *dev = mTouchManager->firstConnectedDevice();
+//#if 0
+//    if (dev == NULL || !dev->touch.connected) {
+////        info = "没有设备连接!";
+//        info = "<font color='red'>没有设备连接!</font>";
+//    } else {
+//        touch_fireware_info finfo;
+//        mTouchManager->getFirewareInfo(dev, &finfo);
+//        info += "<b>设备信息</b><br>";
+//        info += QString().sprintf("设备名称: %s<br>", dev->touch.model);
+//        info += QString().sprintf("固件版本: 0x%04X<br>", toWord(finfo.version_l, finfo.version_h));
+//        info += QString().sprintf("固件验证码: 0x%04X<br>", toWord(finfo.checksum_l, finfo.checksum_h));
+//        info += QString().sprintf("支持的触摸点数: %d<br>", finfo.touch_point);
+//        info += QString().sprintf("USB VID: 0x%04X<br>", toWord(finfo.usb_vid_l, finfo.usb_vid_h));
+//        info += QString().sprintf("USB PID: 0x%04X<br>", toWord(finfo.usb_pid_l, finfo.usb_pid_h));
+//    }
+
+//    info += "<br><b>软件信息</b><br>";
+//    info += "软件名称: TouchAssistant<br>";
+//    info += QString().sprintf("软件版本: %s<br>", APP_VERSION_NAME);
+//    info += "操作系统长名称: " + QSysInfo::prettyProductName() + "<br>";
+//    info += "操作系统版本: " + QSysInfo::kernelVersion() + "<br>";
+//#else
+//    if (dev == NULL || !dev->touch.connected) {
+//        info = tr("No connected devices!") + "\n";
+//    } else {
+//        touch_fireware_info finfo;
+//        mTouchManager->getFirewareInfo(dev, &finfo);
+//        info += tr("Device infomation");
+//        info += "\n";
+//        info += tr("Device name:") + "          " + QString(dev->touch.model) + "\n";
+//        info += tr("Fireware version:") + QString().sprintf("          0x%04X\n", toWord(finfo.version_l, finfo.version_h));
+//        info += tr("Fireware checksum:") + QString().sprintf("        0x%04X\n", toWord(finfo.checksum_l, finfo.checksum_h));
+//        info += tr("Support touch number:") + QString().sprintf("    %d\n", finfo.touch_point);
+////        info += QString().sprintf("设备名称:          %s\n", dev->touch.model);
+////        info += QString().sprintf("固件版本:          0x%04X\n", toWord(finfo.version_l, finfo.version_h));
+////        info += QString().sprintf("固件验证码:        0x%04X\n", toWord(finfo.checksum_l, finfo.checksum_h));
+////        info += QString().sprintf("支持的触摸点数:    %d\n", finfo.touch_point);
+//        info += QString().sprintf("USB VID:           0x%04X\n", toWord(finfo.usb_vid_l, finfo.usb_vid_h));
+//        info += QString().sprintf("USB PID:           0x%04X\n", toWord(finfo.usb_pid_l, finfo.usb_pid_h));
+//    }
+
+//    info += "\n" + tr("Software information") + "\n";
+//    info += tr("Software Name") + "          TouchAssistant\n";
+//    char *versionType = "";
+//    switch (THIS_APP_TYPE) {
+//    case APP_FACTORY:
+//        versionType = "F";
+//        break;
+//    case APP_CLIENT:
+//        versionType = "C";
+//        break;
+//    case APP_PCBA:
+//        versionType = "P";
+//        break;
+//    case APP_RD:
+//        versionType = "R";
+//        break;
+//    case APP_CLIENT_FACTORY:
+//        versionType = "CF";
+//        break;
+//    default:
+//        break;
+//    }
+//    info += tr("Software version:") + QString().sprintf("          %s.%s\n",
+//                APP_VERSION_NAME, versionType);
+//    info += tr("OS name:") + "      " + QSysInfo::prettyProductName() + "\n";
+//    info += tr("OS version:") + "      " + QSysInfo::kernelVersion() + "\n";
+//#endif
+//    return QVariant::fromValue(info);
+//}
 QVariant TouchTools::getRelativeInfo()
 {
     QString info = "";
@@ -619,6 +692,7 @@ QVariant TouchTools::getRelativeInfo()
     info += "操作系统长名称: " + QSysInfo::prettyProductName() + "<br>";
     info += "操作系统版本: " + QSysInfo::kernelVersion() + "<br>";
 #else
+    int polishingSize = (language == zh_CN ? 20 : 25);
     if (dev == NULL || !dev->touch.connected) {
         info = tr("No connected devices!") + "\n";
     } else {
@@ -626,20 +700,20 @@ QVariant TouchTools::getRelativeInfo()
         mTouchManager->getFirewareInfo(dev, &finfo);
         info += tr("Device infomation");
         info += "\n";
-        info += tr("Device name:") + "          " + QString(dev->touch.model) + "\n";
-        info += tr("Fireware version:") + QString().sprintf("          0x%04X\n", toWord(finfo.version_l, finfo.version_h));
-        info += tr("Fireware checksum:") + QString().sprintf("        0x%04X\n", toWord(finfo.checksum_l, finfo.checksum_h));
-        info += tr("Support touch number:") + QString().sprintf("    %d\n", finfo.touch_point);
+        info += polishingString(polishingSize,tr("Device name:")) + QString(dev->touch.model) + "\n";
+        info += polishingString(polishingSize,tr("Fireware version:")) + QString().sprintf("0x%04X\n", toWord(finfo.version_l, finfo.version_h));
+        info += polishingString(polishingSize,tr("Fireware checksum:")) + QString().sprintf("0x%04X\n", toWord(finfo.checksum_l, finfo.checksum_h));
+        info += polishingString(polishingSize,tr("Support touch number:")) + QString().sprintf("%d\n", finfo.touch_point);
 //        info += QString().sprintf("设备名称:          %s\n", dev->touch.model);
 //        info += QString().sprintf("固件版本:          0x%04X\n", toWord(finfo.version_l, finfo.version_h));
 //        info += QString().sprintf("固件验证码:        0x%04X\n", toWord(finfo.checksum_l, finfo.checksum_h));
 //        info += QString().sprintf("支持的触摸点数:    %d\n", finfo.touch_point);
-        info += QString().sprintf("USB VID:           0x%04X\n", toWord(finfo.usb_vid_l, finfo.usb_vid_h));
-        info += QString().sprintf("USB PID:           0x%04X\n", toWord(finfo.usb_pid_l, finfo.usb_pid_h));
+        info += polishingString(polishingSize,tr("USB VID:")) + QString().sprintf("0x%04X\n", toWord(finfo.usb_vid_l, finfo.usb_vid_h));
+        info += polishingString(polishingSize,tr("USB PID:")) + QString().sprintf("0x%04X\n", toWord(finfo.usb_pid_l, finfo.usb_pid_h));
     }
 
     info += "\n" + tr("Software information") + "\n";
-    info += tr("Software Name") + "          TouchAssistant\n";
+    info += polishingString(polishingSize,tr("Software Name")) + "TouchAssistant\n";
     char *versionType = "";
     switch (THIS_APP_TYPE) {
     case APP_FACTORY:
@@ -660,10 +734,9 @@ QVariant TouchTools::getRelativeInfo()
     default:
         break;
     }
-    info += tr("Software version:") + QString().sprintf("          %s.%s\n",
-                APP_VERSION_NAME, versionType);
-    info += tr("OS name:") + "      " + QSysInfo::prettyProductName() + "\n";
-    info += tr("OS version:") + "      " + QSysInfo::kernelVersion() + "\n";
+    info += polishingString(polishingSize,tr("Software version:")) + QString().sprintf("%s.%s\n",APP_VERSION_NAME, versionType);
+    info += polishingString(polishingSize,tr("OS name:")) + QSysInfo::prettyProductName() + "\n";
+    info += polishingString(polishingSize,tr("OS version:")) + QSysInfo::kernelVersion() + "\n";
 #endif
     return QVariant::fromValue(info);
 }
@@ -1022,6 +1095,47 @@ void TouchTools::setLanguage(int lu)
 {
     language = lu;
 }
+/*后位空格补齐
+ * length : 返回字符串长度
+ * str    : 需要补空格的字符串
+ * 返回值： 补齐空格后的字符串*/
+QString TouchTools::polishingString(int length, QString str)
+{
+
+    int strLen = gbk_strlen(str.toStdString().c_str());
+//    TDEBUG("'%s' 字符串长度 = %d",str.toStdString().c_str(),strLen);
+    for(int i = strLen;i < length;i++)
+    {
+        str += " ";
+    }
+    return str;
+}
+
+int TouchTools::gbk_strlen(const char *str)
+{
+    const char* p = str;
+    int len = 0;
+    if(p == NULL)
+    {
+        return 0;
+    }
+
+    while(*p)
+    {
+        if(*p < 0 && (*(p+1)<0 || *(p+1) < 63))			//中文汉字情况
+        {
+            p = p + 3;
+            len += 2;
+        }
+        else
+        {
+            p++;
+            len++;
+        }
+    }
+    return len;
+
+}
 
 void TouchTools::exitProject()
 {
@@ -1352,3 +1466,7 @@ void TouchTools::BatchUpgradeListener::onUpgradeDone(int index, bool result, QSt
 {
     manager->presenter->onBatchFinish(index,result,message);
 }
+
+//字符串后位空格补齐
+
+

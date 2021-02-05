@@ -50,8 +50,7 @@ public:
     int argc;
     char **argv;
     QTimer *argcTimer;
-    static int language;
-    static void setLanguage(int lu);
+
     explicit TouchTools(QObject *parent = 0, TouchPresenter *p = 0,int argc = 0,
                         char *argv[] = 0,QString appPath = "");
     ~TouchTools();
@@ -81,7 +80,6 @@ public:
     void startBatchTest(int testIndex);
     void startBatchUpgrade(int upgradeIndex,QString path);
     void setBatchCancel(bool batchCancel);
-    virtual
     //托盘
     void openProgress(bool isOpen);
     void setPageIndex(int index);
@@ -267,10 +265,15 @@ public:
 //    void SetProcessAutoRunSelf(const QString &appPath)
     QString getAppPath(){return appPath;}
 
+    //静态变量与方法
 public:
     static bool upgrading;
     static bool testing;
     static bool autoTestSwitch;
+    static int language;
+    static void setLanguage(int lu);
+    static QString polishingString(int length,QString str);
+    static int gbk_strlen(const char* str);
 private :
     QList<QString> autoUpdatePath;
      bool firstTimeUpdate;

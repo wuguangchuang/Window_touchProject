@@ -279,7 +279,7 @@ Window {
 
                                         implicitWidth: upgradeBtn.width
                                         implicitHeight: upgradeBtn.height
-                                        border.width: info.borderWidth
+//                                        border.width: 1
                                         color: (flag ? "#64B5F6":"#BDBDBD")
                                         radius: 2
                                     }
@@ -461,13 +461,22 @@ Window {
                                        anchors.left: parent.left
                                        anchors.leftMargin: defaultMargin
                                    }
-                                   Text {
+                                   MyLabel{
                                        id: upgradeDeviceInfo
-                                       text: deviceMainInfo
+                                       textStr: deviceMainInfo
+                                       Layout.fillWidth: true
+                                       Layout.fillHeight: true
                                        anchors.left: upgradeDeviceImage.right
-                                       anchors.leftMargin: defaultMargin
-                                       anchors.verticalCenter: parent.verticalCenter
+                                       anchors.topMargin: 5
+
                                    }
+//                                   Text {
+//                                       id: upgradeDeviceInfo
+//                                       text: deviceMainInfo
+//                                       anchors.left: upgradeDeviceImage.right
+//                                       anchors.leftMargin: defaultMargin
+//                                       anchors.verticalCenter: parent.verticalCenter
+//                                   }
                                }
                         }
                     }
@@ -718,13 +727,21 @@ Window {
                                        anchors.left: parent.left
                                        anchors.leftMargin: defaultMargin
                                    }
-                                   Text {
+                                   MyLabel{
                                        id: testDeviceInfo
-                                       text: deviceMainInfo
+                                       textStr: deviceMainInfo
+                                       Layout.fillWidth: true
+                                       Layout.fillHeight: true
                                        anchors.left: testDeviceImage.right
-                                       anchors.leftMargin: defaultMargin
-                                       anchors.verticalCenter: parent.verticalCenter
+                                       anchors.topMargin: 5
                                    }
+//                                   Text {
+//                                       id: testDeviceInfo
+//                                       text: deviceMainInfo
+//                                       anchors.left: testDeviceImage.right
+//                                       anchors.leftMargin: defaultMargin
+//                                       anchors.verticalCenter: parent.verticalCenter
+//                                   }
                                }
                         }
 
@@ -1269,13 +1286,21 @@ Window {
                                        anchors.left: parent.left
                                        anchors.leftMargin: defaultMargin
                                    }
-                                   Text {
+                                   MyLabel{
                                        id: settingDeviceInfo
-                                       text: deviceMainInfo
+                                       textStr: deviceMainInfo
+                                       Layout.fillWidth: true
+                                       Layout.fillHeight: true
                                        anchors.left: settingDeviceImage.right
-                                       anchors.leftMargin: defaultMargin
-                                       anchors.verticalCenter: parent.verticalCenter
+                                       anchors.topMargin: 5
                                    }
+//                                   Text {
+//                                       id: settingDeviceInfo
+//                                       text: deviceMainInfo
+//                                       anchors.left: settingDeviceImage.right
+//                                       anchors.leftMargin: defaultMargin
+//                                       anchors.verticalCenter: parent.verticalCenter
+//                                   }
                                }
                             }
                     }
@@ -1304,50 +1329,42 @@ Window {
                         RowLayout
                         {
                             id:deviceID
-                            height: deviceHeight
+//                            height: deviceHeight
+                            anchors.fill: parent
                             anchors.left: parent.left
                             anchors.top: parent.top
                             Rectangle
                             {
                                 id:deviceInfoNameID
-//                                width: deviceWidth
-//                                height: deviceHeight
-                                width:300
-                                height: parent.height
-                                anchors.top:parent.top
-                                anchors.left: parent.left
-                                Cont2.Label {
-                                    width: parent.width
-                                    height: parent.height
-                                    textFormat: Text.AutoText
-                                    anchors.left: parent.left
-                                    anchors.top: parent.top
-                                    padding: 20     //间距
-                                    font.pointSize: 13
-                                    text: deviceInfoName + "\n" +softwareInfoName
-                                    lineHeight: 1.5     //行距
-                                    lineHeightMode: Text.ProportionalHeight  //按比例
-                                }
-                            }
-                            Rectangle
-                            {
+                                anchors.fill: parent
                                 anchors.top:parent.top
                                 anchors.left: deviceInfoNameID.right
                                 anchors.leftMargin: defaultMargin
-//                                height: deviceInfoHeight
-                                height: parent.height
-                                Cont2.Label
-                                {
-                                    textFormat: Text.AutoText
-                                    anchors.left: parent.left
-                                    anchors.top: parent.top
-                                    padding: 20     //间距
-                                    font.pointSize: 13
-                                    text: deviceInfoString + "\n" +softwareInfo
-                                    lineHeight: 1.5     //行距
-                                    lineHeightMode: Text.ProportionalHeight  //按比例
+                                anchors.topMargin: defaultMargin
+
+                                MyLabel{
+
+                                    width: parent.width
+                                    height: parent.height
+//                                    textStr: deviceInfoName + "\n" +softwareInfoName
+                                    textStr: deviceInfoName
+                                    fontSize: 13
                                 }
                             }
+//                            Rectangle
+//                            {
+//                                Layout.fillWidth: true
+//                                height: parent.height
+//                                anchors.top:parent.top
+//                                anchors.left: deviceInfoNameID.right
+//                                anchors.leftMargin: defaultMargin
+//                                anchors.topMargin: defaultMargin
+//                                MyLabel{
+//                                    width: parent.width
+//                                    height: parent.height
+//                                    textStr: deviceInfoString + "\n" +softwareInfo
+//                                }
+//                            }
 
                         }
 
@@ -1381,7 +1398,8 @@ Window {
                 }
                 onVisibleChanged: {
                     if (visible) {
-                        showDeviceInfo();
+//                        showDeviceInfo();
+                       deviceInfoName =  touch.getRelativeInfo()
                         touch.tPrintf("关于界面");
                     }
                 }
