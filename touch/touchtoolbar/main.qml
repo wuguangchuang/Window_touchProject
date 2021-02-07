@@ -12,7 +12,7 @@ import "qml/ui"
 
 
 Window {
-    property int buttonMinWidth: 150
+    property int buttonMinWidth: 180
     property int buttonMinHeight:60
     property int fontSize: 12
     property int marginWidth: 20
@@ -82,9 +82,8 @@ Window {
     }
     property bool updatingFw: false
     property bool testingFw: false
-    property string testBtnName: "Test"
+    property string testBtnName: qsTr("Test")
     property bool isSupportOnboardtest:false
-    property bool showPage:false
 //    property var testMessage : ""
     property int testMessagLength : 0
     property var testMessage : []
@@ -129,7 +128,7 @@ Window {
             id: mainTabView
             anchors.fill: parent
             anchors.margins: (mainPage.visibility === 5) ? 0 : defaultMargin
-            tabsVisible: (mainPage.visibility === 5 || updatingFw || testingFw) ? false : true
+            tabsVisible: (mainPage.visibility === 5 || updatingFw || testingFw ) ? false : true
             Keys.enabled: false
             KeyNavigation.tab: null
 //            onFocusChanged: console.log("focus:" + focus)
@@ -228,6 +227,8 @@ Window {
 
                                     }
                                     mainPage.sendDestroyDialog();
+                                    console.log("升级文件：" + updatePage.updateComBoxId.currentText);
+                                    touch.setUpdatePath(updatePage.updateComBoxId.currentText);
                                     touch.startUpgrade();
 //                                    updatePage.showDialogWidth = updateShowMsgId.width/2;
                                     updatePage.messageBoxWidth = updateShowMsgId.width/2;
@@ -504,6 +505,11 @@ Window {
                 property Item onboardTest:(item != null) ? item.onboardTest : null
                 property Item testBtn: (item != null) ? item.testBtn : null
                 property Item testProgressBar: (item != null) ? item.testProgressBar : null
+                property Item testComboBox:(item != null) ? item.testComboBox : null
+                property int testComboBoxIndex:0
+                property Item testShowDialog:(item != null) ? item.testShowDialog : null
+                property Item volienceUpgradeFileRow:(item != null) ? item.volienceUpgradeFileRow : null
+                property Item volienceUpgradeFileText:(item != null) ? item.volienceUpgradeFileText : null
 
                 signal sendOnboardTestStart()
 
@@ -520,12 +526,116 @@ Window {
                     property Item onboardTest:onboardTest
                     property Item testBtn: testBtn
                     property Item testProgressBar: testProgressBar
+                    property Item testComboBox:testComboBox
+                    property Item volienceUpgradeFileRow:volienceUpgradeFileRow
+                    property Item volienceUpgradeFileText:volienceUpgradeFileText
+                    property Item volienceUpgradeFileRec:volienceUpgradeFileRec
+                    property Item volienceFileSeleected:volienceFileSeleected
 
                     anchors.fill: parent
                     ColumnLayout {
                         anchors.fill: parent
                         anchors.top: parent.top
                         anchors.topMargin: defaultMargin
+
+                        ComboBox{
+                            id:testComboBox
+                            visible: (touch.getAppType() === mAPP_RD) ? true : false
+                            model: testComboBoxList
+                            currentIndex: 0
+                            enabled: true
+                            anchors.top: parent.top
+                            anchors.left: parent.left
+                            Layout.fillWidth: true
+                            Layout.preferredHeight: 40
+
+                            style: ComboBoxStyle{
+                                label:Text{
+                                    width: testComboBox.width
+                                    height: testComboBox.height
+                                    verticalAlignment: Text.AlignVCenter;
+                                    horizontalAlignment: Text.AlignHCenter;
+                                    text: testComboBox.currentText
+                                    font.pointSize: 15
+
+                                }
+                            }
+                            Component.onCompleted: {
+                                testComboBoxList.insert(0,{"text":qsTr("Test")});
+                                testComboBoxList.insert(1,{"text":qsTr("Violence upgrade")});
+//                                testComboBoxList.insert(2,{"text":qsTr("Violence test")});
+                            }
+                            onCurrentIndexChanged: {
+                                testPage.testComboBoxIndex = currentIndex;
+                                clearTestInfo();
+                                switch(currentIndex)
+                                {
+                                case 0:
+                                    testBtnName = qsTr("Test");
+                                    break;
+                                case 1:
+
+                                    testBtnName = qsTr("Violence upgrade");
+                                    break;
+                                case 2:
+                                    testBtnName = qsTr("Violence test");
+                                    break;
+                                }
+                            }
+                        }
+                        RowLayout{
+                            Layout.fillWidth: true
+                            Layout.preferredHeight: testBtn.height
+                            anchors.top: testComboBox.bottom
+                            anchors.topMargin: 3
+                            anchors.left: parent.left
+                            visible: testComboBox.currentIndex === 1 ? true : false
+                            Button{
+                                id:volienceFileSeleected
+                                enabled: (testBtn.checked || updatingFw)? false : true
+                                Layout.preferredWidth: testBtn.width
+                                Layout.preferredHeight:testBtn.height
+                                anchors.top:parent.top
+                                anchors.left: parent.left
+                                style: ButtonStyle {
+                                    label: Text {
+                                        color: "#FFFFFF"
+                                        text: qsTr("Select upgrade file")
+                                        font.pointSize: Math.min(fontSize + (Math.min(upgradeTestWidth,upgradeTestHeight) - 1)*5,30)
+                                        verticalAlignment: Text.AlignVCenter
+                                        horizontalAlignment: Text.AlignHCenter
+                                    }
+                                    background: Rectangle{
+
+                                        implicitWidth: volienceFileSeleected.width
+                                        implicitHeight: volienceFileSeleected.height
+                                        color: (testBtn.checked || updatingFw)? "#BDBDBD" : "#64B5F6"
+                                        radius: 2
+                                    }
+                                }
+                                onClicked: {
+                                        fileDialog.open();
+                                }
+
+                            }
+                            Rectangle{
+                                id:volienceUpgradeFileRec
+
+                                Layout.fillWidth: true
+                                Layout.preferredHeight: parent.height
+
+                                border.width: 1
+                                border.color: "gray"
+                                Text {
+                                    id: volienceUpgradeFileText
+                                    anchors.fill: parent
+                                    elide: Text.ElideLeft // 超出范围左边使用...表示
+                                    font.pointSize: 20
+                                    verticalAlignment: Text.AlignVCenter
+
+                                }
+                            }
+                        }
                         RowLayout {
                             Button{
                                 id:testBtn;
@@ -544,7 +654,7 @@ Window {
                                 style: TButtonStyle {
                                     label: Text {
                                         color: "#FFFFFF"
-                                        text:qsTr(testBtnName)
+                                        text:testBtnName
                                         font.pointSize: Math.min(fontSize + (Math.min(upgradeTestWidth,upgradeTestHeight) - 1)*5,30)
                                         verticalAlignment: Text.AlignVCenter
                                         horizontalAlignment: Text.AlignHCenter
@@ -557,21 +667,46 @@ Window {
 
                                     if(checked)
                                     {
+
                                         onboardTest.midRecttextString = "";
                                         isSupportOnboardtest = false;
                                         onboardTest.visible = false;
-                                        testBtnName = qsTr("Cancel test");
-                                        mainPage.sendDestroyDialog();
-                                        touch.setTestThreadToStop(false);
-                                        touch.startTest();
-
-
+                                        testPage.testComboBox.enabled = false;
+                                         mainPage.sendDestroyDialog();
+                                        testBtnName = qsTr("Cancel");
+                                        switch(testPage.testComboBoxIndex)
+                                        {
+                                        case 0:
+                                            touch.setTestThreadToStop(false);
+                                            touch.startTest();
+                                            break;
+                                        case 1:
+                                            console.log("升级文件：" + testPage.volienceUpgradeFileText.text);
+                                            touch.setUpdatePath(testPage.volienceUpgradeFileText.text);
+                                            touch.startVolienceTest(testPage.testComboBoxIndex);
+                                            updatingFw = true;
+                                            break;
+                                        case 2:
+                                            break;
+                                        }
                                     }
                                     else
                                     {
-                                        touch.cancelTest(true);
-                                        mainPage.sendDestroyDialog();
-                                        touch.setTestThreadToStop(true);
+
+                                        if(testPage.testComboBoxIndex === 0)
+                                        {
+                                            touch.cancelTest(true);
+                                            mainPage.sendDestroyDialog();
+                                            touch.setTestThreadToStop(true);
+                                            testPage.testBtn.enabled = false;
+                                        }
+                                        else
+                                        {
+                                            touch.setCancelVolienceTest(false);
+                                            testPage.testBtn.enabled = false;
+                                        }
+
+
 //                                        setTestButtonEnable(false);
 
                                     }
@@ -753,7 +888,6 @@ Window {
                     if(visible)
                     {
                         touch.tPrintf("测试模式:");
-                        showPage = true;
 
                         var str1 = "";
                         for(var i = 0;i < testMessage.length;i++)
@@ -764,7 +898,7 @@ Window {
                     }
                     else
                     {
-                        showPage = false;
+
                     }
                 }
 
@@ -886,7 +1020,7 @@ Window {
                 property int batchWorkingBtnHeight: 40
 
                 property int functionIndex:0  //默认是加速老化(0)、升级(1)、测试(2)
-                property string batchWorkBtnStr:qsTr("Start again")
+                property string batchWorkBtnStr:qsTr("Start aging")
                 property var batchRunning:false
                 Rectangle {
                     anchors.fill: parent
@@ -959,7 +1093,9 @@ Window {
 
                                             case 1:
                                                 //升级
+                                                updatingFw = true;
                                                 agingPageTab.batchWorkBtnStr = qsTr("Cancel upgrade");
+                                                agingPageTab.batchChooseFile.enabled = false;
                                                 for(i = 0;i < batchConnectDeviceInfoList.length;i++)
                                                 {
                                                     if(agingPage.getDeviceStatus(i) === agingPage.deviceConnected)
@@ -1013,6 +1149,8 @@ Window {
                                             }
                                             else if(agingPageTab.functionIndex === 1)
                                             {
+
+                                                updatingFw = false;
 //                                                agingPageTab.batchWorkBtnStr = qsTr("Upgrade");
                                                 showToast(qsTr("Stop upgrading. New connected devices will no longer be upgraded."))
                                             }
@@ -1134,8 +1272,8 @@ Window {
                                                 Layout.preferredWidth:batchChooseFile.width
                                                 Layout.preferredHeight: batchChooseFile.height
                                                 border.width: 1
-                                                border.color: (batchFlag ? "#64B5F6":"#BDBDBD")
-                                                color: (batchFlag ? "#64B5F6":"#BDBDBD")
+                                                border.color: (enabled ? "#64B5F6":"#BDBDBD")
+                                                color: (enabled ? "#64B5F6":"#BDBDBD")
                                                 radius: 2
                                             }
 
@@ -1196,7 +1334,7 @@ Window {
                 Component.onCompleted: {
                     batchText.insert(0,{"text":qsTr("Accelerate aging")});
                     batchText.insert(1,{"text":qsTr("Upgrade")});
-                    batchText.insert(2,{"text":qsTr("Test")});
+//                    batchText.insert(2,{"text":qsTr("Test")});
                 }
                 onVisibleChanged: {
 
@@ -1216,7 +1354,7 @@ Window {
                         agingPage.functionIndex = batchComboBox.currentIndex;
 
                         initBatchDeviceInfo();
-                        batchWorkBtnStr = qsTr("Accelerate aging");
+                        batchWorkBtnStr = qsTr("Start aging");
                         batchRunning = false;
                         setBatchCancel(false);
                     }
@@ -1530,17 +1668,18 @@ Window {
                     mainTabView.tabsVisible = true;
                     agingPageTab.batchComboBox.enabled = true;
                     agingPageTab.batchStartWork.enabled = true;
+                    agingPageTab.batchChooseFile.enabled = true;
                     if(agingPageTab.functionIndex === 0)
                     {
-                        agingPageTab.batchWorkBtnStr = qsTr("Aging");
+                        agingPageTab.batchWorkBtnStr = qsTr("Start aging");
                     }
                     else if(agingPageTab.functionIndex === 1)
                     {
-                        agingPageTab.batchWorkBtnStr = qsTr("Upgrade");
+                        agingPageTab.batchWorkBtnStr = qsTr("Start upgrade");
                     }
                     else if(agingPageTab.functionIndex === 2)
                     {
-                        agingPageTab.batchWorkBtnStr = qsTr("Test");
+                        agingPageTab.batchWorkBtnStr = qsTr("Start test");
                     }
                     batchCheckResultTimer.stop();
                 }
@@ -1578,7 +1717,11 @@ Window {
     ListModel{
         id:batchText
     }
+    ListModel{
+        id:testComboBoxList
+    }
     property alias batchUpgradeFileText:agingPageTab.batchUpgradeFileText
+    //该文件是通过文件夹获取到到的固件
     function setUpgradeFile(file) {
         if(lockCheck && currenttab === mTAB_Upgrade)
         {
@@ -1623,6 +1766,12 @@ Window {
 
             batchUpgradeFileText.text = file;
             batchUpgradeFile = file;
+        }
+        else if(currenttab === mTAB_Test)
+        {
+            console.log("获取到暴力升级的文件")
+            testPage.volienceUpgradeFileText.text = file;
+
         }
 
 
@@ -1718,6 +1867,12 @@ Window {
             batchUpgradeFileText.text = file;
             batchUpgradeFile = file;
         }
+        else if(currenttab === mTAB_Test)
+        {
+            console.log("####获取到暴力升级的文件")
+            testPage.volienceUpgradeFileText.text = file;
+
+        }
 
     }
     function getFileText(){
@@ -1739,20 +1894,27 @@ QMessageBox::Critical	3	an icon indicating that the message represents a critica
         var titleName;
         var accpetTextBtn;
         var currentPage;
-//        if(type >= 4  && type <= 7)
-//        {
+
             tt = Qt.createComponent("qrc:qml/ui/InformationSign.qml");
-            //        console.log("chart erros:" + tt.errorString())
+
             if (tt.errorString())
                 touch.error("chart erros:" + tt.errorString());
-                if(showPage)
+            if(currenttab === mTAB_Test)
+            {
+                if(testPage.testComboBoxIndex === 1)
                 {
-                    currentPage = isSupportOnboardtest?onboardTest.midRectText:testPage.testShowDialog;
+                    currentPage = testPage.testShowDialog;
                 }
                 else
                 {
-                    currentPage = updatePage.updateShowDialog;
+                    currentPage = isSupportOnboardtest?onboardTest.midRectText:testPage.testShowDialog;
                 }
+
+            }
+            else
+            {
+                currentPage = updatePage.updateShowDialog;
+            }
 
             tt = tt.createObject(currentPage);
             tt.showMessage({
@@ -1804,7 +1966,15 @@ QMessageBox::Critical	3	an icon indicating that the message represents a critica
 
     property alias upgradeProgressBar: updatePage.upgradeProgressBar
     function updateUpgradeProgress(progess) {
-        upgradeProgressBar.value = progess;
+        if(currenttab === mTAB_Upgrade)
+        {
+            upgradeProgressBar.value = progess;
+        }
+        else if(currenttab === mTAB_Test)
+        {
+            testProgressBar.value = progess;
+        }
+
 //        console.debug("upgrade " + progess)
     }
 
@@ -1832,7 +2002,7 @@ QMessageBox::Critical	3	an icon indicating that the message represents a critica
             */
 
             var str = "";
-            if(showPage)
+            if(currenttab === mTAB_Test)
             {
                     str = message + "\n";
                     testMessage.push(str);
@@ -2016,16 +2186,44 @@ QMessageBox::Critical	3	an icon indicating that the message represents a critica
     {
         testBtn.checked = check;
 
-//        if(testBtn.checked)
-//            testBtnName = "取消测试";
-//        else
-//            testBtnName = "test";
-
-//        console.log("testBtnName = ",testBtnName);
     }
-    function setTextButtonText(text)
+    function setTextButtonText(status)
     {
-        testBtnName = text;
+        if(status === 0)
+        {
+            testPage.testComboBox.enabled = false;
+            testBtnName = qsTr("Cancel");
+            switch(testPage.testComboBoxIndex)
+            {
+            case 0:
+
+                break;
+            case 1:
+
+                break;
+            case 2:
+
+                break;
+            }
+        }
+        else if(status === 1)
+        {
+            testPage.testComboBox.enabled = true;
+            testPage.testBtn.enabled = true;
+            switch(testPage.testComboBoxIndex)
+            {
+            case 0:
+                testBtnName = qsTr("Test");
+                break;
+            case 1:
+                testBtnName = qsTr("Volience upgrade");
+                break;
+            case 2:
+                testBtnName = qsTr("Volience test");
+                break;
+            }
+        }
+
     }
 
     function setUpgradeButtonText(text) {
@@ -2037,13 +2235,17 @@ QMessageBox::Critical	3	an icon indicating that the message represents a critica
     }
 
     function setUpgrading(u){
-        updatingFw = u;
+        if(!testPage.testBtn.checked)
+        {
+            updatingFw = u;
+        }
+
     }
     function setTesting(u){
         testingFw = u;
     }
     function autoTestConnect(){
-        if(showPage)
+        if(currenttab === mTAB_Test)
         {
             if(testingFw)
             {
@@ -2053,7 +2255,20 @@ QMessageBox::Critical	3	an icon indicating that the message represents a critica
             onboardTest.midRecttextString = "";
             isSupportOnboardtest = false;
             onboardTest.visible = false;
-            testBtnName = qsTr("Cancel test");
+            testPage.testComboBox.enabled = false;
+            testBtnName = qsTr("Cancel");
+            switch(testPage.testComboBoxIndex)
+            {
+            case 0:
+
+                break;
+            case 1:
+
+                break;
+            case 1:
+
+                break;
+            }
             mainPage.sendDestroyDialog();
             touch.setTestThreadToStop(false);
             touch.startTest();
@@ -2063,7 +2278,7 @@ QMessageBox::Critical	3	an icon indicating that the message represents a critica
     }
     function clearTestInfo()
     {
-        if(showPage)
+        if(currenttab === mTAB_Test)
         {
             testProgressBar.value = 0;
             touch.cancelTest(true);
@@ -2522,7 +2737,7 @@ QMessageBox::Critical	3	an icon indicating that the message represents a critica
 
     onClosing: {
 
-        if (!updatePage.updateButton.enabled) {
+        if (!updatePage.updateButton.enabled || updatingFw) {
 
             showToast(qsTr("Upgrading! Please do not close the program"));
             close.accepted = false;

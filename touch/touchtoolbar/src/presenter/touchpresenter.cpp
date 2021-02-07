@@ -274,14 +274,14 @@ void TouchPresenter::setUpgradeButtonText(QString text)
     QMetaObject::invokeMethod(component, "setUpgradeButtonText",
     Q_ARG(QVariant, text));
 }
-void TouchPresenter::setTextButtonText(QString text)
+void TouchPresenter::setTextButtonText(int status)
 {
     if (component == NULL) {
         TDebug::warning("component is NULL");
         return;
     }
     QMetaObject::invokeMethod(component, "setTextButtonText",
-    Q_ARG(QVariant, text));
+    Q_ARG(QVariant, status));
 }
 
 void TouchPresenter::setTestButtonEnable(bool enable)
@@ -508,6 +508,16 @@ void TouchPresenter::setBatchCancel(bool batchCancel)
 {
     this->batchCancel = batchCancel;
     touch->setBatchCancel(batchCancel);
+}
+
+void TouchPresenter::startVolienceTest(int volienceMode)
+{
+    touch->startVolienceTest(volienceMode);
+}
+
+void TouchPresenter::setCancelVolienceTest(bool cancelVolienceTest)
+{
+    touch->setCancelVolienceTest(cancelVolienceTest);
 }
 
 void TouchPresenter::updateSignalList(QVariant list)
@@ -911,7 +921,8 @@ void TouchPresenter::enterCalibratePage()
     QMetaObject::invokeMethod(component, "enterCalibrate");
 }
 //获取屏幕方向
-void TouchPresenter::getScreenOrientation(){
+int TouchPresenter::getScreenOrientation(){
+    int systemScreenDirection = 0;
     DEVMODE dm;
     // initialize the DEVMODE structure
     ZeroMemory(&dm, sizeof(dm));
@@ -921,24 +932,25 @@ void TouchPresenter::getScreenOrientation(){
         switch(dm.dmDisplayOrientation)
         {
         case DMDO_DEFAULT:
-            TDEBUG("当前屏幕旋转0度");
-            appendMessageText("当前屏幕旋转0度",0);
+            TDEBUG("当前系统屏幕旋转0度");
+            systemScreenDirection = 0;
             break;
         case DMDO_90:
-            TDEBUG("当前屏幕旋转90度");
-            appendMessageText("当前屏幕旋转90度",0);
+            TDEBUG("当前系统屏幕旋转90度");
+            systemScreenDirection = 1;
             break;
         case DMDO_180:
-            TDEBUG("当前屏幕旋转180度");
-            appendMessageText("当前屏幕旋转180度",0);
+            TDEBUG("当前系统屏幕旋转180度");
+            systemScreenDirection = 2;
             break;
         case DMDO_270:
-            TDEBUG("当前屏幕旋转270度");
-            appendMessageText("当前屏幕旋转270度",0);
+            TDEBUG("当前系统屏幕旋转270度");
+            systemScreenDirection = 3;
             break;
         default:
             TDEBUG("获取屏幕旋转方向失败");
-            appendMessageText("获取屏幕旋转方向失败",0);
+//            appendMessageText("获取屏幕旋转方向失败",0);
+            systemScreenDirection = -1;
         }
     }
     else

@@ -17,6 +17,10 @@ namespace Touch {
 #define en_US 0
 #define zh_CN 1
 
+//暴力测试部分
+#define VOLIENCE_UPGRADE 1
+#define VOLIENCE_TEST 2
+
 struct TouchData {
     unsigned char report_id;
     unsigned char data[HID_REPORT_DATA_LENGTH];
@@ -80,6 +84,9 @@ public:
     void startBatchTest(int testIndex);
     void startBatchUpgrade(int upgradeIndex,QString path);
     void setBatchCancel(bool batchCancel);
+
+
+
     //托盘
     void openProgress(bool isOpen);
     void setPageIndex(int index);
@@ -231,6 +238,26 @@ private:
         TouchTools *manager;
     };
 
+    //暴力测试
+
+    void startVolienceTest(int volienceMode);
+
+    class VolienceTestThread:public QThread{
+
+    public:
+        VolienceTestThread(TouchTools *tool):volienceTestMode(0){this->touchTool = tool;}
+
+        int volienceTestMode;
+        void setVolienceTestMode(int mode){this->volienceTestMode = mode;}
+    protected:
+        void run();
+
+    private:
+        TouchTools *touchTool;
+
+    };
+
+    VolienceTestThread *volatileTestThread;
 
     TestListener mTestLstener;
     BatchTestListener batchTestListener;
@@ -274,6 +301,9 @@ public:
     static void setLanguage(int lu);
     static QString polishingString(int length,QString str);
     static int gbk_strlen(const char* str);
+    static bool volienceTest;
+    void setCancelVolienceTest(bool cancelVolienceTest){TouchTools::volienceTest =  cancelVolienceTest;}
+
 private :
     QList<QString> autoUpdatePath;
      bool firstTimeUpdate;

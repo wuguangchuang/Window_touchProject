@@ -25,6 +25,8 @@
 #define DIALOG_INFO 1
 #define DIALOG_WARNING 2
 #define DIALOG_CRITICAL 3
+
+
 class TouchInterface {
 public:
     TouchInterface(){}
@@ -49,6 +51,8 @@ public:
     virtual void startBatchTest(int testIndex) = 0;
     virtual void startBatchUpgrade(int testIndex,QString batchUpgradeFile) = 0;
     virtual void setBatchCancel(bool batchCancel) = 0;
+    virtual void startVolienceTest(int volienceMode) = 0;
+    virtual void setCancelVolienceTest(bool cancelVolienceTest) = 0;
 
 };
 class ProcessStarter : public QProcess {
@@ -156,6 +160,8 @@ public:
     }
 
     Q_INVOKABLE QVariantMap getSettingsInfos();
+    Q_INVOKABLE int getScreenOrientation();
+
     Q_INVOKABLE QVariant setSettings(QVariant key, QVariant value);
 
     Q_INVOKABLE QVariant getRelativeInfo();
@@ -365,6 +371,12 @@ public:
     Q_INVOKABLE void setBatchCancel(bool batchCancel);
 
 
+    //暴力升级、测试等
+
+    Q_INVOKABLE void startVolienceTest(int volienceMode);
+    Q_INVOKABLE void setCancelVolienceTest(bool cancelVolienceTest);
+
+
 
     // call qml
     void showDialog(QString title, QString message, int type = 0);
@@ -385,7 +397,7 @@ public:
     void autoTestConnect();
     void clearTestInfo();
     void setUpgradeButtonText(QString text);
-    void setTextButtonText(QString text);
+    void setTextButtonText(int status);
     void refreshSettings();
     void destroyQml();
     void destroyDialog();
@@ -473,9 +485,9 @@ public:
     void openProgress(bool isOpen);
     void changeTabIndex(int index);
     void enterCalibratePage();
-    void getScreenOrientation();
     QMutex batchMutex;
     bool batchCancel;
+
 };
 
 #endif // TOUCHPRESENTER_H

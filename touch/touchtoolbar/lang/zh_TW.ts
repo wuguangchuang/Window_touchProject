@@ -17,10 +17,22 @@
     </message>
     <message>
         <source>aging completed</source>
-        <translation>老化完成</translation>
+        <translation type="vanished">老化完成</translation>
     </message>
     <message>
         <source>total time:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Upgrade</source>
+        <translation type="unfinished">升級</translation>
+    </message>
+    <message>
+        <source>Test</source>
+        <translation type="unfinished">測試</translation>
+    </message>
+    <message>
+        <source>Progress: </source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -326,6 +338,19 @@
     </message>
     <message>
         <source>mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>System display direction</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>System display orientation is inconsistent with firmware screen orientation.The current display direction of the system is %1°.
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Is the firmware screen display orientation set to the system display orientation?</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -808,6 +833,22 @@
 </source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Device disconnect</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>USB VID:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>USB PID:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Init signal error</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>main</name>
@@ -949,6 +990,58 @@
     </message>
     <message>
         <source>Cannot select firmware when locked.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Violence upgrade</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Violence test</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Batch</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Stop aging</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel upgrade</source>
+        <translation type="unfinished">取消升級</translation>
+    </message>
+    <message>
+        <source>Stop upgrading. New connected devices will no longer be upgraded.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Stop testing. New connected devices will no longer be tested.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Start aging</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Start upgrade</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Start test</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Volience upgrade</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Volience test</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

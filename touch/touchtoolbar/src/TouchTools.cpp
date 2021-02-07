@@ -20,6 +20,9 @@ using namespace Touch;
 #define AUTO_UPDATE_DIR "FirmwareBin/"
 #define MODE_SETTING_FILE "modeSetting.json"
 
+#define TEST_NORMAL 1
+#define TEST_CANCEL 0
+
 //显示消息框
 void TouchTools::showMessageDialog(QString title, QString message, int type)
 {
@@ -297,7 +300,7 @@ void TouchTools::TestThread::run()
     touch_device *dev;
     bool firstTime = true;
     setCancel(false);
-    touchTool->presenter->setTextButtonText(TouchTools::tr("Cancel test"));
+    touchTool->presenter->setTextButtonText(TEST_CANCEL);
     do
     {
         dev = touchTool->mTouchManager->firstConnectedDevice();
@@ -312,7 +315,7 @@ void TouchTools::TestThread::run()
             QThread::msleep(100);
             if(isCanceled())
             {
-                touchTool->presenter->setTextButtonText(TouchTools::tr("Test"));
+                touchTool->presenter->setTextButtonText(TEST_NORMAL);
                 touchTool->presenter->setTestButtonCheck(false);
                 touchTool->presenter->setTesting(false);
                 running = false;
@@ -390,7 +393,11 @@ void TouchTools::UpgradeThread::run()
 //        qDebug("@%d @%d @%d", isCanceled(), (dev), (!dev ? 0 : dev->touch.connected));
         if (dev == NULL || !dev->touch.connected)
         {
-            touchTool->presenter->setUpgradeButtonText(TouchTools::tr("Cancel upgrade"));
+            if(!TouchTools::volienceTest)
+            {
+                touchTool->presenter->setUpgradeButtonText(TouchTools::tr("Cancel upgrade"));
+            }
+
             if(firstTime)
             {
                 touchTool->showMessage(TouchTools::tr("Error"), TouchTools::tr("Please plug in device"), 7);
@@ -402,7 +409,11 @@ void TouchTools::UpgradeThread::run()
             waiting = false;
             running = false;
             touchTool->presenter->setUpgrading(false);
-            touchTool->presenter->setUpgradeButtonText(TouchTools::tr("Upgrade"));
+            if(!TouchTools::volienceTest)
+            {
+                touchTool->presenter->setUpgradeButtonText(TouchTools::tr("Upgrade"));
+            }
+
             cancel = false;
             upgrading = false;
             return;
@@ -412,13 +423,21 @@ void TouchTools::UpgradeThread::run()
     waiting = false;
 
     touchTool->showMessage(" ",TouchTools::tr("Upgrading! Do not disconnect the device"),6);
-    touchTool->presenter->setUpgradeButtonEnable(false);
+    if(!TouchTools::volienceTest)
+    {
+        touchTool->presenter->setUpgradeButtonEnable(false);
+    }
+
 
 //    touchTool->presenter->setUpgradeButtonText(tr("Start"));
     int result = touchTool->mTouchManager->startUpgrade(touchTool->upgradePath, &touchTool->mUpgradeListener);
     if (result != 0) {
         touchTool->showMessage(TouchTools::tr("Upgrade"), TouchTools::tr("Uprade failure"));
-        touchTool->presenter->setUpgradeButtonEnable(true);
+        if(!TouchTools::volienceTest)
+        {
+            touchTool->presenter->setUpgradeButtonEnable(true);
+        }
+
         upgrading = false;
     }
     running = false;
@@ -1023,6 +1042,7 @@ QVariantMap TouchTools::getSignalData(QVariant index, int count)
 bool TouchTools::upgrading = false;
 bool TouchTools::testing = false;
 bool TouchTools::autoTestSwitch = false;
+bool TouchTools::volienceTest = false;
 #define show_line() TDEBUG("%s [%d]", __func__, __LINE__);
 TouchTools::TouchTools(QObject *parent, TouchPresenter *presenter,int argc,char **argv,QString appPath) : QObject(parent),
     mTestLstener(this),batchTestListener(this), mUpgradeListener(this),batchUpgradeListener(this),initSdkThread(this), upgradeThread(this),
@@ -1149,6 +1169,14 @@ void TouchTools::exitProject()
             MessageBox(NULL,TEXT("没有连接到触摸框设备"),TEXT("错误"),MB_ICONHAND|MB_OK);
     }
     exit(0);
+}
+
+void TouchTools::startVolienceTest(int volienceMode)
+{
+    this->volatileTestThread = new VolienceTestThread(this);
+    this->volatileTestThread->setVolienceTestMode(volienceMode);
+    this->setCancelVolienceTest(true);
+    this->volatileTestThread->start();
 }
 
 
@@ -1285,7 +1313,7 @@ void TouchTools::TestListener::onTestDone(bool result, QString text,bool stop,bo
             destroyDialog();
         }
     }
-    manager->presenter->setTextButtonText(tr("Test"));
+    manager->presenter->setTextButtonText(TEST_NORMAL);
     manager->appendMessageText(info);
 //    manager->presenter->setTestButtonEnable(true);
     manager->presenter->setTestButtonCheck(false);
@@ -1355,10 +1383,15 @@ void TouchTools::UpgradeListener::onUpgradeDone(bool result, QString message)
         manager->showMessage(tr("Upgrade"), tr("Upgrade failed") + "!\n" + message, 3);
         manager->appendMessageText(tr("Upgrade failed") + "! " + message + "\n");
     }
-    manager->presenter->setUpgradeButtonEnable(true);
+   if(!TouchTools::volienceTest)
+   {
+       manager->presenter->setUpgradeButtonEnable(true);
+   }
+
 
     manager->presenter->setUpgrading(false);
     TouchTools::upgrading = false;
+    TDEBUG("升级完成");
 }
 
 void TouchTools::UpgradeListener::showUpdateMessageDialog(QString title, QString message, int type)
@@ -1470,3 +1503,34 @@ void TouchTools::BatchUpgradeListener::onUpgradeDone(int index, bool result, QSt
 //字符串后位空格补齐
 
 
+void TouchTools::VolienceTestThread::run()
+{
+    while(touchTool->volienceTest)
+    {
+
+        if(volienceTestMode == VOLIENCE_UPGRADE)
+        {
+            //不在升级状态且有设备连接上便继续升级
+            touch_device *dev = touchTool->mTouchManager->firstConnectedDevice();
+            if(dev != NULL && dev->touch.connected && !TouchTools::upgrading)
+            {
+                TDEBUG("暴力升级") ;
+                touchTool->startUpgrade();
+            }
+        }
+        else if(volienceTestMode == VOLIENCE_TEST)
+        {
+            TDEBUG("暴力测试") ;
+        }
+
+        QThread::sleep(3);
+    }
+    while(TouchTools::upgrading)
+    {
+        QThread::msleep(500);
+    }
+    touchTool->presenter->setTextButtonText(TEST_NORMAL);
+    touchTool->setCancelVolienceTest(false);
+    touchTool->presenter->setUpgrading(false);
+    TouchTools::upgrading = false;
+}

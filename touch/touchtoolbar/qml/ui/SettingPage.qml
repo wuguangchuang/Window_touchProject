@@ -4,6 +4,7 @@ import QtQuick.Controls 2.0
 import QtQuick.Layouts 1.3
 import QtQuick.Controls 1.4
 import QtQuick.Controls.Styles 1.4
+import QtQuick.Dialogs 1.2
 
 
 
@@ -136,6 +137,8 @@ Item{
         }
     }
 
+    property bool systemScreenDirection:false
+    property var dirention:0
     function refreshSettings() {
         console.log("refresh settings")
         refreshing = true;
@@ -209,7 +212,7 @@ Item{
         }
 
         if (settings.screenRotation !== undefined && settings.screenRotation !== -1) {
-            for (var i = 0; i < screenRotationGroup.buttons.length; i++) {
+            for (i = 0; i < screenRotationGroup.buttons.length; i++) {
                 btn = screenRotationGroup.buttons[i];
                 if (btn.mode === settings.screenRotation) {
                     btn.checked = true;
@@ -221,7 +224,7 @@ Item{
             enables = false;
         }
         buttons = screenRotationGroup.buttons;
-        for (var i = 0; i < buttons.length; i++) {
+        for (i = 0; i < buttons.length; i++) {
             buttons[i].enabled = enables;
             if (enables === false) {
                 buttons[i].checked = enables;
@@ -289,6 +292,19 @@ Item{
 //        lockAGCcb.checked = lockAGC === 1;
 //        clearUpdate.restart()
         modeSettingPage.refreshModeSetting();
+
+        //只提示一次：判断获取固件屏幕方向是否与当前系统显示方向保持一致
+        if(!systemScreenDirection && settings.screenRotation !== undefined && settings.screenRotation !== -1)
+        {
+            systemScreenDirection = true;
+            dirention = touch.getScreenOrientation();
+            if(dirention >= 0 && dirention !== settings.screenRotation)
+            {
+                swipeView.currentIndex = 1;
+                systemScreenDirectionMessage.visible = true;
+            }
+        }
+
     }
     Timer{
         id: clearUpdate
@@ -493,6 +509,33 @@ Item{
         }
 
     }
+    MessageDialog{
+        id:systemScreenDirectionMessage
+        visible: false
+        width: 500
+        height: 300
+        title: qsTr("System display direction")
+        text:qsTr("System display orientation is inconsistent with firmware screen orientation.The current display direction of the system is %1°.\n").arg(dirention * 90) + "\n" +
+             qsTr("Is the firmware screen display orientation set to the system display orientation?")
+        standardButtons:StandardButton.Yes|StandardButton.No
+
+        onYes: {
+
+            console.log("设置屏幕的显示方向：" + dirention);
+            for (var i = 0; i < screenRotationGroup.buttons.length; i++) {
+                var btn = screenRotationGroup.buttons[i];
+                if (btn.mode === dirention) {
+                    btn.checked = true;
+                    break;
+                }
+            }
+
+        }
+        onNo: {
+            console.log("不设置屏幕的显示方向" );
+        }
+    }
+
 
 }
 
