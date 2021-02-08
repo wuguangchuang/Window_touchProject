@@ -16,6 +16,7 @@ Item{
     property var refreshing: true
 
 
+
     property bool updateSettings: false
 //    signal clickCalibration();
 
@@ -41,101 +42,116 @@ Item{
     property var caliDataModel: settingCalibratePage.caliDataModel
 
 
-    id: root
 
+    id: root
+    focus: true
     Keys.enabled: true
     Keys.onPressed: {
 
-        switch (event.key)
+        if(mainPage.enterInterface === mainPage.calibrationPage)
         {
-        case Qt.Key_1:
-            if (usbModeEnabledBox.checked) {
-                if (usbModeMouse.checked) {
-                    usbModeMouse.checked = false;
-                    usbModeTouch.checked = true;
-                } else {
-                    usbModeMouse.checked = true;
-                    usbModeTouch.checked = false;
-                    usbModeEnabledBox.checked = false;
-                }
-            } else {
-                usbModeEnabledBox.checked = true;
-            }
-
-            break;
-
-        case Qt.Key_2:
-            serialModeEnabledBox.checked = !serialModeEnabledBox.checked;
-
-            break;
-
-        case Qt.Key_3:
-            if (!xMirrorCheckBox.checked && !yMirrorCheckBox.checked) {
-                xMirrorCheckBox.checked = true;
-            } else if (xMirrorCheckBox.checked && !yMirrorCheckBox.checked) {
-                yMirrorCheckBox.checked = true;
-            } else if (xMirrorCheckBox.checked && yMirrorCheckBox.checked) {
-                xMirrorCheckBox.checked = false;
-            } else {
-                xMirrorCheckBox.checked = yMirrorCheckBox.checked = false;
-            }
-
-            break;
-        case Qt.Key_4:
-
-            var count = touchRotationGroup.buttons.length;
-            var button = touchRotationGroup.checkedButton;
-//            console.log("count=" + count + " mode=" + button.mode);
-            button.checked = false;
-            var nextMode = button.mode + 1;
-            if (button.mode === (count - 1)) {
-                nextMode = 0;
-            }
-            for (var index = 0; index < count; index++) {
-                if (nextMode === touchRotationGroup.buttons[index].mode) {
-                    touchRotationGroup.buttons[index].checked = true;
-                    break;
-                }
-            }
-
-            break;
-        case Qt.Key_5:
-            count = screenRotationGroup.buttons.length;
-            button = screenRotationGroup.checkedButton;
-//            console.log("count=" + count + " mode=" + button.mode);
-            button.checked = false;
-            nextMode = button.mode + 1;
-            if (button.mode === (count - 1)) {
-                nextMode = 0;
-            }
-            for (var index = 0; index < count; index++) {
-                if (nextMode === screenRotationGroup.buttons[index].mode) {
-                    screenRotationGroup.buttons[index].checked = true;
-                    break;
-                }
-            }
-
-            break;
-//        case Qt.Key_6:
-//            count = macOsGroup.buttons.length;
-//            button = macOsGroup.checkedButton;
-////            console.log("count=" + count + " mode=" + button.mode);
-//            button.checked = false;
-//            nextMode = button.mode + 1;
-//            if (button.mode === (count - 1)) {
-//                nextMode = 0;
-//            }
-//            for (var index = 0; index < count; index++) {
-//                if (nextMode === macOsGroup.buttons[index].mode) {
-//                    macOsGroup.buttons[index].checked = true;
-//                    break;
-//                }
-//            }
-
-//            break;
-
+            calibrationUi.onPressed(event);
         }
+        else if(mainPage.enterInterface === mainPage.fineTunePage)
+        {
+            fineTune.onPressed(event);
+        }
+        else
+        {
+            switch (event.key)
+            {
+            case Qt.Key_1:
+                if (usbModeEnabledBox.checked) {
+                    if (usbModeMouse.checked) {
+                        usbModeMouse.checked = false;
+                        usbModeTouch.checked = true;
+                    } else {
+                        usbModeMouse.checked = true;
+                        usbModeTouch.checked = false;
+                        usbModeEnabledBox.checked = false;
+                    }
+                } else {
+                    usbModeEnabledBox.checked = true;
+                }
+
+                break;
+
+            case Qt.Key_2:
+                serialModeEnabledBox.checked = !serialModeEnabledBox.checked;
+
+                break;
+
+            case Qt.Key_3:
+                if (!xMirrorCheckBox.checked && !yMirrorCheckBox.checked) {
+                    xMirrorCheckBox.checked = true;
+                } else if (xMirrorCheckBox.checked && !yMirrorCheckBox.checked) {
+                    yMirrorCheckBox.checked = true;
+                } else if (xMirrorCheckBox.checked && yMirrorCheckBox.checked) {
+                    xMirrorCheckBox.checked = false;
+                } else {
+                    xMirrorCheckBox.checked = yMirrorCheckBox.checked = false;
+                }
+
+                break;
+            case Qt.Key_4:
+
+                var count = touchRotationGroup.buttons.length;
+                var button = touchRotationGroup.checkedButton;
+    //            console.log("count=" + count + " mode=" + button.mode);
+                button.checked = false;
+                var nextMode = button.mode + 1;
+                if (button.mode === (count - 1)) {
+                    nextMode = 0;
+                }
+                for (var index = 0; index < count; index++) {
+                    if (nextMode === touchRotationGroup.buttons[index].mode) {
+                        touchRotationGroup.buttons[index].checked = true;
+                        break;
+                    }
+                }
+
+                break;
+            case Qt.Key_5:
+                count = screenRotationGroup.buttons.length;
+                button = screenRotationGroup.checkedButton;
+    //            console.log("count=" + count + " mode=" + button.mode);
+                button.checked = false;
+                nextMode = button.mode + 1;
+                if (button.mode === (count - 1)) {
+                    nextMode = 0;
+                }
+                for (index = 0; index < count; index++) {
+                    if (nextMode === screenRotationGroup.buttons[index].mode) {
+                        screenRotationGroup.buttons[index].checked = true;
+                        break;
+                    }
+                }
+
+                break;
+    //        case Qt.Key_6:
+    //            count = macOsGroup.buttons.length;
+    //            button = macOsGroup.checkedButton;
+    ////            console.log("count=" + count + " mode=" + button.mode);
+    //            button.checked = false;
+    //            nextMode = button.mode + 1;
+    //            if (button.mode === (count - 1)) {
+    //                nextMode = 0;
+    //            }
+    //            for (var index = 0; index < count; index++) {
+    //                if (nextMode === macOsGroup.buttons[index].mode) {
+    //                    macOsGroup.buttons[index].checked = true;
+    //                    break;
+    //                }
+    //            }
+
+    //            break;
+
+            }
+        }
+
     }
+
+
 
     property bool systemScreenDirection:false
     property var dirention:0
@@ -329,7 +345,9 @@ Item{
         anchors.right: parent.right
         anchors.bottom: parent.bottom
         currentIndex: 0
+
         Rectangle{
+            //currentIndex === 0 : 设置界面的坐标页
 //            anchors.fill: parent
             gradient: Gradient{
                 GradientStop{position: 0.0;color: "#f6f6f6"}
@@ -345,6 +363,7 @@ Item{
             }
         }
         Rectangle{
+            //currentIndex === 1 : 设置界面的旋转页
 //            anchors.fill: parent
             gradient: Gradient{
                 GradientStop{position: 0.0;color: "#f6f6f6"}
@@ -362,6 +381,7 @@ Item{
 
         }
         Rectangle{
+            //currentIndex === 2 : 设置界面的校准页
 //            anchors.fill: parent
             gradient: Gradient{
                 GradientStop{position: 0.0;color: "#f6f6f6"}

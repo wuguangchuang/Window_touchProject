@@ -75,33 +75,38 @@ Item {
 
         MenuItem {
             text: qsTr("recalibration")
+            shortcut: "(Ctrl + R)"
             onTriggered: {
 
-                stopCaptureTimer();
-                resizeWindow();
-                root.forceActiveFocus();
-                var point;
-                for (var i = 0; i < 4; i++) {
-                    var result = touch.captureCalibrationIndex(i);
-                    point = pointList[i];
-                    point.reset();
-                    if (result === false) {
-                        showToast(qsTr("recovery failed"));
-                        return;
-                    }
-                }
-                touch.captureCalibrationIndex(activePoint);
-                setPointActive(0);
-                startCaptureTimer();
+                recalibration();
             }
         }
 
         MenuItem {
             text: qsTr("exit")
-
+            shortcut: "(Esc)"
             onTriggered: root.exit();
 
         }
+    }
+    function recalibration()
+    {
+        stopCaptureTimer();
+        resizeWindow();
+//        root.forceActiveFocus();
+        var point;
+        for (var i = 0; i < 4; i++) {
+            var result = touch.captureCalibrationIndex(i);
+            point = pointList[i];
+            point.reset();
+            if (result === false) {
+                showToast(qsTr("recovery failed"));
+                return;
+            }
+        }
+        touch.captureCalibrationIndex(activePoint);
+        setPointActive(0);
+        startCaptureTimer();
     }
 
     MouseArea {
@@ -201,7 +206,7 @@ Item {
         if (visible) {
             resizeWindow();
             autoExitTimer.restart();
-            focus = true;
+//            focus = true;
             // clear status
             finished = false;
             for (var i = 0; i < pointList.length; i++) {
@@ -462,6 +467,9 @@ Item {
         var accepted = true;
         autoExitTimer.restart();
         switch (event.key) {
+        case Qt.Key_R:
+            recalibration();
+            break;
         case Qt.Key_Escape:
             exitPanel();
             break;
@@ -535,9 +543,9 @@ Item {
 //            setCalibrationData(np);
             startCaptureTimer();
             break;
-        case Qt.Key_R:
-            touch.testCaliCapture(5000);
-            break;
+//        case Qt.Key_R:
+//            touch.testCaliCapture(5000);
+//            break;
         default:
             accepted = false;
             break;
@@ -551,7 +559,7 @@ Item {
 //        console.log("cal key pressed");
         onPressed(event);
     }
-    Keys.enabled: true
+    Keys.enabled: false
     signal exit();
     function exitPanel() {
         console.log("退出校准");

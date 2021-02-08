@@ -2,7 +2,6 @@ import QtQuick 2.7
 
 import QtQuick.Window 2.2
 import QtQuick.Controls 1.4
-import QtQuick.Controls 2.0 as Cont2
 import QtQuick.Controls.Styles 1.4
 import QtQuick.Layouts 1.3
 
@@ -44,6 +43,36 @@ Item {
     property var midMessage:qsTr("Please draw vertical lines on the left and right and horizontal lines up and down to tune.")
     property int imageSize:64
 
+    focus: false
+    Keys.enabled: false
+    Keys.onPressed: {
+        console.log("按键按下%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%")
+        switch (event.key){
+        case Qt.Key_Escape:
+
+            clearCanvas();
+            exitTune();
+            break;
+        case Qt.Key_C:
+            clearCanvas();
+            break;
+        }
+    }
+
+    function onPressed(event)
+    {
+
+        switch (event.key){
+        case Qt.Key_Escape:
+            clearCanvas();
+            exitTune();
+            break;
+        case Qt.Key_C:
+            clearCanvas();
+            break;
+        }
+    }
+
     Timer{
         id: golbalTimer
         interval: 1000
@@ -52,20 +81,44 @@ Item {
         triggeredOnStart: false
         onTriggered: {
             tuneMenu.popup();
+
         }
     }
+
     Menu {
         id: tuneMenu
+        style:MenuStyle{
+//            itemDelegate.background: Rectangle{
+
+//                height: 80
+//                width: 300
+//                border.width: 1
+//                border.color: "grey"
+//            }
+//            itemDelegate.label: Text{
+//                height:40
+//                width:300
+//                font.pointSize:12
+//                color: "grey"
+////                font.family:"微软雅黑"
+
+//            }
+            font: Qt.font({pointSize:12,color: "grey"})
+        }
+
         MenuItem{
-            id:clearDrawLine
+
+            id:clearDrawLine           
             text:qsTr("clear")
             onTriggered: {
                 clearCanvas();
             }
         }
+        MenuSeparator{}
         MenuItem {
             text: qsTr("exit")
             onTriggered:{
+                clearCanvas();
                 exitTune();
             }
         }
@@ -76,7 +129,6 @@ Item {
         onClicked: {
             switch (mouse.button) {
             case Qt.LeftButton:
-
                 mouse.accepted = true;
                 break;
             case Qt.RightButton:
@@ -101,6 +153,7 @@ Item {
                 }
             ]
             onPressed: {
+
                 golbalPreviousX = golbalMultTouch1.sceneX;
                 golbalPreviousY = golbalMultTouch1.sceneY;
                 golbalSceneX = golbalPreviousX;
@@ -109,6 +162,7 @@ Item {
 
             }
             onReleased: {
+
                 golbalTimer.stop();
 
             }
@@ -118,6 +172,7 @@ Item {
                 if(Math.abs(golbalSceneX - golbalPreviousX) > 64 ||
                         Math.abs(golbalSceneY - golbalPreviousY) > 64)
                 {
+
                     golbalTimer.stop();
                 }
             }
@@ -136,7 +191,7 @@ Item {
                 id:leftTouchPoint
                 anchors.fill: parent
                 enabled: true
-                mouseEnabled: false
+                mouseEnabled: true
                 maximumTouchPoints: 1
                 minimumTouchPoints: 1
                 touchPoints: [
@@ -364,7 +419,7 @@ Item {
                 id:rightTouchPoint
                 anchors.fill: parent
                 enabled: true
-                mouseEnabled: false
+                mouseEnabled: true
                 maximumTouchPoints: 1
                 minimumTouchPoints: 1
                 touchPoints: [
@@ -579,7 +634,7 @@ Item {
                 id:upTouchPoint
                 anchors.fill: parent
                 enabled: true
-                mouseEnabled: false
+                mouseEnabled: true
                 maximumTouchPoints: 1
                 minimumTouchPoints: 1
                 touchPoints: [
@@ -805,7 +860,7 @@ Item {
                 id:downTouchPoint
                 anchors.fill: parent
                 enabled: true
-                mouseEnabled: false
+                mouseEnabled: true
                 maximumTouchPoints: 1
                 minimumTouchPoints: 1
                 touchPoints: [

@@ -198,7 +198,7 @@ Window {
                                 property var text: qsTr("Upgrade")
                                 Layout.minimumWidth: fileSeleected.width
                                 Layout.minimumHeight: fileSeleected.height
-                                style: TButtonStyle {
+                                style: TButtonStyle{
                                     text: upgradeBtn.text
 
                                 }
@@ -1400,6 +1400,8 @@ Window {
                         anchors.fill: parent
                         SettingPage{
                             id:settingsId
+                            focus: true
+                            Keys.enabled: true
     //                        anchors.fill: parent
                             Layout.preferredHeight: parent.height - settingeviceInfo.height - defaultMargin
                             Layout.preferredWidth: parent.width
@@ -1580,16 +1582,17 @@ Window {
         } // tabview
 
         //校准界面
-        Calibration {
+        property Item calibrationUi : calibrationUi
+        Calibration{
             id: calibrationUi
-            Keys.enabled: true
+            Keys.enabled: false
             x: 0
             y: 0
             z: 1
 
             width: Screen.width
             height: Screen.height
-            focus: true
+            focus: false
             visible: false
             onExit: {
                 exitCalibrate();
@@ -1599,13 +1602,16 @@ Window {
 
         FineTune{
             id:fineTune
-            visible: false
+
+            Keys.enabled: false
             x: 0
             y: 0
             z: 1
             width: Screen.width
             height: Screen.height
-            focus: true
+
+            focus: false
+            visible: false
             onExitTune: {
                 exitFineTune();
             }
@@ -2805,6 +2811,16 @@ QMessageBox::Critical	3	an icon indicating that the message represents a critica
         if(visbaled)
             mainPage.visibility =  Window.Maximized;
     }
+    //界面跳转
+    /*
+    * 设置界面: 0
+    * 校准界面: 1
+    * 微调校准数据界面: 2*/
+    property int settingsPage:0
+    property int calibrationPage: 1
+    property int fineTunePage:    2
+    property int enterInterface:0
+
      function enterCalibrate()
      {
          if(touch.isUpgrading())
@@ -2829,6 +2845,8 @@ QMessageBox::Critical	3	an icon indicating that the message represents a critica
          {
              calibrationUi.visible = true;
              lastVisibility = mainPage.visibility;
+             settingsTabId.settingsPage.visible = false;
+             enterInterface = calibrationPage;
              showFullScreen();
          }
 
@@ -2836,17 +2854,25 @@ QMessageBox::Critical	3	an icon indicating that the message represents a critica
      function exitCalibrate(){
          calibrationUi.focus = false;
          calibrationUi.visible = false;
+         settingsTabId.settingsPage.visible = true;
          mainPage.visibility = lastVisibility;
+         settingsTabId.settingsPage.focus = true;
+         enterInterface = settingsPage;
+
      }
      function enterFineTune(){
          fineTune.visible = true;
          lastVisibility = mainPage.visibility;
          showFullScreen();
+         settingsTabId.settingsPage.visible = false;
+         enterInterface = fineTunePage;
      }
      function exitFineTune(){
          fineTune.focus = false;
          fineTune.visible = false;
          mainPage.visibility = lastVisibility;
+         settingsTabId.settingsPage.visible = true;
+         enterInterface = settingsPage;
      }
      //批处理
      function initBatchDeviceInfo()
