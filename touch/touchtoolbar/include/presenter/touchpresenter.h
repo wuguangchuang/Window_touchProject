@@ -321,6 +321,22 @@ public:
         return false;
     }
 
+    //calibration
+    Q_INVOKABLE QVariantMap getCalibrationSettings(){
+        QVariantMap map;
+        CalibrationSettings settings;
+        int ret = touchManager->getCalibrationSettings(NULL, &settings);
+        if (ret != 0) {
+            TWARNING("%s: get settings failed", __func__);
+            return map;
+        }
+        map.insert("calibrationMode", settings.mode);
+        map.insert("calibrationCount", settings.pointCount);
+        map.insert("calibrationDefMode", settings.defMode);
+        map.insert("calibrationDefCount", settings.defPointCount);
+        return map;
+    }
+
     QObject* getComponent() { return component;}
     void setTouchManager(TouchManager *tm) {touchManager = tm;}
 
@@ -346,6 +362,7 @@ public:
     void setUpgradeButtonText(QString text);
     void setTextButtonText(QString text);
     void refreshSettings();
+    void calibration();
     void destroyQml();
     void destroyDialog();
 
@@ -420,6 +437,8 @@ private:
     ProcessStarter starter;
 public:
     bool initSdkDone;
+    void openProgress(bool isOpen);
+    bool calibrationMode;
 };
 
 #endif // TOUCHPRESENTER_H

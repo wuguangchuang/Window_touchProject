@@ -11,7 +11,7 @@
 
 TouchPresenter::TouchPresenter(QObject *parent, QObject *component) : QObject(parent),
     signalThread(this), sem(0), settings("newskyer", "TouchAssistant"),paintSem(0),touchManager(NULL),
-    initSdkDone(false)
+    initSdkDone(false), calibrationMode(false)
 {
 
     this->component = component;
@@ -551,6 +551,15 @@ void TouchPresenter::refreshSettings()
     return;
 }
 
+void TouchPresenter::calibration()
+{
+    if (component == NULL) {
+        return;
+    }
+    QMetaObject::invokeMethod(component, "calibration");
+    return;
+}
+
 void TouchPresenter::newRunner()
 {
     if (component == NULL) {
@@ -627,6 +636,11 @@ QVariantMap TouchPresenter::getCalibrationDatas(QVariant where)
         return map;
     }
     CalibrationData data;
+    TDEBUG("校准模式 = %d",settings.mode);
+    TDEBUG("校准点的个数 = %d",settings.pointCount);
+    TDEBUG("默认校准模式 = %d",settings.defMode);
+    TDEBUG("默认校准点个数 = %d",settings.defPointCount);
+    map.insert("mode", settings.mode);
     map.insert("count", settings.pointCount);
     QVariantList points;
     for (int i = 0; i < settings.pointCount; i++) {
@@ -645,6 +659,7 @@ QVariantMap TouchPresenter::getCalibrationDatas(QVariant where)
     map.insert("points", points);
     return map;
 }
+
 
 QVariant TouchPresenter::enterCalibrationMode()
 {
@@ -680,6 +695,9 @@ QVariant TouchPresenter::exitCalibrationMode()
     if (ret != 0)
         return QVariant::fromValue(false);
 
+    if (calibrationMode) {
+        exit(0);
+    }
     return QVariant::fromValue(true);
 }
 
@@ -753,4 +771,15 @@ QVariant TouchPresenter::testCaliCapture(QVariant time)
     touchManager->testCalibrationCapture(NULL, time.toInt());
     return QVariant::fromValue(true);
 }
+//响应托盘
+void TouchPresenter::openProgress(bool isOpen)
+{
+    if (component == NULL) {
+        return;
+    }
+    QMetaObject::invokeMethod(component, "setWindowHidden",
+                              Q_ARG(QVariant, isOpen));
+    return;
+}
+
 

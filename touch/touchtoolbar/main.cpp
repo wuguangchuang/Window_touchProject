@@ -88,11 +88,14 @@ int main(int argc, char *argv[])
 int main(int argc, char *argv[])
 {
 
+//    argc = 2;
+//    argv[1] = "-cal";
 //    libusb_context *ctx;
 //    libusb_init(&ctx);
 
 //    QCoreApplication::setAttribute(Qt::AA_UseDesktopOpenGL, true);
-    TINFO(QLocale().name().toStdString().c_str());
+    QString defLang = QLocale().name().toStdString().c_str();
+    TINFO("defLang = %s",defLang.toStdString().c_str());
 //    QLocale curLocale(QLocale("zh_CN"));
 //    QLocale::setDefault(curLocale);
 
@@ -108,7 +111,7 @@ int main(int argc, char *argv[])
     QApplication app(argc, argv);
     QTranslator translator;
     //bool ok = translator.load(":lang/zh_CN.qm");
-    bool ok;
+    bool ok = false;
     TINFO("start %s: %s, %d", __DATE__, APP_VERSION_NAME, APP_VERSION_CODE);
     SingleApp *singleApp = NULL;
     if (isAlreadyRunning(&singleApp)) {
@@ -145,10 +148,9 @@ int main(int argc, char *argv[])
 //        ok = false;
     if (lang == "")
         TDEBUG("lang false");
-    if (lang != "en_US") {
+    if(lang == "zh_CN")
+    {
         if (!ok) {
-            lang = "zh_CN";
-            //        ok = translator.load(":lang/" + QLocale().name() + ".qm");
             ok = translator.load(":lang/" + lang + ".qm");
         }
         TINFO("load translator %s %s", lang.toStdString().c_str(), ok ? "success" : "fail");
@@ -159,14 +161,23 @@ int main(int argc, char *argv[])
             lang = "zh_CN";
             app.installTranslator(&translator);
         }
-    }else
+    }
+    else
     {
-        if (!ok) {
+        if(lang != "en_US")
+        {
+            lang = defLang;
+            TINFO("==============lang = %s",lang.toStdString().c_str());
+        }
+        if(lang != "en_US" && lang != "zh_CN")
+        {
             lang = "en_US";
+        }
+        if (!ok) {
             //        ok = translator.load(":lang/" + QLocale().name() + ".qm");
             ok = translator.load(":lang/" + lang + ".qm");
         }
-        TINFO("load translator %s %s", lang.toStdString().c_str(), ok ? "success" : "fail");
+
         if (ok) {
             app.installTranslator(&translator);
         } else {
@@ -174,6 +185,7 @@ int main(int argc, char *argv[])
             lang = "en_US";
             app.installTranslator(&translator);
         }
+        TINFO("load translator %s %s", lang.toStdString().c_str(), ok ? "success" : "fail");
     }
     //用于语言之间的转换
     QLocale curLocale(lang);
@@ -321,7 +333,9 @@ int main(int argc, char *argv[])
     }
 
     // get config veondor touch devices
-    QFile loadFile(QStringLiteral("config/devices.json"));
+    char devicesJson[strlen(appPath.toStdString().c_str()) + sizeof("/config/devices.json") + 1];
+    sprintf(devicesJson,"%s/config/devices.json",appPath.toStdString().c_str());
+    QFile loadFile(devicesJson);
 
     if (loadFile.open(QIODevice::ReadOnly)) {
         TINFO("devices device json");
@@ -357,7 +371,7 @@ int main(int argc, char *argv[])
     TINFO("autoDisableCoordinate=%d", autoDisableCoordinate);
     QObject *object = NULL;
 
-    if(argc > 1 && QString::compare(argv[1],"-changeCoordsMode") == 0)
+    if(argc > 1 && strncmp(argv[1],"-changeCoordsMode",sizeof("-changeCoordsMode")) == 0)
     {
 
     }
@@ -368,6 +382,17 @@ int main(int argc, char *argv[])
             TDebug::debug("main.qml error:" + component.errorString());
         object = component.create();
         touch->setComponent(object);
+    }
+
+    if(argc > 1 && (strncmp(argv[1],"-selfStarting",sizeof("-selfStarting")) == 0 ||
+                strncmp(argv[1],"-cal",sizeof("-cal")) == 0))
+    {
+        TDEBUG(" 有两个参数");
+        touch->openProgress(false);
+    }
+    else
+    {
+        touch->openProgress(true);
     }
 
 
@@ -419,6 +444,12 @@ int main(int argc, char *argv[])
     if(currentIndex > 6 || currentIndex < 0)
     {
         currentIndex = 0;
+    }
+
+    if((argc > 1 && (strcmp(argv[1],"-cal") == 0)))
+    {
+        currentIndex = 5;
+        manager.setCalicationMode(true);
     }
     while(1)
     {

@@ -32,10 +32,10 @@ Window {
     property bool setTest: defaultSetTest
 
     id: mainPage
-    visible:true
+    visible:false
     width: mWidth
     height: mHeight
-    visibility: Window.Maximized
+//    visibility: Window.Maximized
 
     // see also TouchTool.h
     property int mAPP_Factory: 0
@@ -95,6 +95,10 @@ Window {
     property int updateMessageLength:0
     property var upgradeShowStr:""
     property int tabViewHeight:Math.max(Math.min(windowHeight / 5.0,tabHeight),20)
+
+    //calibration
+    property int calibrateMode:1
+    property int calibrationPoints : 4
 
 
     signal sendOnboardTestFinish(var title,var message,var type);
@@ -834,6 +838,12 @@ Window {
 //                            settingsId.caliDataDelegate = calibrationDataDelegate;
                             settingsId.caliDataModel = calibrationDataModel;
                         }
+                        function enterCalibration() {
+                            calibrationUi.visible = true;
+                            lastVisibility = mainPage.visibility;
+                            showFullScreen();
+                        }
+
                         onClickCalibration: {
                             calibrationUi.visible = true;
                             lastVisibility = mainPage.visibility;
@@ -1487,9 +1497,21 @@ QMessageBox::Critical	3	an icon indicating that the message represents a critica
     function refreshSettings() {
         if (settingsTabId.settingsPage != null)
             settingsTabId.settingsPage.refreshSettings();
-        if (calibrationUi.visible) {
+        if (calibrationUi.visible && !calibrationFirst) {
             calibrationUi.exitPanel();
         }
+        calibrationFirst = false
+    }
+    property bool calibrationFirst: false
+    function calibration() {
+        if (settingsTabId.settingsPage != null) {
+            calibrationFirst = true
+            calibrationUi.visible = true;
+            lastVisibility = mainPage.visibility;
+            showFullScreen();
+        }
+            //settingsTabId.enterCalibration()
+            //settingsTabId.settingsPage.clickCalibration();
     }
 
     function startAging() {
@@ -1720,7 +1742,7 @@ QMessageBox::Critical	3	an icon indicating that the message represents a critica
     Component.onCompleted: {
         showUpgradePage();
         var i;
-        for (i = 0; i < 4; i++) {
+        for (i = 0; i < calibrationUi.calibratePoints; i++) {
             calibrationDataModel.append({
                 index: i,
                 targetX: 0,
@@ -1804,6 +1826,9 @@ QMessageBox::Critical	3	an icon indicating that the message represents a critica
         touch.debug(JSON.stringify(datas));
         if (datas.count === undefined || datas.count <= 0)
             return;
+        calibrationUi.calibratePoints = datas.count;
+        calibrateMode = datas.mode;
+        calibrationPoints = datas.count;
         var i;
         var points = datas.points;
         calibrationDataModel.clear();
@@ -1939,6 +1964,7 @@ QMessageBox::Critical	3	an icon indicating that the message represents a critica
         }
         mainTabView.currentIndex = index;
     }
+
     function setWindowHidden(visibled)
     {
         if(mainPage.visible && visibled)

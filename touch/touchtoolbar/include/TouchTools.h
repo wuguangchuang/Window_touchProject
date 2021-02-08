@@ -21,12 +21,12 @@ struct TouchData {
     unsigned char data[HID_REPORT_DATA_LENGTH];
 };
 
-#define APP_VERSION_NAME ("v1.12.25")
+#define APP_VERSION_NAME ("v1.12.28")
 #define APP_VERSION_CODE (15)
 
 //#define THIS_APP_TYPE (APP_FACTORY)
-//#define THIS_APP_TYPE (APP_CLIENT)
-#define THIS_APP_TYPE (APP_RD)
+#define THIS_APP_TYPE (APP_CLIENT)
+//#define THIS_APP_TYPE (APP_RD)
 //#define THIS_APP_TYPE (APP_PCBA)
 // see also: main.qml(appFactory...)
 typedef enum {
@@ -70,6 +70,10 @@ public:
 
     void onCommandDone(touch_device *dev, touch_package *require, touch_package *reply);
     QString getTr(QString str);
+
+    //托盘
+    void openProgress(bool isOpen);
+
     void onTouchHotplug(touch_device* dev, const int attached, const void *val);
     void setHotplugInterval(unsigned int interval) {
         hotplugInterval = interval;
@@ -84,6 +88,10 @@ public:
     QVariant getSoftwareInfoName();
     QVariant getSoftwareInfo();
     bool getTestIsFinished();
+    void setCalicationMode(bool enable) {
+        presenter->calibrationMode = enable;
+    }
+
     //onboard
     QVariantMap map;
     QVariantMap getBoardAttribyteData();
