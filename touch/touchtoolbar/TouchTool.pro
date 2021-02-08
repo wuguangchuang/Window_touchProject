@@ -19,7 +19,7 @@ SOURCES += src/presenter/touchpresenter.cpp \
 
 RESOURCES += qml.qrc \
     images.qrc \
-    text.qrc
+    text.qrc \
 
 RC_FILE += icon.rc
 
