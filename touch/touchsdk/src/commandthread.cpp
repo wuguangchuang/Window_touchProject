@@ -50,9 +50,9 @@ void CommandThread::run()
                 if(ret > 0)
                     break;
 
-                for(i = 0;i < milliseconds / 50 && !stop;i++)
+                for(i = 0;i < milliseconds / 5 && !stop;i++)
                 {
-                    ret = TouchManager::wait_time_out(item->dev->hid, (unsigned char *)(item->reply),HID_REPORT_DATA_LENGTH,50);
+                    ret = TouchManager::wait_time_out(item->dev->hid, (unsigned char *)(item->reply),HID_REPORT_DATA_LENGTH,5);
 
                     if(ret > 0)
                         break;

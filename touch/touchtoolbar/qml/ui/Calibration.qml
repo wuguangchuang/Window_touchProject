@@ -9,22 +9,28 @@ import QtQuick.Layouts 1.3
 Item {
     id: root
 //    anchors.fill: parent
-    property real calDefRectWidth: root.width / 2
-    property real calDefRectHeight: root.height / 2
+    property int calibratePoints:4
+//    property real calDefRectWidth: (calibratePoints === 9) ? root.width / 3.0 * 2 : root.width / 2
+//    property real calDefRectHeight:(calibratePoints === 9) ? root.height / 3.0 * 2: root.height / 2
+    property real calDefRectWidth: (calibratePoints === 9) ? root.width - root.width / 35 : root.width / 2
+    property real calDefRectHeight:(calibratePoints === 9) ? root.height - root.width / 35: root.height / 2
     property real moveStep: 4
 
+
+
     property bool finished: false
-    property var pointList: [point0, point1, point2, point3];
+    property var ninePointList: [point0,point1,point2,point3,point4,point5,point6,point7,point8];
+    property var fourPointList:[point0,point2,point6,point8];
     property int activePoint: 0
 
     property color defaultRectColor: "#00000000"
     property color pressedRectColor: "#80000000"
     property color hoverRectColor: "#32000000"
 
-
+    //设置校准活跃点的目标点
     function setCalibrationData(index) {
         touch.debug("set calibration data: " + index)
-        var point = pointList[index];
+        var point = (calibratePoints === 9)? ninePointList[index] : fourPointList[index];
         var result = false;
         var data = {
             targetX: point.x + (point.width / 2),
@@ -42,10 +48,21 @@ Item {
     function setPointActive(index) {
         autoExitTimer.restart();
         activePoint = index;
-        for (var i = 0; i < pointList.length; i++) {
-            pointList[i].active = false;
+        for (var i = 0; i < ((calibratePoints === 9)? ninePointList.length : fourPointList.length); i++) {
+//            pointList[i].active = false;
+            switch(calibratePoints)
+            {
+            case 9:
+                ninePointList[i].active = false;
+                break;
+
+            default:
+                fourPointList[i].active = false;
+                break;
+            }
         }
-        var point = pointList[activePoint];
+
+        var point = (calibratePoints === 9) ? ninePointList[activePoint]:fourPointList[activePoint];
 
         point.active = true;
         var result = setCalibrationData(activePoint);
@@ -95,9 +112,9 @@ Item {
         resizeWindow();
 //        root.forceActiveFocus();
         var point;
-        for (var i = 0; i < 4; i++) {
+        for (var i = 0; i < ((calibratePoints === 9)? ninePointList.length : fourPointList.length); i++) {
             var result = touch.captureCalibrationIndex(i);
-            point = pointList[i];
+            point = (calibratePoints === 9)? ninePointList[i] : fourPointList[i];
             point.reset();
             if (result === false) {
                 showToast(qsTr("recovery failed"));
@@ -115,7 +132,8 @@ Item {
         onClicked: {
             switch (mouse.button) {
             case Qt.LeftButton:
-                var point = pointList[activePoint];
+//                var point = pointList[activePoint];
+                var point = (calibratePoints === 9) ? ninePointList[activePoint] : fourPointList[activePoint];
                 if ((mouse.x > point.x && mouse.x < (point.x + point.width))
                     &&
                     (mouse.y > point.y && mouse.y < (point.y + point.height))) {
@@ -148,7 +166,8 @@ Item {
         onTriggered: {
             var data = touch.getCalibrationCapture();
 //            touch.debug(JSON.stringify(data));
-            var point = pointList[activePoint];
+//            var point = pointList[activePoint];
+            var point = (calibratePoints === 9)? ninePointList[activePoint] : fourPointList[activePoint];
             point.active = true;
             point.maximumValue = data.count;
             point.currentValue = data.finished;
@@ -164,12 +183,13 @@ Item {
 
     function nextPointActive() {
         activePoint++;
-        if (activePoint >= pointList.length)
+        if (activePoint >= ((calibratePoints === 9)? ninePointList.length : fourPointList.length))
             activePoint = 0;
         var allFinished = true;
         var point;
-        for (var i = 0; i < pointList.length; i++) {
-            point = pointList[i];
+        for (var i = 0; i < ((calibratePoints === 9)? ninePointList.length : fourPointList.length); i++) {
+//            point = pointList[i];
+            point = (calibratePoints === 9)? ninePointList[i] : fourPointList[i];
             if (point.finished !== true) {
                 allFinished = false;
                 break;
@@ -179,7 +199,8 @@ Item {
             root.finished = true;
             return;
         }
-        point = pointList[activePoint];
+//        point = pointList[activePoint];
+        point = (calibratePoints === 9)? ninePointList[activePoint] : fourPointList[activePoint];
         if (point.finished) {
             nextPointActive();
             return;
@@ -191,7 +212,7 @@ Item {
     function resizeWindow() {
         calRect.width = calDefRectWidth;
         calRect.height = calDefRectHeight;
-        calRect.x = (root.width - calRect.width) / 2;
+        calRect.x = (root.width - calRect.width) / 2 ;
         calRect.y = (root.height - calRect.height) / 2;
     }
 
@@ -204,13 +225,21 @@ Item {
         if (!ready) return;
         touch.debug((visible ? "enter" : "eixt") + " calibration");
         if (visible) {
+            var getCalSetting = touch.getCalibrationSettings();
+            if(getCalSetting.calibrationCount > 0)
+            {
+                console.log("校准模式 = " + getCalSetting.calibrationMode);
+                console.log("校准点的个数 = " + getCalSetting.calibrationCount);
+                calibratePoints = getCalSetting.calibrationCount;
+            }
             resizeWindow();
             autoExitTimer.restart();
 //            focus = true;
             // clear status
             finished = false;
-            for (var i = 0; i < pointList.length; i++) {
-                var point = pointList[i];
+            for (var i = 0; i < ((calibratePoints === 9)? ninePointList.length : fourPointList.length); i++) {
+//                var point = pointList[i];
+                var point = (calibratePoints === 9)? ninePointList[i] : fourPointList[i];
                 point.reset();
             }
             var ret = touch.enterCalibrationMode();
@@ -241,11 +270,12 @@ Item {
             }
 
             var point;
-            for (var i = 0; i < pointList.length; i++) {
-                point = pointList[i];
+            for (var i = 0; i < ((calibratePoints === 9)? ninePointList.length : fourPointList.length); i++) {
+                point = (calibratePoints === 9)? ninePointList[i] : fourPointList[i];
                 point.active = false;
             }
-            point = pointList[activePoint];
+//            point = pointList[activePoint];
+            point = (calibratePoints === 9)? ninePointList[activePoint] : fourPointList[activePoint];
             point.active = true;
             refreshCalibrationData();
             hideProgessing();
@@ -254,25 +284,6 @@ Item {
 
         }
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     Timer{
         id: finishTimer
@@ -313,7 +324,8 @@ Item {
     }
 
     function checkDirtyPoint() {
-        var point = pointList[activePoint];
+//        var point = pointList[activePoint];
+        var point = (calibratePoints === 9)? ninePointList[activePoint] : fourPointList[activePoint];
         if (point.dirty === true) {
             var result = touch.captureCalibrationIndex(activePoint);
             // Fixed ME: check in first XY change
@@ -329,9 +341,10 @@ Item {
         id: fullRect
         anchors.fill: parent
 
-
+        //四个校准点连接四个圆的矩形(0,2,6,8)
         Rectangle {
             id: calRectLine
+            visible: (calibratePoints === 4)? true : false
             width: calRect.width
             height: calRect.height
             border.width: 1
@@ -339,6 +352,49 @@ Item {
             anchors.top: calRect.top
             anchors.left: calRect.left
         }
+        //九个校准点
+        Rectangle {
+            id: calRectLine0
+            visible: (calibratePoints === 9) ? true : false
+            width: point1.x - point0.x
+            height: point3.y - point0.y
+            border.width: 1
+            border.color: "#a5a5a5"
+            x:calRect.x
+            y:calRect.y
+        }
+        Rectangle {
+            id: calRectLine1
+            visible: (calibratePoints === 9) ? true : false
+            width: point2.x - point1.x
+            height: point4.y - point1.y
+            border.width: 1
+            border.color: "#a5a5a5"
+            x:calRectLine0.x + calRectLine0.width
+            y:calRectLine0.y
+        }
+        Rectangle {
+            id: calRectLine2
+            visible: (calibratePoints === 9) ? true : false
+            width: point4.x - point3.x
+            height: calRect.height - calRectLine0.height
+            border.width: 1
+            border.color: "#a5a5a5"
+            x:point3.x + point3.width / 2
+            y:point3.y + point3.height / 2
+        }
+        Rectangle {
+            id: calRectLine3
+            visible: (calibratePoints === 9) ? true : false
+            width: calRect.width - calRectLine2.width
+            height: calRect.height - calRectLine1.height
+            border.width: 1
+            border.color: "#a5a5a5"
+            x:point4.x + point4.width / 2
+            y:point4.y + point4.height / 2
+        }
+
+
         CalibrationPoint {
             id: point0
             onDirtyChanged: {
@@ -350,11 +406,26 @@ Item {
             index: 0
             width: Math.max(root.width, root.height) / 12
             height: Math.max(root.width, root.height) / 12
-            x: calRect.x - width / 2
-            y: calRect.y - height / 2
+            x: calRect.x - width / 2 //表示的是穿过圆心的水平线的左边x轴的值
+            y: calRect.y - height / 2   //表示的是穿过圆心的竖线y轴的值
         }
         CalibrationPoint {
             id: point1
+            visible: (calibratePoints === 9) ? true : false
+            onDirtyChanged: {
+                if (active && dirty) {
+                    setCalibrationData(index);
+                }
+            }
+
+            index: 0
+            width: Math.max(root.width, root.height) / 12
+            height: Math.max(root.width, root.height) / 12
+            x: point0.x + calRect.width / 2   //表示的是穿过圆心的水平线的左边x轴的值
+            y: point0.y  //表示的是穿过圆心的竖线y轴的值
+        }
+        CalibrationPoint {
+            id: point2
             index: 1
             onDirtyChanged: {
                 if (active && dirty) {
@@ -364,11 +435,53 @@ Item {
             width: Math.max(root.width, root.height) / 12
             height: Math.max(root.width, root.height) / 12
             x: calRect.x + calRect.width - width / 2
-            y: calRect.y - height / 2
+            y: point0.y
+        }
+        CalibrationPoint {
+            id: point3
+            visible: (calibratePoints === 9) ? true : false
+            index: 1
+            onDirtyChanged: {
+                if (active && dirty) {
+                    setCalibrationData(index);
+                }
+            }
+            width: Math.max(root.width, root.height) / 12
+            height: Math.max(root.width, root.height) / 12
+            x: point0.x
+            y: calRect.y + calRect.height / 2 - height / 2
+        }
+        CalibrationPoint {
+            id: point4
+            visible: (calibratePoints === 9) ? true : false
+            index: 1
+            onDirtyChanged: {
+                if (active && dirty) {
+                    setCalibrationData(index);
+                }
+            }
+            width: Math.max(root.width, root.height) / 12
+            height: Math.max(root.width, root.height) / 12
+            x: point3.x + calRect.width / 2
+            y: point3.y
+        }
+        CalibrationPoint {
+            id: point5
+            visible: (calibratePoints === 9) ? true : false
+            index: 1
+            onDirtyChanged: {
+                if (active && dirty) {
+                    setCalibrationData(index);
+                }
+            }
+            width: Math.max(root.width, root.height) / 12
+            height: Math.max(root.width, root.height) / 12
+            x: point3.x + calRect.width
+            y: point3.y
         }
 
         CalibrationPoint {
-            id: point2
+            id: point6
             index: 2
             onDirtyChanged: {
                 if (active && dirty) {
@@ -380,9 +493,23 @@ Item {
             x: calRect.x - width / 2
             y: calRect.y + calRect.height - height / 2
         }
+        CalibrationPoint {
+            id: point7
+            visible: (calibratePoints === 9) ? true : false
+            index: 1
+            onDirtyChanged: {
+                if (active && dirty) {
+                    setCalibrationData(index);
+                }
+            }
+            width: Math.max(root.width, root.height) / 12
+            height: Math.max(root.width, root.height) / 12
+            x: point6.x + calRect.width / 2
+            y: point6.y
+        }
 
         CalibrationPoint {
-            id: point3
+            id: point8
             index: 3
             onDirtyChanged: {
                 if (active && dirty) {
@@ -395,6 +522,8 @@ Item {
             y: calRect.y + calRect.height - height / 2
         }
 
+
+        //中心的矩形（悬浮鼠标拖动部分）
         Rectangle {
             id: calRect
             width: calDefRectWidth
@@ -409,10 +538,10 @@ Item {
 //            onYChanged: checkDirtyPoint()
 
             property bool hover: false
-
             color: (calMouseArea.pressed ? pressedRectColor : (calRect.hover ? hoverRectColor : defaultRectColor))
             MouseArea {
                 id: calMouseArea
+                visible: calibratePoints === 9 ? false : true
                 drag.target: calRect
                 drag.axis: Drag.XAndYAxis
                 drag.minimumX: 0
@@ -431,9 +560,9 @@ Item {
                 onMouseYChanged: if (drag.active) setPointDirty()
                 function setPointDirty() {
                     point0.dirty = true;
-                    point1.dirty = true;
                     point2.dirty = true;
-                    point3.dirty = true;
+                    point6.dirty = true;
+                    point8.dirty = true;
                 }
             }
         }
@@ -516,16 +645,18 @@ Item {
             event.accepted = accepted;
             stopCaptureTimer();
 //            nextPointActive();
-            var point = pointList[activePoint];
+//            var point = pointList[activePoint];
+            var point = (calibratePoints === 9)? ninePointList[activePoint] : fourPointList[activePoint];
             point.active = false;
             console.log("last: " + point.lastValue)
             if (point.lastValue !== 0 && point.lastValue === point.maximumValue) {
                 point.currentValue = point.lastValue;
             }
             var np = activePoint + 1;
-            if (np >= pointList.length)
+            if (np >= ((calibratePoints === 9)? ninePointList.length : fourPointList.length))
                 np = 0;
-            point = pointList[np];
+//            point = pointList[np];
+            point = (calibratePoints === 9)? ninePointList[np] : fourPointList[np];
 
 //            console.log("on tab:" + np + " (" + activePoint +")")
             if (point.finished !== true) {
@@ -596,6 +727,7 @@ Item {
         color: (leftLineMouseArea.pressed ? pressedRectColor : (leftLineRect.hover ? hoverRectColor : defaultRectColor))
         MouseArea {
             id: leftLineMouseArea
+            visible: calibratePoints === 9 ? false : true
             anchors.fill: parent
             hoverEnabled: true
             drag.target: leftLineRect
@@ -618,7 +750,7 @@ Item {
             onMouseYChanged: { change = true;}
             function setPointDirty() {
                 point0.dirty = true;
-                point2.dirty = true;
+                point6.dirty = true;
             }
         }
     }
@@ -639,6 +771,7 @@ Item {
         color: (rightLineMouseArea.pressed ? pressedRectColor : (rightLineRect.hover ? hoverRectColor : defaultRectColor))
         MouseArea {
             id: rightLineMouseArea
+            visible: calibratePoints === 9 ? false : true
             anchors.fill: parent
             hoverEnabled: true
             drag.target: rightLineRect
@@ -660,8 +793,8 @@ Item {
             onMouseXChanged: { change = true;}
             onMouseYChanged: { change = true;}
             function setPointDirty() {
-                point1.dirty = true;
-                point3.dirty = true;
+                point2.dirty = true;
+                point8.dirty = true;
             }
         }
     }
@@ -687,6 +820,7 @@ Item {
         color: (upLineMouseArea.pressed ? pressedRectColor : (upLineRect.hover ? hoverRectColor : defaultRectColor))
         MouseArea {
             id: upLineMouseArea
+            visible: calibratePoints === 9 ? false : true
             anchors.fill: parent
             hoverEnabled: true
             drag.target: upLineRect
@@ -709,7 +843,7 @@ Item {
             onMouseYChanged: { change = true;}
             function setPointDirty() {
                 point0.dirty = true;
-                point1.dirty = true;
+                point2.dirty = true;
             }
         }
     }
@@ -732,6 +866,7 @@ Item {
         color: (downLineMouseArea.pressed ? pressedRectColor : (downLineRect.hover ? hoverRectColor : defaultRectColor))
         MouseArea {
             id: downLineMouseArea
+            visible: calibratePoints === 9 ? false : true
             anchors.fill: parent
             hoverEnabled: true
             drag.target: downLineRect
@@ -754,8 +889,8 @@ Item {
             onMouseXChanged: { change = true;}
             onMouseYChanged: { change = true;}
             function setPointDirty() {
-                point2.dirty = true;
-                point3.dirty = true;
+                point6.dirty = true;
+                point8.dirty = true;
             }
         }
     }

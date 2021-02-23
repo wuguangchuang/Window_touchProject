@@ -1197,6 +1197,7 @@ Item {
 
      }
 
+     property int bottomBtnHeight:30
     RowLayout {
         id: buttons
         anchors.bottom: parent.bottom
@@ -1208,7 +1209,7 @@ Item {
         Cont1.Button {
             anchors.bottomMargin: 10
             style: TButtonStyle {
-                height: 20
+                height: bottomBtnHeight
                 label: Text {
                     color: "#FFFFFF"
                     text: qsTr("refresh real-time")
@@ -1228,7 +1229,7 @@ Item {
         Cont1.Button {
             anchors.bottomMargin: 10
             style: TButtonStyle {
-                height: 20
+                height: bottomBtnHeight
                 label: Text {
                     color: "#FFFFFF"
                     text: qsTr("initialize signal")
@@ -1246,7 +1247,7 @@ Item {
         Cont1.Button {
             anchors.bottomMargin: 10
             style: TButtonStyle {
-                height: 20
+                height: bottomBtnHeight
                 label: Text {
                     color: "#FFFFFF"
                     text: qsTr("audo close coordinate")
@@ -1265,7 +1266,7 @@ Item {
             id:testModeBtn
             anchors.bottomMargin: 10
             style: TButtonStyle {
-                height: 20
+                height: bottomBtnHeight
                 label: Text {
                     color: "#FFFFFF"
                     text: qsTr("test mode")
@@ -1281,9 +1282,12 @@ Item {
             }
         }
         Rectangle{
-            Layout.preferredHeight:25
-            Layout.preferredWidth: signalChartDeviceImage.width +
-                                   signalChartDeviceInfo.width + 3 * defaultMargin
+            id:signalDevInfo
+            Layout.preferredHeight:bottomBtnHeight
+//            Layout.preferredWidth: signalChartDeviceImage.width +
+//                                   signalChartDeviceInfo.width + 3 * defaultMargin
+            Layout.preferredWidth:chartScroll.width + chartTitle.width +  - testModeBtn.width * 4 - defaultMargin * 4
+
             border.width: 1
             border.color: "#aaaaaa"
             anchors.left: testModeBtn.right
@@ -1300,20 +1304,14 @@ Item {
                    anchors.left: parent.left
                    anchors.leftMargin: defaultMargin
                }
-//               Text {
-//                   id: signalChartDeviceInfo
-//                   text: deviceMainInfo
-//                   anchors.left: signalChartDeviceImage.right
-//                   anchors.leftMargin: defaultMargin
-//                   anchors.verticalCenter: parent.verticalCenter
-//               }
                MyLabel{
                    id:signalChartDeviceInfo
                    textStr: deviceMainInfo
                    fontSize: 10
                    height: signalChartDeviceImage.height
-                   width: 600
+                   width: 1000
                    anchors.left: signalChartDeviceImage.right
+
                }
 //               Cont1.TextArea {
 //                   id: signalChartDeviceInfo

@@ -849,6 +849,10 @@
         <source>Init signal error</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Chart</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>main</name>
@@ -1042,6 +1046,18 @@
     </message>
     <message>
         <source>Volience test</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Number of successful upgrades: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Number of failed upgrades: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The last upgrade failed because: </source>
         <translation type="unfinished"></translation>
     </message>
 </context>

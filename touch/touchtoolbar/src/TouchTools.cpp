@@ -13,6 +13,10 @@
 #include <QtEndian>
 #include <QSemaphore>
 #include <windows.h>
+#include <unistd.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
 
 using namespace Touch;
 #define UPGRADE_FILE_DIR  "config/"
@@ -34,7 +38,7 @@ void TouchTools::doUpgradeFireware()
 
 }
 
-void TouchTools::onTouchHotplug(touch_device *dev, const int attached, const void *val)
+void TouchTools::onTouchHotplug(touch_device *dev, const int attached, int val)
 {
     TDEBUG("hotplug: %s, B:%d, 0x%04x:0x%04x [%d][%p]",
            dev->touch.model, dev->touch.booloader, dev->info->vendor_id,
@@ -43,7 +47,7 @@ void TouchTools::onTouchHotplug(touch_device *dev, const int attached, const voi
 
     appendMessageText(QString(dev->touch.booloader ? "Bootloader" : "TouchApp") + " " +
                             QString(dev->touch.model) + " " +
-                            (dev->touch.connected ? tr("connected") : tr("disconnected")), 1);
+                            (dev->touch.connected ? tr("connected") : tr("disconnected")), 0);
     if((getAppType() == APP_FACTORY || getAppType() == APP_RD) && dev->touch.booloader && dev->touch.connected)
     {
         QString version = "";
@@ -53,9 +57,19 @@ void TouchTools::onTouchHotplug(touch_device *dev, const int attached, const voi
         version = QString().sprintf(" 0x%04X", toWord(finfo.version_l, finfo.version_h));
         checksum = QString().sprintf(" 0x%04X", toWord(finfo.checksum_l, finfo.checksum_h));
         QString message = tr("Fireware version:") + version +"   "+ tr("Fireware checksum:") + checksum;
-        appendMessageText(message,1);
+        appendMessageText(message,0);
     }
     qint8 mode = 0;
+    if(argc > 1 && strcmp(argv[1],"-cal") == 0)
+    {
+        argcTimer->stop();
+        if(dev->touch.connected && !dev->touch.booloader)
+        {
+//            QThread::sleep(1);
+            presenter->calibration();
+
+        }
+    }
     if(argc > 1 && strcmp(argv[1],"-changeCoordsMode") == 0)
     {
         argcTimer->stop();
@@ -104,14 +118,13 @@ void TouchTools::onTouchHotplug(touch_device *dev, const int attached, const voi
 
     //发送信号
     emit presenter->hotplug(QVariant::fromValue((attached == 1)));
-    if (!dev->touch.booloader)
+    if (!dev->touch.booloader && TouchPresenter::currentTab == 5)
         presenter->refreshSettings();
     touchAging.onTouchHotplug(dev, attached, val);
     if(attached == 1 && !dev->touch.booloader)
     {
-        showFirewareInfo(1);
+        showFirewareInfo(0);
         getBoardAttribyteData();
-
 
         //此处是自动选择升级文件升级的入口
         if(firstTimeUpdate)
@@ -171,6 +184,12 @@ void TouchTools::onTouchHotplug(touch_device *dev, const int attached, const voi
             clearTestInfo();
         }
     }
+    //批处理的情况
+    if(getAppType() != APP_CLIENT && TouchPresenter::currentTab == 3)
+    {
+        batchDeviceOnHot(dev,attached,val);
+    }
+
 }
 
 
@@ -241,7 +260,7 @@ void TouchTools::startTest()
 //    mTouchManager->startTest(mTouchManager->firstConnectedDevice(),
 //                             &mTestLstener,
 //                             (StandardType)mode);
-    //    appendMessageText(tr("开始测试"));
+    //    appendMessageText(tr("开始测试"),2);
 }
 
 void TouchTools::startBatchTest(int testIndex)
@@ -279,18 +298,55 @@ void TouchTools::startBatchTest(int testIndex)
 
 void TouchTools::startBatchUpgrade(int upgradeIndex,QString path)
 {
-    touch_device *upgradeDev =  mTouchManager->getDevice(upgradeIndex);
-    if(upgradeDev == NULL)
-    {
-        mTouchManager->batchUpgradeListenter->onUpgradeDone(upgradeIndex,false,tr("Device disconnect"));
-        return;
-    }
-    bool ret =  mTouchManager->startBatchUpgrade(upgradeIndex,upgradeDev,path,&batchUpgradeListener);
+    BatchUpgradeThread *batchUpgradeThread = new BatchUpgradeThread(this);
+    batchUpgradeThread->upgradeIndex = upgradeIndex;
+    batchUpgradeThread->upgardePath = path;
+    batchPath = path;
+    batchUpgradeThread->start();
+    return;
 }
-
+void TouchTools::BatchUpgradeThread::run()
+{
+    touch_device *upgradeDev;
+    while(!this->touchTool->presenter->batchCancel)
+    {
+        upgradeDev =  this->touchTool->mTouchManager->getDevice(upgradeIndex);
+        if(upgradeDev == NULL || !upgradeDev->touch.connected)
+        {
+            this->touchTool->mTouchManager->batchUpgradeListenter->onUpgradeDone(upgradeIndex,false,tr("Device disconnect"));
+            QThread::msleep(100);
+        }
+        else if(upgradeDev->touch.connected)
+        {
+            break;
+        }
+        if(this->touchTool->presenter->batchCancel)
+        {
+            return;
+        }
+    }
+    TDEBUG("序号 index = %d 开始升级...",upgradeIndex);
+    bool ret =  this->touchTool->mTouchManager->startBatchUpgrade(upgradeIndex,upgradeDev,this->upgardePath,&(this->touchTool->batchUpgradeListener));
+}
 void TouchTools::setBatchCancel(bool batchCancel)
 {
     mTouchManager->setBatchCancal(batchCancel);
+}
+
+void TouchTools::setBatchLock(bool enable)
+{
+    mTouchManager->setBatchLock(enable);
+}
+
+void TouchTools::batchFinished(int functionIndex)
+{
+    TDEBUG("批量升级结束，开始释放内存空间");
+    int i = 0;
+    if(functionIndex == 1)
+    {
+
+    }
+    TDEBUG("释放内存空间完成");
 }
 
 void TouchTools::TestThread::run()
@@ -325,7 +381,7 @@ void TouchTools::TestThread::run()
         }
     }while(dev == NULL || !dev->touch.connected || dev->touch.booloader);
     touchTool->presenter->destroyDialog();
-    touchTool->appendMessageText(TouchTools::tr("Start test"));
+    touchTool->appendMessageText(TouchTools::tr("Start test"),2);
     if(!firstTime)
         msleep(1000);
 
@@ -472,15 +528,10 @@ void TouchTools::upgradeFireware(QString path)
 void TouchTools::setUpgradeFile(QString path)
 {
 
-    QString fpath = QString().sprintf("%s%s", UPGRADE_FILE_DIR, UPGRADE_FILE_NAME);
-    if (!QDir(UPGRADE_FILE_DIR).exists() && !QDir(".").mkdir(UPGRADE_FILE_DIR)) {
-        fpath = QString(UPGRADE_FILE_NAME);
-    }
+    QString fpath = QString().sprintf("%s/%s%s",this->appPath.toStdString().c_str(),UPGRADE_FILE_DIR, UPGRADE_FILE_NAME);
+
     QFile file(fpath);
 
-//    if (!file.open(QIODevice::ReadWrite|QIODevice::Text|QIODevice::Truncate)) {
-//        TWARNING("can not open upgrade file");
-//    }
     if (!file.open(QIODevice::ReadWrite|QIODevice::Text|QIODevice::Append)) {
         TWARNING("can not open upgrade file");
     }
@@ -537,16 +588,11 @@ void TouchTools::InitSdkThread::run(void)
             touchTool->appendMessageText(
                         QString().sprintf("%s %s ",
                                     (dev->touch.booloader ? "Bootloader" : "TouchApp"),
-                                    dev->touch.model) + tr("connected") + "\n");
+                                    dev->touch.model) + tr("connected") + "\n",0);
         }
     }
     QString path = QString().sprintf("%s/%s%s",touchTool->appPath.toStdString().c_str(),UPGRADE_FILE_DIR, UPGRADE_FILE_NAME);
     TDEBUG("保存升级文件的路径:path = %s",path.toStdString().c_str() );
-    if (!QDir(UPGRADE_FILE_DIR).exists() && !QDir(".").mkdir(UPGRADE_FILE_DIR)) {
-        path = QString(UPGRADE_FILE_NAME);
-    }
-
-    TINFO("read upgrade file");
     QFile file(path);
 
     char upgradeFile[10240];
@@ -1092,9 +1138,9 @@ TouchTools::TouchTools(QObject *parent, TouchPresenter *presenter,int argc,char 
 //    timer->start(25000);
 
     QObject::connect(argcTimer,SIGNAL(timeout()),this,SLOT(exitProject()));
-    if(argc > 1 && strcmp(argv[1],"-changeCoordsMode") == 0)
+    if(argc > 1 && (strncmp(argv[1],"-changeCoordsMode",sizeof("-changeCoordsMode")) == 0 || strncmp(argv[1],"-cal",sizeof("-cal")) == 0))
     {
-        argcTimer->start(2000);
+        argcTimer->start(1500);
     }
     TINFO("start init thread");
     addTouchManagerTr();
@@ -1223,18 +1269,105 @@ QString TouchTools::getTr(QString str)
     return tr(str.toStdString().c_str());
 }
 
+void TouchTools::batchDeviceOnHot(touch_device *dev, const int attached, int found_old)
+{
+    if(dev == NULL || memcmp(dev->touch.id_str,"0000000000",strlen("0000000000")) == 0)
+        return;
+
+    int i = 0;
+    bool dataNormal = false;
+    for(i = 0;i < sizeof(dev->touch.id_str);i++)
+    {
+        if(dev->touch.id_str[i] != 0)
+        {
+            dataNormal = true;
+            break;
+        }
+    }
+    if(!dataNormal)
+        return;
+    QVariantList oldDeviceInfoList;
+    if(!batchDeviceMap.isEmpty())
+    {
+        oldDeviceInfoList = batchDeviceMap.value("deviceInfoList").toList();
+    }
+
+    if(attached == 0)
+    {
+        //设备断开
+        for(i = 0;i < oldDeviceInfoList.length();i++)
+        {
+            QVariantMap oldDeviceMap = oldDeviceInfoList.at(i).toMap();
+            if(strncmp(dev->touch.id_str,oldDeviceMap.value("mcuID").toString().toStdString().c_str(),sizeof(dev->touch.id_str)) == 0)
+            {
+                mTouchManager->setBatchLock(true);
+                presenter->setDeviceStatus(i,2);//2表示断开
+                mTouchManager->setBatchLock(false);
+                return;
+            }
+        }
+    }
+    else
+    {
+        //设备连接
+        //已存在的设备再次连接
+        if(found_old == 1)
+        {
+            for(i = 0;i < oldDeviceInfoList.length();i++)
+            {
+                QVariantMap oldDeviceMap = oldDeviceInfoList.at(i).toMap();
+                if(strncmp(dev->touch.id_str,oldDeviceMap.value("mcuID").toString().toStdString().c_str(),sizeof(dev->touch.id_str)) == 0)
+                {
+                    mTouchManager->setBatchLock(true);
+                    presenter->setDeviceStatus(i,1);//1表示连接
+                    mTouchManager->setBatchLock(false);
+                    return;
+                }
+            }
+        }
+        //新设备连接
+        else if(found_old == 0)
+        {
+            TDEBUG("新增一个设备count = %d：mcuID = %s,",batchDeviceMap.value("count").toInt(),dev->touch.id_str);
+            QVariantMap deviceMap;
+            deviceMap.insert("deviceStatus",dev->touch.connected ? 1 : 2);
+            deviceMap.insert("mcuID",dev->touch.id_str);
+            deviceMap.insert("bootloader",dev->touch.booloader ? 1 : 0);
+            batchDeviceMap =  mTouchManager->getBatchDevicesInfo();
+            mTouchManager->setBatchLock(true);
+            presenter->addBatchDevice(deviceMap);
+            mTouchManager->setBatchLock(false);
+            if(!presenter->batchCancel)
+            {
+                TDEBUG("批量升级 序号 = %d",batchDeviceMap.value("count").toInt() - 1);
+                startBatchUpgrade(batchDeviceMap.value("count").toInt() - 1,batchPath);
+                presenter->setBatchResult(batchDeviceMap.value("count").toInt() - 1 ,0);
+            }
+            else{
+                TDEBUG("不批量升级");
+            }
+
+
+        }
+
+
+    }
+}
+
+void TouchTools::openProgress(bool isOpen)
+{
+    presenter->openProgress(isOpen);
+}
+
 QVariantMap TouchTools::getConnectDeviceInfo()
 {
-    return mTouchManager->getBatchDevicesInfo();
+    batchDeviceMap =  mTouchManager->getBatchDevicesInfo();
+    return batchDeviceMap;
 }
 
 touch_device *TouchTools::getDevice(int index)
 {
 
-}
-void TouchTools::openProgress(bool isOpen)
-{
-    presenter->openProgress(isOpen);
 }
 
 void TouchTools::setPageIndex(int index)
@@ -1261,13 +1394,13 @@ void TouchTools::TestListener::inProgress(int progress, QString message)
 {
     manager->setTestProgess(progress);
     if (message != NULL && message != "") {
-        manager->appendMessageText(message);
+        manager->appendMessageText(message,2);
     }
 }
 void TouchTools::TestListener::showOnboardFailItem(QString message)
 {
     if (message != NULL && message != "") {
-        manager->appendMessageText(message);
+        manager->appendMessageText(message,2);
     }
 }
 
@@ -1314,7 +1447,7 @@ void TouchTools::TestListener::onTestDone(bool result, QString text,bool stop,bo
         }
     }
     manager->presenter->setTextButtonText(TEST_NORMAL);
-    manager->appendMessageText(info);
+    manager->appendMessageText(info,2);
 //    manager->presenter->setTestButtonEnable(true);
     manager->presenter->setTestButtonCheck(false);
     manager->presenter->setTesting(false);
@@ -1354,17 +1487,17 @@ void TouchTools::UpgradeListener::inProgress(int progress)
 {
 //    TDEBUG("upgrade %d", progress);
     switch (progress) {
-    case 1:
-        manager->appendMessageText(tr("Load fireware done"));
+    case 1: 
+        manager->appendMessageText(tr("Load fireware done"),TouchPresenter::currentTab == 1 ? 0 : 1);
         break;
     case 2:
-        manager->appendMessageText(tr("Reboot device done"));
+        manager->appendMessageText(tr("Reboot device done"),TouchPresenter::currentTab == 1 ? 0 : 1);
         break;
     case 3:
-        manager->appendMessageText(tr("Enter download mode"));
+        manager->appendMessageText(tr("Enter download mode"),TouchPresenter::currentTab == 1 ? 0 : 1);
         break;
     case -1:
-        manager->appendMessageText(tr("Start download fireware"));
+        manager->appendMessageText(tr("Start download fireware"),TouchPresenter::currentTab == 1 ? 0 : 1);
         break;
     }
 
@@ -1378,13 +1511,18 @@ void TouchTools::UpgradeListener::onUpgradeDone(bool result, QString message)
     TINFO("upgrade result %d, (%s)", result, message.toStdString().c_str());
     if (result) {
         manager->showMessage(tr("Upgrade"), tr("Upgrade success") + "!", 1);
-        manager->appendMessageText(tr("Upgrade success") + "!\n");
+        manager->appendMessageText(tr("Upgrade success") + "!\n",TouchPresenter::currentTab == 1 ? 0 : 1);
     } else {
         manager->showMessage(tr("Upgrade"), tr("Upgrade failed") + "!\n" + message, 3);
-        manager->appendMessageText(tr("Upgrade failed") + "! " + message + "\n");
+        manager->appendMessageText(tr("Upgrade failed") + "! " + message + "\n",TouchPresenter::currentTab == 1 ? 0 : 1);
+    }
+    if(TouchTools::volienceTest || TouchPresenter::currentTab == 1)
+    {
+        manager->presenter->saveUpgradeResultNum(result,message);
+        TDEBUG("TouchTools:升级完成结果result = %d",result ? 1 : 0);
     }
    if(!TouchTools::volienceTest)
-   {
+   {      
        manager->presenter->setUpgradeButtonEnable(true);
    }
 
@@ -1392,6 +1530,7 @@ void TouchTools::UpgradeListener::onUpgradeDone(bool result, QString message)
     manager->presenter->setUpgrading(false);
     TouchTools::upgrading = false;
     TDEBUG("升级完成");
+
 }
 
 void TouchTools::UpgradeListener::showUpdateMessageDialog(QString title, QString message, int type)
@@ -1476,6 +1615,7 @@ void TouchTools::addTouchManagerTr(){
     tr("Mode");
     tr("Open");
     tr("Exit");
+    tr("Chart");
     tr("Init signal error");
 }
 
@@ -1498,6 +1638,8 @@ void TouchTools::BatchUpgradeListener::inProgress(int index, int progress)
 void TouchTools::BatchUpgradeListener::onUpgradeDone(int index, bool result, QString message)
 {
     manager->presenter->onBatchFinish(index,result,message);
+//    delete manager->batchUpgradeThread[index];
+//    delete manager->mTouchManager->batchUpgradeThread[index];
 }
 
 //字符串后位空格补齐
@@ -1534,3 +1676,5 @@ void TouchTools::VolienceTestThread::run()
     touchTool->presenter->setUpgrading(false);
     TouchTools::upgrading = false;
 }
+
+

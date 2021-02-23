@@ -18,7 +18,7 @@ ButtonStyle{
         font.pointSize: Math.min(12 + (Math.min(upgradeTestWidth,upgradeTestHeight) - 1)*5,30)
         verticalAlignment: Text.AlignVCenter
         horizontalAlignment: Text.AlignHCenter
-        renderType: Text.NativeRendering
+//        renderType: Text.NativeRendering
     }
     property color backgroundColor: ((control.enabled == true) ? ((control.pressed == true) ? "#42A5F5" : "#64B5F6") : "#BDBDBD")
     background: Rectangle{

@@ -75,7 +75,7 @@ public:
 
     class HotplugListener {
     public:
-        virtual void onTouchHotplug(touch_device* dev, const int attached, const void *val) = 0;
+        virtual void onTouchHotplug(touch_device* dev, const int attached, int val) = 0;
     };
     class SendCallback {
     public:
@@ -349,7 +349,7 @@ private:
     int checkCommandReply(touch_package *require, touch_package *reply);
     int isCommandReplySuccessful(touch_package *require, touch_package *reply, int ret = 0, const char *func = "");
 
-    void initDeviceInfo(touch_device *dev);
+    int initDeviceInfo(touch_device *dev);
     void deepCloneDevice(touch_device *dst, touch_device *src);
 
     // IAP: In Application Program
@@ -396,6 +396,7 @@ public:
     BatchTestListener *batchTestListenter;
     BatchUpgradeListener *batchUpgradeListenter;
     QMutex batchMutex;
+    TOUCHSHARED_EXPORT void setBatchLock(bool enable);
     bool mtestStop;
     TOUCHSHARED_EXPORT void setStop(bool stop);
     bool batchCancal;

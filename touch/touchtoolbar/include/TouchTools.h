@@ -78,12 +78,6 @@ public:
 
     void onCommandDone(touch_device *dev, touch_package *require, touch_package *reply);
     QString getTr(QString str);
-    //批处理
-    QVariantMap getConnectDeviceInfo();
-    touch_device *getDevice(int index);
-    void startBatchTest(int testIndex);
-    void startBatchUpgrade(int upgradeIndex,QString path);
-    void setBatchCancel(bool batchCancel);
 
 
 
@@ -96,7 +90,7 @@ public:
     bool isTesting();
 
 
-    void onTouchHotplug(touch_device* dev, const int attached, const void *val);
+    void onTouchHotplug(touch_device* dev, const int attached, int val);
     void setHotplugInterval(unsigned int interval) {
         hotplugInterval = interval;
     }
@@ -111,6 +105,10 @@ public:
     QVariant getSoftwareInfoName();
     QVariant getSoftwareInfo();
     bool getTestIsFinished();
+    void setCalicationMode(bool enable) {
+        presenter->calibrationMode = enable;
+    }
+
     //onboard
     QVariantMap map;
     QVariantMap getBoardAttribyteData();
@@ -209,6 +207,17 @@ private:
     private:
         TouchTools *manager;
     };
+    class BatchUpgradeThread:public QThread{
+    public:
+        int upgradeIndex;
+        QString upgardePath;
+        TouchTools *touchTool;
+        BatchUpgradeThread(TouchTools *tool){this->touchTool = tool;}
+
+    protected:
+        void run();
+
+    };
     class BatchTestListener:public TouchManager::BatchTestListener{
     public:
         BatchTestListener(TouchTools *manager) { this->manager = manager;}
@@ -237,6 +246,19 @@ private:
     private:
         TouchTools *manager;
     };
+
+    //批处理
+
+    QString batchPath;
+    QVariantMap batchDeviceMap;
+    void batchDeviceOnHot(touch_device *dev, const int attached,int found_old);
+    QVariantMap getConnectDeviceInfo();
+    touch_device *getDevice(int index);
+    void startBatchTest(int testIndex);
+    void startBatchUpgrade(int upgradeIndex,QString path);
+    void setBatchCancel(bool batchCancel);
+    void setBatchLock(bool enable);
+    void batchFinished(int functionIndex);
 
     //暴力测试
 

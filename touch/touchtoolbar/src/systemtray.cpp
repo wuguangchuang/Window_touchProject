@@ -77,12 +77,12 @@ void SystemTray::initMidAction()
     layout1->addWidget(testTBtn);
     layout1->setContentsMargins(5,0,5,10);
 
-    calibrateTBtn = new QToolButton();
-    calibrateTBtn->setIcon(QIcon(":/dialog/images/calibrate.png"));
-    calibrateTBtn->setIconSize(QSize(50,50));
-    calibrateTBtn->setText(translator->getTr("Calibrate"));
-    calibrateTBtn->setAutoRaise(true);
-    calibrateTBtn->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
+    chartBtn = new QToolButton();
+    chartBtn->setIcon(QIcon(":/dialog/images/mode.png"));
+    chartBtn->setIconSize(QSize(50,50));
+    chartBtn->setText(translator->getTr("Chart"));
+    chartBtn->setAutoRaise(true);
+    chartBtn->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
 
     settingTBtn = new QToolButton();
     settingTBtn->setIcon(QIcon(":/dialog/images/setting.png"));
@@ -92,9 +92,16 @@ void SystemTray::initMidAction()
     settingTBtn->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
     QHBoxLayout *layout2 = new QHBoxLayout();
     layout2->setSpacing(10);
-    layout2->addWidget(calibrateTBtn);
+    layout2->addWidget(chartBtn);
     layout2->addWidget(settingTBtn);
     layout2->setContentsMargins(5,0,5,10);
+
+    calibrateTBtn = new QToolButton();
+    calibrateTBtn->setIcon(QIcon(":/dialog/images/calibrate.png"));
+    calibrateTBtn->setIconSize(QSize(50,50));
+    calibrateTBtn->setText(translator->getTr("Calibrate"));
+    calibrateTBtn->setAutoRaise(true);
+    calibrateTBtn->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
 
     aboutTBtn = new QToolButton();
     aboutTBtn->setIcon(QIcon(":/dialog/images/about.png"));
@@ -103,16 +110,11 @@ void SystemTray::initMidAction()
     aboutTBtn->setAutoRaise(true);
     aboutTBtn->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
 
-    modeTBtn = new QToolButton();
-    modeTBtn->setIcon(QIcon(":/dialog/images/mode.png"));
-    modeTBtn->setIconSize(QSize(50,50));
-    modeTBtn->setText(translator->getTr("Mode"));
-    modeTBtn->setAutoRaise(true);
-    modeTBtn->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
+
     QHBoxLayout *layout3 = new QHBoxLayout();
     layout3->setSpacing(10);
+    layout3->addWidget(calibrateTBtn);
     layout3->addWidget(aboutTBtn);
-    layout3->addWidget(modeTBtn);
     layout3->setContentsMargins(5,0,5,10);
 
     QVBoxLayout *mainLout = new QVBoxLayout();
@@ -169,6 +171,7 @@ void SystemTray::initConnect()
     connect(calibrateTBtn,SIGNAL(clicked(bool)),this,SLOT(enterCalibratePage()));
     connect(settingTBtn,SIGNAL(clicked(bool)),this,SLOT(changeSettingPage()));
     connect(aboutTBtn,SIGNAL(clicked(bool)),this,SLOT(changeAboutPage()));
+    connect(chartBtn,SIGNAL(clicked(bool)),this,SLOT(changeSignalChartPage()));
 
 }
 
@@ -221,6 +224,11 @@ void SystemTray::changeSettingPage()
 void SystemTray::changeAboutPage()
 {
     actionsSignal->setPageIndex(mTAB_Info);
+}
+
+void SystemTray::changeSignalChartPage()
+{
+    actionsSignal->setPageIndex(mTAB_Signal);
 }
 
 void SystemTray::initAction()

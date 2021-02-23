@@ -93,12 +93,14 @@ int main(int argc, char *argv[])
 int main(int argc, char *argv[])
 {
 
+//    argc = 2;
+//    argv[1] = "-cal";
 //    libusb_context *ctx;
 //    libusb_init(&ctx);
 
 //    QCoreApplication::setAttribute(Qt::AA_UseDesktopOpenGL, true);
     QString defLang = QLocale().name().toStdString().c_str();
-    TINFO(QLocale().name().toStdString().c_str());
+    TINFO("defLang = %s",defLang.toStdString().c_str());
 //    QLocale curLocale(QLocale("zh_CN"));
 //    QLocale::setDefault(curLocale);
 
@@ -168,6 +170,7 @@ int main(int argc, char *argv[])
         if(lang != "en_US")
         {
             lang = defLang;
+            TINFO("==============lang = %s",lang.toStdString().c_str());
         }
         if(lang != "en_US" && lang != "zh_CN")
         {
@@ -177,7 +180,7 @@ int main(int argc, char *argv[])
             //        ok = translator.load(":lang/" + QLocale().name() + ".qm");
             ok = translator.load(":lang/" + lang + ".qm");
         }
-        TINFO("load translator %s %s", lang.toStdString().c_str(), ok ? "success" : "fail");
+
         if (ok) {
             app.installTranslator(&translator);
         } else {
@@ -185,6 +188,7 @@ int main(int argc, char *argv[])
             lang = "en_US";
             app.installTranslator(&translator);
         }
+        TINFO("load translator %s %s", lang.toStdString().c_str(), ok ? "success" : "fail");
     }
 //    if (lang != "en_US") {
 //        if (!ok) {
@@ -425,6 +429,17 @@ int main(int argc, char *argv[])
         touch->openProgress(true);
     }
 
+    if(argc > 1 && (strncmp(argv[1],"-selfStarting",sizeof("-selfStarting")) == 0 ||
+                strncmp(argv[1],"-cal",sizeof("-cal")) == 0))
+    {
+        TDEBUG(" 有两个参数");
+        touch->openProgress(false);
+    }
+    else
+    {
+        touch->openProgress(true);
+    }
+
 
     //该函数就是调用object对象中的setAppType方法，如果调用成功则返回true，调用失败则返回false，
     QMetaObject::invokeMethod(object, "setAppType",
@@ -474,15 +489,22 @@ int main(int argc, char *argv[])
     if(currentIndex > 6 || currentIndex < 0)
     {
         currentIndex = 0;
+        TouchPresenter::currentTab = 0;
     }
     while(1)
     {
         if(touch->initSdkDone)
         {
             touch->setCurrentIndex(currentIndex);
+            TouchPresenter::currentTab = currentIndex;
             break;
         }
         QThread::msleep(20);
+    }
+    if((argc > 1 && (strcmp(argv[1],"-cal") == 0)))
+    {
+        currentIndex = 5;
+        manager.setCalicationMode(true);
     }
 
 

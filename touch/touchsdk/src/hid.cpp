@@ -898,7 +898,7 @@ int HID_API_EXPORT HID_API_CALL hid_write(hid_device *dev, const unsigned char *
         if (GetLastError() != ERROR_IO_PENDING) {
             // WriteFile() failed. Return error.
             //register_error(dev, "WriteFile");
-            TERROR("WriteFile failed(%d)", GetLastError());
+//            TERROR("WriteFile failed(%d)", GetLastError());
             return -1;
         }
     }
@@ -934,7 +934,7 @@ int HID_API_EXPORT HID_API_CALL hid_read_timeout(hid_device *dev, unsigned char 
             if (GetLastError() != ERROR_IO_PENDING) {
                 // ReadFile() has failed.
                 // Clean up and return error.
-                TERROR("ReadFile failed(%d)", GetLastError());
+//                TERROR("ReadFile failed(%d)", GetLastError());
                 CancelIo(dev->device_handle);
                 dev->read_pending = FALSE;
                 goto end_of_function;

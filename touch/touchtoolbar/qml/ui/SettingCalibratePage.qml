@@ -134,7 +134,7 @@ Item {
             //                    anchors.topMargin: 10
                 anchors.left: parent.left
     //            anchors.leftMargin: labelView.width + 10
-                Layout.preferredHeight: 260
+                Layout.preferredHeight: 53 * (mainPage.calibrationPoints + 1);
                 Layout.preferredWidth: parent.width
     //            width: parent.width
     //            height: 260
@@ -199,61 +199,78 @@ Item {
         }
     }
 
-    property real calibrationLabelWidth: 50
-    property real calibrationTextWidth: 130
-    Component {
-        id: calibrationDataDelegate
-        RowLayout {
-            spacing: 15
+       property real calibrationLabelHeight: 50
+       property real calibrationTextWidth: 110
+       Component {
+           id: calibrationDataDelegate
+           Row {
+               spacing: 15
+               Label {
+                   text: "" + index
+                   height: parent.implicitHeight
+    //                height: calibrationLabelHeight
+                   width: calibrationTextWidth
+                   font.pixelSize: height
+                   horizontalAlignment: Text.left
+                   verticalAlignment: Text.Center
+               }
 
-            Label {
-                text: "" + index
-                Layout.preferredHeight:parent.implicitHeight
-                Layout.preferredWidth: calibrationTextWidth
-//                height: parent.implicitHeight
-//                width: calibrationTextWidth
-                font.pixelSize: height
-                horizontalAlignment: Text.left
-                verticalAlignment: Text.Center
-            }
+               CaliTextEdit {
+                   width: calibrationTextWidth
+    //                height: calibrationLabelHeight
+                   height: parent.implicitHeight
+                   maxValue: maxX
+                   onTextChanged:
+                   {
+                       console.log("changeTargetX = " + text);
+                       targetX = text;
+                       console.log("targetX = " + targetX);
+                   }
+                   value: targetX
+               }
+               CaliTextEdit {
+                   width: calibrationTextWidth
+    //                height: calibrationLabelHeight
+                   height: parent.implicitHeight
+                   maxValue: maxY
+                   onTextChanged:
+                   {
+                       console.log("changeTargetY = " + text);
+                       targetY = text;
+                       console.log("targetY = " + targetX);
+                   }
+                   value: targetY
+               }
+               CaliTextEdit {
+                   width: calibrationTextWidth
+    //                height: calibrationLabelHeight
+                   height: parent.implicitHeight
+                   maxValue: maxX
+                   onTextChanged: {
+                       console.log("changeCollectX = " + text);
+                       collectX = text;
+                       console.log("collectX = " + collectX);
+                   }
+                   value: collectX
 
-            CaliTextEdit {
+               }
+               CaliTextEdit {
+                   width: calibrationTextWidth
+    //                height: calibrationLabelHeight
+                   height: parent.implicitHeight
+                   maxValue: maxY
+                   onTextChanged: {
+                       console.log("changeCollectY = " + text);
+                       collectY = text;
+                       console.log("collectY = " + collectY);
+                   }
+                   value: collectY
 
-                Layout.preferredWidth: calibrationTextWidth
-//                width: calibrationTextWidth
-                maxValue: maxX
-                onTextChanged: targetX = text;
-                value: targetX
-            }
-            CaliTextEdit {
-                Layout.preferredWidth: calibrationTextWidth
-//                width: calibrationTextWidth
-                maxValue: maxY
-                onTextChanged: targetY = text;
-                value: targetY
-            }
-            CaliTextEdit {
-                Layout.preferredWidth: calibrationTextWidth
-//                width: calibrationTextWidth
-                maxValue: maxX
-                onTextChanged: collectX = text;
-                value: collectX
-
-            }
-            CaliTextEdit {
-                Layout.preferredWidth: calibrationTextWidth
-//                width: calibrationTextWidth
-                maxValue: maxY
-                onTextChanged: {
-                    collectY = text;
-                }
-                value: collectY
-
-            }
+               }
 
 
 
-        }
-    }
+           }
+       }
 
 }

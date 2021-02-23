@@ -50,7 +50,7 @@ public:
     QToolButton *calibrateTBtn;
     QToolButton *settingTBtn;
     QToolButton *aboutTBtn;
-    QToolButton *modeTBtn;
+    QToolButton *chartBtn;
 
     QWidget* m_bottomWidget;                //底部菜单
     QWidgetAction* m_bottomWidgetAction;    //底部界面action
@@ -87,6 +87,8 @@ public slots:
     void enterCalibratePage();
     void changeSettingPage();
     void changeAboutPage();
+    void changeSignalChartPage();
+
 };
 
 #endif // SYSTEMTRAY_H

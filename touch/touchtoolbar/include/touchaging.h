@@ -41,7 +41,7 @@ public:
 
     void setManager(TouchManager *m) {mManager = m;}
 
-    void onTouchHotplug(touch_device *dev, const int attached, const void *val);
+    void onTouchHotplug(touch_device *dev, const int attached, int val);
 
 public slots:
     void onAgingFinished(int index);

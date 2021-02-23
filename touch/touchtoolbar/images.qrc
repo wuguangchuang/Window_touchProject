@@ -33,8 +33,10 @@
         <file>images/triangle_up.png</file>
         <file>images/triangle_down.png</file>
         <file>images/tune.png</file>
+        <file>images/startup.png</file>
+        <file>images/lock_1.png</file>
+        <file>images/unlock_1.png</file>
         <file>images/unlock.png</file>
         <file>images/lock.png</file>
-        <file>images/startup.png</file>
     </qresource>
 </RCC>

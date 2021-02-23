@@ -92,7 +92,7 @@ void TDebug::error(QString message)
 {
     if (TDebug::level < TLOG_ERROR)
         return;
-     QString infos = QString("" + QDateTime::currentDateTime().toString("hh:mm:ss.zzz") + ": Error:" + message);
+    QString infos = QString("" + QDateTime::currentDateTime().toString("hh:mm:ss.zzz") + ": Error:" + message);
     qErrnoWarning(infos.toStdString().c_str());
     writeLogToFile("Error: " + message);
 }

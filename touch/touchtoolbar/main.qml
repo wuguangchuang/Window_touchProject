@@ -1,4 +1,5 @@
 import QtQuick 2.0
+import QtQuick 2.7 as Quick2
 import QtQuick.Window 2.2
 import QtQuick.Controls 1.4
 import QtQuick.Controls 2.0 as Cont2
@@ -88,6 +89,7 @@ Window {
     property int testMessagLength : 0
     property var testMessage : []
     property int maxMessageLeng:15000
+    property var testStr:""
 
 //    property var updateMessage:""
     property var updateMessage:[]
@@ -107,6 +109,9 @@ Window {
     property string batchUpgradeFile:""
 
 
+    //calibration
+    property int calibrateMode:1
+    property int calibrationPoints : 4
 
 
     signal sendOnboardTestFinish(var title,var message,var type);
@@ -137,6 +142,7 @@ Window {
 //            }
 //            tabsVisible: updatePage.updateButton.enabled
             onCurrentIndexChanged: {
+                currentTabRefresh(currentIndex);
                 var item = getTab(currentIndex);
                 currenttab = item.what;
                 lastTabIndex = currentIndex;
@@ -151,7 +157,6 @@ Window {
                     testProgressBar.value = 0;
                     isSupportOnboardtest = false;
                 }
-
 
             }
 
@@ -303,19 +308,35 @@ Window {
 
                             }
 
-
                             ComboBox
                             {
                                 id:updateComBoxId
-                                implicitHeight: upgradeBtn.height;
+//                                implicitHeight: upgradeBtn.height;
+                                Layout.preferredHeight: upgradeBtn.height
                                 Layout.fillWidth: true
     //                                    editable: true
                                 currentIndex: 0
                                 visible: true
                                 model:fileText
-                                enabled: true
+                                enabled: updatingFw ? false : true
                                 anchors.left: fileSeleected.right
                                 anchors.leftMargin: 5
+                                style: ComboBoxStyle{
+                                    label:Text{
+                                        width: updateComBoxId.width
+                                        height: updateComBoxId.height
+                                        verticalAlignment: Text.AlignVCenter;
+                                        text: updateComBoxId.currentText
+                                        elide: Text.ElideLeft // 超出范围左边使用...表示
+                                        font.pointSize: 15
+
+                                    }
+//                                    background:Rectangle{
+//                                        width: updateComBoxId.width
+//                                        height: updateComBoxId.height
+//                                        color:"#cdcdcd"
+//                                    }
+                                }
                                 onCurrentTextChanged:
                                 {
 
@@ -402,11 +423,13 @@ Window {
                                 anchors.fill:parent
                                 Rectangle
                                 {
+
                                     border.width: 1
                                     border.color: "#aaaaaa"
 //                                    Layout.preferredWidth: updatePage.messageBoxWidth
                                     Layout.preferredWidth: parent.width / 2.0
                                     Layout.preferredHeight:parent.height
+
                                     ScrollView {
                                         anchors.fill: parent
 
@@ -416,12 +439,18 @@ Window {
                                         Text {
                                             id: messageText
 //                                            renderType: Text.NativeRendering
+                                            anchors.top: parent.top
+                                            anchors.topMargin: 10
+                                            anchors.left: parent.left
+                                            anchors.leftMargin: 5
+                                            anchors.bottomMargin: 10
                                             text:upgradeShowStr
                                             wrapMode: Text.Wrap
+                                            font.pointSize: 10
                                             onTextChanged:
                                             {
                                                 if (messageText.contentHeight > messageBox.height) {
-                                                    messageBox.flickableItem.contentY = messageText.contentHeight - messageBox.height;
+                                                    messageBox.flickableItem.contentY = messageText.contentHeight - messageBox.height + 20;
                                                 }
                                             }
                                         }
@@ -488,9 +517,10 @@ Window {
                     if(visible)
                     {
                         touch.tPrintf("升级模式:");
+//                        console.log("升级界面的信息：" + upgradeShowStr);
 //                        showPage = false;
 //                        console.log("升级界面的信息：" + upgradeShowStr);
-                        messageText.text = upgradeShowStr;
+//                        messageText.text = upgradeShowStr;
 
                     }
 
@@ -520,7 +550,7 @@ Window {
                     id: rectangle
                     property Item messageView: (isSupportOnboardtest ?onboardTest.onboardTestMessage:messageTextTest)
                     property Item messageBox: (isSupportOnboardtest ? onboardTest.showFailMessage:testRect.messageBoxTest)
-                    property Item testShowDialog:testShowDialog
+                    property Item testShowDialog:testRect.testShowDialog
 //                    property Item messageView: onboardTest.onboardTestMessage
 //                    property Item messageBox: onboardTest.showFailMessage
                     property Item onboardTest:onboardTest
@@ -531,6 +561,7 @@ Window {
                     property Item volienceUpgradeFileText:volienceUpgradeFileText
                     property Item volienceUpgradeFileRec:volienceUpgradeFileRec
                     property Item volienceFileSeleected:volienceFileSeleected
+
 
                     anchors.fill: parent
                     ColumnLayout {
@@ -583,11 +614,119 @@ Window {
                                 }
                             }
                         }
+                        RowLayout {
+                            Layout.fillWidth: true
+                            anchors.left: parent.left
+                            Button{
+                                id:testBtn;
+                                checkable: true
+                                Layout.preferredWidth: Math.min(Math.max(buttonMinWidth,upgradeTestWidth * buttonMinWidth),windowWidth / 2.0);
+                                Layout.preferredHeight:Math.min(Math.max(buttonMinHeight,upgradeTestHeight * buttonMinHeight),windowHeight / 5.0);
+                                onVisibleChanged: {
+                                    if (visible) {
+//                                        messageTextStringUpdate = messageTextString;
+//                                        messageTextString = messageTextStringTest;
+                                    } else {
+//                                        messageTextStringTest = messageTextString;
+//                                        messageTextString = messageTextStringUpdate;
+                                    }
+                                }
+                                style: TButtonStyle{
+                                    label: Text {
+                                        color: "#FFFFFF"
+                                        text:testBtnName
+                                        font.pointSize: Math.min(fontSize + (Math.min(upgradeTestWidth,upgradeTestHeight) - 1)*5,30)
+                                        verticalAlignment: Text.AlignVCenter
+                                        horizontalAlignment: Text.AlignHCenter
+                                    }
+
+                                }
+
+
+                                onClicked: {
+
+                                    if(checked)
+                                    {
+
+                                        onboardTest.midRecttextString = "";
+                                        isSupportOnboardtest = false;
+                                        onboardTest.visible = false;
+                                        testPage.testComboBox.enabled = false;
+                                         mainPage.sendDestroyDialog();
+                                        testBtnName = qsTr("Cancel");
+                                        switch(testPage.testComboBoxIndex)
+                                        {
+                                        case 0:
+                                            touch.setTestThreadToStop(false);
+                                            touch.startTest();
+                                            break;
+                                        case 1:
+                                            volienceUpgradeInfo = qsTr("Number of successful upgrades: ") + 0 + "\n" +
+                                                                                    qsTr("Number of failed upgrades: ") + 0;
+                                            upgradeSuccessfullyNum = 0;
+                                            upgradeFailedNum = 0;
+                                            console.log("升级文件：" + testPage.volienceUpgradeFileText.text);
+                                            touch.setUpdatePath(testPage.volienceUpgradeFileText.text);
+                                            touch.startVolienceTest(testPage.testComboBoxIndex);
+                                            updatingFw = true;
+                                            break;
+                                        case 2:
+                                            break;
+                                        }
+                                    }
+                                    else
+                                    {
+
+                                        if(testPage.testComboBoxIndex === 0)
+                                        {
+                                            touch.cancelTest(true);
+                                            mainPage.sendDestroyDialog();
+                                            touch.setTestThreadToStop(true);
+                                            testPage.testBtn.enabled = false;
+                                        }
+                                        else
+                                        {
+
+                                            touch.setCancelVolienceTest(false);
+                                            testPage.testBtn.enabled = false;
+                                        }
+
+
+//                                        setTestButtonEnable(false);
+
+                                    }
+
+                                }
+
+                            }
+                            //测试进展的情况
+                            ProgressBar{
+                                id: testProgressBar
+                                minimumValue: 0;
+                                maximumValue: 100;
+                                value: 0;
+                                implicitHeight: testBtn.height;
+                                Layout.fillWidth: true
+                                style: ProgressBarStyle {
+                                    background: Rectangle {
+                                        radius: 2
+                                        color: "white"
+                                        border.color: "gray"
+                                        border.width: 1
+                                        implicitWidth: 200
+                                        implicitHeight: 24
+                                    }
+                                    progress: Rectangle {
+                                        color: "#64B5F6"
+                                        border.color: "#64B5F6"
+                                    }
+                                }
+                            }
+                        }
                         RowLayout{
                             Layout.fillWidth: true
                             Layout.preferredHeight: testBtn.height
-                            anchors.top: testComboBox.bottom
-                            anchors.topMargin: 3
+                            anchors.top: testBtn.bottom
                             anchors.left: parent.left
                             visible: testComboBox.currentIndex === 1 ? true : false
                             Button{
@@ -630,114 +769,13 @@ Window {
                                     id: volienceUpgradeFileText
                                     anchors.fill: parent
                                     elide: Text.ElideLeft // 超出范围左边使用...表示
-                                    font.pointSize: 20
+                                    font.pointSize: 15
                                     verticalAlignment: Text.AlignVCenter
 
                                 }
                             }
                         }
-                        RowLayout {
-                            Button{
-                                id:testBtn;
-                                checkable: true
-                                Layout.preferredWidth: Math.min(Math.max(buttonMinWidth,upgradeTestWidth * buttonMinWidth),windowWidth / 2.0);
-                                Layout.preferredHeight:Math.min(Math.max(buttonMinHeight,upgradeTestHeight * buttonMinHeight),windowHeight / 5.0);
-                                onVisibleChanged: {
-                                    if (visible) {
-                                        messageTextStringUpdate = messageTextString;
-                                        messageTextString = messageTextStringTest;
-                                    } else {
-                                        messageTextStringTest = messageTextString;
-                                        messageTextString = messageTextStringUpdate;
-                                    }
-                                }
-                                style: TButtonStyle {
-                                    label: Text {
-                                        color: "#FFFFFF"
-                                        text:testBtnName
-                                        font.pointSize: Math.min(fontSize + (Math.min(upgradeTestWidth,upgradeTestHeight) - 1)*5,30)
-                                        verticalAlignment: Text.AlignVCenter
-                                        horizontalAlignment: Text.AlignHCenter
-                                    }
 
-                                }
-
-
-                                onClicked: {
-
-                                    if(checked)
-                                    {
-
-                                        onboardTest.midRecttextString = "";
-                                        isSupportOnboardtest = false;
-                                        onboardTest.visible = false;
-                                        testPage.testComboBox.enabled = false;
-                                         mainPage.sendDestroyDialog();
-                                        testBtnName = qsTr("Cancel");
-                                        switch(testPage.testComboBoxIndex)
-                                        {
-                                        case 0:
-                                            touch.setTestThreadToStop(false);
-                                            touch.startTest();
-                                            break;
-                                        case 1:
-                                            console.log("升级文件：" + testPage.volienceUpgradeFileText.text);
-                                            touch.setUpdatePath(testPage.volienceUpgradeFileText.text);
-                                            touch.startVolienceTest(testPage.testComboBoxIndex);
-                                            updatingFw = true;
-                                            break;
-                                        case 2:
-                                            break;
-                                        }
-                                    }
-                                    else
-                                    {
-
-                                        if(testPage.testComboBoxIndex === 0)
-                                        {
-                                            touch.cancelTest(true);
-                                            mainPage.sendDestroyDialog();
-                                            touch.setTestThreadToStop(true);
-                                            testPage.testBtn.enabled = false;
-                                        }
-                                        else
-                                        {
-                                            touch.setCancelVolienceTest(false);
-                                            testPage.testBtn.enabled = false;
-                                        }
-
-
-//                                        setTestButtonEnable(false);
-
-                                    }
-
-                                }
-
-                            }
-                            //测试进展的情况
-                            ProgressBar{
-                                id: testProgressBar
-                                minimumValue: 0;
-                                maximumValue: 100;
-                                value: 0;
-                                implicitHeight: testBtn.height;
-                                Layout.fillWidth: true
-                                style: ProgressBarStyle {
-                                    background: Rectangle {
-                                        radius: 2
-                                        color: "white"
-                                        border.color: "gray"
-                                        border.width: 1
-                                        implicitWidth: 200
-                                        implicitHeight: 24
-                                    }
-                                    progress: Rectangle {
-                                        color: "#64B5F6"
-                                        border.color: "#64B5F6"
-                                    }
-                                }
-                            }
-                        }
                         Rectangle
                         {
                             id:testTextInfo
@@ -745,8 +783,6 @@ Window {
                             border.color: "#aaaaaa"
                             Layout.fillHeight: true
                             Layout.fillWidth: true
-
-
                             OnboardTestInterface
                             {
                                 id:onboardTest
@@ -793,12 +829,13 @@ Window {
                             Rectangle
                             {
                                 anchors.fill: parent
+
                                 id:testRect
                                 border.width: 1
                                 border.color: "#aaaaaa"
                                 visible: true
                                 property Item messageBoxTest:messageTextTest
-
+                                property Item testShowDialog:testShowDialog
                                 RowLayout
                                 {
                                     anchors.fill: parent
@@ -817,11 +854,18 @@ Window {
 
                                             Text {
                                                 id: messageTextTest
-                                                renderType: Text.NativeRendering
+//                                                renderType: Text.NativeRendering
+                                                anchors.top: parent.top
+                                                anchors.topMargin: 10
+                                                anchors.left: parent.left
+                                                anchors.leftMargin: 5
+                                                anchors.bottomMargin: 10
+                                                text:testStr
+                                                font.pointSize: 10
                                                 onTextChanged:
                                                 {
                                                     if (messageTextTest.contentHeight > messageBoxTest.height) {
-                                                        messageBoxTest.flickableItem.contentY = messageTextTest.contentHeight - messageBoxTest.height;
+                                                        messageBoxTest.flickableItem.contentY = messageTextTest.contentHeight - messageBoxTest.height + 20;
                                                     }
                                                 }
                                             }
@@ -831,14 +875,44 @@ Window {
 
                                     Rectangle
                                     {
-                                        id:testShowDialog
-                                        border.width: 1
-                                        border.color: "#aaaaaa"
                                         anchors.top: parent.top
                                         anchors.left: showMessageLog.right
-                                        anchors.right: parent.right
-                                        Layout.preferredWidth: parent.width / 2.0
+//                                        anchors.right: parent.right
+                                        Layout.preferredWidth: parent.width / 2 - 1
                                         Layout.preferredHeight:parent.height
+                                        border.width: 1
+                                        border.color: "#aaaaaa"
+                                        ColumnLayout{
+                                            anchors.left: parent.left
+                                            anchors.top: parent.top
+                                            anchors.right: parent.right
+                                            anchors.bottom: parent.bottom
+                                            Layout.preferredHeight: parent.height
+                                            Layout.preferredWidth: parent.width
+
+                                            Rectangle{
+                                                id:volientTestInfo
+                                                visible: testComboBox.currentIndex === 1 ? true : false
+                                                Layout.preferredWidth:parent.width
+                                                Layout.preferredHeight: testComboBox.currentIndex === 1 ? (upgradeFailedNum > 0 ? 80 : 50) : 0
+                                                anchors.left: parent.left
+                                                anchors.top: parent.top
+                                                anchors.topMargin: defaultMargin
+                                                anchors.leftMargin: 5
+                                                Text{
+                                                    font.pointSize: 10
+                                                    text:volienceUpgradeInfo
+                                                }
+                                            }
+                                            Rectangle{
+                                                id:testShowDialog
+                                                anchors.left: parent.left
+                                                anchors.top: volientTestInfo.bottom
+                                                Layout.preferredWidth: parent.width
+                                                Layout.preferredHeight: parent.height - volientTestInfo.height
+
+                                            }
+                                        }
 
                                     }
                                 }
@@ -1024,6 +1098,7 @@ Window {
                 property var batchRunning:false
                 Rectangle {
                     anchors.fill: parent
+
                     property Item agingPageV:agingPageId
                     property Item batchUpgrade:batchUpgrade
                     property Item batchUpgradeFileText:batchUpgradeFileText
@@ -1034,8 +1109,9 @@ Window {
 
                     ColumnLayout{
                         anchors.fill: parent
+                        anchors.top: parent.top
+                        anchors.topMargin: defaultMargin
                         RowLayout{
-    //                        anchors.fill: parent
                             Layout.preferredHeight: agingPageTab.batchWorkingBtnHeight
                             Layout.preferredWidth: parent.width
                             Button{
@@ -1043,7 +1119,7 @@ Window {
                                     Layout.preferredWidth:200
                                     Layout.preferredHeight:agingPageTab.batchWorkingBtnHeight
                                     anchors.top: parent.top
-                                    anchors.topMargin: 3
+//                                    anchors.topMargin: 5
                                     anchors.right:parent.right
                                     style: ButtonStyle {
                                         label: Text {
@@ -1094,16 +1170,15 @@ Window {
                                             case 1:
                                                 //升级
                                                 updatingFw = true;
+                                                batchCheckResultTimer.stop();
                                                 agingPageTab.batchWorkBtnStr = qsTr("Cancel upgrade");
                                                 agingPageTab.batchChooseFile.enabled = false;
                                                 for(i = 0;i < batchConnectDeviceInfoList.length;i++)
                                                 {
-                                                    if(agingPage.getDeviceStatus(i) === agingPage.deviceConnected)
-                                                    {
-                                                        console.log("升级序号index = " + i);
-                                                        startBatchUpgrade(i);
-                                                        agingPageTab.agingPage.setDeviceResult(i,agingPage.batchRunning)
-                                                    }
+
+                                                    console.log("升级序号index = " + i);
+                                                    startBatchUpgrade(i);
+                                                    agingPageTab.agingPage.setDeviceResult(i,agingPage.batchRunning)
                                                     
                                                 }
                                                 break;
@@ -1174,7 +1249,7 @@ Window {
                                 currentIndex: 0
                                 model:batchText
                                 anchors.top: parent.top
-                                anchors.topMargin: 3
+//                                anchors.topMargin: 5
                                 anchors.left:parent.left
                                 anchors.right:batchStartWork.left
                                 anchors.rightMargin:defaultMargin
@@ -1254,10 +1329,10 @@ Window {
                                         id:batchChooseFile
                                         visible: false
                                         Layout.preferredWidth: 150
-//                                        Layout.preferredHeight:50
                                         Layout.preferredHeight:agingPageTab.batchChooseBtnHeight
+                                        anchors.bottomMargin: 5
                                         anchors.top:batchComboBox.bottom
-                                        anchors.topMargin: 3
+                                        anchors.topMargin: 5
                                         anchors.left:parent.left
                                         style: ButtonStyle {
                                             label: Text {
@@ -1289,9 +1364,10 @@ Window {
                                         id:batchUpgradeFileRec
                                         visible: false
                                         Layout.fillWidth: true
-                                        Layout.preferredHeight: agingPageTab.batchChooseBtnHeight
+                                        Layout.preferredHeight: agingPageTab.batchChooseBtnHeight - 5
                                         anchors.top:batchComboBox.bottom
-                                        anchors.topMargin: 3
+                                        anchors.topMargin: 5
+                                        anchors.bottomMargin: 5
                                         anchors.left:batchChooseFile.right
                                         anchors.right: batchStartWork.left
                                         anchors.leftMargin: 5
@@ -1302,7 +1378,7 @@ Window {
                                             id: batchUpgradeFileText
                                             anchors.fill: parent
                                             elide: Text.ElideLeft // 超出范围左边使用...表示
-                                            font.pointSize: 20
+                                            font.pointSize: 15
                                             verticalAlignment: Text.AlignVCenter
 
                                         }
@@ -1310,10 +1386,10 @@ Window {
 //                                }
                         }
                         Rectangle{
-
+                            anchors.top: batchStartWork.bottom
                             Layout.fillWidth: true
                             Layout.fillHeight: true
-                            Aging {
+                            Aging{
                                 anchors.fill: parent
                                 anchors.top: parent.top
                                 anchors.topMargin: defaultMargin
@@ -1361,6 +1437,7 @@ Window {
                     else
                     {
                         setBatchCancel(true);
+
                     }
 
                 }
@@ -1398,6 +1475,8 @@ Window {
                     property Item settingsPageV: settingsId
                     ColumnLayout{
                         anchors.fill: parent
+                        anchors.top: parent.top
+                        anchors.topMargin: defaultMargin
                         SettingPage{
                             id:settingsId
                             focus: true
@@ -1583,7 +1662,7 @@ Window {
 
         //校准界面
         property Item calibrationUi : calibrationUi
-        Calibration{
+        Calibration {
             id: calibrationUi
             Keys.enabled: false
             x: 0
@@ -1630,35 +1709,34 @@ Window {
             if(agingPageTab.batchRunning)
             {
                 //处理新连接的设备
-                for(var i = 0;i < mainPage.batchConnectDeviceInfoList.length;i++ )
-                {
-                    if(agingPage.getDeviceStatus(i) === agingPage.deviceConnected && agingPage.getDeviceResult(i) === agingPage.batchResult)
-                    {
+//                for(var i = 0;i < mainPage.batchConnectDeviceInfoList.length;i++ )
+//                {
+//                    if(agingPage.getDeviceStatus(i) === agingPage.deviceConnected && agingPage.getDeviceResult(i) === agingPage.batchResult)
+//                    {
 
-                        switch(agingPage.functionIndex)
-                        {
-                        case 1:
-                            console.log("新增一个批处理设备")
-                            startBatchUpgrade(i);
-                            agingPage.setDeviceResult(i,agingPage.batchRunning);
-                            break;
-                        case 2:
-                            if(agingPage.getDeviceBootloader(i) === 0)
-                            {
-                                console.log("新增一个批处理设备")
-                                startBatchTest(i)
-                                agingPage.setDeviceResult(i,agingPage.batchRunning);
-                            }
+//                        switch(agingPage.functionIndex)
+//                        {
+//                        case 1:
+//                            startBatchUpgrade(i);
+//                            agingPage.setDeviceResult(i,agingPage.batchRunning);
+//                            break;
+//                        case 2:
+//                            if(agingPage.getDeviceBootloader(i) === 0)
+//                            {
 
-                            break;
-                        }
-                    }
-                }
+//                                startBatchTest(i)
+//                                agingPage.setDeviceResult(i,agingPage.batchRunning);
+//                            }
+
+//                            break;
+//                        }
+//                    }
+//                }
             }
             else
             {
                 var allFinish = true;
-                for(i = 0;i < agingPage.deviceCount;i++)
+                for(var i = 0;i < agingPage.deviceCount;i++)
                 {
 
                     if(agingPage.getDeviceResult(i) === agingPage.batchRunning)
@@ -1682,6 +1760,7 @@ Window {
                     else if(agingPageTab.functionIndex === 1)
                     {
                         agingPageTab.batchWorkBtnStr = qsTr("Start upgrade");
+                        touch.batchFinished(agingPageTab.functionIndex);
                     }
                     else if(agingPageTab.functionIndex === 2)
                     {
@@ -1989,167 +2068,140 @@ QMessageBox::Critical	3	an icon indicating that the message represents a critica
         testProgressBar.value = progess;
     }
 
+    //type 0 == 升级测试界面均有的信息
+    //type 1 == 升级模式
+    //type 2 == 测试模式
     function appendText(message, type) {
-        var mv = messageView;
-        if (type === 0) {
-            if (mv === null) {
-                return;
-            }
-            /*
-            if(showPage)
-            {
-                    testMessage += message + "\n";
-            }
+       var tmpLength = 0;
+       var tmpArray = [];
+       var index = 0;
+       var tmpSaveLeng = 0;
+       var str = "";
+       var i = 0;
+       var str1 = "";
+       str = message + "\n";
+       if(type === 0)
+       {
+           var finalMessage = "";
+           finalMessage = message.split(":");
+           if(finalMessage[3].search("TouchApp") !== -1)
+           {
+               showToast(finalMessage[3]);
+           }
 
-            if(mv === updatePage.messageView)
-                mv.text += message + "\n";
-            else if(mv === testPage.messageView)
-                mv.text = testMessage;
-            */
+       }
+       if(type === 1 || type === 0)
+       {
+           updateMessage.push(str);
+           updateMessageLength += str.length;
 
-            var str = "";
-            if(currenttab === mTAB_Test)
-            {
-                    str = message + "\n";
-                    testMessage.push(str);
-                    testMessagLength += str.length;
-            }
-            else
-            {
-                str = message + "\n";
-                updateMessage.push(str);
-                updateMessageLength += str.length;
-            }
-
-            var str1 = "";
-            var i = 0;
-            if(mv === updatePage.messageView)
-            {
-                if(updateMessageLength < maxMessageLeng)
-                {
-                    str1 = "";
-                    for(i = 0;i < updateMessage.length;i++)
-                    {
-                        str1 += updateMessage[i];
-                    }
-                    mv.text = str1;
-                    upgradeShowStr = str1;
-                }
-                else
-                {
-                    var tmpUpdateLength = 0;
-                    var tmpUpdateArray = [];
-                    var updateIndex = 0;
-                    var tmpUpdateSaveLeng = 0;
-                    str1 = "";
-                    for(i = 0;i < updateMessage.length;i++)
-                    {
-                        tmpUpdateLength += updateMessage[i].length;
-                        if((updateMessageLength - tmpUpdateLength) > maxMessageLeng)
-                        {
-                            continue;
-                        }
-                        tmpUpdateArray[updateIndex++] = updateMessage[i];
-                        str1 += updateMessage[i];
-                        tmpUpdateSaveLeng += updateMessage[i].length;
-                    }
-                    mv.text = str1;
-                    upgradeShowStr = str1;
-                    updateMessage = tmpUpdateArray;
-                    updateMessageLength = tmpUpdateSaveLeng;
-                }
-
-            }
-            else if(mv === testPage.messageView)
-            {
-                if(testMessagLength < maxMessageLeng)
-                {
-                    str1 = "";
-                    for(i = 0;i < testMessage.length;i++)
-                    {
-                        str1 += testMessage[i];
-                    }
-                    mv.text = str1;
-//                    testStr = str1;
-                }
-                else
-                {
-                    var tmpLength = 0;
-                    var tmpArray = [];
-                    var index = 0;
-                    var tmpSaveLeng = 0;
-                    str1 = "";
-                    for(i = 0;i < testMessage.length;i++)
-                    {
-                        tmpLength += testMessage[i].length;
-                        if((testMessagLength - tmpLength) > maxMessageLeng)
-                        {
-                            continue;
-                        }
-                        tmpArray[index++] = testMessage[i];
-                        str1 += testMessage[i];
-                        tmpSaveLeng += testMessage[i].length;
-                    }
-                    mv.text = str1;
-                    testMessage = tmpArray;
-                    testMessagLength = tmpSaveLeng;
-//                    testStr = str1;
-                }
-            }
-        } else {
-
-            str = message + "\n";
-            updateMessage.push(str);
-            updateMessageLength += str.length;
-            if(updateMessageLength < maxMessageLeng)
-            {
-                str1 = "";
-                for(i = 0;i < updateMessage.length;i++)
-                {
-                    str1 += updateMessage[i];
-                }
+           if(updateMessageLength < maxMessageLeng)
+           {
+               str1 = "";
+               for(i = 0;i < updateMessage.length;i++)
+               {
+                   str1 += updateMessage[i];
+               }
 //                mv.text = str1;
-                upgradeShowStr = str1;
-            }
-            else
-            {
-
-                tmpUpdateLength = 0;
-                tmpUpdateArray = [];
-                updateIndex = 0;
-                tmpUpdateSaveLeng = 0;
-                str1 = "";
-                for(i = 0;i < updateMessage.length;i++)
-                {
-                    tmpUpdateLength += updateMessage[i].length;
-                    if((updateMessageLength - tmpUpdateLength) > maxMessageLeng)
-                    {
-                        continue;
-                    }
-                    tmpUpdateArray[updateIndex++] = updateMessage[i];
-                    str1 += updateMessage[i];
-                    tmpUpdateSaveLeng += updateMessage[i].length;
-                }
+               upgradeShowStr = str1;
+           }
+           else
+           {
+               var tmpUpdateLength = 0;
+               var tmpUpdateArray = [];
+               var updateIndex = 0;
+               var tmpUpdateSaveLeng = 0;
+               str1 = "";
+               for(i = 0;i < updateMessage.length;i++)
+               {
+                   tmpUpdateLength += updateMessage[i].length;
+                   if((updateMessageLength - tmpUpdateLength) > maxMessageLeng)
+                   {
+                       continue;
+                   }
+                   tmpUpdateArray[updateIndex++] = updateMessage[i];
+                   str1 += updateMessage[i];
+                   tmpUpdateSaveLeng += updateMessage[i].length;
+               }
 //                mv.text = str1;
-                upgradeShowStr = str1;
-                updateMessage = tmpUpdateArray;
-                updateMessageLength = tmpUpdateSaveLeng;
-            }
-            if(mv === testPage.messageView)
-            {
-                testMessage.push(message + "\n");
-                testMessagLength += str.length;
-                mv.text += message + "\n";
-            }
-            var finalMessage = "";
-            finalMessage = message.split(":");
-            if(finalMessage[3].search("TouchApp") !== -1)
-            {
-                showToast(finalMessage[3]);
-            }
+               upgradeShowStr = str1;
+               updateMessage = tmpUpdateArray;
+               updateMessageLength = tmpUpdateSaveLeng;
+           }
+           updatePage.messageView.text = str1;
+       }
+       if(type === 2 || type === 0)
+       {
+           testMessage.push(str);
+           testMessagLength += str.length;
 
-            console.log("@@@@@@ split string = " + finalMessage[3]);
+           if(testMessagLength < maxMessageLeng)
+           {
+               str1 = "";
+               for(i = 0;i < testMessage.length;i++)
+               {
+                   str1 += testMessage[i];
+               }
+//                mv.text = str1;
+//                testStr = str1;
+           }
+           else
+           {
+               tmpLength = 0;
+               tmpArray = [];
+               index = 0;
+               tmpSaveLeng = 0;
+               str1 = "";
+               for(i = 0;i < testMessage.length;i++)
+               {
+                   tmpLength += testMessage[i].length;
+                   if((testMessagLength - tmpLength) > maxMessageLeng)
+                   {
+                       continue;
+                   }
+                   tmpArray[index++] = testMessage[i];
+                   str1 += testMessage[i];
+                   tmpSaveLeng += testMessage[i].length;
+               }
+//                mv.text = str1;
 
+               testMessage = tmpArray;
+               testMessagLength = tmpSaveLeng;
+//                testStr = str1;
+           }
+           testPage.messageView.text = str1;
+       }
+
+    }
+    property string volienceUpgradeInfo:qsTr("Number of successful upgrades: ") + 0 + "\n" +
+                                        qsTr("Number of failed upgrades: ") + 0
+    property int upgradeSuccessfullyNum:0
+    property int upgradeFailedNum:0
+    property string lastFailedReason:""
+    function saveUpgradeResultNum(result,info)
+    {
+        console.log("升级完成结果result = " + result ? 1 : 0);
+        if(result)
+        {
+            upgradeSuccessfullyNum += 1;
+
+        }
+        else
+        {
+            upgradeFailedNum += 1;
+            lastFailedReason = info;
+        }
+        console.log("升级成功次数 = " + upgradeSuccessfullyNum + ",升级失败的次数 = " + upgradeFailedNum);
+        if(upgradeFailedNum > 0)
+        {
+            volienceUpgradeInfo = qsTr("Number of successful upgrades: ") + upgradeSuccessfullyNum + "\n" +
+                    qsTr("Number of failed upgrades: ") + upgradeFailedNum + "\n" +
+                    qsTr("The last upgrade failed because: ") + lastFailedReason;
+        }
+        else
+        {
+            volienceUpgradeInfo = qsTr("Number of successful upgrades: ") + upgradeSuccessfullyNum + "\n" +
+                    qsTr("Number of failed upgrades: ") + upgradeFailedNum ;
         }
 
 
@@ -2241,7 +2293,7 @@ QMessageBox::Critical	3	an icon indicating that the message represents a critica
     }
 
     function setUpgrading(u){
-        if(!testPage.testBtn.checked)
+        if(currenttab === mTAB_Upgrade || (currenttab === mTAB_Test && !testPage.testBtn.checked))
         {
             updatingFw = u;
         }
@@ -2310,9 +2362,21 @@ QMessageBox::Critical	3	an icon indicating that the message represents a critica
     function refreshSettings() {
         if (settingsTabId.settingsPage != null)
             settingsTabId.settingsPage.refreshSettings();
-        if (calibrationUi.visible) {
+        if (calibrationUi.visible && !calibrationFirst) {
             calibrationUi.exitPanel();
         }
+        calibrationFirst = false
+    }
+    property bool calibrationFirst: false
+    function calibration() {
+        if (settingsTabId.settingsPage != null) {
+            calibrationFirst = true
+            calibrationUi.visible = true;
+            lastVisibility = mainPage.visibility;
+            showFullScreen();
+        }
+            //settingsTabId.enterCalibration()
+            //settingsTabId.settingsPage.clickCalibration();
     }
 
     function startAging() {
@@ -2325,7 +2389,6 @@ QMessageBox::Critical	3	an icon indicating that the message represents a critica
     }
     function setDeviceStatus(dev, status) {
         agingPage.setDeviceStatus(dev, status);
-        console.log("setDeviceStatus")
     }
 
     property int appType: -1
@@ -2401,7 +2464,7 @@ QMessageBox::Critical	3	an icon indicating that the message represents a critica
         }
         onOpacityChanged: {
             if (opacity === 1) {
-                delay(3000, function() {
+                delay(2000, function() {
                     opacity = 0;
                 })
             }
@@ -2439,10 +2502,7 @@ QMessageBox::Critical	3	an icon indicating that the message represents a critica
     }
 
     function onHotplug(plugin) {
-        if(currenttab === mTAB_Aging)
-        {
-            refreshBatchDeviceInfo();
-        }
+
         infoTab.refreshInfo();
         var _deviceMainInfo = touch.getDeviceMainInfo();
         if(_deviceMainInfo.localeCompare("No connected devices!") === 0)
@@ -2454,6 +2514,12 @@ QMessageBox::Critical	3	an icon indicating that the message represents a critica
         {
             deviceMainInfo = _deviceMainInfo;
             deviceConnectImage = "qrc:/dialog/images/success.png";
+        }
+        if(currenttab === mTAB_Aging)
+        {
+//            touch.setBatchLock(true);
+//            refreshBatchDeviceInfo();
+//            touch.setBatchLock(false);
         }
         if (plugin) {
             deviceCount++;
@@ -2567,7 +2633,7 @@ QMessageBox::Critical	3	an icon indicating that the message represents a critica
     Component.onCompleted: {
         showUpgradePage();
         var i;
-        for (i = 0; i < 4; i++) {
+        for (i = 0; i < calibrationUi.calibratePoints; i++) {
             calibrationDataModel.append({
                 index: i,
                 targetX: 0,
@@ -2651,6 +2717,9 @@ QMessageBox::Critical	3	an icon indicating that the message represents a critica
         touch.debug(JSON.stringify(datas));
         if (datas.count === undefined || datas.count <= 0)
             return;
+        calibrationUi.calibratePoints = datas.count;
+        calibrateMode = datas.mode;
+        calibrationPoints = datas.count;
         var i;
         var points = datas.points;
         calibrationDataModel.clear();
@@ -2801,14 +2870,14 @@ QMessageBox::Critical	3	an icon indicating that the message represents a critica
         mainTabView.currentIndex = index;
     }
 
-    function setWindowHidden(visbaled)
+    function setWindowHidden(visibled)
     {
-        if(mainPage.visible && visbaled)
+        if(mainPage.visible && visibled)
         {
             return;
         }
-        mainPage.setVisible(visbaled);
-        if(visbaled)
+        mainPage.setVisible(visibled);
+        if(visibled)
             mainPage.visibility =  Window.Maximized;
     }
     //界面跳转
@@ -2877,6 +2946,7 @@ QMessageBox::Critical	3	an icon indicating that the message represents a critica
      //批处理
      function initBatchDeviceInfo()
      {
+
          batchConnectDeviceInfoList.length = 0;
          var connectDeviceInfo = touch.getConnectDeviceInfo();
          console.log("############# qml count = " + connectDeviceInfo['count']);
@@ -2896,7 +2966,7 @@ QMessageBox::Critical	3	an icon indicating that the message represents a critica
                  agingPage.setDeviceResult(i,0);
                  agingPage.setDeviceTime(i,agingPage.passAgingTime);
                  agingPage.setDeviceBootloader(i,conDeviceInfo['bootloader']);
-                console.log("############# qml deviceConnectIndex = " + i +",deviceStatus = "+conDeviceInfo['deviceStatus'] + ",mcuid = " + conDeviceInfo['mcuID']);
+//                console.log("############# qml deviceConnectIndex = " + i +",deviceStatus = "+conDeviceInfo['deviceStatus'] + ",mcuid = " + conDeviceInfo['mcuID']);
                  batchConnectDeviceInfoList.push(saveDeviceInfo);
              }
          }
@@ -2917,33 +2987,65 @@ QMessageBox::Critical	3	an icon indicating that the message represents a critica
              return;
          }
          //判断设备的当前状态
+         var sameDevice = false;
          var deviceInfoList = curDeciceInfoMap['deviceInfoList'];
          for(var i = 0 ; i < deviceInfoList.length;i++)
          {
+             sameDevice = false;
              var curDevice = deviceInfoList[i];
-             if(i < batchConnectDeviceInfoList.length)
+             //===============================================
+             for(var j = 0;j < batchConnectDeviceInfoList.length;j++)
+             {
+                 if(curDevice['mcuID'] === agingPage.getDeviceMcdId(j))
+                 {
+                     sameDevice = true;
+                     break;
+                 }
+             }
+             if(sameDevice)
              {
                  var beforeDevice = batchConnectDeviceInfoList[i];
                  beforeDevice.deviceStatus = curDevice['deviceStatus'];
+                 agingPage.setDeviceStatus(j,curDevice['deviceStatus']);
 
              }
              else
              {
+                 if(curDevice['mcuID'] === "")
+                     continue;
                  var saveDeviceInfo;
-                 saveDeviceInfo = {"number":i,"deviceStatus":curDevice['deviceStatus'],"mcuID":curDevice['mcuID']};
-                 agingPage.setDeviceMcdId(i,curDevice['mcuID']);
-                 agingPage.setDeviceInfo(i,"");
-                 agingPage.setDeviceProgress(i,0);
-                 agingPage.setDeviceBootloader(i,curDevice['bootloader']);
-
-                 agingPage.setDeviceTime(i,agingPage.passAgingTime);
-                 agingPage.setDeviceResult(i,0);
+                 console.log("batchConnectDeviceInfoList.length = " + batchConnectDeviceInfoList.length);
+                 saveDeviceInfo = {"number":batchConnectDeviceInfoList.length,"deviceStatus":curDevice['deviceStatus'],"mcuID":curDevice['mcuID']};
+                 agingPage.setDeviceStatus(batchConnectDeviceInfoList.length,curDevice['deviceStatus']);
+                 agingPage.setDeviceMcdId(batchConnectDeviceInfoList.length,curDevice['mcuID']);
+                 agingPage.setDeviceInfo(batchConnectDeviceInfoList.length,"");
+                 agingPage.setDeviceProgress(batchConnectDeviceInfoList.length,0);
+                 agingPage.setDeviceBootloader(batchConnectDeviceInfoList.length,curDevice['bootloader']);
+                 agingPage.setDeviceTime(batchConnectDeviceInfoList.length,agingPage.passAgingTime);
+                 agingPage.setDeviceResult(batchConnectDeviceInfoList.length,0);
                  batchConnectDeviceInfoList.push(saveDeviceInfo);
+
              }
-             agingPage.setDeviceStatus(i,curDevice['deviceStatus']);
+
          }
 
      }
+     function addBatchDevice(deviceMap)
+     {
+         var saveDeviceInfo;
+
+         saveDeviceInfo = {"number":batchConnectDeviceInfoList.length,"deviceStatus":deviceMap['deviceStatus'],"mcuID":deviceMap['mcuID']};
+         agingPage.setDeviceStatus(batchConnectDeviceInfoList.length,deviceMap['deviceStatus']);
+         agingPage.setDeviceMcdId(batchConnectDeviceInfoList.length,deviceMap['mcuID']);
+         agingPage.setDeviceInfo(batchConnectDeviceInfoList.length,"");
+         agingPage.setDeviceProgress(batchConnectDeviceInfoList.length,0);
+         agingPage.setDeviceBootloader(batchConnectDeviceInfoList.length,deviceMap['bootloader']);
+         agingPage.setDeviceTime(batchConnectDeviceInfoList.length,agingPage.passAgingTime);
+         agingPage.setDeviceResult(batchConnectDeviceInfoList.length,0);
+         batchConnectDeviceInfoList.push(saveDeviceInfo);
+
+     }
+
 
      function startBatchTest(index)
      {
@@ -2973,6 +3075,12 @@ QMessageBox::Critical	3	an icon indicating that the message represents a critica
      function setBatchCancel(batchCancel)
      {
          touch.setBatchCancel(batchCancel);
+     }
+
+     function currentTabRefresh(currenttab)
+     {
+
+         touch.currentTabRefresh(currenttab);
      }
 
 }

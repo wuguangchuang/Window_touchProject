@@ -117,7 +117,7 @@ Item {
                 id: touchRotationGroup
                 onCheckedButtonChanged: {
                     if (refreshing) return;
-                    console.log("触摸框旋转")
+                    console.log("触摸框旋转");
                     touch.setSettings("touchRotation", checkedButton.mode)
                 }
             }

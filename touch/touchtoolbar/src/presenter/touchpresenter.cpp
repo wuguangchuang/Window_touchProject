@@ -17,9 +17,10 @@
 #define BATCH_FINISH_ERROR      3
 #define BATCH_CANCEL            5
 
+int TouchPresenter::currentTab = 0;
 TouchPresenter::TouchPresenter(QObject *parent, QObject *component) : QObject(parent),
     signalThread(this), sem(0), settings("newskyer", "TouchAssistant"),paintSem(0),touchManager(NULL),
-    initSdkDone(false),batchCancel(false)
+    initSdkDone(false),batchCancel(false), calibrationMode(false)
 {
 
     this->component = component;
@@ -494,6 +495,15 @@ void TouchPresenter::setWindowHidden(bool visibled)
     QMetaObject::invokeMethod(component, "setCurrentIndex",Q_ARG(QVariant, visibled));
 }
 
+void TouchPresenter::setBatchResult(int index, int result)
+{
+    if (component == NULL) {
+        TDebug::warning("component is NULL");
+        return;
+    }
+    QMetaObject::invokeMethod(component, "refreshBatchResult",Q_ARG(QVariant, index),Q_ARG(QVariant, result));
+}
+
 void TouchPresenter::startBatchTest(int index)
 {
     touch->startBatchTest(index);
@@ -510,6 +520,16 @@ void TouchPresenter::setBatchCancel(bool batchCancel)
     touch->setBatchCancel(batchCancel);
 }
 
+void TouchPresenter::setBatchLock(bool enable)
+{
+    touch->setBatchLock(enable);
+}
+
+void TouchPresenter::batchFinished(int functionIndex)
+{
+    touch->batchFinished(functionIndex);
+}
+
 void TouchPresenter::startVolienceTest(int volienceMode)
 {
     touch->startVolienceTest(volienceMode);
@@ -518,6 +538,17 @@ void TouchPresenter::startVolienceTest(int volienceMode)
 void TouchPresenter::setCancelVolienceTest(bool cancelVolienceTest)
 {
     touch->setCancelVolienceTest(cancelVolienceTest);
+}
+
+void TouchPresenter::saveUpgradeResultNum(bool result, QString info)
+{
+    if (component == NULL) {
+        TDebug::warning("component is NULL");
+        return;
+    }
+    QMetaObject::invokeMethod(component, "saveUpgradeResultNum",
+                              Q_ARG(QVariant, result),
+                              Q_ARG(QVariant, info));
 }
 
 void TouchPresenter::updateSignalList(QVariant list)
@@ -604,6 +635,16 @@ void TouchPresenter::onBatchFinish(int index, bool result, QString message)
     return;
 }
 
+void TouchPresenter::addBatchDevice(QVariantMap deviceMap)
+{
+    if (component == NULL) {
+        return;
+    }
+    QMetaObject::invokeMethod(component, "addBatchDevice",
+        Q_ARG(QVariant, deviceMap));
+}
+
+
 
 int TouchPresenter::getDeviceCount()
 {
@@ -663,6 +704,15 @@ void TouchPresenter::refreshSettings()
         return;
     }
     QMetaObject::invokeMethod(component, "refreshSettings");
+    return;
+}
+
+void TouchPresenter::calibration()
+{
+    if (component == NULL) {
+        return;
+    }
+    QMetaObject::invokeMethod(component, "calibration");
     return;
 }
 
@@ -742,6 +792,11 @@ QVariantMap TouchPresenter::getCalibrationDatas(QVariant where)
         return map;
     }
     CalibrationData data;
+    TDEBUG("校准模式 = %d",settings.mode);
+    TDEBUG("校准点的个数 = %d",settings.pointCount);
+    TDEBUG("默认校准模式 = %d",settings.defMode);
+    TDEBUG("默认校准点个数 = %d",settings.defPointCount);
+    map.insert("mode", settings.mode);
     map.insert("count", settings.pointCount);
     QVariantList points;
     for (int i = 0; i < settings.pointCount; i++) {
@@ -760,6 +815,7 @@ QVariantMap TouchPresenter::getCalibrationDatas(QVariant where)
     map.insert("points", points);
     return map;
 }
+
 
 QVariant TouchPresenter::enterCalibrationMode()
 {
@@ -795,6 +851,9 @@ QVariant TouchPresenter::exitCalibrationMode()
     if (ret != 0)
         return QVariant::fromValue(false);
 
+    if (calibrationMode) {
+        exit(0);
+    }
     return QVariant::fromValue(true);
 }
 

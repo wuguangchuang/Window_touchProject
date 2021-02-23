@@ -74,7 +74,7 @@ public:
 //    static bool commandFinshedFlag;
     class HotplugListener {
     public:
-        virtual void onTouchHotplug(touch_device* dev, const int attached, const void *val) = 0;
+        virtual void onTouchHotplug(touch_device* dev, const int attached, int val) = 0;
     };
     class SendCallback {
     public:
@@ -171,6 +171,7 @@ public:
     public:
         BatchUpgradeThread(TouchManager *manager){this->manager = manager;}
         QString path;
+        void setManager(TouchManager *manager){this->manager = manager;}
         void setBatchUpgradeIndex(int index){this->upgradeIndex = index;}
         void setBatchUpgradeDevice(touch_device *dev){this->upgradeDev = dev;}
     protected:
@@ -375,7 +376,7 @@ private:
     int checkCommandReply(touch_package *require, touch_package *reply);
     int isCommandReplySuccessful(touch_package *require, touch_package *reply, int ret = 0, const char *func = "");
 
-    void initDeviceInfo(touch_device *dev);
+    int initDeviceInfo(touch_device *dev);
     void deepCloneDevice(touch_device *dst, touch_device *src);
     bool checkDevice(touch_device *dev);
 
@@ -437,7 +438,9 @@ public:
     TestThread *testThread;
     BatchTestListener *batchTestListenter;
     BatchUpgradeListener *batchUpgradeListenter;
+
     QMutex batchMutex;
+    TOUCHSHARED_EXPORT void setBatchLock(bool enable);
     bool mtestStop;
     TOUCHSHARED_EXPORT void setStop(bool _stop);
     bool batchCancal;
@@ -447,5 +450,6 @@ public:
     unsigned char boardIndexBuf[128];
 
 };
+
 
 #endif // TOUCHMANAGER_H

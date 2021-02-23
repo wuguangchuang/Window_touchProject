@@ -336,8 +336,9 @@ Item{
     property int defaultTopMargin:5
     property int listBtnheight:60
     anchors.top: parent.top
-    anchors.topMargin: defaultTopMargin
+//    anchors.topMargin: defaultTopMargin
 
+    //右侧页面
     SwipeView{
         id: swipeView
         anchors.left: rootitem.right
@@ -347,12 +348,12 @@ Item{
         currentIndex: 0
 
         Rectangle{
-            //currentIndex === 0 : 设置界面的坐标页
-//            anchors.fill: parent
-            gradient: Gradient{
-                GradientStop{position: 0.0;color: "#f6f6f6"}
-                GradientStop{position: 1.0;color: "#e3ddf9"}
-            }
+            //currentIndex === 0 : 设置坐标通道页
+
+//            gradient: Gradient{
+//                GradientStop{position: 0.0;color: "#f6f6f6"}
+//                GradientStop{position: 1.0;color: "#e3ddf9"}
+//            }
             SettingCoordsPage{
                 id:settingCoordsPage
                 anchors.top: parent.top
@@ -364,11 +365,11 @@ Item{
         }
         Rectangle{
             //currentIndex === 1 : 设置界面的旋转页
-//            anchors.fill: parent
-            gradient: Gradient{
-                GradientStop{position: 0.0;color: "#f6f6f6"}
-                GradientStop{position: 1.0;color: "#e3ddf9"}
-            }
+
+//            gradient: Gradient{
+//                GradientStop{position: 0.0;color: "#f6f6f6"}
+//                GradientStop{position: 1.0;color: "#e3ddf9"}
+//            }
             SettingSpinPage{
                 id:settingSpinPage
                 anchors.top: parent.top
@@ -382,11 +383,11 @@ Item{
         }
         Rectangle{
             //currentIndex === 2 : 设置界面的校准页
-//            anchors.fill: parent
-            gradient: Gradient{
-                GradientStop{position: 0.0;color: "#f6f6f6"}
-                GradientStop{position: 1.0;color: "#e3ddf9"}
-            }
+
+//            gradient: Gradient{
+//                GradientStop{position: 0.0;color: "#f6f6f6"}
+//                GradientStop{position: 1.0;color: "#e3ddf9"}
+//            }
             SettingCalibratePage{
                 id:settingCalibratePage
                 anchors.top: parent.top
@@ -408,11 +409,11 @@ Item{
 
         }
         Rectangle{
-
-            gradient: Gradient{
-                GradientStop{position: 0.0;color: "#f6f6f6"}
-                GradientStop{position: 1.0;color: "#e3ddf9"}
-            }
+            //currentIndex === 3 : 更多设置页
+//            gradient: Gradient{
+//                GradientStop{position: 0.0;color: "#f6f6f6"}
+//                GradientStop{position: 1.0;color: "#e3ddf9"}
+//            }
             ModeSetting{
                 id:modeSettingPage
                 anchors.top: parent.top

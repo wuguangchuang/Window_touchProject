@@ -328,11 +328,18 @@ Item
                         Text
                         {
                             id:onboardTestMessage
-                            renderType: Text.NativeRendering
+                             text:testStr
+//                            renderType: Text.NativeRendering
+                            anchors.top: parent.top
+                            anchors.topMargin: 10
+                            anchors.left: parent.left
+                            anchors.leftMargin: 5
+                            anchors.bottomMargin: 10
+                            font.pointSize: 10
                             onTextChanged:
                             {
                                 if (onboardTestMessage.contentHeight > showFailMessage.height) {
-                                    showFailMessage.flickableItem.contentY = onboardTestMessage.contentHeight - showFailMessage.height;
+                                    showFailMessage.flickableItem.contentY = onboardTestMessage.contentHeight - showFailMessage.height + 20;
                                 }
                             }
                         }
@@ -710,7 +717,7 @@ Item
                  ctx.arc((numupCanvas.height - 4)/2 + 20, numupCanvas.height / 2,(numupCanvas.height - 4)/2, 0, Math.PI*2, true)
                  ctx.stroke();
                  ctx.fillStyle = "blue";
-                 ctx.font='bold 25px 微软雅黑';
+                 ctx.font="25px fantasy";
                  ctx.fillText("" + 4 ,(numupCanvas.height - 4)/2 + 13,numupCanvas.height - 4);
 
                  ctx.beginPath();
@@ -719,7 +726,7 @@ Item
                  ctx.arc(numupCanvas.width - (numupCanvas.height - 4)/2 - 20, numupCanvas.height / 2,(numupCanvas.height - 4)/2, 0, Math.PI*2, true)
                  ctx.stroke();
                  ctx.fillStyle = "blue";
-                 ctx.font='bold 25px 微软雅黑';
+                 ctx.font="25px fantasy";
                  ctx.fillText("" + 5 ,numupCanvas.width - (numupCanvas.height - 4)/2 - 27,numupCanvas.height - 4);
 
                  touch.paintUnlock();
@@ -749,7 +756,7 @@ Item
                  ctx.arc((numDownCanvas.height - 4)/2 + 20, numDownCanvas.height / 2,(numDownCanvas.height - 4)/2, 0, Math.PI*2, true)
                  ctx.stroke();
                  ctx.fillStyle = "blue";
-                 ctx.font='bold 25px 微软雅黑';
+                 ctx.font="25px fantasy";
                  ctx.fillText("" + 1 ,(numDownCanvas.height - 4)/2 + 13,numDownCanvas.height - 4);
 
                  ctx.beginPath();
@@ -758,7 +765,7 @@ Item
                  ctx.arc(numDownCanvas.width - (numDownCanvas.height - 4)/2 - 20, numDownCanvas.height / 2,(numDownCanvas.height - 4)/2, 0, Math.PI*2, true)
                  ctx.stroke();
                  ctx.fillStyle = "blue";
-                 ctx.font='bold 25px 微软雅黑';
+                 ctx.font="25px fantasy";
                  ctx.fillText("" + 8 ,numDownCanvas.width - (numDownCanvas.height - 4)/2 - 27,numDownCanvas.height - 4);
 
                  touch.paintUnlock();
@@ -788,7 +795,7 @@ Item
                  ctx.arc( numLeftCanvas.width/2, (numLeftCanvas.width -4)/ 2 + 20,(numLeftCanvas.width - 4)/2, 0, Math.PI*2, true)
                  ctx.stroke();
                  ctx.fillStyle = "blue";
-                 ctx.font='bold 25px 微软雅黑';
+                 ctx.font="25px fantasy";
                  ctx.fillText("" + 3 ,7,20 + numLeftCanvas.width - 7);
 
                  ctx.beginPath();
@@ -797,7 +804,7 @@ Item
                  ctx.arc(numLeftCanvas.width/2,numLeftCanvas.height - (numLeftCanvas.width - 4)/2 - 20,(numLeftCanvas.width - 4)/2, 0, Math.PI*2, true)
                  ctx.stroke();
                  ctx.fillStyle = "blue";
-                 ctx.font='bold 25px 微软雅黑';
+                 ctx.font="25px fantasy";
                  ctx.fillText("" + 2 , 7,numLeftCanvas.height - 23);
 
                  touch.paintUnlock();
@@ -827,7 +834,7 @@ Item
                  ctx.arc( numRightCanvas.width/2, (numRightCanvas.width -4)/ 2 + 20,(numRightCanvas.width - 4)/2, 0, Math.PI*2, true)
                  ctx.stroke();
                  ctx.fillStyle = "blue";
-                 ctx.font='bold 25px 微软雅黑';
+                 ctx.font="25px fantasy";
                  ctx.fillText("" + 6 ,7,20 + numRightCanvas.width - 7);
 
                  ctx.beginPath();
@@ -836,7 +843,7 @@ Item
                  ctx.arc(numRightCanvas.width/2,numRightCanvas.height - (numRightCanvas.width - 4)/2 - 20,(numRightCanvas.width - 4)/2, 0, Math.PI*2, true)
                  ctx.stroke();
                  ctx.fillStyle = "blue";
-                 ctx.font='bold 25px 微软雅黑';
+                 ctx.font="25px fantasy";
                  ctx.fillText("" + 7 , 7,numRightCanvas.height - 23);
 
                  touch.paintUnlock();

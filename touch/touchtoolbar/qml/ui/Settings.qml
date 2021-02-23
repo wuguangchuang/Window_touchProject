@@ -706,7 +706,7 @@ Item {
                     anchors.left: parent.left
                     anchors.leftMargin: labelView.width + 10
                     width: parent.width
-                    height: 260
+                    height: 53 * (mainPage.calibrationPoints + 1);
                     spacing: 15
                     visible: true
 
@@ -762,7 +762,7 @@ Item {
 
         }
     }
-    property real calibrationLabelWidth: 50
+    property real calibrationLabelHeight: 50
     property real calibrationTextWidth: 110
     Component {
         id: calibrationDataDelegate
@@ -771,6 +771,7 @@ Item {
             Label {
                 text: "" + index
                 height: parent.implicitHeight
+//                height: calibrationLabelHeight
                 width: calibrationTextWidth
                 font.pixelSize: height
                 horizontalAlignment: Text.left
@@ -779,28 +780,52 @@ Item {
 
             CaliTextEdit {
                 width: calibrationTextWidth
+//                height: calibrationLabelHeight
+                height: parent.implicitHeight
                 maxValue: maxX
-                onTextChanged: targetX = text;
+                onTextChanged:
+                {
+                    console.log("changeTargetX = " + text);
+                    targetX = text;
+                    console.log("targetX = " + targetX);
+                }
                 value: targetX
             }
             CaliTextEdit {
                 width: calibrationTextWidth
+//                height: calibrationLabelHeight
+                height: parent.implicitHeight
                 maxValue: maxY
-                onTextChanged: targetY = text;
+                onTextChanged:
+                {
+                    console.log("changeTargetY = " + text);
+                    targetY = text;
+                    console.log("targetY = " + targetX);
+                }
                 value: targetY
             }
             CaliTextEdit {
                 width: calibrationTextWidth
+//                height: calibrationLabelHeight
+                height: parent.implicitHeight
                 maxValue: maxX
-                onTextChanged: collectX = text;
+                onTextChanged: {
+                    console.log("changeCollectX = " + text);
+                    collectX = text;
+                    console.log("collectX = " + collectX);
+                }
                 value: collectX
 
             }
             CaliTextEdit {
                 width: calibrationTextWidth
+//                height: calibrationLabelHeight
+                height: parent.implicitHeight
                 maxValue: maxY
                 onTextChanged: {
+                    console.log("changeCollectY = " + text);
                     collectY = text;
+                    console.log("collectY = " + collectY);
                 }
                 value: collectY
 

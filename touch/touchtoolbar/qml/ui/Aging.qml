@@ -13,7 +13,7 @@ Item {
     property int rows: 5
     property int itemWidth: width / columns
     property int itemHeigth: height / rows
-    property int passAgingTime: 20
+    property int passAgingTime: 15
     property var deviceModel:deviceModel
     visible: true
 
@@ -30,6 +30,10 @@ Item {
     function setDeviceMcdId(dev,mcu)
     {
         deviceModel.get(dev).mcuID = mcu;
+    }
+    function getDeviceMcdId(dev)
+    {
+        return deviceModel.get(dev).mcuID;
     }
     function setDeviceProgress(dev,progress)
     {
@@ -81,7 +85,7 @@ Item {
     //批处理的结果
     /*
       result:
-      batchRuning                   : default
+      batchResult                   : default
       deviceFinished                : aging finish
       batchSuccess  or batchError   : upgrade and test result
       batchRunning                  : upgrade and test is running
@@ -244,11 +248,10 @@ Item {
 
                 //console.log("#" + i + " status: " + model.deviceStatus + " time: " + model.time)
                 if (model && model.deviceStatus === deviceConnected) {
-//                    console.log("#" + i + " status: " + model.deviceStatus + " time: " + model.time)
+                    console.log("#序号 = " + i + " status: " + model.deviceStatus + " time: " + model.time)
                     if(timeFlag[i])
                     {
                         model.time = passAgingTime;
-
                         timeFlag[i] = false;
                     }
                     else

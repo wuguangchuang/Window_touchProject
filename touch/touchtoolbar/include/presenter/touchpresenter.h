@@ -53,6 +53,8 @@ public:
     virtual void setBatchCancel(bool batchCancel) = 0;
     virtual void startVolienceTest(int volienceMode) = 0;
     virtual void setCancelVolienceTest(bool cancelVolienceTest) = 0;
+    virtual void setBatchLock(bool enable);
+    virtual void batchFinished(int functionIndex) = 0;
 
 };
 class ProcessStarter : public QProcess {
@@ -70,6 +72,13 @@ class TouchPresenter : public QObject
 {
     Q_OBJECT
 public:
+    /*
+     *研发工厂版：升级界面为0、 测试界面为1、 信号图界面为2、 加速老化界面为3
+      全屏画图界面为4、 设置界面为5、  关于界面设置为6
+     *客户版本：升级界面为0、 测试界面为1、 信号图界面为2、 全屏画图界面为3、 设置界面为4、  关于界面设置为5
+    */
+
+    static int currentTab;
     explicit TouchPresenter(QObject *parent = 0, QObject *component = 0);
     void setComponent(QObject *component) {
         this->component = component;
@@ -353,10 +362,29 @@ public:
         return false;
     }
 
+    //calibration
+    Q_INVOKABLE QVariantMap getCalibrationSettings(){
+        QVariantMap map;
+        CalibrationSettings settings;
+        int ret = touchManager->getCalibrationSettings(NULL, &settings);
+        if (ret != 0) {
+            TWARNING("%s: get settings failed", __func__);
+            return map;
+        }
+        map.insert("calibrationMode", settings.mode);
+        map.insert("calibrationCount", settings.pointCount);
+        map.insert("calibrationDefMode", settings.defMode);
+        map.insert("calibrationDefCount", settings.defPointCount);
+        return map;
+    }
+
     QObject* getComponent() { return component;}
     void setTouchManager(TouchManager *tm) {touchManager = tm;}
 
 
+    Q_INVOKABLE void currentTabRefresh(int currenttab){
+        currentTab = currenttab;
+    }
     //更多设置
     Q_INVOKABLE void modeSetting(bool startup = false);
     Q_INVOKABLE QVariantMap refreshModeSetting();
@@ -369,12 +397,15 @@ public:
     Q_INVOKABLE void startBatchTest(int index);
     Q_INVOKABLE void startBatchUpgrade(int index,QString batchUpgradeFile);
     Q_INVOKABLE void setBatchCancel(bool batchCancel);
+    Q_INVOKABLE void setBatchLock(bool enable);
+    Q_INVOKABLE void batchFinished(int functionIndex);
 
 
     //暴力升级、测试等
 
     Q_INVOKABLE void startVolienceTest(int volienceMode);
     Q_INVOKABLE void setCancelVolienceTest(bool cancelVolienceTest);
+    void saveUpgradeResultNum(bool result,QString info = "");
 
 
 
@@ -399,6 +430,7 @@ public:
     void setUpgradeButtonText(QString text);
     void setTextButtonText(int status);
     void refreshSettings();
+    void calibration();
     void destroyQml();
     void destroyDialog();
 
@@ -417,8 +449,9 @@ public:
     void setWindowHidden(bool visibled);
 
     //批处理
+    void setBatchResult(int index,int result);
     void onBatchFinish(int index,bool result,QString message = "");
-
+    void addBatchDevice(QVariantMap deviceMap);
 
 
 signals:
@@ -488,6 +521,7 @@ public:
     QMutex batchMutex;
     bool batchCancel;
 
+    bool calibrationMode;
 };
 
 #endif // TOUCHPRESENTER_H
