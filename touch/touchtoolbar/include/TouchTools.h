@@ -42,7 +42,7 @@ typedef enum {
     APP_PCBA,
     APP_CLIENT_FACTORY
 }AppType;
-
+struct BatchUpgradeThreadList;
 
 
 class TouchTools : public QObject, public CommandThread::CommandListener,
@@ -146,6 +146,7 @@ private:
 
     QString upgradePath;
 
+public:
     class InitSdkThread : public QThread {
     public:
         InitSdkThread(TouchTools *tool);
@@ -248,7 +249,7 @@ private:
     };
 
     //批处理
-
+    struct BatchUpgradeThreadList *batchUpgradeList;
     QString batchPath;
     QVariantMap batchDeviceMap;
     void batchDeviceOnHot(touch_device *dev, const int attached,int found_old);
@@ -332,6 +333,11 @@ private :
      QString appPath;
 
 
+};
+struct BatchUpgradeThreadList{
+  TouchTools::BatchUpgradeThread *batchUpgradeThread;
+  int upgradeIndex;
+  struct BatchUpgradeThreadList *next;
 };
 
 } // namespace

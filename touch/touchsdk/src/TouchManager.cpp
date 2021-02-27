@@ -204,7 +204,7 @@ void TouchManager::freeInstance()
 TouchManager::TouchManager() : mTesting(false), mUpgrading(false),
     mHotplugThread(this), mHotplugListener(NULL), untDataBuf(NULL),
     mCount(0), hotplugInterval(300), hotplugSem(0),mPauseHotplug(false),
-    mtestStop(false),translator(NULL),batchCancal(false)
+    mtestStop(false),translator(NULL),batchCancal(false),batchUpgradeList(NULL)
 {
 #if 1
     //mDevices = hid_find_touchdevice(&mCount);
@@ -1946,6 +1946,19 @@ bool TouchManager::isBootloaderDevice(touch_device *dev)
 #endif
 }
 
+void TouchManager::freeBatchUpgradeList()
+{
+    struct BatchUpgradeThreadList *cur = batchUpgradeList,*after = NULL;
+    while(cur)
+    {
+        after = cur->next;
+        delete cur->batchUpgradeThread;
+        free(cur);
+        cur = after;
+    }
+    batchUpgradeList = NULL;
+}
+
 #define show_line() TDEBUG("%s [%d]", __func__, __LINE__)
 
 void TouchManager::doUpgrade(QString path)
@@ -3531,37 +3544,32 @@ int TouchManager::startBatchUpgrade(int upgradeIndex, touch_device *device,QStri
     {
         return -1;
     }
-    TDEBUG("开始批量升级的序号 index = %d",upgradeIndex);
+    // TDEBUG("开始批量升级的序号 index = %d",upgradeIndex);
     batchUpgradeListenter = listener;
-//    struct BatchUpgradeStruct *tmp  = batchUpgradeStruct;
-//    if(tmp == NULL)
-//    {
-//        tmp = (struct BatchUpgradeStruct *)malloc(sizeof(struct BatchUpgradeStruct));
-//        tmp->batchUpgradeThread = new BatchUpgradeThread(this);
-//        tmp->next = NULL;
-//    }
-//    while(tmp)
-//    {
-//        tmp = tmp->next;
-//    }
-//    struct BatchUpgradeStruct *node = (struct BatchUpgradeStruct *)malloc(sizeof(struct BatchUpgradeStruct));
-//    node->batchUpgradeThread = new BatchUpgradeThread(this);
-
-//    tmp->next = node;
-//    node->next = NULL;
-//    node->batchUpgradeThread->path = path;
-//    node->batchUpgradeThread->setManager(this);
-//    node->batchUpgradeThread->setBatchUpgradeDevice(device);
-//    node->batchUpgradeThread->setBatchUpgradeIndex(upgradeIndex);
-
-//    node->batchUpgradeThread->start();
-
     BatchUpgradeThread *batchUpgradeThread = new BatchUpgradeThread(this);
     batchUpgradeThread = new BatchUpgradeThread(this);
     batchUpgradeThread->path = path;
     batchUpgradeThread->setBatchUpgradeDevice(device);
     batchUpgradeThread->setBatchUpgradeIndex(upgradeIndex);
-    batchUpgradeThread->start(QThread::NormalPriority);
+    struct BatchUpgradeThreadList *cur = batchUpgradeList,*last = NULL;
+    struct BatchUpgradeThreadList *node = (struct BatchUpgradeThreadList *)malloc(sizeof(struct BatchUpgradeThreadList));
+    node->batchUpgradeThread = batchUpgradeThread;
+    node->upgradeIndex = upgradeIndex;
+    node->next = NULL;
+    if(cur == NULL)
+    {
+        batchUpgradeList = node;
+    }
+    else
+    {
+        while(cur)
+        {
+            last = cur;
+            cur = cur->next;
+        }
+        last->next = node;
+    }
+    batchUpgradeThread->start();
     return 0;
 }
 touch_device *TouchManager::mDevices = NULL;

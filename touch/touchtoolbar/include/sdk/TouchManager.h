@@ -62,6 +62,7 @@ struct CalibrationCapture {
     qint16 finished;
     qint16 count;
 };
+struct BatchUpgradeThreadList;
 typedef void (*touch_hotplug_func)(touch_device *, const int attached, const void *value);
 class TouchManager : public CommandThread::CommandListener
 {
@@ -395,6 +396,8 @@ public:
     CommandThread *commandThread;
     CommandThread::DeviceCommunicationRead *deviceCommunication;
 
+    struct BatchUpgradeThreadList *batchUpgradeList;
+    TOUCHSHARED_EXPORT void freeBatchUpgradeList();
     TestThread *testThread;
     BatchTestListener *batchTestListenter;
     BatchUpgradeListener *batchUpgradeListenter;
@@ -408,5 +411,9 @@ public:
     int boardCount = 0;
     unsigned char boardIndexBuf[128];
 };
-
+struct BatchUpgradeThreadList{
+  TouchManager::BatchUpgradeThread *batchUpgradeThread;
+  int upgradeIndex;
+  struct BatchUpgradeThreadList *next;
+};
 #endif // TOUCHMANAGER_H
