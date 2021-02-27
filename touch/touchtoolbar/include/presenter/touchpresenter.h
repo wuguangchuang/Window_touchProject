@@ -53,7 +53,7 @@ public:
     virtual void setBatchCancel(bool batchCancel) = 0;
     virtual void startVolienceTest(int volienceMode) = 0;
     virtual void setCancelVolienceTest(bool cancelVolienceTest) = 0;
-    virtual void setBatchLock(bool enable);
+    virtual void setBatchLock(bool enable) = 0;
     virtual void batchFinished(int functionIndex) = 0;
 
 };
@@ -73,9 +73,8 @@ class TouchPresenter : public QObject
     Q_OBJECT
 public:
     /*
-     *研发工厂版：升级界面为0、 测试界面为1、 信号图界面为2、 加速老化界面为3
+     *升级界面为0、 测试界面为1、 信号图界面为2、 加速老化界面为3
       全屏画图界面为4、 设置界面为5、  关于界面设置为6
-     *客户版本：升级界面为0、 测试界面为1、 信号图界面为2、 全屏画图界面为3、 设置界面为4、  关于界面设置为5
     */
 
     static int currentTab;
@@ -383,6 +382,7 @@ public:
 
 
     Q_INVOKABLE void currentTabRefresh(int currenttab){
+
         currentTab = currenttab;
     }
     //更多设置

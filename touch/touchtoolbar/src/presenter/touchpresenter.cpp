@@ -20,7 +20,7 @@
 int TouchPresenter::currentTab = 0;
 TouchPresenter::TouchPresenter(QObject *parent, QObject *component) : QObject(parent),
     signalThread(this), sem(0), settings("newskyer", "TouchAssistant"),paintSem(0),touchManager(NULL),
-    initSdkDone(false),batchCancel(false), calibrationMode(false)
+    initSdkDone(false),batchCancel(true), calibrationMode(false)
 {
 
     this->component = component;
@@ -388,8 +388,9 @@ void TouchPresenter::setFileText(QString path)
         TDebug::warning("component is NULL");
         return;
     }
-    QMetaObject::invokeMethod(component, "setFileText",
-                              Q_ARG(QVariant, path));
+    QMetaObject::invokeMethod(component, "setUpgradeFile",
+                              Q_ARG(QVariant, path),
+                              Q_ARG(QVariant, 0));
 }
 
 void TouchPresenter::setAutoUpgradeFile(QString path)
@@ -399,7 +400,8 @@ void TouchPresenter::setAutoUpgradeFile(QString path)
         return;
     }
     QMetaObject::invokeMethod(component, "setUpgradeFile",
-                              Q_ARG(QVariant, path));
+                              Q_ARG(QVariant, path),
+                              Q_ARG(QVariant, 0));
 }
 
 void TouchPresenter::showToast(QString str)
@@ -516,6 +518,7 @@ void TouchPresenter::startBatchUpgrade(int index,QString batchUpgradeFile)
 
 void TouchPresenter::setBatchCancel(bool batchCancel)
 {
+    TDEBUG("设置批量升级的状态：%s",batchCancel ? "取消批量升级":"开始批量升级");
     this->batchCancel = batchCancel;
     touch->setBatchCancel(batchCancel);
 }

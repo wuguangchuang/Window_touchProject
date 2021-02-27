@@ -753,6 +753,7 @@ HID_API_EXPORT struct hid_device_info * HID_API_CALL hid_get_info(hid_device *de
 int hidReadTimeOut = 3000;
 int hid_send_data(hid_device *dev, struct hid_report_data *data, struct hid_report_data *back)
 {
+    /*
     if (data == NULL)
         return -1;
     if (dev != NULL && dev->info != NULL) {
@@ -764,9 +765,11 @@ int hid_send_data(hid_device *dev, struct hid_report_data *data, struct hid_repo
 //    int count = 10;
     r = 1;
 
+
     while (r > 0) {
         r = hid_read_timeout(dev, (unsigned char*)back, HID_REPORT_DATA_LENGTH, 0);
     }
+
     int ret = hid_write(dev, (unsigned char*)data, sizeof(struct hid_report_data));
     if (back == NULL)
         return ret;
@@ -776,7 +779,30 @@ int hid_send_data(hid_device *dev, struct hid_report_data *data, struct hid_repo
     // FIXME: for this touch device, report id is in back data;
     //back->report_id = data->report_id;
 
+
    ret = hid_read_timeout(dev, (unsigned char*)back, HID_REPORT_DATA_LENGTH, 0);
+
+    return ret;
+    */
+    if (data == NULL)
+        return -1;
+    if (dev != NULL && dev->info != NULL) {
+        data->report_id = dev->info->report_id;
+    }
+
+    // Clear data buffer
+    int r = 1;
+//    int count = 10;
+    r = 1;
+
+    int ret = hid_write(dev, (unsigned char*)data, sizeof(struct hid_report_data));
+    if (back == NULL)
+        return ret;
+    if (ret < 0)
+        return ret;
+    hid_set_nonblocking(dev, 0);
+    // FIXME: for this touch device, report id is in back data;
+    //back->report_id = data->report_id;
 
     return ret;
 }

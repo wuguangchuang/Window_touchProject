@@ -90,7 +90,7 @@ public:
         virtual void destroyDialog() = 0;
         virtual void refreshOnboardTestData(QVariantMap map) = 0;
         virtual void showOnboardFailItem(QString message) = 0;
-        virtual void showFirewareInfo(int type) = 0;
+        virtual void showFirewareInfo(touch_device *dev, int type) = 0;
     };
     class UpgradeListener {
     public:
@@ -189,7 +189,10 @@ public:
 
 private:
     TouchManager();
+    QMutex randomMutex;
+    volatile int randomArray[256];
     static int instanceCount;
+
     static TouchManager* mTouchManager;
 public:
     TOUCHSHARED_EXPORT static TouchManager* getInstance();
@@ -394,7 +397,7 @@ protected:
     unsigned int hotplugInterval;
     bool hotplugEvent;
 private:
-    touch_device *mDevices;
+
     int mCount;
     bool mPauseHotplug;
     hid_device_info *mRoot;
@@ -424,7 +427,8 @@ private:
     // for old signal data, UNT signal
     UntData *untDataBuf;
 
-
+public:
+    static touch_device *mDevices;
     // config
     static bool mShowTestData;
     static bool mIgnoreFailedTestItem;
@@ -435,6 +439,7 @@ public:
     Trans *translator;
     HotplugThread mHotplugThread;
     CommandThread *commandThread;
+    CommandThread::DeviceCommunicationRead *deviceCommunication;
     TestThread *testThread;
     BatchTestListener *batchTestListenter;
     BatchUpgradeListener *batchUpgradeListenter;

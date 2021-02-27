@@ -3,7 +3,7 @@
 
 #include "sdk/tdebug.h"
 #include "touch.h"
-#include "commandthread.h"
+//#include "commandthread.h"
 #include "sdk/CommandThread.h"
 #define MAX_TOUCH_COUNT 9
 
@@ -91,7 +91,7 @@ public:
         virtual void destroyDialog() = 0;
         virtual void refreshOnboardTestData(QVariantMap map) = 0;
         virtual void showOnboardFailItem(QString message) = 0;
-        virtual void showFirewareInfo(int type) = 0;
+        virtual void showFirewareInfo(touch_device*dev, int type) = 0;
     };
     class UpgradeListener {
     public:
@@ -181,6 +181,7 @@ public:
     };
 private:
     TouchManager();
+    int randomArray[256];
     static int instanceCount;
     static TouchManager* mTouchManager;
 public:
@@ -364,7 +365,6 @@ private:
 
 
 private:
-    touch_device *mDevices;
     int mCount;
     hid_device_info *mRoot;
 
@@ -380,7 +380,8 @@ private:
 
     UpgradeListener *mUpgradeListener;
     bool mUpgrading;
-
+public:
+    static touch_device *mDevices;
     // config
     static bool mShowTestData;
     static bool mIgnoreFailedTestItem;
@@ -392,6 +393,8 @@ public:
     Trans *translator;
     HotplugThread mHotplugThread;
     CommandThread *commandThread;
+    CommandThread::DeviceCommunicationRead *deviceCommunication;
+
     TestThread *testThread;
     BatchTestListener *batchTestListenter;
     BatchUpgradeListener *batchUpgradeListenter;

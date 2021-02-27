@@ -248,7 +248,7 @@ Item {
 
                 //console.log("#" + i + " status: " + model.deviceStatus + " time: " + model.time)
                 if (model && model.deviceStatus === deviceConnected) {
-                    console.log("#序号 = " + i + " status: " + model.deviceStatus + " time: " + model.time)
+//                    console.log("#序号 = " + i + " status: " + model.deviceStatus + " time: " + model.time)
                     if(timeFlag[i])
                     {
                         model.time = passAgingTime;

@@ -104,8 +104,10 @@ typedef struct _touch_device{
     struct hid_device_ *hid;
     struct hid_device_info *info;
     touch_info touch;
+    touch_fireware_info fireware;
     struct _touch_device *next;
 }touch_device;
+
 
 
 touch_package *getPackage(unsigned char masterCmd, unsigned char subCmd,

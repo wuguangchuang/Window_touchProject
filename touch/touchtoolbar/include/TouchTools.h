@@ -116,7 +116,7 @@ public:
     {
         return map;
     }
-    void showFirewareInfo(int type);
+    void showFirewareInfo(touch_device *dev, int type);
     signals:
     void showMessage(QString title, QString message, int type = 0);
 public slots:
@@ -202,7 +202,7 @@ private:
         void destroyDialog();
         void refreshOnboardTestData(QVariantMap map);
         void showOnboardFailItem(QString message);
-        void showFirewareInfo(int type);
+        void showFirewareInfo(touch_device*dev,int type);
 
     private:
         TouchTools *manager;

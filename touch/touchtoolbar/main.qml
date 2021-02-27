@@ -347,6 +347,7 @@ Window {
                                         updateComBoxId.currentIndex = 0;
                                         fileText.clear();
                                         touch.setUpdatePath("");
+                                        touch.setUpgradeFile("Clear upgrade file");
                                     }
                                     else
                                     {
@@ -568,7 +569,7 @@ Window {
                         anchors.fill: parent
                         anchors.top: parent.top
                         anchors.topMargin: defaultMargin
-
+                        //测试界面的ComboBox
                         ComboBox{
                             id:testComboBox
                             visible: (touch.getAppType() === mAPP_RD) ? true : false
@@ -617,6 +618,7 @@ Window {
                         RowLayout {
                             Layout.fillWidth: true
                             anchors.left: parent.left
+                            //测试或者连续升级的按钮
                             Button{
                                 id:testBtn;
                                 checkable: true
@@ -723,6 +725,7 @@ Window {
                                 }
                             }
                         }
+                        //连续升级的模式下的选择文件部分
                         RowLayout{
                             Layout.fillWidth: true
                             Layout.preferredHeight: testBtn.height
@@ -775,7 +778,7 @@ Window {
                                 }
                             }
                         }
-
+                        //中间显示打印信息以及显示图片的部分
                         Rectangle
                         {
                             id:testTextInfo
@@ -783,6 +786,7 @@ Window {
                             border.color: "#aaaaaa"
                             Layout.fillHeight: true
                             Layout.fillWidth: true
+                            //板载测试模式
                             OnboardTestInterface
                             {
                                 id:onboardTest
@@ -825,7 +829,7 @@ Window {
                                     }
                                 }
                             }
-
+                            //非板载测试模式
                             Rectangle
                             {
                                 anchors.fill: parent
@@ -877,19 +881,34 @@ Window {
                                     {
                                         anchors.top: parent.top
                                         anchors.left: showMessageLog.right
-//                                        anchors.right: parent.right
-                                        Layout.preferredWidth: parent.width / 2 - 1
+                                        anchors.right:parent.right
+                                        anchors.bottom: parent.bottom
+                                        Layout.preferredWidth: parent.width / 2.0
                                         Layout.preferredHeight:parent.height
-                                        border.width: 1
-                                        border.color: "#aaaaaa"
-                                        ColumnLayout{
-                                            anchors.left: parent.left
-                                            anchors.top: parent.top
-                                            anchors.right: parent.right
-                                            anchors.bottom: parent.bottom
-                                            Layout.preferredHeight: parent.height
-                                            Layout.preferredWidth: parent.width
 
+//                                        color:"#aaaaaa"
+                                        // ColumnLayout{
+                                        //     visible:true
+                                            // anchors.left: parent.left
+                                            // anchors.top: parent.top
+                                            // anchors.right: parent.right
+                                            // anchors.bottom: parent.bottom
+                                            // Layout.preferredHeight: parent.height
+                                            // Layout.preferredWidth: parent.width
+                                            Rectangle{
+                                                id:testShowDialog
+                                                anchors.left: parent.left
+                                                // anchors.top: volientTestInfo.bottom
+                                                anchors.top: parent.top
+//                                                anchors.topMargin: defaultMargin + volientTestInfo.height
+                                                anchors.right: parent.right
+                                                anchors.bottom: parent.bottom
+                                                Layout.preferredWidth: parent.width  / 2.0
+//                                                Layout.preferredHeight: parent.height - volientTestInfo.height
+                                                Layout.preferredHeight: parent.height
+                                                border.width: 1
+                                                border.color: "#aaaaaa"
+                                            }
                                             Rectangle{
                                                 id:volientTestInfo
                                                 visible: testComboBox.currentIndex === 1 ? true : false
@@ -904,21 +923,14 @@ Window {
                                                     text:volienceUpgradeInfo
                                                 }
                                             }
-                                            Rectangle{
-                                                id:testShowDialog
-                                                anchors.left: parent.left
-                                                anchors.top: volientTestInfo.bottom
-                                                Layout.preferredWidth: parent.width
-                                                Layout.preferredHeight: parent.height - volientTestInfo.height
-
-                                            }
-                                        }
+                                        // }
 
                                     }
                                 }
 
                             }
                         }
+                        //测试界面的设备主要信息部分
                         Rectangle{
                             Layout.preferredHeight: 30
                             Layout.fillWidth: true
@@ -1141,11 +1153,10 @@ Window {
                                         }
                                     }
                                     onClicked:
-                                    {
-                                        batchCheckResultTimer.restart();
-
+                                    {                            
                                         if(!agingPageTab.batchRunning)
                                         {
+                                            batchCheckResultTimer.restart();
                                             mainTabView.tabsVisible = false;
                                             batchComboBox.enabled = false;
                                             agingPageTab.batchRunning  = true;
@@ -1170,7 +1181,6 @@ Window {
                                             case 1:
                                                 //升级
                                                 updatingFw = true;
-                                                batchCheckResultTimer.stop();
                                                 agingPageTab.batchWorkBtnStr = qsTr("Cancel upgrade");
                                                 agingPageTab.batchChooseFile.enabled = false;
                                                 for(i = 0;i < batchConnectDeviceInfoList.length;i++)
@@ -1428,15 +1438,12 @@ Window {
                         batchComboBox.currentIndex = 0;
                         agingPageTab.functionIndex = batchComboBox.currentIndex;
                         agingPage.functionIndex = batchComboBox.currentIndex;
-
-                        initBatchDeviceInfo();
                         batchWorkBtnStr = qsTr("Start aging");
                         batchRunning = false;
-                        setBatchCancel(false);
+                        initBatchDeviceInfo();
                     }
                     else
                     {
-                        setBatchCancel(true);
 
                     }
 
@@ -1706,34 +1713,7 @@ Window {
         triggeredOnStart:false  //第一次开始计时是否响应
         onTriggered:{
             //检测是否批处理完成
-            if(agingPageTab.batchRunning)
-            {
-                //处理新连接的设备
-//                for(var i = 0;i < mainPage.batchConnectDeviceInfoList.length;i++ )
-//                {
-//                    if(agingPage.getDeviceStatus(i) === agingPage.deviceConnected && agingPage.getDeviceResult(i) === agingPage.batchResult)
-//                    {
-
-//                        switch(agingPage.functionIndex)
-//                        {
-//                        case 1:
-//                            startBatchUpgrade(i);
-//                            agingPage.setDeviceResult(i,agingPage.batchRunning);
-//                            break;
-//                        case 2:
-//                            if(agingPage.getDeviceBootloader(i) === 0)
-//                            {
-
-//                                startBatchTest(i)
-//                                agingPage.setDeviceResult(i,agingPage.batchRunning);
-//                            }
-
-//                            break;
-//                        }
-//                    }
-//                }
-            }
-            else
+            if(!agingPageTab.batchRunning)
             {
                 var allFinish = true;
                 for(var i = 0;i < agingPage.deviceCount;i++)
@@ -1769,25 +1749,6 @@ Window {
                     batchCheckResultTimer.stop();
                 }
             }
-//            else
-//            {
-//                //批处理结束
-//                console.log("批处理结束");
-//                agingPageTab.batchRunning != agingPageTab.batchRunning;
-//                if(agingPageTab.functionIndex === 0)
-//                {
-//                    agingPageTab.batchWorkBtnStr = qsTr("Aging");
-//                }
-//                else if(agingPageTab.functionIndex === 1)
-//                {
-//                    agingPageTab.batchWorkBtnStr = qsTr("Upgrade");
-//                }
-//                else if(agingPageTab.functionIndex === 2)
-//                {
-//                    agingPageTab.batchWorkBtnStr = qsTr("Test");
-//                }
-
-//            }
         }
 
     }
@@ -1806,15 +1767,20 @@ Window {
         id:testComboBoxList
     }
     property alias batchUpgradeFileText:agingPageTab.batchUpgradeFileText
-    //该文件是通过文件夹获取到到的固件
-    function setUpgradeFile(file) {
-        if(lockCheck && currenttab === mTAB_Upgrade)
+    //该函数是通过文件夹获取到到的固件
+    function setUpgradeFile(file,type) {
+        if(type !== 0 && lockCheck && currenttab === mTAB_Upgrade)
         {
             showToast(qsTr("Please unlock and then select firmware"));
             return;
         }
+        if(updatingFw)
+        {
+            showToast(qsTr("Unable to change firmware while upgrading"));
+            return;
+        }
         file = "" + file;
-        if(currenttab === mTAB_Upgrade)
+        if(currenttab === mTAB_Upgrade || type === 0)
         {
             var existFlsg = false;
             for(var i = 0;i < fileText.count;i++)
@@ -1829,6 +1795,7 @@ Window {
             if(!existFlsg)
             {
                 fileText.insert(0,{"text":file});
+                //保存文件
                 touch.setUpgradeFile(file);
                 if(fileText.count > 10)
                 {
@@ -1843,6 +1810,7 @@ Window {
                     break;
                 }
             }
+            //设置升级文件
             touch.setUpdatePath(file);
         }
         else if(currenttab === mTAB_Aging)
@@ -1877,7 +1845,7 @@ Window {
         onAccepted: {
 //            console.log("You chose: " + fileDialog.fileUrls)
             this.close();
-            setUpgradeFile(fileDialog.fileUrl);
+            setUpgradeFile(fileDialog.fileUrl,1);
             //touch.updateFireware(fileDialog.fileUrl);
         }
 
@@ -1908,58 +1876,6 @@ Window {
         //Component.onCompleted: visible = true
     }
 
-    function setFileText(file) {
-        if(lockCheck && mTAB_Upgrade === currenttab)
-        {
-            showToast(qsTr("Please unlock and then select firmware"));
-            return;
-        }
-        if(currenttab === mTAB_Upgrade)
-        {
-            var existFlsg = false;
-            for(var i = 0;i < fileText.count;i++)
-            {
-                if(fileText.get(i).text === file)
-                {
-                    existFlsg = true;
-                    break;
-                }
-            }
-            if(fileText.count === 10)
-            {
-                existFlsg = true;
-                file = fileText.get(0).text;
-                showToast(qsTr("Up to 10 pieces of firmware can be stored"));
-            }
-            if(!existFlsg)
-            {
-                console.log("++++++++++++++++++++++++++++++++++++++++++++++++");
-                fileText.insert(0,{"text":file});
-            }
-            for(i = 0;i < fileText.count;i++)
-            {
-                if(fileText.get(i).text === file)
-                {
-                    updateComBoxId.currentIndex = i;
-                    break;
-                }
-            }
-            touch.setUpdatePath(file);
-        }
-        else if(currenttab === mTAB_Aging)
-        {
-            console.log("设置批量升级的文件");
-            batchUpgradeFileText.text = file;
-            batchUpgradeFile = file;
-        }
-        else if(currenttab === mTAB_Test)
-        {
-            console.log("####获取到暴力升级的文件")
-            testPage.volienceUpgradeFileText.text = file;
-
-        }
-
-    }
     function getFileText(){
 //        return fileText.text;
         return updateComBoxId.currentText;
@@ -2546,7 +2462,7 @@ QMessageBox::Critical	3	an icon indicating that the message represents a critica
 
         if (!plugin) {
             if (testChartPage !== null) {
-                console.log("onHotplug @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
+//                console.log("onHotplug @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
                 testChartPage.saveNumbers();
                 testChartPage.clearAndRefreshItems();
                 testChartPage.stopAutoRefresh();
@@ -3079,8 +2995,12 @@ QMessageBox::Critical	3	an icon indicating that the message represents a critica
 
      function currentTabRefresh(currenttab)
      {
-
-         touch.currentTabRefresh(currenttab);
+         if(touch.getAppType() === mAPP_Client)
+         {
+             if(currenttab > 2)
+                currenttab += 1;
+         }
+        touch.currentTabRefresh(currenttab);
      }
 
 }

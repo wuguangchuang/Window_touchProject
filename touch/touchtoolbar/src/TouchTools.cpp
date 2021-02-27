@@ -48,14 +48,12 @@ void TouchTools::onTouchHotplug(touch_device *dev, const int attached, int val)
     appendMessageText(QString(dev->touch.booloader ? "Bootloader" : "TouchApp") + " " +
                             QString(dev->touch.model) + " " +
                             (dev->touch.connected ? tr("connected") : tr("disconnected")), 0);
-    if((getAppType() == APP_FACTORY || getAppType() == APP_RD) && dev->touch.booloader && dev->touch.connected)
+    if((getAppType() == APP_FACTORY || getAppType() == APP_RD) && dev->touch.connected && dev->touch.booloader )
     {
         QString version = "";
         QString checksum = "";
-        touch_fireware_info finfo;
-        mTouchManager->getFirewareInfo(dev, &finfo);
-        version = QString().sprintf(" 0x%04X", toWord(finfo.version_l, finfo.version_h));
-        checksum = QString().sprintf(" 0x%04X", toWord(finfo.checksum_l, finfo.checksum_h));
+        version = QString().sprintf(" 0x%04X", toWord(dev->fireware.version_l, dev->fireware.version_h));
+        checksum = QString().sprintf(" 0x%04X", toWord(dev->fireware.checksum_l, dev->fireware.checksum_h));
         QString message = tr("Fireware version:") + version +"   "+ tr("Fireware checksum:") + checksum;
         appendMessageText(message,0);
     }
@@ -123,8 +121,9 @@ void TouchTools::onTouchHotplug(touch_device *dev, const int attached, int val)
     touchAging.onTouchHotplug(dev, attached, val);
     if(attached == 1 && !dev->touch.booloader)
     {
-        showFirewareInfo(0);
-        getBoardAttribyteData();
+        showFirewareInfo(dev,0);
+        if(toWord(dev->fireware.version_l, dev->fireware.version_h) >= 0x007)
+            getBoardAttribyteData();
 
         //此处是自动选择升级文件升级的入口
         if(firstTimeUpdate)
@@ -189,7 +188,7 @@ void TouchTools::onTouchHotplug(touch_device *dev, const int attached, int val)
     {
         batchDeviceOnHot(dev,attached,val);
     }
-
+    TDEBUG("设备处理完成");
 }
 
 
@@ -532,13 +531,22 @@ void TouchTools::setUpgradeFile(QString path)
 
     QFile file(fpath);
 
-    if (!file.open(QIODevice::ReadWrite|QIODevice::Text|QIODevice::Append)) {
-        TWARNING("can not open upgrade file");
+    if(strncmp("Clear upgrade file",path.toStdString().c_str(),strlen("Clear upgrade file")) == 0)
+    {
+
+        file.open(QIODevice::WriteOnly | QIODevice::Truncate);
     }
-    //TDebug::debug(file.fileName());
-    QTextStream out(&file);
-    out << path;
-    out << "\n";
+    else
+    {
+        if (!file.open(QIODevice::ReadWrite|QIODevice::Text|QIODevice::Append)) {
+            TWARNING("can not open upgrade file");
+        }
+        //TDebug::debug(file.fileName());
+        QTextStream out(&file);
+        out << path;
+        out << "\n";
+    }
+    
     file.close();
     upgradePath = path;
 
@@ -592,30 +600,41 @@ void TouchTools::InitSdkThread::run(void)
         }
     }
     QString path = QString().sprintf("%s/%s%s",touchTool->appPath.toStdString().c_str(),UPGRADE_FILE_DIR, UPGRADE_FILE_NAME);
-    TDEBUG("保存升级文件的路径:path = %s",path.toStdString().c_str() );
+    TDEBUG("保存升级文件的路径:path = %s",path.toStdString().c_str());
     QFile file(path);
 
     char upgradeFile[10240];
     qint64 readCount = 0;
-    if (!file.open(QIODevice::ReadOnly|QIODevice::Text)) {
-        TDebug::debug("can not open upgrade file:" + file.errorString());
-    } else {
+    if (!file.open(QIODevice::ReadOnly|QIODevice::Text)) 
+    {
+        TDEBUG("can not open upgrade file: %s",file.errorString().toStdString().c_str());
+    } else 
+    {
 
         readCount = file.read(upgradeFile, sizeof(upgradeFile) - 1);
-        if (readCount < 0) {
+        if (readCount < 0) 
+        {
             TWARNING("read upgrade file failed(%d)", readCount);
             TDebug::error(file.errorString());
-        } else {
+        } 
+        else 
+        {
             TDEBUG("read count %d", readCount);
-            if (readCount == 0) {
+            if (readCount == 0) 
+            {
                 TDEBUG("read upgrade file, nothing");
-            } else {
+            }
+            else 
+            {
+                
+                touchTool->setUpgradeFile("Clear upgrade file");
                 upgradeFile[readCount] = '\0';
                 TDEBUG("Upgrade file: %s", upgradeFile);
 
                 char *tmp = strtok(upgradeFile,"\n");
                 QFile f(QString(tmp).replace(0, 8, ""));
-                if (f.exists()) {
+                if (f.exists()) 
+                {
                     touchTool->upgradePath = tmp;
                     touchTool->presenter->setFileText(tmp);
                 }
@@ -761,20 +780,20 @@ QVariant TouchTools::getRelativeInfo()
     if (dev == NULL || !dev->touch.connected) {
         info = tr("No connected devices!") + "\n";
     } else {
-        touch_fireware_info finfo;
-        mTouchManager->getFirewareInfo(dev, &finfo);
+//        touch_fireware_info finfo;
+//        mTouchManager->getFirewareInfo(dev, &finfo);
         info += tr("Device infomation");
         info += "\n";
         info += polishingString(polishingSize,tr("Device name:")) + QString(dev->touch.model) + "\n";
-        info += polishingString(polishingSize,tr("Fireware version:")) + QString().sprintf("0x%04X\n", toWord(finfo.version_l, finfo.version_h));
-        info += polishingString(polishingSize,tr("Fireware checksum:")) + QString().sprintf("0x%04X\n", toWord(finfo.checksum_l, finfo.checksum_h));
-        info += polishingString(polishingSize,tr("Support touch number:")) + QString().sprintf("%d\n", finfo.touch_point);
+        info += polishingString(polishingSize,tr("Fireware version:")) + QString().sprintf("0x%04X\n", toWord(dev->fireware.version_l, dev->fireware.version_h));
+        info += polishingString(polishingSize,tr("Fireware checksum:")) + QString().sprintf("0x%04X\n", toWord(dev->fireware.checksum_l, dev->fireware.checksum_h));
+        info += polishingString(polishingSize,tr("Support touch number:")) + QString().sprintf("%d\n", dev->fireware.touch_point);
 //        info += QString().sprintf("设备名称:          %s\n", dev->touch.model);
 //        info += QString().sprintf("固件版本:          0x%04X\n", toWord(finfo.version_l, finfo.version_h));
 //        info += QString().sprintf("固件验证码:        0x%04X\n", toWord(finfo.checksum_l, finfo.checksum_h));
 //        info += QString().sprintf("支持的触摸点数:    %d\n", finfo.touch_point);
-        info += polishingString(polishingSize,tr("USB VID:")) + QString().sprintf("0x%04X\n", toWord(finfo.usb_vid_l, finfo.usb_vid_h));
-        info += polishingString(polishingSize,tr("USB PID:")) + QString().sprintf("0x%04X\n", toWord(finfo.usb_pid_l, finfo.usb_pid_h));
+        info += polishingString(polishingSize,tr("USB VID:")) + QString().sprintf("0x%04X\n", toWord(dev->fireware.usb_vid_l, dev->fireware.usb_vid_h));
+        info += polishingString(polishingSize,tr("USB PID:")) + QString().sprintf("0x%04X\n", toWord(dev->fireware.usb_pid_l, dev->fireware.usb_pid_h));
     }
 
     info += "\n" + tr("Software information") + "\n";
@@ -835,15 +854,15 @@ QVariant TouchTools::getDeviceInfo()
     if (dev == NULL || !dev->touch.connected) {
         info = tr("No connected devices!");
     } else {
-        touch_fireware_info finfo;
-        mTouchManager->getFirewareInfo(dev, &finfo);
+//        touch_fireware_info finfo;
+//        mTouchManager->getFirewareInfo(dev, &finfo);
         info += "\n";
         info += QString(dev->touch.model) + "\n";
-        info += QString().sprintf("0x%04X\n", toWord(finfo.version_l, finfo.version_h));
-        info += QString().sprintf("0x%04X\n", toWord(finfo.checksum_l, finfo.checksum_h));
-        info += QString().sprintf("%d\n", finfo.touch_point);
-        info += QString().sprintf("0x%04X\n", toWord(finfo.usb_vid_l, finfo.usb_vid_h));
-        info += QString().sprintf("0x%04X\n", toWord(finfo.usb_pid_l, finfo.usb_pid_h));
+        info += QString().sprintf("0x%04X\n", toWord(dev->fireware.version_l, dev->fireware.version_h));
+        info += QString().sprintf("0x%04X\n", toWord(dev->fireware.checksum_l, dev->fireware.checksum_h));
+        info += QString().sprintf("%d\n", dev->fireware.touch_point);
+        info += QString().sprintf("0x%04X\n", toWord(dev->fireware.usb_vid_l, dev->fireware.usb_vid_h));
+        info += QString().sprintf("0x%04X\n", toWord(dev->fireware.usb_pid_l, dev->fireware.usb_pid_h));
         info += dev->touch.serial_number;
         info += "\n";
     }
@@ -859,8 +878,8 @@ QVariant TouchTools::getDeviceMainInfo()
     if (dev == NULL || !dev->touch.connected) {
         info = "No connected devices!";
     } else {
-        touch_fireware_info finfo;
-        mTouchManager->getFirewareInfo(dev, &finfo);
+//        touch_fireware_info finfo;
+//        mTouchManager->getFirewareInfo(dev, &finfo);
         info = tr("Device name:");
         if(dev->touch.booloader)
         {
@@ -872,9 +891,9 @@ QVariant TouchTools::getDeviceMainInfo()
         }
 
         info += tr("Fireware version:");
-        info += QString().sprintf("0x%04X  ", toWord(finfo.version_l, finfo.version_h));
+        info += QString().sprintf("0x%04X  ", toWord(dev->fireware.version_l, dev->fireware.version_h));
         info += tr("Fireware checksum:");
-        info += QString().sprintf("0x%04X  ", toWord(finfo.checksum_l, finfo.checksum_h));
+        info += QString().sprintf("0x%04X  ", toWord(dev->fireware.checksum_l, dev->fireware.checksum_h));
     }
 
     return QVariant::fromValue(info);
@@ -980,20 +999,33 @@ do_test_end:
     return map;
 }
 
-void TouchTools::showFirewareInfo(int type)
+void TouchTools::showFirewareInfo(touch_device *dev,int type)
 {
-    QString info = "";
-        touch_device *dev = mTouchManager->firstConnectedDevice();
 
-        if (dev == NULL || !dev->touch.connected) {
-            info = tr("No connected devices!");
-        } else {
-            touch_fireware_info finfo;
-            mTouchManager->getFirewareInfo(dev, &finfo);
-            info = QString().sprintf("%s 0x%04X   ",tr("Fireware version:").toStdString().c_str(), toWord(finfo.version_l, finfo.version_h));
-            info += QString().sprintf("%s 0x%04X",tr("Fireware checksum:").toStdString().c_str(), toWord(finfo.checksum_l, finfo.checksum_h));
-            appendMessageText(info,type);
-        }
+    /*
+    QString info = "";
+    touch_device *dev = mTouchManager->firstConnectedDevice();
+
+    if (dev == NULL || !dev->touch.connected) {
+        info = tr("No connected devices!");
+    } else {
+        touch_fireware_info finfo;
+        mTouchManager->getFirewareInfo(dev, &finfo);
+        info = QString().sprintf("%s 0x%04X   ",tr("Fireware version:").toStdString().c_str(), toWord(finfo.version_l, finfo.version_h));
+        info += QString().sprintf("%s 0x%04X",tr("Fireware checksum:").toStdString().c_str(), toWord(finfo.checksum_l, finfo.checksum_h));
+        appendMessageText(info,type);
+    }
+    */
+    QString info = "";
+    if (dev == NULL || !dev->touch.connected) {
+        info = tr("No connected devices!");
+    } else {
+
+        info = QString().sprintf("%s 0x%04X   ",tr("Fireware version:").toStdString().c_str(), toWord(dev->fireware.version_l, dev->fireware.version_h));
+        info += QString().sprintf("%s 0x%04X",tr("Fireware checksum:").toStdString().c_str(), toWord(dev->fireware.checksum_l, dev->fireware.checksum_h));
+        appendMessageText(info,type);
+    }
+
 }
 
 QVariantMap TouchTools::getSignalItems()
@@ -1404,9 +1436,9 @@ void TouchTools::TestListener::showOnboardFailItem(QString message)
     }
 }
 
-void TouchTools::TestListener::showFirewareInfo(int type)
+void TouchTools::TestListener::showFirewareInfo(touch_device*dev,int type)
 {
-    manager->showFirewareInfo(type);
+    manager->showFirewareInfo(dev,type);
 }
 
 
