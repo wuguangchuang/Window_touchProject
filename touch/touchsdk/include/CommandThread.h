@@ -5,6 +5,7 @@
 #include <QMutex>
 #include <QMutexLocker>
 #include <QQueue>
+#include <QReadWriteLock>
 
 #include "touch.h"
 
@@ -48,15 +49,13 @@ public:
         CommandThread *commandThread;
 
     };
-//    QQueue<CommandItem*> mCommandItem;
     QList<CommandItem*> mCommandItem;
     void copyTouchPackage(touch_package *dst,touch_package *src);
     static QList<touch_device *> deviceList;
-    static QMutex deviceListMutex;
+    static QReadWriteLock deviceListRWLock;
 private:
     QSemaphore sem;
-    QMutex mutex;
-
+    QReadWriteLock readWriteLock;
     bool finshed = false;
 };
 

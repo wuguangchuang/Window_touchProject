@@ -1585,10 +1585,10 @@ void TouchManager::HotplugThread::run()
             }
             if(!exist)
             {
-                CommandThread::deviceListMutex.lock();
+                CommandThread::deviceListRWLock.lockForWrite();
                 CommandThread::deviceList.removeAt(DL);
                 TDEBUG("删除掉一个通讯设备:设备个数 = %d",CommandThread::deviceList.length());
-                CommandThread::deviceListMutex.unlock();
+                CommandThread::deviceListRWLock.unlock();
                 listLength = CommandThread::deviceList.length();
                 DL -= 1;
             }
@@ -1610,10 +1610,10 @@ void TouchManager::HotplugThread::run()
         while (device) {
             cur = device;
             same = false;
-            CommandThread::deviceListMutex.lock();
+            CommandThread::deviceListRWLock.lockForWrite();
             CommandThread::deviceList.append(device);
             TDEBUG("增加一个通讯设备:设备个数 = %d",CommandThread::deviceList.length());
-            CommandThread::deviceListMutex.unlock();
+            CommandThread::deviceListRWLock.unlock();
 
 
             // find device in lists
