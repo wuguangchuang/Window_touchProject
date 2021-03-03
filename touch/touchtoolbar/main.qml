@@ -1185,9 +1185,8 @@ Window {
                                                 agingPageTab.batchChooseFile.enabled = false;
                                                 for(i = 0;i < batchConnectDeviceInfoList.length;i++)
                                                 {
-
-                                                    console.log("升级序号index = " + i);
                                                     startBatchUpgrade(i);
+//                                                    touch.tPrintf("###########升级i = " + i + ",设置结果 = " + agingPage.batchRunning);
                                                     agingPageTab.agingPage.setDeviceResult(i,agingPage.batchRunning)
                                                     
                                                 }
@@ -1235,7 +1234,7 @@ Window {
                                             else if(agingPageTab.functionIndex === 1)
                                             {
 
-                                                updatingFw = false;
+//                                                updatingFw = false;
 //                                                agingPageTab.batchWorkBtnStr = qsTr("Upgrade");
                                                 showToast(qsTr("Stop upgrading. New connected devices will no longer be upgraded."))
                                             }
@@ -1718,17 +1717,17 @@ Window {
                 var allFinish = true;
                 for(var i = 0;i < agingPage.deviceCount;i++)
                 {
-
+                    touch.tPrintf("序号 = " + i + ",结果 = agingPage.getDeviceResult(i) = " + agingPage.getDeviceResult(i));
                     if(agingPage.getDeviceResult(i) === agingPage.batchRunning)
                     {
                         allFinish = false;
-//                        console.log("正在运行的设备index = " + i);
                         break;
 
                     }
                 }
                 if(allFinish)
                 {
+                    touch.tPrintf("22222222222222222222222222222222222222222222222222222全部升级完成");
                     mainTabView.tabsVisible = true;
                     agingPageTab.batchComboBox.enabled = true;
                     agingPageTab.batchStartWork.enabled = true;
@@ -1746,6 +1745,7 @@ Window {
                     {
                         agingPageTab.batchWorkBtnStr = qsTr("Start test");
                     }
+                    updatingFw = false;
                     batchCheckResultTimer.stop();
                 }
             }
@@ -2211,6 +2211,8 @@ QMessageBox::Critical	3	an icon indicating that the message represents a critica
     function setUpgrading(u){
         if(currenttab === mTAB_Upgrade || (currenttab === mTAB_Test && !testPage.testBtn.checked))
         {
+
+            console.log("11111111111111111111111111111111111111111111111 u = " + u ? 1 : 0);
             updatingFw = u;
         }
 

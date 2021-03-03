@@ -1,5 +1,5 @@
 #include "TouchManager.h"
-#include "hidapi.h"
+
 
 #include "utils/tdebug.h"
 #include "utils/tPrintf.h"
@@ -203,8 +203,9 @@ void TouchManager::freeInstance()
 }
 TouchManager::TouchManager() : mTesting(false), mUpgrading(false),
     mHotplugThread(this), mHotplugListener(NULL), untDataBuf(NULL),
-    mCount(0), hotplugInterval(300), hotplugSem(0),mPauseHotplug(false),
-    mtestStop(false),translator(NULL),batchCancal(false),batchUpgradeList(NULL)
+    mCount(0), hotplugInterval(500), hotplugSem(0),mPauseHotplug(false),
+    mtestStop(false),translator(NULL),batchCancal(false),batchUpgradeList(NULL),
+    initDeviceThreadList(NULL),batchFirstUpgrade(true)
 {
 #if 1
     //mDevices = hid_find_touchdevice(&mCount);
@@ -1495,6 +1496,7 @@ void TouchManager::triggerHotplugEvent()
 {
     mHotplugThread.triggerHotplugEvent();
 }
+
 //运行热插拔线程、监视是否有硬件设备的插入，如果有新的设备，那么将设备添加到设备链表touch_device
 void TouchManager::HotplugThread::run()
 {
@@ -1519,26 +1521,26 @@ void TouchManager::HotplugThread::run()
     TDEBUG("hotplug thread run: %d", manager->hotplugInterval);
 
     manager->hotplugSem.release();
-    bool stopSem;
+//    bool stopSem;
 
     while (!mStop) {
        this->msleep(manager->hotplugInterval);
 
-       stopSem = manager->hotplugSem.tryAcquire(1, manager->hotplugInterval);
-       if (mStop && stopSem == true) {
-           break;
-       } else if (stopSem == false && manager->hotplugEvent) {
-           continue;
-       }
-       if (manager->mPauseHotplug)
-           continue;
+//       stopSem = manager->hotplugSem.tryAcquire(1, manager->hotplugInterval);
+//       if (mStop && stopSem == true) {
+//           break;
+//       } else if (stopSem == false && manager->hotplugEvent) {
+//           continue;
+//       }
+//       if (manager->mPauseHotplug)
+//           continue;
 
-        {
-#ifdef HOTPLUG_SHOW_COMSUME
-        QTime time;
-        time.start();
-        TDEBUG("start check devices");
-#endif
+//        {
+//#ifdef HOTPLUG_SHOW_COMSUME
+//        QTime time;
+//        time.start();
+//        TDEBUG("start check devices");
+//#endif
 
         tmp = manager->devices();
 
@@ -1593,6 +1595,7 @@ void TouchManager::HotplugThread::run()
                 DL -= 1;
             }
         }
+        manager->freeInieDeveicThreadList();
 
         // find plugin, enumerate hid again, get new devices
         count = 0;
@@ -1610,92 +1613,34 @@ void TouchManager::HotplugThread::run()
         while (device) {
             cur = device;
             same = false;
-            CommandThread::deviceListRWLock.lockForWrite();
-            CommandThread::deviceList.append(device);
+            CommandThread::deviceList.append(cur);
             TDEBUG("增加一个通讯设备:设备个数 = %d",CommandThread::deviceList.length());
-            CommandThread::deviceListRWLock.unlock();
-
-
-            // find device in lists
-            tmp = manager->devices();
-            found_old = 0;
-
-            if(manager->initDeviceInfo(cur) < 0)
+            InitDeviceInfoThread *initDeviceInfoThread = new InitDeviceInfoThread(manager,cur);
+            struct InitDeviceThreadlist *initNode = (struct InitDeviceThreadlist *)malloc(sizeof(struct InitDeviceThreadlist));
+            initNode->initDeviceInfoThread = initDeviceInfoThread;
+            initNode->next = NULL;
+            struct InitDeviceThreadlist *curInit = manager->initDeviceThreadList,*lastInit = NULL;
+            if(curInit == NULL)
             {
-                device = device->next;
-                continue;
+                manager->initDeviceThreadList = initNode;
             }
-
-            while (tmp) {
-//                hotplug_dbg("tmp=%d, device=%d", tmp->touch.connected, device->touch.connected);
-//                if (tmp->touch.connected)
-//                    continue;
-                //判断两个设备是否相同，相同返回true
-                if (TouchManager::isSameDeviceInPort(tmp, device)) {
-                    if (tmp->touch.connected) {
-                        same = true;
-                        break;
-                    }
-//                    tmp->mutex.lock();
-
-//                    device->touch.connected = 1;
-
-//                    manager->freeHidDevice(tmp);    // free old device
-                    manager->deepCloneDevice(tmp, device);
-//                    tmp->mutex.unlock();
-//                    TDEBUG("onHot连接过的设备 MCUID = %s",device->touch.id_str);
-                    tmp2 = cur->next;
-                    cur = tmp;
-
-//                    cur->touch.connected = 1;
-//                    device->hid = NULL;
-//                    device->info = NULL;
-//                    free(device); // free old device
-                    device = tmp2;          // device, the next new device
-
-                    found_old = 1;
-                    break;
-                } else {
-                    tmp = tmp->next;
+            else
+            {
+                while(curInit)
+                {
+                    lastInit = curInit;
+                    curInit = curInit->next;
                 }
+                lastInit->next = initNode;
             }
-            if (same) {
-                device = device->next;
-                continue;
-            }
-            //判断之前该设备是否连接过
-
-
-            // new one
-            if (found_old == 0 && !same) {
-            hotplug_dbg("new one device");
-            if (last == NULL) {
-                manager->setDevices(device);
-
-//                TDEBUG("onHot新设备 MCUID =  %s", device->touch.id_str);
-                device = device->next;
-            } else {
-                last->next = device;
-                last = device;
-                device = device->next;
-            }
-        }
-        hotplug_dbg("init device info");
-        if (!same && manager->mHotplugListener != NULL) {
-            cur->touch.connected = 1;
-            manager->mHotplugListener->onTouchHotplug(cur, 1, found_old);
-        }
-
-
-            
-device_each_out:
-            hotplug_dbg("next device: %p", device);
+            initDeviceInfoThread->start();
+            device = device->next;
 
         }
-#ifdef HOTPLUG_SHOW_COMSUME
-        TDEBUG("hotplug check comsume: %dms", time.elapsed());
-#endif
-        }
+//#ifdef HOTPLUG_SHOW_COMSUME
+//        TDEBUG("hotplug check comsume: %dms", time.elapsed());
+//#endif
+//        }
     }
     finshed = true;
     TDEBUG("hotplug thread end");
@@ -1704,9 +1649,24 @@ device_each_out:
 //初始化设备信息
 int TouchManager::initDeviceInfo(touch_device *dev)
 {
+    TDEBUG("初始化设备");
     int ret = 0;
+    memset(dev->touch.model, 0, sizeof(dev->touch.model));
+    ret = getStringInfo(dev, TOUCH_STRING_TYPE_MODEL, dev->touch.model, sizeof(dev->touch.model));
+    if(ret < 0)
+    {
+        return -2;
+    }
+    memset(&dev->touch.mcu, 0, sizeof(mcu_info));
+    ret = getMcuInfo(dev, &dev->touch.mcu);
+    if(ret < 0)
+    {
+        return -3;
+    }
+    byteToStr(dev->touch.mcu.id, dev->touch.id_str, sizeof(dev->touch.id_str) - 1);
+    dev->touch.id_str[sizeof(dev->touch.id_str) - 1] = '\0';
+    TDEBUG("mcu = %s",dev->touch.id_str);
     //通过序列号来判断设备时需要更新VID PID以及BootLoader信息
-//    touch_fireware_info touchFirmwareInfo;
     memset(&dev->fireware,0,sizeof(dev->fireware));
     ret = getFirewareInfo(dev,&dev->fireware);
     if(ret == 0)
@@ -1728,26 +1688,8 @@ int TouchManager::initDeviceInfo(touch_device *dev)
     {
         return -1;
     }
-    memset(dev->touch.model, 0, sizeof(dev->touch.model));
-    ret = getStringInfo(dev, TOUCH_STRING_TYPE_MODEL, dev->touch.model, sizeof(dev->touch.model));
-    if(ret < 0)
-    {
-        return -2;
-    }
-    memset(&dev->touch.mcu, 0, sizeof(mcu_info));
-    ret = getMcuInfo(dev, &dev->touch.mcu);
-    if(ret < 0)
-    {
-        return -3;
-    }
-    byteToStr(dev->touch.mcu.id, dev->touch.id_str, sizeof(dev->touch.id_str) - 1);
-    dev->touch.id_str[sizeof(dev->touch.id_str) - 1] = '\0';
-//    if(memcmp(dev->touch.id_str,"000000000",strlen("000000000")) == 0)
-//    {
-//        TERROR("检测到设备的MCUID == 000000");
-//        dev->touch.connected = 0;
-//        return -1;
-//    }
+
+    TDEBUG("初始化设备完成");
     return 0;
 }
 
@@ -1852,22 +1794,6 @@ QVariantMap TouchManager::getBatchDevicesInfo()
             tmp = tmp->next;
             continue;
         }
-        sameDevice = false;
-        for(int i = 0;i < deviceInfoList.length();i++)
-        {
-            tmpDevInfo = deviceInfoList.at(i).toMap();
-
-            if(strncmp(tmp->touch.id_str,tmpDevInfo.value("mcuID").toString().toStdString().c_str(),sizeof(tmp->touch.id_str)) == 0)
-            {
-                sameDevice = true;
-                break;
-            }
-        }
-        if(sameDevice)
-        {
-            tmp = tmp->next;
-            continue;
-        }
         QVariantMap deviceMap;
         deviceMap.insert("deviceStatus",tmp->touch.connected ? DEVICE_CONNECT : DEVICE_DISCONNECT);
         deviceMap.insert("mcuID",tmp->touch.id_str);
@@ -1946,6 +1872,19 @@ bool TouchManager::isBootloaderDevice(touch_device *dev)
 #endif
 }
 
+void TouchManager::removeInitFailedDev(touch_device *dev)
+{
+    int listLength = CommandThread::deviceList.length();
+    for(int i = 0;i < listLength;i++)
+    {
+        if(CommandThread::deviceList.at(i) == dev)
+        {
+            CommandThread::deviceList.removeAt(i);
+        }
+        break;
+    }
+}
+
 void TouchManager::freeBatchUpgradeList()
 {
     struct BatchUpgradeThreadList *cur = batchUpgradeList,*after = NULL;
@@ -1957,6 +1896,39 @@ void TouchManager::freeBatchUpgradeList()
         cur = after;
     }
     batchUpgradeList = NULL;
+}
+
+void TouchManager::freeInieDeveicThreadList()
+{
+    if(initDeviceThreadList == NULL)
+    {
+        return;
+    }
+    struct InitDeviceThreadlist *cur = initDeviceThreadList,*after = NULL;
+    bool initFinish = true;
+    while(cur)
+    {
+        if(!cur->initDeviceInfoThread->isFinished())
+        {
+            initFinish = false;
+            break;
+        }
+        cur = cur->next;
+    }
+
+    if(initFinish)
+    {
+        cur = initDeviceThreadList;
+        while(cur)
+        {
+            after = cur->next;
+            delete cur->initDeviceInfoThread;
+            free(cur);
+            cur = after;
+        }
+        initDeviceThreadList = NULL;
+        TDEBUG("初始化设备信息完成,释放内存");
+    }
 }
 
 #define show_line() TDEBUG("%s [%d]", __func__, __LINE__)
@@ -2089,8 +2061,8 @@ void TouchManager::doUpgrade(QString path)
         goto do_upgrade_end;
     }
     TDEBUG("reset to app");
-    reset(dev, RESET_DST_APP, 0);
-    QThread::msleep(2300);
+    reset(dev, RESET_DST_APP, 1);
+//    QThread::msleep(2300);
     if (mUpgradeListener != NULL)
         mUpgradeListener->inProgress(100);
 
@@ -3900,8 +3872,7 @@ void TouchManager::BatchUpgradeThread::run()
     int allPackageCount = 0;
     int precent, tmpPrecent;
     const long waitBootloaderTime = 10 * 1000;
-    QTime time;
-
+    QTime timeDelay;
     const FirewarePackage *package;
     if (!fireware.isReady()) {
         result = false;
@@ -3925,9 +3896,14 @@ void TouchManager::BatchUpgradeThread::run()
         manager->batchMutex.unlock();
     }
 
+    timeDelay.start();
+    while(timeDelay.elapsed() < (8 * upgradeIndex)  * 1000)
+    {
+        QThread::msleep(100);
+    }
     TDEBUG("upgradeIndex = %d,固件准备完成，等待设备复位",upgradeIndex);
     manager->reset(upgradeDev, RESET_DST_BOOLOADER, 1);
-   QThread::msleep(100); // wait for reset
+    QThread::msleep(100); // wait for reset
 
     precent = 2;
     if(manager->batchUpgradeListenter != NULL)
@@ -3938,9 +3914,9 @@ void TouchManager::BatchUpgradeThread::run()
     }
 
 
-    time.start();
+    timeDelay.restart();
     while (!manager->isBootloaderDevice(manager->getDevice(upgradeIndex))) {
-        if (time.elapsed() > waitBootloaderTime)
+        if (timeDelay.elapsed() > waitBootloaderTime)
         {
             TDEBUG("设备序号index = %d 等待Bootloader 连接超时",upgradeIndex);
             break;
@@ -4052,9 +4028,78 @@ do_upgrade_end:
             info = manager->translator->getTr("Upgrade success");
 
         }
+        TDEBUG("升级正常结束");
         manager->batchUpgradeListenter->onUpgradeDone(upgradeIndex,result,info);
         TDEBUG("序号 upgradeIndex = %d 升级%s",upgradeIndex,result ? "成功":"失败");
     }
 
+
+}
+
+void TouchManager::InitDeviceInfoThread::run()
+{
+    if(manager->initDeviceInfo(device) < 0)
+    {
+        TDEBUG("设备初始化失败");
+        CommandThread::deviceListRWLock.lockForWrite();
+        manager->removeInitFailedDev(device);
+        CommandThread::deviceListRWLock.unlock();
+        return;
+    }
+    manager->initDeviceMutex.lock();
+    touch_device *tmp = manager->devices();
+    int found_old = 0;
+    bool same = false;
+    while (tmp) {
+        //判断两个设备是否相同，相同返回true
+        if (TouchManager::isSameDeviceInPort(tmp, device))
+        {
+            if (tmp->touch.connected) {
+
+                 TDEBUG("设备已存在");
+                same = true;
+                break;
+            }
+
+            manager->deepCloneDevice(tmp, device);
+            TDEBUG("onHot连接过的设备 MCUID = %s",device->touch.id_str);
+            found_old = 1;
+            break;
+        }
+        else
+        {
+            tmp = tmp->next;
+        }
+    }
+    // new one
+    if (found_old == 0 && !same)
+    {
+        TDEBUG("new one device");
+
+        if (manager->devices() == NULL)
+        {
+            manager->setDevices(device);
+            device->next = NULL;
+        }
+        else
+        {
+            tmp = manager->devices();
+            touch_device *last = NULL;
+            while(tmp)
+            {
+                last = tmp;
+                tmp = tmp->next;
+            }
+            last->next = device;
+            device->next = NULL;
+        }
+
+    }
+    manager->initDeviceMutex.unlock();
+    if (!same && manager->mHotplugListener != NULL) {
+        TDEBUG("通知已经连接到设备显示");
+        device->touch.connected = 1;
+        manager->mHotplugListener->onTouchHotplug(device, 1, found_old);
+    }
 
 }

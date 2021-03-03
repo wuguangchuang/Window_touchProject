@@ -3,6 +3,7 @@
 
 #include "sdk/tdebug.h"
 #include "touch.h"
+#include "hidapi.h"
 //#include "commandthread.h"
 #include "sdk/CommandThread.h"
 #define MAX_TOUCH_COUNT 9
@@ -63,6 +64,7 @@ struct CalibrationCapture {
     qint16 count;
 };
 struct BatchUpgradeThreadList;
+struct InitDeviceThreadlist;
 typedef void (*touch_hotplug_func)(touch_device *, const int attached, const void *value);
 class TouchManager : public CommandThread::CommandListener
 {
@@ -115,6 +117,21 @@ public:
         TouchManager *manager;
         bool mStop;
         bool finshed = false;
+    };
+
+    class InitDeviceInfoThread :public QThread
+    {
+    public:
+        InitDeviceInfoThread(TouchManager *manager,touch_device *device)
+        {
+            this->manager = manager;
+            this->device = device;
+        }
+    protected:
+        void run();
+    private:
+        TouchManager *manager;
+        touch_device *device;
     };
 
     class UpgradeThread : public QThread
@@ -395,9 +412,13 @@ public:
     HotplugThread mHotplugThread;
     CommandThread *commandThread;
     CommandThread::DeviceCommunicationRead *deviceCommunication;
+    TOUCHSHARED_EXPORT void removeInitFailedDev(touch_device *dev);
 
+    volatile bool batchFirstUpgrade;
     struct BatchUpgradeThreadList *batchUpgradeList;
+    struct InitDeviceThreadlist *initDeviceThreadList;
     TOUCHSHARED_EXPORT void freeBatchUpgradeList();
+    TOUCHSHARED_EXPORT void freeInieDeveicThreadList();
     TestThread *testThread;
     BatchTestListener *batchTestListenter;
     BatchUpgradeListener *batchUpgradeListenter;
@@ -407,6 +428,8 @@ public:
     TOUCHSHARED_EXPORT void setStop(bool stop);
     bool batchCancal;
     TOUCHSHARED_EXPORT void setBatchCancal(bool cancel);
+
+    QMutex batchDelayMutex;
     //onboard
     int boardCount = 0;
     unsigned char boardIndexBuf[128];
@@ -415,5 +438,10 @@ struct BatchUpgradeThreadList{
   TouchManager::BatchUpgradeThread *batchUpgradeThread;
   int upgradeIndex;
   struct BatchUpgradeThreadList *next;
+};
+struct InitDeviceThreadlist{
+    TouchManager::InitDeviceInfoThread *initDeviceInfoThread;
+    touch_device *device;
+    struct InitDeviceThreadlist *next;
 };
 #endif // TOUCHMANAGER_H

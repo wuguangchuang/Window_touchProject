@@ -149,7 +149,7 @@ struct hid_device_ {
 
 static hid_device *new_hid_device()
 {
-    hid_device *dev = (hid_device*) calloc(1, sizeof(hid_device));
+    hid_device *dev = (hid_device*) malloc(sizeof(hid_device));
     dev->device_handle = INVALID_HANDLE_VALUE;
     dev->blocking = TRUE;
     dev->input_report_length = 0;
@@ -161,6 +161,41 @@ static hid_device *new_hid_device()
     dev->ol.hEvent = CreateEvent(NULL, FALSE, FALSE /*inital state f=nonsignaled*/, NULL);
 
     return dev;
+}
+void HID_API_EXPORT HID_API_CALL  memcpyDeviceInfo(touch_device *dst,touch_device *src)
+{
+    dst = (touch_device*)malloc(sizeof(touch_device));
+    memset(dst, 0, sizeof(touch_device));
+
+    dst->info = (struct hid_device_info*)malloc(sizeof(struct hid_device_info));
+    dst->info->path = (char*)malloc(strlen(src->info->path) + 1);
+    dst->info->usage_page = src->info->usage_page;
+    dst->info->usage = src->info->usage;
+    memcpy(dst->info->path,src->info->path,sizeof(strlen(src->info->path)));
+    dst->info->path[strlen(src->info->path)] = '\0';
+    dst->info->vendor_id = src->info->vendor_id;
+    dst->info->product_id = src->info->product_id;
+    dst->info->report_id = 0xCD;
+    dst->info->release_number  = src->info->release_number;
+    dst->info->interface_number = src->info->interface_number;
+
+//    hid_device *dev_hid;
+    dst->hid = new_hid_device();
+    dst->hid->device_handle = src->hid->device_handle;
+    dst->hid->input_report_length = src->hid->input_report_length;
+    dst->hid->output_report_length = src->hid->output_report_length;
+    dst->hid->read_buf = (char*) malloc(dst->hid->output_report_length);
+    dst->hid->info = dst->info;
+
+
+    dst->touch.report_id = src->touch.report_id;
+    dst->touch.booloader = src->touch.booloader;
+    dst->touch.connected = src->touch.connected;
+    dst->touch.output_report_length = src->touch.output_report_length;
+    strncpy(dst->touch.serial_number,src->touch.serial_number,sizeof(dst->touch.serial_number));
+
+    dst->next = NULL;
+
 }
 
 
@@ -787,7 +822,8 @@ int hid_send_data(hid_device *dev, struct hid_report_data *data, struct hid_repo
     if (data == NULL)
         return -1;
     if (dev != NULL && dev->info != NULL) {
-        data->report_id = dev->info->report_id;
+//        data->report_id = dev->info->report_id;
+        data->report_id = 0XCD;
     }
 
     // Clear data buffer

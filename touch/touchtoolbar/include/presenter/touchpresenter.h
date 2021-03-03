@@ -450,6 +450,7 @@ public:
 
     //批处理
     void setBatchResult(int index,int result);
+    void setDeviceInfo(int index,QString msg);
     void onBatchFinish(int index,bool result,QString message = "");
     void addBatchDevice(QVariantMap deviceMap);
 

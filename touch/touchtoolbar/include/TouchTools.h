@@ -244,6 +244,7 @@ public:
         BatchUpgradeListener(TouchTools *manager) { this->manager = manager;}
         void inProgress(int index,int progress);
         void onUpgradeDone(int index,bool result, QString message) ;
+        void setDeviceIfo(int index,QString msg);
     private:
         TouchTools *manager;
     };

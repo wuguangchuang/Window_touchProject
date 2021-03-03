@@ -53,6 +53,7 @@ public:
     void copyTouchPackage(touch_package *dst,touch_package *src);
     static QList<touch_device *> deviceList;
     static QReadWriteLock deviceListRWLock;
+    void removeInitFailedDev(touch_device *dev);
 private:
     QSemaphore sem;
     QReadWriteLock readWriteLock;

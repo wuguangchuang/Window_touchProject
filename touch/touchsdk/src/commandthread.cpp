@@ -49,8 +49,8 @@ void CommandThread::run()
                 if(ret > 0)
                 {
                     item->written = true;
-//                    TDEBUG("发送命令：主命令 = %0x,从命令 = %0x,随机数 = %d,command Length = %d",item->require->master_cmd,item->require->sub_cmd,
-//                           item->require->magic,mCommandItem.length());
+//                    TDEBUG("发送命令：dev = %s,主命令 = %0x,从命令 = %0x,随机数 = %d,command Length = %d",item->dev->touch.id_str,
+//                           item->require->master_cmd,item->require->sub_cmd,item->require->magic,mCommandItem.length());
                 }
                 if(stop)
                     break;
@@ -69,6 +69,7 @@ void CommandThread::DeviceCommunicationRead::run()
     int ret = 0;
     int i = 0;
     int j = 0;
+    int count = 0;
     TDEBUG("DeviceCommunicationRead thread running");
     //一直读取设备数据
     touch_package reply;
@@ -82,17 +83,24 @@ void CommandThread::DeviceCommunicationRead::run()
         }
 
         CommandThread::deviceListRWLock.lockForRead();
-        if(deviceList.length() == 0)
+        if(CommandThread::deviceList.length() == 0)
         {
             CommandThread::deviceListRWLock.unlock();
             QThread::msleep(1);
             continue;
         }
-        if(j >= deviceList.length())
+        if(j >= CommandThread::deviceList.length())
         {
             j = 0;
         }
-        device = deviceList.at(j++);
+        count++;
+        if(count % 2000 == 0)
+        {
+            QThread::msleep(1);
+            count = 0;
+        }
+//        TDEBUG("命令线程检测到设备个数：length =  %d,正在读取的设备序号 j = %d",CommandThread::deviceList.length(),j);
+        device = CommandThread::deviceList.at(j++);
         memset((void *)&reply,0,sizeof(touch_package));
         ret = TouchManager::wait_time_out(device->hid, (unsigned char *)&reply,HID_REPORT_DATA_LENGTH,0);
         CommandThread::deviceListRWLock.unlock();
@@ -106,8 +114,8 @@ void CommandThread::DeviceCommunicationRead::run()
                 {
                     break;
                 }
-//                TDEBUG("读取数据：主命令 = %0x,从命令 = %0x,随机数 = %d,command Length = %d",reply.master_cmd,reply.sub_cmd,
-//                       reply.magic,commandThread->mCommandItem.length());
+//                TDEBUG("读取数据：dev = %s,主命令 = %0x,从命令 = %0x,随机数 = %d,command Length = %d",item->dev->touch.id_str,
+//                       reply.master_cmd,reply.sub_cmd,reply.magic,commandThread->mCommandItem.length());
                 if(reply.magic == item->require->magic)
                 {
                     if(item->reply == NULL)
@@ -126,6 +134,7 @@ void CommandThread::DeviceCommunicationRead::run()
         {
 //            TDEBUG("read not");
         }
+
 
 
     }
@@ -153,11 +162,11 @@ int CommandThread::addCommandToQueue(touch_device *dev, touch_package *require,
     item->written = false;
 
     item->sem = new QSemaphore(0);
-//    readWriteLock.lockForWrite();
+
 //    TDEBUG("增加命令：主命令 = %0x,从命令 = %0x,随机数 = %d,command Length = %d",item->require->master_cmd,item->require->sub_cmd,
 //           item->require->magic,mCommandItem.length());
     mCommandItem.append(item);
-//    readWriteLock.unlock();
+
     sem.release();
     int tryCouny = 30 * 1000;
     for(int i = 0;i < tryCouny;i++)

@@ -335,7 +335,8 @@ void TouchTools::BatchUpgradeThread::run()
         }
         else if(upgradeDev->touch.connected)
         {
-            this->touchTool->batchUpgradeListener.onUpgradeDone(upgradeIndex,false,tr(""));
+//            this->touchTool->batchUpgradeListener.onUpgradeDone(upgradeIndex,false,tr(""));
+            this->touchTool->batchUpgradeListener.setDeviceIfo(upgradeIndex,"");
             break;
         }
         if(this->touchTool->presenter->batchCancel)
@@ -343,7 +344,7 @@ void TouchTools::BatchUpgradeThread::run()
             return;
         }
     }
-    TDEBUG("序号 index = %d 开始升级...",upgradeIndex);
+//    TDEBUG("序号 index = %d 开始升级...",upgradeIndex);
     bool ret =  this->touchTool->mTouchManager->startBatchUpgrade(upgradeIndex,upgradeDev,this->upgardePath,&(this->touchTool->batchUpgradeListener));
 }
 void TouchTools::setBatchCancel(bool batchCancel)
@@ -361,6 +362,7 @@ void TouchTools::batchFinished(int functionIndex)
     switch (functionIndex) {
 
     case 1:
+
         mTouchManager->freeBatchUpgradeList();
         struct BatchUpgradeThreadList *cur = batchUpgradeList,*after = NULL;
         while(cur)
@@ -1688,6 +1690,7 @@ void TouchTools::BatchTestListener::inProgress(int index, int progress)
 
 void TouchTools::BatchTestListener::onTestDone(int index, bool result, QString message)
 {
+    TDEBUG("测试结束,index = %d,结果 = %d",index,result);
     manager->presenter->onBatchFinish(index,result,message);
 }
 
@@ -1698,9 +1701,15 @@ void TouchTools::BatchUpgradeListener::inProgress(int index, int progress)
 
 void TouchTools::BatchUpgradeListener::onUpgradeDone(int index, bool result, QString message)
 {
+    TDEBUG("升级结束,index = %d,结果 = %d",index,result);
     manager->presenter->onBatchFinish(index,result,message);
 //    delete manager->batchUpgradeThread[index];
-//    delete manager->mTouchManager->batchUpgradeThread[index];
+    //    delete manager->mTouchManager->batchUpgradeThread[index];
+}
+
+void TouchTools::BatchUpgradeListener::setDeviceIfo(int index, QString msg)
+{
+    manager->presenter->setDeviceInfo(index,msg);
 }
 
 //字符串后位空格补齐

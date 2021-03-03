@@ -229,6 +229,7 @@ typedef enum _touch_string_type{
 #define RESET_DST_BOOLOADER 1
 #define RESET_DST_APP       2
 touch_device *hid_find_touchdevice(int *count);
+void memcpyDeviceInfo(touch_device *dst,touch_device *src);
 #define touch_reponse_ok(packge) \
     ((package->master_cmd == TOUCH_M_CMD_RESPONSE) && (package->sub_cmd == TOUCH_S_CMD_RESPONSE_SUCCEED))
 
