@@ -636,12 +636,12 @@ void TouchPresenter::onBatchFinish(int index, bool result, QString message)
         return;
     }
 //    TDEBUG("序号%d升级结束,升级结果 = %d",index,batchCancel ? BATCH_CANCEL : (result ? BATCH_FINISH_SUCCESS : BATCH_FINISH_ERROR));
+//    QMetaObject::invokeMethod(component, "refreshBatchResult",
+//        Q_ARG(QVariant, index),
+//        Q_ARG(QVariant, batchCancel ? BATCH_CANCEL : (result ? BATCH_FINISH_SUCCESS : BATCH_FINISH_ERROR)));
     QMetaObject::invokeMethod(component, "refreshBatchResult",
         Q_ARG(QVariant, index),
-        Q_ARG(QVariant, batchCancel ? BATCH_CANCEL : (result ? BATCH_FINISH_SUCCESS : BATCH_FINISH_ERROR)));
-//    QMetaObject::invokeMethod(component, "refreshBatchProgress",
-//        Q_ARG(QVariant, index),
-//        Q_ARG(QVariant, 100));
+        Q_ARG(QVariant, result ? BATCH_FINISH_SUCCESS : BATCH_FINISH_ERROR));
     QMetaObject::invokeMethod(component, "refreshBatchInfo",
         Q_ARG(QVariant, index),
         Q_ARG(QVariant, message));

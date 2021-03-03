@@ -1199,7 +1199,7 @@ Window {
                                                 {
                                                     if(agingPage.getDeviceStatus(i) === agingPage.deviceConnected && agingPage.getDeviceBootloader(i) === 0)
                                                     {
-                                                        console.log("测试序号index = " + i);
+//                                                        console.log("测试序号index = " + i);
                                                         startBatchTest(i);
                                                         agingPageTab.agingPage.setDeviceResult(i,agingPage.batchRunning)
                                                     }
@@ -1717,7 +1717,7 @@ Window {
                 var allFinish = true;
                 for(var i = 0;i < agingPage.deviceCount;i++)
                 {
-                    touch.tPrintf("序号 = " + i + ",结果 = agingPage.getDeviceResult(i) = " + agingPage.getDeviceResult(i));
+//                    touch.tPrintf("序号 = " + i + ",结果 = agingPage.getDeviceResult(i) = " + agingPage.getDeviceResult(i));
                     if(agingPage.getDeviceResult(i) === agingPage.batchRunning)
                     {
                         allFinish = false;
@@ -1727,7 +1727,7 @@ Window {
                 }
                 if(allFinish)
                 {
-                    touch.tPrintf("22222222222222222222222222222222222222222222222222222全部升级完成");
+                    touch.tPrintf("全部升级完成");
                     mainTabView.tabsVisible = true;
                     agingPageTab.batchComboBox.enabled = true;
                     agingPageTab.batchStartWork.enabled = true;

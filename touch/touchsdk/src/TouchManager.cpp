@@ -3895,14 +3895,21 @@ void TouchManager::BatchUpgradeThread::run()
         manager->batchUpgradeListenter->inProgress(upgradeIndex,precent);
         manager->batchMutex.unlock();
     }
+    // if(manager->batchFirstUpgrade)
+    // {
+    //     manager->batchFirstUpgrade = false;
+    // }
+    // else
+    // {
+        timeDelay.start();
+        while(timeDelay.elapsed() < (8 * upgradeIndex)  * 1000)
+        {
+            QThread::msleep(100);
+        }
+    // }
 
-    timeDelay.start();
-    while(timeDelay.elapsed() < (8 * upgradeIndex)  * 1000)
-    {
-        QThread::msleep(100);
-    }
     TDEBUG("upgradeIndex = %d,固件准备完成，等待设备复位",upgradeIndex);
-    manager->reset(upgradeDev, RESET_DST_BOOLOADER, 1);
+    manager->reset(upgradeDev, RESET_DST_BOOLOADER,1);
     QThread::msleep(100); // wait for reset
 
     precent = 2;
