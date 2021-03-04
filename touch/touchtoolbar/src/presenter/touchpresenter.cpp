@@ -520,9 +520,9 @@ void TouchPresenter::startBatchTest(int index)
     touch->startBatchTest(index);
 }
 
-void TouchPresenter::startBatchUpgrade(int index,QString batchUpgradeFile)
+void TouchPresenter::startBatchUpgrade(QString batchUpgradeFile)
 {
-    touch->startBatchUpgrade(index,batchUpgradeFile);
+    touch->startBatchUpgrade(batchUpgradeFile);
 }
 
 void TouchPresenter::setBatchCancel(bool batchCancel)
@@ -654,7 +654,15 @@ void TouchPresenter::addBatchDevice(QVariantMap deviceMap)
         return;
     }
     QMetaObject::invokeMethod(component, "addBatchDevice",
-        Q_ARG(QVariant, deviceMap));
+                              Q_ARG(QVariant, deviceMap));
+}
+
+void TouchPresenter::batchUpradeFinished()
+{
+    if (component == NULL) {
+        return;
+    }
+    QMetaObject::invokeMethod(component, "batchUpradeDone");
 }
 
 
@@ -1030,7 +1038,7 @@ int TouchPresenter::getScreenOrientation(){
         TDEBUG("枚举设备设置出错");
         appendMessageText("枚举设备设置出错",0);
     }
-
+    return systemScreenDirection;
 }
 
 

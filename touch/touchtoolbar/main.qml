@@ -1153,7 +1153,8 @@ Window {
                                         }
                                     }
                                     onClicked:
-                                    {                            
+                                    {
+                                        //开始批量升级
                                         if(!agingPageTab.batchRunning)
                                         {
                                             batchCheckResultTimer.restart();
@@ -1183,13 +1184,7 @@ Window {
                                                 updatingFw = true;
                                                 agingPageTab.batchWorkBtnStr = qsTr("Cancel upgrade");
                                                 agingPageTab.batchChooseFile.enabled = false;
-                                                for(i = 0;i < batchConnectDeviceInfoList.length;i++)
-                                                {
-                                                    startBatchUpgrade(i);
-//                                                    touch.tPrintf("###########升级i = " + i + ",设置结果 = " + agingPage.batchRunning);
-                                                    agingPageTab.agingPage.setDeviceResult(i,agingPage.batchRunning)
-                                                    
-                                                }
+                                                startBatchUpgrade();
                                                 break;
 
                                             case 2:
@@ -1728,24 +1723,7 @@ Window {
                 if(allFinish)
                 {
                     touch.tPrintf("全部升级完成");
-                    mainTabView.tabsVisible = true;
-                    agingPageTab.batchComboBox.enabled = true;
-                    agingPageTab.batchStartWork.enabled = true;
-                    agingPageTab.batchChooseFile.enabled = true;
-                    if(agingPageTab.functionIndex === 0)
-                    {
-                        agingPageTab.batchWorkBtnStr = qsTr("Start aging");
-                    }
-                    else if(agingPageTab.functionIndex === 1)
-                    {
-                        agingPageTab.batchWorkBtnStr = qsTr("Start upgrade");
-                        touch.batchFinished(agingPageTab.functionIndex);
-                    }
-                    else if(agingPageTab.functionIndex === 2)
-                    {
-                        agingPageTab.batchWorkBtnStr = qsTr("Start test");
-                    }
-                    updatingFw = false;
+
                     batchCheckResultTimer.stop();
                 }
             }
@@ -1753,7 +1731,27 @@ Window {
 
     }
 
-
+    function batchUpradeDone()
+    {
+        mainTabView.tabsVisible = true;
+        agingPageTab.batchComboBox.enabled = true;
+        agingPageTab.batchStartWork.enabled = true;
+        agingPageTab.batchChooseFile.enabled = true;
+        if(agingPageTab.functionIndex === 0)
+        {
+            agingPageTab.batchWorkBtnStr = qsTr("Start aging");
+        }
+        else if(agingPageTab.functionIndex === 1)
+        {
+            agingPageTab.batchWorkBtnStr = qsTr("Start upgrade");
+            touch.batchFinished(agingPageTab.functionIndex);
+        }
+        else if(agingPageTab.functionIndex === 2)
+        {
+            agingPageTab.batchWorkBtnStr = qsTr("Start test");
+        }
+        updatingFw = false;
+    }
     property alias agingPage: agingPageTab.agingPage
 
     ListModel
@@ -2982,9 +2980,9 @@ QMessageBox::Critical	3	an icon indicating that the message represents a critica
          agingPage.setDeviceInfo(index,info);
      }
 
-     function startBatchUpgrade(index)
+     function startBatchUpgrade()
      {
-         touch.startBatchUpgrade(index,agingPageTab.batchUpgradeFileText.text);
+         touch.startBatchUpgrade(agingPageTab.batchUpgradeFileText.text);
      }
      function refreshBatchResult(dev,result)
      {

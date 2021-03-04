@@ -205,7 +205,7 @@ TouchManager::TouchManager() : mTesting(false), mUpgrading(false),
     mHotplugThread(this), mHotplugListener(NULL), untDataBuf(NULL),
     mCount(0), hotplugInterval(500), hotplugSem(0),mPauseHotplug(false),
     mtestStop(false),translator(NULL),batchCancal(false),batchUpgradeList(NULL),
-    initDeviceThreadList(NULL),batchFirstUpgrade(true)
+    initDeviceThreadList(NULL),batchFirstUpgrade(true),mDevices(NULL),batchUpgradeDevList(NULL)
 {
 #if 1
     //mDevices = hid_find_touchdevice(&mCount);
@@ -1896,6 +1896,15 @@ void TouchManager::freeBatchUpgradeList()
         cur = after;
     }
     batchUpgradeList = NULL;
+
+    struct BatchUpgradeDeviceList *curDev = batchUpgradeDevList,*afterDev = NULL;
+    while(curDev)
+    {
+        afterDev = curDev->next;
+        free(curDev);
+        curDev = afterDev;
+    }
+    batchUpgradeDevList = NULL;
 }
 
 void TouchManager::freeInieDeveicThreadList()
@@ -3510,6 +3519,86 @@ bool TouchManager::isSameDeviceInPort(touch_device *a, touch_device *b)
 #endif
 }
 
+void TouchManager::doBatchUpgrade(QString path,BatchUpgradeListener *batchUpgradeListener)
+{
+    this->batchUpgradeListenter = batchUpgradeListener;
+    touch_device *connectDevice = devices();
+
+    struct BatchUpgradeDeviceList *curDev = batchUpgradeDevList;
+    int index = 0;
+    while(connectDevice)
+    {
+//        TDEBUG("增加批量升级设备：index = %d,mcu = %s",index,connectDevice->touch.id_str);
+        addBatchDeveice(connectDevice,index);
+        index++;
+        connectDevice = connectDevice->next;
+    }
+    bool existBootLoaderDev = false;
+//    TDEBUG("############### 批量升级设备 batchUpgradeDevList->index = %d",batchUpgradeDevList->upgradeIndex);
+
+    int currentUpgradeIndex = -1;
+    while(!batchCancal)
+    {
+        curDev = batchUpgradeDevList;
+        existBootLoaderDev = false;
+        //检验连接的BootLoader设备是否全部升级完全，且非bootloader设备状态。
+//        TDEBUG("升级连接的BootLoader设备: batchUpgradeDevList->upgradeIndex",batchUpgradeDevList->upgradeIndex);
+        while(curDev)
+        {
+            if(!curDev->dev->touch.connected)
+            {
+//                batchUpgradeListenter->setDeviceIfo(curDev->upgradeIndex,translator->getTr("Device disconnect"));
+            }
+            else if(curDev->dev->touch.connected && curDev->dev->touch.booloader && curDev->upgradeStatus == 0)
+            {
+                TDEBUG("序号 index = %d 是一个BootLoader设备,现在开始升级",curDev->upgradeIndex);
+                curDev->upgradeStatus = 1;
+                startBatchUpgrade(curDev->upgradeIndex,curDev->dev,path,batchUpgradeListener);
+            }
+            if(curDev->dev->touch.connected && curDev->dev->touch.booloader)
+            {
+                existBootLoaderDev = true;
+            }
+            curDev = curDev->next;
+        }
+        //开始逐个升级APP设备
+        curDev = batchUpgradeDevList;
+//        TDEBUG("开始逐个升级APP设备: batchUpgradeDevList->upgradeIndex",batchUpgradeDevList->upgradeIndex);
+        if(curDev != NULL && !batchCancal && !existBootLoaderDev)
+        {
+
+            while(curDev)
+            {
+//                TDEBUG("批量升级当前设备：index = %d,status = %d,connected = %d,bootloader = %d,mcu = %s",
+//                       curDev->upgradeIndex,curDev->upgradeStatus,curDev->dev->touch.connected,
+//                       curDev->dev->touch.booloader,curDev->dev->touch.id_str);
+                if(curDev->dev->touch.connected && curDev->upgradeStatus == 0)
+                {
+                    TDEBUG("逐个开始升级，当前升级序号为 index = %d",curDev->upgradeIndex);
+                    currentUpgradeIndex = curDev->upgradeIndex;
+                    curDev->upgradeStatus = 1;
+                    startBatchUpgrade(curDev->upgradeIndex,curDev->dev,path,batchUpgradeListener);
+                    break;
+                }
+                curDev = curDev->next;
+            }
+            while(curDev != NULL && curDev->upgradeStatus == 1)
+            {
+                //等待设备升级结束
+                QThread::msleep(100);
+            }
+        }
+        else
+        {
+            QThread::msleep(100);
+        }
+
+    }
+
+    batchUpgradeListener->batchUpradeFinished();
+    TDEBUG("批量升级结束");
+}
+
 int TouchManager::startBatchUpgrade(int upgradeIndex, touch_device *device,QString path, TouchManager::BatchUpgradeListener *listener)
 {
     if(device == NULL)
@@ -3544,7 +3633,45 @@ int TouchManager::startBatchUpgrade(int upgradeIndex, touch_device *device,QStri
     batchUpgradeThread->start();
     return 0;
 }
-touch_device *TouchManager::mDevices = NULL;
+
+void TouchManager::setBatchUpgradeStatus(int index, int status)
+{
+    struct BatchUpgradeDeviceList *curDev = batchUpgradeDevList;
+    while(curDev)
+    {
+        if(curDev->upgradeIndex == index)
+        {
+            curDev->upgradeStatus = status;
+            break;
+        }
+        curDev = curDev->next;
+    }
+}
+
+void TouchManager::addBatchDeveice(touch_device *device, int index)
+{
+    struct BatchUpgradeDeviceList *curDev = batchUpgradeDevList,*lastDev = NULL;
+    struct BatchUpgradeDeviceList *node = (struct BatchUpgradeDeviceList *)malloc(sizeof(struct BatchUpgradeDeviceList));
+    node->dev = device;
+    node->upgradeIndex = index;
+    node->upgradeStatus = 0;
+    node->next = NULL;
+    curDev = batchUpgradeDevList;
+    if(curDev == NULL)
+    {
+        batchUpgradeDevList = node;
+    }
+    else
+    {
+        while(curDev)
+        {
+            lastDev = curDev;
+            curDev = curDev->next;
+        }
+        lastDev->next = node;
+    }
+}
+//touch_device* TouchManager::mDevices;
 bool TouchManager::mShowTestData = false;
 bool TouchManager::mIgnoreFailedTestItem = false;
 bool TouchManager::mIgnoreFailedOnboardTestItem = false;
@@ -3895,61 +4022,66 @@ void TouchManager::BatchUpgradeThread::run()
         manager->batchUpgradeListenter->inProgress(upgradeIndex,precent);
         manager->batchMutex.unlock();
     }
-    // if(manager->batchFirstUpgrade)
-    // {
-    //     manager->batchFirstUpgrade = false;
-    // }
-    // else
-    // {
-        timeDelay.start();
-        while(timeDelay.elapsed() < (8 * upgradeIndex)  * 1000)
-        {
-            QThread::msleep(100);
-        }
-    // }
 
-    TDEBUG("upgradeIndex = %d,固件准备完成，等待设备复位",upgradeIndex);
-    manager->reset(upgradeDev, RESET_DST_BOOLOADER,1);
-    QThread::msleep(100); // wait for reset
-
-    precent = 2;
-    if(manager->batchUpgradeListenter != NULL)
+    if(upgradeDev->touch.connected && upgradeDev->touch.booloader)
     {
-        manager->batchMutex.lock();
-        manager->batchUpgradeListenter->inProgress(upgradeIndex,precent);
-        manager->batchMutex.unlock();
-    }
-
-
-    timeDelay.restart();
-    while (!manager->isBootloaderDevice(manager->getDevice(upgradeIndex))) {
-        if (timeDelay.elapsed() > waitBootloaderTime)
+        TDEBUG("当前设备为booltLoader设备");
+        precent = 3;
+        if(manager->batchUpgradeListenter != NULL)
         {
-            TDEBUG("设备序号index = %d 等待Bootloader 连接超时",upgradeIndex);
-            break;
+            manager->batchMutex.lock();
+            manager->batchUpgradeListenter->inProgress(upgradeIndex,precent);
+            manager->batchMutex.unlock();
         }
-        QThread::msleep(30);
-    }
+        dev = upgradeDev;
 
-    dev = manager->getDevice(upgradeIndex);
-    precent = 3;
-    if(manager->batchUpgradeListenter != NULL)
-    {
-        manager->batchMutex.lock();
-        manager->batchUpgradeListenter->inProgress(upgradeIndex,precent);
-        manager->batchMutex.unlock();
-    }
-
-    if (!manager->isBootloaderDevice(dev)) {
-        result = false;
-        TERROR("upgradeIndex = %d 切换到升级模式下失败",upgradeIndex);
-        info = manager->translator->getTr("Failed to switch to upgrade mode");
-        goto do_upgrade_end;
     }
     else
     {
-        TDEBUG("upgradeIndex = %d 连接到Bootloader设备",upgradeIndex);
+        TDEBUG("upgradeIndex = %d,固件准备完成，等待设备复位",upgradeIndex);
+        manager->reset(upgradeDev, RESET_DST_BOOLOADER,1);
+        QThread::msleep(100); // wait for reset
+
+        precent = 2;
+        if(manager->batchUpgradeListenter != NULL)
+        {
+            manager->batchMutex.lock();
+            manager->batchUpgradeListenter->inProgress(upgradeIndex,precent);
+            manager->batchMutex.unlock();
+        }
+
+
+        timeDelay.restart();
+        while (!manager->isBootloaderDevice(manager->getDevice(upgradeIndex))) {
+            if (timeDelay.elapsed() > waitBootloaderTime)
+            {
+                TDEBUG("设备序号index = %d 等待Bootloader 连接超时",upgradeIndex);
+                break;
+            }
+            QThread::msleep(30);
+        }
+
+        dev = manager->getDevice(upgradeIndex);
+        precent = 3;
+        if(manager->batchUpgradeListenter != NULL)
+        {
+            manager->batchMutex.lock();
+            manager->batchUpgradeListenter->inProgress(upgradeIndex,precent);
+            manager->batchMutex.unlock();
+        }
+
+        if (!manager->isBootloaderDevice(dev)) {
+            result = false;
+            TERROR("upgradeIndex = %d 切换到升级模式下失败",upgradeIndex);
+            info = manager->translator->getTr("Failed to switch to upgrade mode");
+            goto do_upgrade_end;
+        }
+        else
+        {
+            TDEBUG("upgradeIndex = %d 连接到Bootloader设备",upgradeIndex);
+        }
     }
+
     for (fIndex = 0; fIndex < firewareCount; fIndex++) {
         package = fireware.getFirewarePackage(fIndex);
         TDEBUG("upgradeIndex = %d,uprade: findex = %d,firewarePackage.header.packSize = %d,firewarePackage.header.packCount = %d",upgradeIndex,fIndex,

@@ -42,7 +42,7 @@ typedef enum {
     APP_PCBA,
     APP_CLIENT_FACTORY
 }AppType;
-struct BatchUpgradeThreadList;
+
 
 
 class TouchTools : public QObject, public CommandThread::CommandListener,
@@ -59,7 +59,6 @@ public:
                         char *argv[] = 0,QString appPath = "");
     ~TouchTools();
     bool stopTestIsFinished;
-    touch_device *getDevices();
     void addTouchManagerTr();
     void setUpgradeProgess(int progess);
     void setTestProgess(int progess) {emit presenter->setTestProgress(progess);}
@@ -210,7 +209,6 @@ public:
     };
     class BatchUpgradeThread:public QThread{
     public:
-        int upgradeIndex;
         QString upgardePath;
         TouchTools *touchTool;
         BatchUpgradeThread(TouchTools *tool){this->touchTool = tool;}
@@ -245,22 +243,25 @@ public:
         void inProgress(int index,int progress);
         void onUpgradeDone(int index,bool result, QString message) ;
         void setDeviceIfo(int index,QString msg);
+        void batchUpradeFinished();
     private:
         TouchTools *manager;
     };
 
     //批处理
-    struct BatchUpgradeThreadList *batchUpgradeList;
+    BatchUpgradeThread *batchUpgradeThread;
+
     QString batchPath;
     QVariantMap batchDeviceMap;
     void batchDeviceOnHot(touch_device *dev, const int attached,int found_old);
     QVariantMap getConnectDeviceInfo();
     touch_device *getDevice(int index);
     void startBatchTest(int testIndex);
-    void startBatchUpgrade(int upgradeIndex,QString path);
+    void startBatchUpgrade(QString path);
     void setBatchCancel(bool batchCancel);
     void setBatchLock(bool enable);
     void batchFinished(int functionIndex);
+
 
     //暴力测试
 
@@ -335,11 +336,7 @@ private :
 
 
 };
-struct BatchUpgradeThreadList{
-  TouchTools::BatchUpgradeThread *batchUpgradeThread;
-  int upgradeIndex;
-  struct BatchUpgradeThreadList *next;
-};
+
 
 } // namespace
 

@@ -30,7 +30,6 @@
 class TouchInterface {
 public:
     TouchInterface(){}
-//    virtual touch_device *getDevices() = 0;
     virtual QVariantMap getSignalData(QVariant index, int count) = 0;
     virtual QVariantMap getSignalItems() = 0;
     virtual QVariant getRelativeInfo() = 0;
@@ -49,7 +48,7 @@ public:
     virtual QVariantMap getConnectDeviceInfo() = 0;
     virtual touch_device *getDevice(int index) = 0;
     virtual void startBatchTest(int testIndex) = 0;
-    virtual void startBatchUpgrade(int testIndex,QString batchUpgradeFile) = 0;
+    virtual void startBatchUpgrade(QString batchUpgradeFile) = 0;
     virtual void setBatchCancel(bool batchCancel) = 0;
     virtual void startVolienceTest(int volienceMode) = 0;
     virtual void setCancelVolienceTest(bool cancelVolienceTest) = 0;
@@ -395,7 +394,7 @@ public:
         return touch->getConnectDeviceInfo();
     }
     Q_INVOKABLE void startBatchTest(int index);
-    Q_INVOKABLE void startBatchUpgrade(int index,QString batchUpgradeFile);
+    Q_INVOKABLE void startBatchUpgrade(QString batchUpgradeFile);
     Q_INVOKABLE void setBatchCancel(bool batchCancel);
     Q_INVOKABLE void setBatchLock(bool enable);
     Q_INVOKABLE void batchFinished(int functionIndex);
@@ -453,7 +452,7 @@ public:
     void setDeviceInfo(int index,QString msg);
     void onBatchFinish(int index,bool result,QString message = "");
     void addBatchDevice(QVariantMap deviceMap);
-
+    void batchUpradeFinished();
 
 signals:
     void agingFinished(int index);

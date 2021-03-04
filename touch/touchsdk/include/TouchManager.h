@@ -65,6 +65,7 @@ struct CalibrationCapture {
 };
 struct BatchUpgradeThreadList;
 struct InitDeviceThreadlist;
+struct BatchUpgradeDeviceList;
 typedef void (*touch_hotplug_func)(touch_device *, const int attached, const void *value);
 class TouchManager : public CommandThread::CommandListener
 {
@@ -202,6 +203,8 @@ public:
     public:
         virtual void inProgress(int index,int progress) = 0;
         virtual void onUpgradeDone(int index,bool result, QString message) = 0;
+        virtual void setDeviceIfo(int index,QString msg) = 0;
+        virtual void batchUpradeFinished() = 0;
     };
 
 private:
@@ -263,7 +266,10 @@ public:
     static TOUCHSHARED_EXPORT bool isSameDeviceInPort(touch_device *a, touch_device *b);
 
     //批处理升级部分
+    TOUCHSHARED_EXPORT void doBatchUpgrade(QString path,BatchUpgradeListener *batchUpgradeListener);
     TOUCHSHARED_EXPORT int startBatchUpgrade(int upgradeIndex,touch_device *device,QString path, BatchUpgradeListener *listener = NULL);
+    TOUCHSHARED_EXPORT void setBatchUpgradeStatus(int index,int status);
+    TOUCHSHARED_EXPORT void addBatchDeveice(touch_device *device,int index);
 
     /**
      * @brief device get the default(first) device
@@ -446,7 +452,7 @@ private:
     UntData *untDataBuf;
 
 public:
-    static touch_device *mDevices;
+    touch_device *mDevices;
     // config
     static bool mShowTestData;
     static bool mIgnoreFailedTestItem;
@@ -462,6 +468,7 @@ public:
     CommandThread::DeviceCommunicationRead *deviceCommunication;
     TOUCHSHARED_EXPORT void removeInitFailedDev(touch_device *dev);
 
+    struct BatchUpgradeDeviceList *batchUpgradeDevList;
     volatile bool batchFirstUpgrade;
     struct BatchUpgradeThreadList *batchUpgradeList;
     struct InitDeviceThreadlist *initDeviceThreadList;
@@ -493,6 +500,20 @@ struct InitDeviceThreadlist{
     TouchManager::InitDeviceInfoThread *initDeviceInfoThread;
     touch_device *device;
     struct InitDeviceThreadlist *next;
+};
+struct BatchUpgradeDeviceList{
+  touch_device *dev;
+  int upgradeIndex;
+  /*
+   *  upgradeStatus:升级状态
+   *
+   *  0   初始化状态
+   *  1   升级中状态
+   *  2   升级完成状态
+   *
+  */
+  int upgradeStatus;
+  struct BatchUpgradeDeviceList *next;
 };
 
 

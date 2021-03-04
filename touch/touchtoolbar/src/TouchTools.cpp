@@ -295,57 +295,18 @@ void TouchTools::startBatchTest(int testIndex)
 
 }
 
-void TouchTools::startBatchUpgrade(int upgradeIndex,QString path)
+void TouchTools::startBatchUpgrade(QString path)
 {
-    BatchUpgradeThread *batchUpgradeThread = new BatchUpgradeThread(this);
-    batchUpgradeThread->upgradeIndex = upgradeIndex;
-    batchUpgradeThread->upgardePath = path;
+    batchUpgradeThread = new BatchUpgradeThread(this);
     batchPath = path;
-    struct BatchUpgradeThreadList *cur = batchUpgradeList,*last = NULL;
-    struct BatchUpgradeThreadList *node = (struct BatchUpgradeThreadList *)malloc(sizeof(struct BatchUpgradeThreadList));
-    node->batchUpgradeThread = batchUpgradeThread;
-    node->upgradeIndex = upgradeIndex;
-    node->next = NULL;
-    if(cur == NULL)
-    {
-        batchUpgradeList = node;
-    }
-    else
-    {
-        while(cur)
-        {
-            last = cur;
-            cur = cur->next;
-        }
-        last->next = node;
-    }
     batchUpgradeThread->start();
     return;
 }
 void TouchTools::BatchUpgradeThread::run()
 {
-    touch_device *upgradeDev;
-    while(!this->touchTool->presenter->batchCancel)
-    {
-        upgradeDev =  this->touchTool->mTouchManager->getDevice(upgradeIndex);
-        if(upgradeDev == NULL || !upgradeDev->touch.connected)
-        {
-            this->touchTool->batchUpgradeListener.onUpgradeDone(upgradeIndex,false,tr("Device disconnect"));
-            QThread::msleep(100);
-        }
-        else if(upgradeDev->touch.connected)
-        {
-//            this->touchTool->batchUpgradeListener.onUpgradeDone(upgradeIndex,false,tr(""));
-            this->touchTool->batchUpgradeListener.setDeviceIfo(upgradeIndex,"");
-            break;
-        }
-        if(this->touchTool->presenter->batchCancel)
-        {
-            return;
-        }
-    }
-//    TDEBUG("序号 index = %d 开始升级...",upgradeIndex);
-    bool ret =  this->touchTool->mTouchManager->startBatchUpgrade(upgradeIndex,upgradeDev,this->upgardePath,&(this->touchTool->batchUpgradeListener));
+
+    touchTool->mTouchManager->doBatchUpgrade(touchTool->batchPath,&(touchTool->batchUpgradeListener));
+
 }
 void TouchTools::setBatchCancel(bool batchCancel)
 {
@@ -364,20 +325,15 @@ void TouchTools::batchFinished(int functionIndex)
     case 1:
 
         mTouchManager->freeBatchUpgradeList();
-        struct BatchUpgradeThreadList *cur = batchUpgradeList,*after = NULL;
-        while(cur)
-        {
-            after = cur->next;
-            delete cur->batchUpgradeThread;
-            free(cur);
-            cur = after;
-        }
-        batchUpgradeList = NULL;
+        delete batchUpgradeThread;
+        batchUpgradeThread = NULL;
         TDEBUG("释放内存空间完成");
         break;
     }
 
 }
+
+
 
 void TouchTools::TestThread::run()
 {
@@ -1155,7 +1111,7 @@ bool TouchTools::volienceTest = false;
 #define show_line() TDEBUG("%s [%d]", __func__, __LINE__);
 TouchTools::TouchTools(QObject *parent, TouchPresenter *presenter,int argc,char **argv,QString appPath) : QObject(parent),
     mTestLstener(this),batchTestListener(this), mUpgradeListener(this),batchUpgradeListener(this),initSdkThread(this), upgradeThread(this),
-    touchAging(presenter, NULL), appType(APP_FACTORY), hotplugInterval(0),testThread(this),batchUpgradeList(NULL)
+    touchAging(presenter, NULL), appType(APP_FACTORY), hotplugInterval(0),testThread(this)
 {
     this->appPath = appPath;
     if(argc > 0)
@@ -1313,11 +1269,6 @@ TouchTools::~TouchTools()
     TDEBUG("TouchTools end");
 }
 
-touch_device *TouchTools::getDevices()
-{
-//    return mTouchManager;
-}
-
 void TouchTools::onCommandDone(touch_device *dev, touch_package *require, touch_package *reply)
 {
 
@@ -1403,7 +1354,8 @@ void TouchTools::batchDeviceOnHot(touch_device *dev, const int attached, int fou
             if(!presenter->batchCancel)
             {
                 TDEBUG("批量升级 序号 = %d",batchDeviceMap.value("count").toInt() - 1);
-                startBatchUpgrade(batchDeviceMap.value("count").toInt() - 1,batchPath);
+//                startBatchUpgrade(batchDeviceMap.value("count").toInt() - 1,batchPath);
+                mTouchManager->addBatchDeveice(dev,batchDeviceMap.value("count").toInt() - 1);
                 presenter->setBatchResult(batchDeviceMap.value("count").toInt() - 1 ,0);
             }
             else{
@@ -1703,8 +1655,8 @@ void TouchTools::BatchUpgradeListener::onUpgradeDone(int index, bool result, QSt
 {
     TDEBUG("升级结束,index = %d,结果 = %d",index,result);
     manager->presenter->onBatchFinish(index,result,message);
-//    delete manager->batchUpgradeThread[index];
-    //    delete manager->mTouchManager->batchUpgradeThread[index];
+    manager->mTouchManager->setBatchUpgradeStatus(index,result ? 2 : 0);
+
 }
 
 void TouchTools::BatchUpgradeListener::setDeviceIfo(int index, QString msg)
@@ -1712,9 +1664,12 @@ void TouchTools::BatchUpgradeListener::setDeviceIfo(int index, QString msg)
     manager->presenter->setDeviceInfo(index,msg);
 }
 
+void TouchTools::BatchUpgradeListener::batchUpradeFinished()
+{
+    manager->presenter->batchUpradeFinished();
+}
+
 //字符串后位空格补齐
-
-
 void TouchTools::VolienceTestThread::run()
 {
     while(touchTool->volienceTest)
