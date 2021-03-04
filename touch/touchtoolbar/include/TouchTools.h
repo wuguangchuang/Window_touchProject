@@ -59,7 +59,6 @@ public:
                         char *argv[] = 0,QString appPath = "");
     ~TouchTools();
     bool stopTestIsFinished;
-    touch_device *getDevices();
     void addTouchManagerTr();
     void setUpgradeProgess(int progess);
     void setTestProgess(int progess) {emit presenter->setTestProgress(progess);}
@@ -116,7 +115,7 @@ public:
     {
         return map;
     }
-    void showFirewareInfo(int type);
+    void showFirewareInfo(touch_device *dev, int type);
     signals:
     void showMessage(QString title, QString message, int type = 0);
 public slots:
@@ -146,6 +145,7 @@ private:
 
     QString upgradePath;
 
+public:
     class InitSdkThread : public QThread {
     public:
         InitSdkThread(TouchTools *tool);
@@ -202,14 +202,13 @@ private:
         void destroyDialog();
         void refreshOnboardTestData(QVariantMap map);
         void showOnboardFailItem(QString message);
-        void showFirewareInfo(int type);
+        void showFirewareInfo(touch_device*dev,int type);
 
     private:
         TouchTools *manager;
     };
     class BatchUpgradeThread:public QThread{
     public:
-        int upgradeIndex;
         QString upgardePath;
         TouchTools *touchTool;
         BatchUpgradeThread(TouchTools *tool){this->touchTool = tool;}
@@ -243,11 +242,14 @@ private:
         BatchUpgradeListener(TouchTools *manager) { this->manager = manager;}
         void inProgress(int index,int progress);
         void onUpgradeDone(int index,bool result, QString message) ;
+        void setDeviceIfo(int index,QString msg);
+        void batchUpradeFinished();
     private:
         TouchTools *manager;
     };
 
     //批处理
+    BatchUpgradeThread *batchUpgradeThread;
 
     QString batchPath;
     QVariantMap batchDeviceMap;
@@ -255,10 +257,11 @@ private:
     QVariantMap getConnectDeviceInfo();
     touch_device *getDevice(int index);
     void startBatchTest(int testIndex);
-    void startBatchUpgrade(int upgradeIndex,QString path);
+    void startBatchUpgrade(QString path);
     void setBatchCancel(bool batchCancel);
     void setBatchLock(bool enable);
     void batchFinished(int functionIndex);
+
 
     //暴力测试
 
@@ -333,6 +336,7 @@ private :
 
 
 };
+
 
 } // namespace
 

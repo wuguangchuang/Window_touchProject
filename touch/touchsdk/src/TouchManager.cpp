@@ -1,5 +1,5 @@
 #include "TouchManager.h"
-#include "hidapi.h"
+
 
 #include "utils/tdebug.h"
 #include "utils/tPrintf.h"
@@ -9,6 +9,7 @@
 #include <QThread>
 #include <QtEndian>
 #include <QObject>
+#include <time.h>
 
 #define SERVICE_NAME "touch_hotplug"
 #undef TVERBOSE
@@ -202,8 +203,9 @@ void TouchManager::freeInstance()
 }
 TouchManager::TouchManager() : mTesting(false), mUpgrading(false),
     mHotplugThread(this), mHotplugListener(NULL), untDataBuf(NULL),
-    mDevices(NULL), mCount(0), hotplugInterval(100), hotplugSem(0),
-    mPauseHotplug(false),mtestStop(false),translator(NULL),batchCancal(false)
+    mCount(0), hotplugInterval(500), hotplugSem(0),mPauseHotplug(false),
+    mtestStop(false),translator(NULL),batchCancal(false),batchUpgradeList(NULL),
+    initDeviceThreadList(NULL),batchFirstUpgrade(true),mDevices(NULL),batchUpgradeDevList(NULL)
 {
 #if 1
     //mDevices = hid_find_touchdevice(&mCount);
@@ -212,11 +214,14 @@ TouchManager::TouchManager() : mTesting(false), mUpgrading(false),
 
     TDEBUG("start upgrade test command thread.");
 
+    memset((void *)randomArray,-1,sizeof(randomArray));
     upgradeThread = new UpgradeThread(this);
     testThread = new TestThread(this);
     TDEBUG("TouchManager::TouchManager(): TestThread  = %p",testThread);
     commandThread = new CommandThread();
-    commandThread->start(QThread::TimeCriticalPriority);
+    commandThread->start();
+    deviceCommunication = new CommandThread::DeviceCommunicationRead(commandThread);
+    deviceCommunication->start();
 
     TDEBUG("start hogplug service");
     startHotplugService();
@@ -981,10 +986,7 @@ void TouchManager::doTest()
 
     if(switchOnboardTest)
     {
-        if(getFirewareInfo(mTestDevice,&firewareInfo) == 0)
-        {
-            firewareVersion = toWord(firewareInfo.version_l,firewareInfo.version_h);
-        }
+         firewareVersion = toWord(mTestDevice->fireware.version_l,mTestDevice->fireware.version_h);
         if(firewareVersion >= 0x0007)
         {
             buffer[0] = ONBOARD_TEST_SWITCH_START;
@@ -1005,7 +1007,7 @@ void TouchManager::doTest()
     }
 
     mTestListener->showTestMessageDialog("test",translator->getTr("Being detected! Do not touch!"),4);
-    mTestListener->showFirewareInfo(2);
+    mTestListener->showFirewareInfo(mTestDevice,2);
 
     signalInit(mTestDevice, SIGNAL_INIT_COMPLETE);
 
@@ -1494,6 +1496,7 @@ void TouchManager::triggerHotplugEvent()
 {
     mHotplugThread.triggerHotplugEvent();
 }
+
 //运行热插拔线程、监视是否有硬件设备的插入，如果有新的设备，那么将设备添加到设备链表touch_device
 void TouchManager::HotplugThread::run()
 {
@@ -1518,26 +1521,26 @@ void TouchManager::HotplugThread::run()
     TDEBUG("hotplug thread run: %d", manager->hotplugInterval);
 
     manager->hotplugSem.release();
-    bool stopSem;
+//    bool stopSem;
 
     while (!mStop) {
-//        this->msleep(manager->hotplugInterval);
+       this->msleep(manager->hotplugInterval);
 
-        stopSem = manager->hotplugSem.tryAcquire(1, manager->hotplugInterval);
-        if (mStop && stopSem == true) {
-            break;
-        } else if (stopSem == false && manager->hotplugEvent) {
-            continue;
-        }
-        if (manager->mPauseHotplug)
-            continue;
+//       stopSem = manager->hotplugSem.tryAcquire(1, manager->hotplugInterval);
+//       if (mStop && stopSem == true) {
+//           break;
+//       } else if (stopSem == false && manager->hotplugEvent) {
+//           continue;
+//       }
+//       if (manager->mPauseHotplug)
+//           continue;
 
-        {
-#ifdef HOTPLUG_SHOW_COMSUME
-        QTime time;
-        time.start();
-        TDEBUG("start check devices");
-#endif
+//        {
+//#ifdef HOTPLUG_SHOW_COMSUME
+//        QTime time;
+//        time.start();
+//        TDEBUG("start check devices");
+//#endif
 
         tmp = manager->devices();
 
@@ -1557,17 +1560,42 @@ void TouchManager::HotplugThread::run()
                     TDEBUG("unplug####################");
                     tmp->touch.connected = 0;
 //                    hid_close(tmp->hid);
+                    TDEBUG("设备已断开");
 
                     if (manager->mHotplugListener != NULL) {
                         tmp->touch.connected = 0;
                         manager->mHotplugListener->onTouchHotplug(tmp, 0, 1);
+
                     }
+
                 }
             }
 
             last = tmp;
             tmp = tmp->next;
         }
+        touch_device *commandThreadTmpDev = NULL;
+        int listLength = CommandThread::deviceList.length();
+        for(int DL = 0;DL < listLength;DL++)
+        {
+            commandThreadTmpDev = CommandThread::deviceList.at(DL);
+            bool exist = false;
+            for (try_check = 0; try_check < try_max; try_check++) {
+                exist = manager->checkDevice(commandThreadTmpDev);
+                if (exist)
+                    break;
+            }
+            if(!exist)
+            {
+                CommandThread::deviceListRWLock.lockForWrite();
+                CommandThread::deviceList.removeAt(DL);
+                TDEBUG("删除掉一个通讯设备:设备个数 = %d",CommandThread::deviceList.length());
+                CommandThread::deviceListRWLock.unlock();
+                listLength = CommandThread::deviceList.length();
+                DL -= 1;
+            }
+        }
+        manager->freeInieDeveicThreadList();
 
         // find plugin, enumerate hid again, get new devices
         count = 0;
@@ -1581,101 +1609,38 @@ void TouchManager::HotplugThread::run()
         // @device: new devices
         // @tmp: old devices
         bool same = false;
+
         while (device) {
             cur = device;
             same = false;
-            // find device in lists
-            tmp = manager->devices();
-            found_old = 0;
-
-            if(manager->initDeviceInfo(cur) < 0)
+            CommandThread::deviceList.append(cur);
+            TDEBUG("增加一个通讯设备:设备个数 = %d",CommandThread::deviceList.length());
+            InitDeviceInfoThread *initDeviceInfoThread = new InitDeviceInfoThread(manager,cur);
+            struct InitDeviceThreadlist *initNode = (struct InitDeviceThreadlist *)malloc(sizeof(struct InitDeviceThreadlist));
+            initNode->initDeviceInfoThread = initDeviceInfoThread;
+            initNode->next = NULL;
+            struct InitDeviceThreadlist *curInit = manager->initDeviceThreadList,*lastInit = NULL;
+            if(curInit == NULL)
             {
-                device = device->next;
-                continue;
+                manager->initDeviceThreadList = initNode;
             }
-
-            while (tmp) {
-//                hotplug_dbg("tmp=%d, device=%d", tmp->touch.connected, device->touch.connected);
-//                if (tmp->touch.connected)
-//                    continue;
-                //判断两个设备是否相同，相同返回true
-                if (TouchManager::isSameDeviceInPort(tmp, device)) {
-                    if (tmp->touch.connected) {
-                        same = true;
-                        break;
-                    }
-//                    tmp->mutex.lock();
-
-//                    device->touch.connected = 1;
-
-//                    manager->freeHidDevice(tmp);    // free old device
-                    manager->deepCloneDevice(tmp, device);
-//                    tmp->mutex.unlock();
-//                    TDEBUG("onHot连接过的设备 MCUID = %s",device->touch.id_str);
-                    tmp2 = cur->next;
-                    cur = tmp;
-//                    cur->touch.connected = 1;
-//                    device->hid = NULL;
-//                    device->info = NULL;
-//                    free(device); // free old device
-                    device = tmp2;          // device, the next new device
-
-                    found_old = 1;
-                    break;
-                } else {
-                    tmp = tmp->next;
-                }
-            }
-            if (same) {
-                device = device->next;
-                continue;
-            }
-            //判断之前该设备是否连接过
-
-
-            // new one
-            if (found_old == 0 && !same) {
-            hotplug_dbg("new one device");
-            if (last == NULL) {
-                manager->setDevices(device);
-//                TDEBUG("onHot新设备 MCUID =  %s", device->touch.id_str);
-                device = device->next;
-            } else {
-                last->next = device;
-                last = device;
-                device = device->next;
-            }
-        }
-        hotplug_dbg("init device info");
-        if (!same && manager->mHotplugListener != NULL) {
-            cur->touch.connected = 1;
-            //通过序列号来判断设备时需要更新VID PID以及BootLoader信息
-            touch_fireware_info touchFirmwareInfo;
-            if(manager->getFirewareInfo(cur,&touchFirmwareInfo) == 0)
+            else
             {
-                cur->info->vendor_id = toWord(touchFirmwareInfo.usb_vid_l,touchFirmwareInfo.usb_vid_h);
-                cur->info->product_id = toWord(touchFirmwareInfo.usb_pid_l,touchFirmwareInfo.usb_pid_h);
-                if(toWord(touchFirmwareInfo.type_l,touchFirmwareInfo.type_h) == 0x0001)
+                while(curInit)
                 {
-                    cur->touch.booloader = 1;
+                    lastInit = curInit;
+                    curInit = curInit->next;
                 }
-                else
-                {
-                    cur->touch.booloader = 0;
-                }
+                lastInit->next = initNode;
             }
-            manager->mHotplugListener->onTouchHotplug(cur, 1, found_old);
-        }
-
-            
-device_each_out:
-            hotplug_dbg("next device: %p", device);
+            initDeviceInfoThread->start();
+            device = device->next;
 
         }
-#ifdef HOTPLUG_SHOW_COMSUME
-        TDEBUG("hotplug check comsume: %dms", time.elapsed());
-#endif
-        }
+//#ifdef HOTPLUG_SHOW_COMSUME
+//        TDEBUG("hotplug check comsume: %dms", time.elapsed());
+//#endif
+//        }
     }
     finshed = true;
     TDEBUG("hotplug thread end");
@@ -1684,17 +1649,47 @@ device_each_out:
 //初始化设备信息
 int TouchManager::initDeviceInfo(touch_device *dev)
 {
+    TDEBUG("初始化设备");
+    int ret = 0;
     memset(dev->touch.model, 0, sizeof(dev->touch.model));
-    getStringInfo(dev, TOUCH_STRING_TYPE_MODEL, dev->touch.model, sizeof(dev->touch.model));
+    ret = getStringInfo(dev, TOUCH_STRING_TYPE_MODEL, dev->touch.model, sizeof(dev->touch.model));
+    if(ret < 0)
+    {
+        return -2;
+    }
     memset(&dev->touch.mcu, 0, sizeof(mcu_info));
-    getMcuInfo(dev, &dev->touch.mcu);
+    ret = getMcuInfo(dev, &dev->touch.mcu);
+    if(ret < 0)
+    {
+        return -3;
+    }
     byteToStr(dev->touch.mcu.id, dev->touch.id_str, sizeof(dev->touch.id_str) - 1);
     dev->touch.id_str[sizeof(dev->touch.id_str) - 1] = '\0';
-    if(memcmp(dev->touch.id_str,"000000000",strlen("000000000")) == 0)
+    TDEBUG("mcu = %s",dev->touch.id_str);
+    //通过序列号来判断设备时需要更新VID PID以及BootLoader信息
+    memset(&dev->fireware,0,sizeof(dev->fireware));
+    ret = getFirewareInfo(dev,&dev->fireware);
+    if(ret == 0)
     {
-        TERROR("检测到设备的MCUID == 000000");
+        dev->info->vendor_id = toWord(dev->fireware.usb_vid_l,dev->fireware.usb_vid_h);
+        dev->info->product_id = toWord(dev->fireware.usb_pid_l,dev->fireware.usb_pid_h);
+        if(toWord(dev->fireware.type_l,dev->fireware.type_h) == 0x0001)
+        {
+            dev->touch.booloader = 1;
+            TDEBUG("连接到一个BootLoader设备");
+        }
+        else
+        {
+            dev->touch.booloader = 0;
+            TDEBUG("连接到一个TouchApp设备");
+        }
+    }
+    else
+    {
         return -1;
     }
+
+    TDEBUG("初始化设备完成");
     return 0;
 }
 
@@ -1712,11 +1707,31 @@ int TouchManager::sendPackage(touch_package *package,touch_package *reply,
     }
     package->report_id = device->touch.report_id;
     package->version = 0x01;
-    package->magic = (int)package & 0xff;
+    int i = 0;
+    int randomNum = 0;
+    bool exist = false;
+
+
+    do{
+        srand((unsigned)time(NULL));
+        randomNum = rand() % 255;
+        randomMutex.lock();
+        if(randomArray[randomNum] == -1)
+        {
+            randomArray[randomNum] = randomNum;
+            randomMutex.unlock();
+            break;
+        }
+        randomMutex.unlock();
+    }while(true);
+    package->magic = randomNum;
+//    package->magic = (int)package & 0xff;
     package->flow = 1;
 
     int ret = addPackageToQueue(package, reply, device, async, listener);
-
+    randomMutex.lock();
+    randomArray[package->magic] = -1;
+    randomMutex.unlock();
     return ret;
 }
 
@@ -1775,22 +1790,6 @@ QVariantMap TouchManager::getBatchDevicesInfo()
     bool sameDevice = false;
     while (tmp) {
         if(tmp->touch.id_str == NULL || tmp->touch.id_str == ""  || memcmp(tmp->touch.id_str,"0000000000000000",strlen("00000000000000")) == 0)
-        {
-            tmp = tmp->next;
-            continue;
-        }
-        sameDevice = false;
-        for(int i = 0;i < deviceInfoList.length();i++)
-        {
-            tmpDevInfo = deviceInfoList.at(i).toMap();
-
-            if(strncmp(tmp->touch.id_str,tmpDevInfo.value("mcuID").toString().toStdString().c_str(),sizeof(tmp->touch.id_str)) == 0)
-            {
-                sameDevice = true;
-                break;
-            }
-        }
-        if(sameDevice)
         {
             tmp = tmp->next;
             continue;
@@ -1873,6 +1872,74 @@ bool TouchManager::isBootloaderDevice(touch_device *dev)
 #endif
 }
 
+void TouchManager::removeInitFailedDev(touch_device *dev)
+{
+    int listLength = CommandThread::deviceList.length();
+    for(int i = 0;i < listLength;i++)
+    {
+        if(CommandThread::deviceList.at(i) == dev)
+        {
+            CommandThread::deviceList.removeAt(i);
+        }
+        break;
+    }
+}
+
+void TouchManager::freeBatchUpgradeList()
+{
+    struct BatchUpgradeThreadList *cur = batchUpgradeList,*after = NULL;
+    while(cur)
+    {
+        after = cur->next;
+        delete cur->batchUpgradeThread;
+        free(cur);
+        cur = after;
+    }
+    batchUpgradeList = NULL;
+
+    struct BatchUpgradeDeviceList *curDev = batchUpgradeDevList,*afterDev = NULL;
+    while(curDev)
+    {
+        afterDev = curDev->next;
+        free(curDev);
+        curDev = afterDev;
+    }
+    batchUpgradeDevList = NULL;
+}
+
+void TouchManager::freeInieDeveicThreadList()
+{
+    if(initDeviceThreadList == NULL)
+    {
+        return;
+    }
+    struct InitDeviceThreadlist *cur = initDeviceThreadList,*after = NULL;
+    bool initFinish = true;
+    while(cur)
+    {
+        if(!cur->initDeviceInfoThread->isFinished())
+        {
+            initFinish = false;
+            break;
+        }
+        cur = cur->next;
+    }
+
+    if(initFinish)
+    {
+        cur = initDeviceThreadList;
+        while(cur)
+        {
+            after = cur->next;
+            delete cur->initDeviceInfoThread;
+            free(cur);
+            cur = after;
+        }
+        initDeviceThreadList = NULL;
+        TDEBUG("初始化设备信息完成,释放内存");
+    }
+}
+
 #define show_line() TDEBUG("%s [%d]", __func__, __LINE__)
 
 void TouchManager::doUpgrade(QString path)
@@ -1929,6 +1996,7 @@ void TouchManager::doUpgrade(QString path)
             break;
         QThread::msleep(100);
     }
+
     TVERBOSE("booloader ? %d", isBootloaderDevice(firstConnectedDevice()));
     dev = firstConnectedDevice();
     precent = 3;
@@ -1952,6 +2020,7 @@ void TouchManager::doUpgrade(QString path)
         }
 
         TDEBUG("start IAP");
+
         ret = startIAP(dev, firewareHeader);
         TDEBUG("startIAP finish");
         if (ret) {
@@ -2001,8 +2070,8 @@ void TouchManager::doUpgrade(QString path)
         goto do_upgrade_end;
     }
     TDEBUG("reset to app");
-    reset(dev, RESET_DST_APP, 0);
-    QThread::msleep(2300);
+    reset(dev, RESET_DST_APP, 1);
+//    QThread::msleep(2300);
     if (mUpgradeListener != NULL)
         mUpgradeListener->inProgress(100);
 
@@ -3431,6 +3500,7 @@ void TouchManager::deepCloneDevice(touch_device *dst, touch_device *src)
     dst->hid = src->hid;
     dst->info = src->info;
     memcpy(&dst->touch, &src->touch, sizeof(dst->touch));
+    memcpy(&dst->fireware,&src->fireware,sizeof(dst->fireware));
 }
 
 bool TouchManager::isSameDeviceInPort(touch_device *a, touch_device *b)
@@ -3449,46 +3519,159 @@ bool TouchManager::isSameDeviceInPort(touch_device *a, touch_device *b)
 #endif
 }
 
+void TouchManager::doBatchUpgrade(QString path,BatchUpgradeListener *batchUpgradeListener)
+{
+    this->batchUpgradeListenter = batchUpgradeListener;
+    touch_device *connectDevice = devices();
+
+    struct BatchUpgradeDeviceList *curDev = batchUpgradeDevList;
+    int index = 0;
+    while(connectDevice)
+    {
+//        TDEBUG("增加批量升级设备：index = %d,mcu = %s",index,connectDevice->touch.id_str);
+        addBatchDeveice(connectDevice,index);
+        index++;
+        connectDevice = connectDevice->next;
+    }
+    bool existBootLoaderDev = false;
+//    TDEBUG("############### 批量升级设备 batchUpgradeDevList->index = %d",batchUpgradeDevList->upgradeIndex);
+
+    int currentUpgradeIndex = -1;
+    while(!batchCancal)
+    {
+        curDev = batchUpgradeDevList;
+        existBootLoaderDev = false;
+        //检验连接的BootLoader设备是否全部升级完全，且非bootloader设备状态。
+//        TDEBUG("升级连接的BootLoader设备: batchUpgradeDevList->upgradeIndex",batchUpgradeDevList->upgradeIndex);
+        while(curDev)
+        {
+            if(!curDev->dev->touch.connected)
+            {
+//                batchUpgradeListenter->setDeviceIfo(curDev->upgradeIndex,translator->getTr("Device disconnect"));
+            }
+            else if(curDev->dev->touch.connected && curDev->dev->touch.booloader && curDev->upgradeStatus == 0)
+            {
+                TDEBUG("序号 index = %d 是一个BootLoader设备,现在开始升级",curDev->upgradeIndex);
+                curDev->upgradeStatus = 1;
+                startBatchUpgrade(curDev->upgradeIndex,curDev->dev,path,batchUpgradeListener);
+            }
+            if(curDev->dev->touch.connected && curDev->dev->touch.booloader)
+            {
+                existBootLoaderDev = true;
+            }
+            curDev = curDev->next;
+        }
+        //开始逐个升级APP设备
+        curDev = batchUpgradeDevList;
+//        TDEBUG("开始逐个升级APP设备: batchUpgradeDevList->upgradeIndex",batchUpgradeDevList->upgradeIndex);
+        if(curDev != NULL && !batchCancal && !existBootLoaderDev)
+        {
+
+            while(curDev)
+            {
+//                TDEBUG("批量升级当前设备：index = %d,status = %d,connected = %d,bootloader = %d,mcu = %s",
+//                       curDev->upgradeIndex,curDev->upgradeStatus,curDev->dev->touch.connected,
+//                       curDev->dev->touch.booloader,curDev->dev->touch.id_str);
+                if(curDev->dev->touch.connected && curDev->upgradeStatus == 0)
+                {
+                    TDEBUG("逐个开始升级，当前升级序号为 index = %d",curDev->upgradeIndex);
+                    currentUpgradeIndex = curDev->upgradeIndex;
+                    curDev->upgradeStatus = 1;
+                    startBatchUpgrade(curDev->upgradeIndex,curDev->dev,path,batchUpgradeListener);
+                    break;
+                }
+                curDev = curDev->next;
+            }
+            while(curDev != NULL && curDev->upgradeStatus == 1)
+            {
+                //等待设备升级结束
+                QThread::msleep(100);
+            }
+        }
+        else
+        {
+            QThread::msleep(100);
+        }
+
+    }
+
+    batchUpgradeListener->batchUpradeFinished();
+    TDEBUG("批量升级结束");
+}
+
 int TouchManager::startBatchUpgrade(int upgradeIndex, touch_device *device,QString path, TouchManager::BatchUpgradeListener *listener)
 {
     if(device == NULL)
     {
         return -1;
     }
-    TDEBUG("开始批量升级的序号 index = %d",upgradeIndex);
+    // TDEBUG("开始批量升级的序号 index = %d",upgradeIndex);
     batchUpgradeListenter = listener;
-//    struct BatchUpgradeStruct *tmp  = batchUpgradeStruct;
-//    if(tmp == NULL)
-//    {
-//        tmp = (struct BatchUpgradeStruct *)malloc(sizeof(struct BatchUpgradeStruct));
-//        tmp->batchUpgradeThread = new BatchUpgradeThread(this);
-//        tmp->next = NULL;
-//    }
-//    while(tmp)
-//    {
-//        tmp = tmp->next;
-//    }
-//    struct BatchUpgradeStruct *node = (struct BatchUpgradeStruct *)malloc(sizeof(struct BatchUpgradeStruct));
-//    node->batchUpgradeThread = new BatchUpgradeThread(this);
-
-//    tmp->next = node;
-//    node->next = NULL;
-//    node->batchUpgradeThread->path = path;
-//    node->batchUpgradeThread->setManager(this);
-//    node->batchUpgradeThread->setBatchUpgradeDevice(device);
-//    node->batchUpgradeThread->setBatchUpgradeIndex(upgradeIndex);
-
-//    node->batchUpgradeThread->start();
-
     BatchUpgradeThread *batchUpgradeThread = new BatchUpgradeThread(this);
     batchUpgradeThread = new BatchUpgradeThread(this);
     batchUpgradeThread->path = path;
     batchUpgradeThread->setBatchUpgradeDevice(device);
     batchUpgradeThread->setBatchUpgradeIndex(upgradeIndex);
-    batchUpgradeThread->start(QThread::NormalPriority);
+    struct BatchUpgradeThreadList *cur = batchUpgradeList,*last = NULL;
+    struct BatchUpgradeThreadList *node = (struct BatchUpgradeThreadList *)malloc(sizeof(struct BatchUpgradeThreadList));
+    node->batchUpgradeThread = batchUpgradeThread;
+    node->upgradeIndex = upgradeIndex;
+    node->next = NULL;
+    if(cur == NULL)
+    {
+        batchUpgradeList = node;
+    }
+    else
+    {
+        while(cur)
+        {
+            last = cur;
+            cur = cur->next;
+        }
+        last->next = node;
+    }
+    batchUpgradeThread->start();
     return 0;
 }
 
+void TouchManager::setBatchUpgradeStatus(int index, int status)
+{
+    struct BatchUpgradeDeviceList *curDev = batchUpgradeDevList;
+    while(curDev)
+    {
+        if(curDev->upgradeIndex == index)
+        {
+            curDev->upgradeStatus = status;
+            break;
+        }
+        curDev = curDev->next;
+    }
+}
+
+void TouchManager::addBatchDeveice(touch_device *device, int index)
+{
+    struct BatchUpgradeDeviceList *curDev = batchUpgradeDevList,*lastDev = NULL;
+    struct BatchUpgradeDeviceList *node = (struct BatchUpgradeDeviceList *)malloc(sizeof(struct BatchUpgradeDeviceList));
+    node->dev = device;
+    node->upgradeIndex = index;
+    node->upgradeStatus = 0;
+    node->next = NULL;
+    curDev = batchUpgradeDevList;
+    if(curDev == NULL)
+    {
+        batchUpgradeDevList = node;
+    }
+    else
+    {
+        while(curDev)
+        {
+            lastDev = curDev;
+            curDev = curDev->next;
+        }
+        lastDev->next = node;
+    }
+}
+//touch_device* TouchManager::mDevices;
 bool TouchManager::mShowTestData = false;
 bool TouchManager::mIgnoreFailedTestItem = false;
 bool TouchManager::mIgnoreFailedOnboardTestItem = false;
@@ -3567,10 +3750,8 @@ void TouchManager::BathchTestThread::run()
 
     if(switchOnboardTest && !manager->batchCancal)
     {
-        if(manager->getFirewareInfo(testDevice,&firewareInfo) == 0)
-        {
-            firewareVersion = toWord(firewareInfo.version_l,firewareInfo.version_h);
-        }
+
+        firewareVersion = toWord(testDevice->fireware.version_l,testDevice->fireware.version_h);
         if(firewareVersion >= 0x0007)
         {
             buffer[0] = ONBOARD_TEST_SWITCH_START;
@@ -3818,8 +3999,7 @@ void TouchManager::BatchUpgradeThread::run()
     int allPackageCount = 0;
     int precent, tmpPrecent;
     const long waitBootloaderTime = 10 * 1000;
-    QTime time;
-
+    QTime timeDelay;
     const FirewarePackage *package;
     if (!fireware.isReady()) {
         result = false;
@@ -3843,67 +4023,65 @@ void TouchManager::BatchUpgradeThread::run()
         manager->batchMutex.unlock();
     }
 
-    TDEBUG("upgradeIndex = %d,固件准备完成，等待设备复位",upgradeIndex);
-    manager->reset(upgradeDev, RESET_DST_BOOLOADER, 0);
-//    QThread::msleep(100); // wait for reset
-
-    precent = 2;
-    if(manager->batchUpgradeListenter != NULL)
+    if(upgradeDev->touch.connected && upgradeDev->touch.booloader)
     {
-        manager->batchMutex.lock();
-        manager->batchUpgradeListenter->inProgress(upgradeIndex,precent);
-        manager->batchMutex.unlock();
-    }
-
-
-    time.start();
-    while (!manager->isBootloaderDevice(manager->getDevice(upgradeIndex))) {
-        if (time.elapsed() > waitBootloaderTime)
+        TDEBUG("当前设备为booltLoader设备");
+        precent = 3;
+        if(manager->batchUpgradeListenter != NULL)
         {
-            TDEBUG("设备序号index = %d 等待Bootloader 连接超时",upgradeIndex);
-            break;
+            manager->batchMutex.lock();
+            manager->batchUpgradeListenter->inProgress(upgradeIndex,precent);
+            manager->batchMutex.unlock();
         }
-        QThread::msleep(10);
-    }
-    if(manager->isBootloaderDevice(manager->getDevice(upgradeIndex)))
-    {
-        TDEBUG("获取Bootloader结果：upgradeIndex = %d,booloader = 1",upgradeIndex);
+        dev = upgradeDev;
+
     }
     else
     {
-        touch_device *bootDev = manager->getDevice(upgradeIndex);
-        if(!bootDev->touch.connected)
+        TDEBUG("upgradeIndex = %d,固件准备完成，等待设备复位",upgradeIndex);
+        manager->reset(upgradeDev, RESET_DST_BOOLOADER,1);
+        QThread::msleep(100); // wait for reset
+
+        precent = 2;
+        if(manager->batchUpgradeListenter != NULL)
         {
-            TDEBUG("序号 index = %d 设备未连接",upgradeIndex);
+            manager->batchMutex.lock();
+            manager->batchUpgradeListenter->inProgress(upgradeIndex,precent);
+            manager->batchMutex.unlock();
+        }
+
+
+        timeDelay.restart();
+        while (!manager->isBootloaderDevice(manager->getDevice(upgradeIndex))) {
+            if (timeDelay.elapsed() > waitBootloaderTime)
+            {
+                TDEBUG("设备序号index = %d 等待Bootloader 连接超时",upgradeIndex);
+                break;
+            }
+            QThread::msleep(30);
+        }
+
+        dev = manager->getDevice(upgradeIndex);
+        precent = 3;
+        if(manager->batchUpgradeListenter != NULL)
+        {
+            manager->batchMutex.lock();
+            manager->batchUpgradeListenter->inProgress(upgradeIndex,precent);
+            manager->batchMutex.unlock();
+        }
+
+        if (!manager->isBootloaderDevice(dev)) {
+            result = false;
+            TERROR("upgradeIndex = %d 切换到升级模式下失败",upgradeIndex);
+            info = manager->translator->getTr("Failed to switch to upgrade mode");
+            goto do_upgrade_end;
         }
         else
         {
-            if(!bootDev->touch.booloader)
-            {
-                TDEBUG("序号 index = %d 设备不是BootLoader设备",upgradeIndex);
-            }
+            TDEBUG("upgradeIndex = %d 连接到Bootloader设备",upgradeIndex);
         }
     }
 
-    dev = manager->getDevice(upgradeIndex);
-    precent = 3;
-    if(manager->batchUpgradeListenter != NULL)
-    {
-        manager->batchMutex.lock();
-        manager->batchUpgradeListenter->inProgress(upgradeIndex,precent);
-        manager->batchMutex.unlock();
-    }
-
-    if (!manager->isBootloaderDevice(dev)) {
-        result = false;
-        TERROR("upgradeIndex = %d 切换到升级模式下失败",upgradeIndex);
-        info = manager->translator->getTr("Failed to switch to upgrade mode");
-        goto do_upgrade_end;
-    }
-    else
-    {
-        TDEBUG("upgradeIndex = %d 连接到Bootloader设备",upgradeIndex);
-    }
     for (fIndex = 0; fIndex < firewareCount; fIndex++) {
         package = fireware.getFirewarePackage(fIndex);
         TDEBUG("upgradeIndex = %d,uprade: findex = %d,firewarePackage.header.packSize = %d,firewarePackage.header.packCount = %d",upgradeIndex,fIndex,
@@ -3962,6 +4140,7 @@ void TouchManager::BatchUpgradeThread::run()
         }
     }
     TDEBUG("upgradeIndex = %d,IAP set finished",upgradeIndex);
+    QThread::msleep(10);
     ret = manager->IAPSetFinished(dev);
     if (ret != 0) {
         TWARNING("upgradeIndex = %d,IAP Set Finished failed",upgradeIndex);
@@ -3970,6 +4149,7 @@ void TouchManager::BatchUpgradeThread::run()
         goto do_upgrade_end;
     }
     TDEBUG("upgradeIndex = %d,reset to app",upgradeIndex);
+    QThread::msleep(10);
     manager->reset(dev, RESET_DST_APP, 0);
     if(manager->batchUpgradeListenter != NULL)
     {
@@ -3987,9 +4167,78 @@ do_upgrade_end:
             info = manager->translator->getTr("Upgrade success");
 
         }
+        TDEBUG("升级正常结束");
         manager->batchUpgradeListenter->onUpgradeDone(upgradeIndex,result,info);
         TDEBUG("序号 upgradeIndex = %d 升级%s",upgradeIndex,result ? "成功":"失败");
     }
 
+
+}
+
+void TouchManager::InitDeviceInfoThread::run()
+{
+    if(manager->initDeviceInfo(device) < 0)
+    {
+        TDEBUG("设备初始化失败");
+        CommandThread::deviceListRWLock.lockForWrite();
+        manager->removeInitFailedDev(device);
+        CommandThread::deviceListRWLock.unlock();
+        return;
+    }
+    manager->initDeviceMutex.lock();
+    touch_device *tmp = manager->devices();
+    int found_old = 0;
+    bool same = false;
+    while (tmp) {
+        //判断两个设备是否相同，相同返回true
+        if (TouchManager::isSameDeviceInPort(tmp, device))
+        {
+            if (tmp->touch.connected) {
+
+                 TDEBUG("设备已存在");
+                same = true;
+                break;
+            }
+
+            manager->deepCloneDevice(tmp, device);
+            TDEBUG("onHot连接过的设备 MCUID = %s",device->touch.id_str);
+            found_old = 1;
+            break;
+        }
+        else
+        {
+            tmp = tmp->next;
+        }
+    }
+    // new one
+    if (found_old == 0 && !same)
+    {
+        TDEBUG("new one device");
+
+        if (manager->devices() == NULL)
+        {
+            manager->setDevices(device);
+            device->next = NULL;
+        }
+        else
+        {
+            tmp = manager->devices();
+            touch_device *last = NULL;
+            while(tmp)
+            {
+                last = tmp;
+                tmp = tmp->next;
+            }
+            last->next = device;
+            device->next = NULL;
+        }
+
+    }
+    manager->initDeviceMutex.unlock();
+    if (!same && manager->mHotplugListener != NULL) {
+        TDEBUG("通知已经连接到设备显示");
+        device->touch.connected = 1;
+        manager->mHotplugListener->onTouchHotplug(device, 1, found_old);
+    }
 
 }

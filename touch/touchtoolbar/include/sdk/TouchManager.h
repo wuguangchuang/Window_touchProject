@@ -3,7 +3,8 @@
 
 #include "sdk/tdebug.h"
 #include "touch.h"
-#include "commandthread.h"
+#include "hidapi.h"
+//#include "commandthread.h"
 #include "sdk/CommandThread.h"
 #define MAX_TOUCH_COUNT 9
 
@@ -62,6 +63,9 @@ struct CalibrationCapture {
     qint16 finished;
     qint16 count;
 };
+struct BatchUpgradeThreadList;
+struct InitDeviceThreadlist;
+struct BatchUpgradeDeviceList;
 typedef void (*touch_hotplug_func)(touch_device *, const int attached, const void *value);
 class TouchManager : public CommandThread::CommandListener
 {
@@ -91,7 +95,7 @@ public:
         virtual void destroyDialog() = 0;
         virtual void refreshOnboardTestData(QVariantMap map) = 0;
         virtual void showOnboardFailItem(QString message) = 0;
-        virtual void showFirewareInfo(int type) = 0;
+        virtual void showFirewareInfo(touch_device*dev, int type) = 0;
     };
     class UpgradeListener {
     public:
@@ -114,6 +118,21 @@ public:
         TouchManager *manager;
         bool mStop;
         bool finshed = false;
+    };
+
+    class InitDeviceInfoThread :public QThread
+    {
+    public:
+        InitDeviceInfoThread(TouchManager *manager,touch_device *device)
+        {
+            this->manager = manager;
+            this->device = device;
+        }
+    protected:
+        void run();
+    private:
+        TouchManager *manager;
+        touch_device *device;
     };
 
     class UpgradeThread : public QThread
@@ -159,6 +178,7 @@ public:
     public:
         virtual void inProgress(int index,int progress) = 0;
         virtual void onTestDone(int index,bool result, QString message) = 0;
+
     };
     class BatchUpgradeThread : public QThread
     {
@@ -178,9 +198,12 @@ public:
     public:
         virtual void inProgress(int index,int progress) = 0;
         virtual void onUpgradeDone(int index,bool result, QString message) = 0;
+        virtual void setDeviceIfo(int index,QString msg) = 0;
+        virtual void batchUpradeFinished() = 0;
     };
 private:
     TouchManager();
+    int randomArray[256];
     static int instanceCount;
     static TouchManager* mTouchManager;
 public:
@@ -223,20 +246,25 @@ public:
                                       unsigned char *onboardTestItem,int count);
 
     int getDeviceCount();
-    touch_device *getDevices() { return mDevices;}
+    TOUCHSHARED_EXPORT touch_device *getDevices() { return mDevices;}
+    TOUCHSHARED_EXPORT touch_device *devices() { return mDevices;}
+    TOUCHSHARED_EXPORT touch_device *device() { return mDevices;}
     static bool addTouchDeviceInfo(touch_vendor_info *info);
     static bool freeAllTouchDeviceInfo();
 
     static bool isSameDeviceInPort(touch_device *a, touch_device *b);
 
     //批处理升级部分
+    TOUCHSHARED_EXPORT void doBatchUpgrade(QString path,BatchUpgradeListener *batchUpgradeListener);
     TOUCHSHARED_EXPORT int startBatchUpgrade(int upgradeIndex,touch_device *device,QString path, BatchUpgradeListener *listener = NULL);
+    TOUCHSHARED_EXPORT void setBatchUpgradeStatus(int index,int status);
+    TOUCHSHARED_EXPORT void addBatchDeveice(touch_device *device,int index);
 
     /**
      * @brief device get the default(first) device
      * @return
      */
-    TOUCHSHARED_EXPORT touch_device *device() { return mDevices;}
+
 
     touch_device *firstConnectedDevice();
     TOUCHSHARED_EXPORT QVariantMap getBatchDevicesInfo();
@@ -364,7 +392,6 @@ private:
 
 
 private:
-    touch_device *mDevices;
     int mCount;
     hid_device_info *mRoot;
 
@@ -380,7 +407,8 @@ private:
 
     UpgradeListener *mUpgradeListener;
     bool mUpgrading;
-
+public:
+    touch_device *mDevices;
     // config
     static bool mShowTestData;
     static bool mIgnoreFailedTestItem;
@@ -392,6 +420,15 @@ public:
     Trans *translator;
     HotplugThread mHotplugThread;
     CommandThread *commandThread;
+    CommandThread::DeviceCommunicationRead *deviceCommunication;
+    TOUCHSHARED_EXPORT void removeInitFailedDev(touch_device *dev);
+
+    struct BatchUpgradeDeviceList *batchUpgradeDevList;
+    volatile bool batchFirstUpgrade;
+    struct BatchUpgradeThreadList *batchUpgradeList;
+    struct InitDeviceThreadlist *initDeviceThreadList;
+    TOUCHSHARED_EXPORT void freeBatchUpgradeList();
+    TOUCHSHARED_EXPORT void freeInieDeveicThreadList();
     TestThread *testThread;
     BatchTestListener *batchTestListenter;
     BatchUpgradeListener *batchUpgradeListenter;
@@ -401,9 +438,36 @@ public:
     TOUCHSHARED_EXPORT void setStop(bool stop);
     bool batchCancal;
     TOUCHSHARED_EXPORT void setBatchCancal(bool cancel);
+
+    QMutex batchDelayMutex;
     //onboard
     int boardCount = 0;
     unsigned char boardIndexBuf[128];
+};
+struct BatchUpgradeThreadList{
+  TouchManager::BatchUpgradeThread *batchUpgradeThread;
+  int upgradeIndex;
+  struct BatchUpgradeThreadList *next;
+};
+struct InitDeviceThreadlist{
+    TouchManager::InitDeviceInfoThread *initDeviceInfoThread;
+    touch_device *device;
+    struct InitDeviceThreadlist *next;
+};
+
+struct BatchUpgradeDeviceList{
+  touch_device *dev;
+  int upgradeIndex;
+  /*
+   *  upgradeStatus:升级状态
+   *
+   *  0   初始化状态
+   *  1   升级中状态
+   *  2   升级完成状态
+   *
+  */
+  int upgradeStatus;
+  struct BatchUpgradeDeviceList *next;
 };
 
 #endif // TOUCHMANAGER_H

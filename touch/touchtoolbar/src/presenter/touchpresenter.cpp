@@ -20,7 +20,7 @@
 int TouchPresenter::currentTab = 0;
 TouchPresenter::TouchPresenter(QObject *parent, QObject *component) : QObject(parent),
     signalThread(this), sem(0), settings("newskyer", "TouchAssistant"),paintSem(0),touchManager(NULL),
-    initSdkDone(false),batchCancel(false), calibrationMode(false)
+    initSdkDone(false),batchCancel(true), calibrationMode(false)
 {
 
     this->component = component;
@@ -388,8 +388,9 @@ void TouchPresenter::setFileText(QString path)
         TDebug::warning("component is NULL");
         return;
     }
-    QMetaObject::invokeMethod(component, "setFileText",
-                              Q_ARG(QVariant, path));
+    QMetaObject::invokeMethod(component, "setUpgradeFile",
+                              Q_ARG(QVariant, path),
+                              Q_ARG(QVariant, 0));
 }
 
 void TouchPresenter::setAutoUpgradeFile(QString path)
@@ -399,7 +400,8 @@ void TouchPresenter::setAutoUpgradeFile(QString path)
         return;
     }
     QMetaObject::invokeMethod(component, "setUpgradeFile",
-                              Q_ARG(QVariant, path));
+                              Q_ARG(QVariant, path),
+                              Q_ARG(QVariant, 0));
 }
 
 void TouchPresenter::showToast(QString str)
@@ -504,18 +506,28 @@ void TouchPresenter::setBatchResult(int index, int result)
     QMetaObject::invokeMethod(component, "refreshBatchResult",Q_ARG(QVariant, index),Q_ARG(QVariant, result));
 }
 
+void TouchPresenter::setDeviceInfo(int index, QString msg)
+{
+    if (component == NULL) {
+        TDebug::warning("component is NULL");
+        return;
+    }
+    QMetaObject::invokeMethod(component, "refreshBatchInfo",Q_ARG(QVariant, index),Q_ARG(QVariant, msg));
+}
+
 void TouchPresenter::startBatchTest(int index)
 {
     touch->startBatchTest(index);
 }
 
-void TouchPresenter::startBatchUpgrade(int index,QString batchUpgradeFile)
+void TouchPresenter::startBatchUpgrade(QString batchUpgradeFile)
 {
-    touch->startBatchUpgrade(index,batchUpgradeFile);
+    touch->startBatchUpgrade(batchUpgradeFile);
 }
 
 void TouchPresenter::setBatchCancel(bool batchCancel)
 {
+    TDEBUG("设置批量升级的状态：%s",batchCancel ? "取消批量升级":"开始批量升级");
     this->batchCancel = batchCancel;
     touch->setBatchCancel(batchCancel);
 }
@@ -623,12 +635,13 @@ void TouchPresenter::onBatchFinish(int index, bool result, QString message)
     if (component == NULL) {
         return;
     }
+//    TDEBUG("序号%d升级结束,升级结果 = %d",index,batchCancel ? BATCH_CANCEL : (result ? BATCH_FINISH_SUCCESS : BATCH_FINISH_ERROR));
+//    QMetaObject::invokeMethod(component, "refreshBatchResult",
+//        Q_ARG(QVariant, index),
+//        Q_ARG(QVariant, batchCancel ? BATCH_CANCEL : (result ? BATCH_FINISH_SUCCESS : BATCH_FINISH_ERROR)));
     QMetaObject::invokeMethod(component, "refreshBatchResult",
         Q_ARG(QVariant, index),
-        Q_ARG(QVariant, batchCancel ? BATCH_CANCEL : (result ? BATCH_FINISH_SUCCESS : BATCH_FINISH_ERROR)));
-//    QMetaObject::invokeMethod(component, "refreshBatchProgress",
-//        Q_ARG(QVariant, index),
-//        Q_ARG(QVariant, 100));
+        Q_ARG(QVariant, result ? BATCH_FINISH_SUCCESS : BATCH_FINISH_ERROR));
     QMetaObject::invokeMethod(component, "refreshBatchInfo",
         Q_ARG(QVariant, index),
         Q_ARG(QVariant, message));
@@ -641,7 +654,15 @@ void TouchPresenter::addBatchDevice(QVariantMap deviceMap)
         return;
     }
     QMetaObject::invokeMethod(component, "addBatchDevice",
-        Q_ARG(QVariant, deviceMap));
+                              Q_ARG(QVariant, deviceMap));
+}
+
+void TouchPresenter::batchUpradeFinished()
+{
+    if (component == NULL) {
+        return;
+    }
+    QMetaObject::invokeMethod(component, "batchUpradeDone");
 }
 
 
@@ -666,10 +687,10 @@ void TouchPresenter::setAgingTime(int time)
 
 void TouchPresenter::setDeviceStatus(int index, int status)
 {
-    if(status != 1)
-    {
-        TDEBUG("改变设备的状态status = %d",status);
-    }
+//    if(status != 1)
+//    {
+//        TDEBUG("改变设备的状态status = %d",status);
+//    }
 
     //setDeviceStatus
     if (component == NULL) {
@@ -1017,7 +1038,7 @@ int TouchPresenter::getScreenOrientation(){
         TDEBUG("枚举设备设置出错");
         appendMessageText("枚举设备设置出错",0);
     }
-
+    return systemScreenDirection;
 }
 
 

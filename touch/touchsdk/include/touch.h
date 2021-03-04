@@ -2,6 +2,7 @@
 
 #define TOUCH_H
 #include "hidapi.h"
+
 /*
 #ifdef __cplusplus
 extern "C" {
@@ -143,8 +144,8 @@ typedef struct _touch_device{
     struct hid_device_ *hid;
     struct hid_device_info *info;
     touch_info touch;
+    touch_fireware_info fireware;
     struct _touch_device *next;
-    QMutex mutex;
 }touch_device;
 
 
@@ -468,6 +469,7 @@ int touch_vendor_add(struct touch_vendor_info *info);
 int touch_vendor_remove(struct touch_vendor_info *info);
 void touch_vendor_remove_all(void);
 touch_device *hid_find_touchdevice(int *count);
+void memcpyDeviceInfo(touch_device *dst,touch_device *src);
 int hid_check(touch_device *dev);
 void *free_touchdevice(touch_device *devices);
 #define touch_reponse_ok(package) \

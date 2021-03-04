@@ -5,6 +5,7 @@
 #include <QMutex>
 #include <QMutexLocker>
 #include <QQueue>
+#include <QReadWriteLock>
 
 #include "touch.h"
 
@@ -15,7 +16,6 @@ class CommandThread : public QThread
 {
 public:
     CommandThread();
-//    static bool commandThreadFinshed;
     class CommandListener {
     public:
         /**
@@ -34,11 +34,26 @@ public:
     int addCommandToQueue(touch_device *dev, touch_package *require,
             touch_package *reply,int async = 0, CommandListener *listener = NULL);
     bool getCommandThreadFinshed(){return finshed;}
-    QQueue<CommandItem*> mCommandItem;
-private:
 
+public:
+    class DeviceCommunicationRead : public QThread{
+    public:
+        DeviceCommunicationRead(CommandThread *commandThread,touch_device *device):stop(false){this->device = device;}
+        touch_device *device;
+        bool stop;
+    protected:
+        void run();
+    private:
+        CommandThread *commandThread;
+
+    };
+    QList<CommandItem*> mCommandItem;
+    void copyTouchPackage(touch_package *dst,touch_package *src);
+    static QList<touch_device *> deviceList;
+    static QReadWriteLock deviceListRWLock;
+private:
     QSemaphore sem;
-    QMutex mutex;
+    QReadWriteLock readWriteLock;
     int stop;
     bool finshed = false;
 };
@@ -46,6 +61,7 @@ private:
 struct CommandItem {
     touch_device *dev;
     int async;
+    bool written;
     QSemaphore *sem;
     CommandThread::CommandListener *listener;
     touch_package *require;

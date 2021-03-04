@@ -30,7 +30,6 @@
 class TouchInterface {
 public:
     TouchInterface(){}
-//    virtual touch_device *getDevices() = 0;
     virtual QVariantMap getSignalData(QVariant index, int count) = 0;
     virtual QVariantMap getSignalItems() = 0;
     virtual QVariant getRelativeInfo() = 0;
@@ -49,11 +48,11 @@ public:
     virtual QVariantMap getConnectDeviceInfo() = 0;
     virtual touch_device *getDevice(int index) = 0;
     virtual void startBatchTest(int testIndex) = 0;
-    virtual void startBatchUpgrade(int testIndex,QString batchUpgradeFile) = 0;
+    virtual void startBatchUpgrade(QString batchUpgradeFile) = 0;
     virtual void setBatchCancel(bool batchCancel) = 0;
     virtual void startVolienceTest(int volienceMode) = 0;
     virtual void setCancelVolienceTest(bool cancelVolienceTest) = 0;
-    virtual void setBatchLock(bool enable);
+    virtual void setBatchLock(bool enable) = 0;
     virtual void batchFinished(int functionIndex) = 0;
 
 };
@@ -73,9 +72,8 @@ class TouchPresenter : public QObject
     Q_OBJECT
 public:
     /*
-     *研发工厂版：升级界面为0、 测试界面为1、 信号图界面为2、 加速老化界面为3
+     *升级界面为0、 测试界面为1、 信号图界面为2、 加速老化界面为3
       全屏画图界面为4、 设置界面为5、  关于界面设置为6
-     *客户版本：升级界面为0、 测试界面为1、 信号图界面为2、 全屏画图界面为3、 设置界面为4、  关于界面设置为5
     */
 
     static int currentTab;
@@ -383,6 +381,7 @@ public:
 
 
     Q_INVOKABLE void currentTabRefresh(int currenttab){
+
         currentTab = currenttab;
     }
     //更多设置
@@ -395,7 +394,7 @@ public:
         return touch->getConnectDeviceInfo();
     }
     Q_INVOKABLE void startBatchTest(int index);
-    Q_INVOKABLE void startBatchUpgrade(int index,QString batchUpgradeFile);
+    Q_INVOKABLE void startBatchUpgrade(QString batchUpgradeFile);
     Q_INVOKABLE void setBatchCancel(bool batchCancel);
     Q_INVOKABLE void setBatchLock(bool enable);
     Q_INVOKABLE void batchFinished(int functionIndex);
@@ -450,9 +449,10 @@ public:
 
     //批处理
     void setBatchResult(int index,int result);
+    void setDeviceInfo(int index,QString msg);
     void onBatchFinish(int index,bool result,QString message = "");
     void addBatchDevice(QVariantMap deviceMap);
-
+    void batchUpradeFinished();
 
 signals:
     void agingFinished(int index);

@@ -6,88 +6,140 @@
 #include "hidapi.h"
 
 
+int CommandThread::stop = false;
+QList<touch_device *> CommandThread::deviceList;
+QReadWriteLock CommandThread::deviceListRWLock;
 CommandThread::CommandThread() : sem(0)
 {
 }
-
 void CommandThread::run()
 {
-#if 1
-    stop = 0;
     int ret;
     int tryCount = 3;
     int i = 0;
-    int milliseconds = 30000;
     TDEBUG("command thread running");
-    while (!stop) {
-//        sem.acquire();
-        if(!sem.tryAcquire(1,10))
-            continue;
 
-        mutex.lock();
-        if (mCommandItem.isEmpty()) {
-            mutex.unlock();
+    while(!stop)
+    {
+        if(!sem.tryAcquire(1,1))
             continue;
-        }
-        //出队
-        CommandItem *item = mCommandItem.dequeue();
-        mutex.unlock();
-        // TODO: deal with command
-        item->require->report_id = item->dev->touch.report_id;
-        touch_package tp;
-        if (item->reply == NULL)
-            item->reply = &tp;
-//#define _SHOW_TIME
-#ifdef _SHOW_TIME
-        QTime time;
-        time.start();
-#endif
-        item->dev->mutex.lock();
-        tryCount = 3;
-        do {
+        CommandItem *item = NULL;
+        readWriteLock.lockForRead();
+        for(i = 0;i < mCommandItem.length() && !stop;i++)
+        {
+            if(!mCommandItem.at(i)->written)
+            {
+                item = mCommandItem.at(i);
+            }
+            else
+            {
+                continue;
+            }
+
+            item->require->report_id = item->dev->touch.report_id;
+
+            touch_package tp;
+            if (item->reply == NULL)
+                item->reply = &tp;
+
+            tryCount = 3;
+            do
+            {
                 ret = TouchManager::sendPackageToDevice(item->require, item->reply, item->dev);
-
                 if(ret > 0)
-                    break;
-
-                for(i = 0;i < milliseconds / 5 && !stop;i++)
                 {
-                    ret = TouchManager::wait_time_out(item->dev->hid, (unsigned char *)(item->reply),HID_REPORT_DATA_LENGTH,5);
-
-                    if(ret > 0)
-                        break;
+                    item->written = true;
+//                    TDEBUG("发送命令：dev = %s,主命令 = %0x,从命令 = %0x,随机数 = %d,command Length = %d",item->dev->touch.id_str,
+//                           item->require->master_cmd,item->require->sub_cmd,item->require->magic,mCommandItem.length());
                 }
                 if(stop)
                     break;
                 tryCount--;
 
-
-        } while (ret <= 0 && tryCount > 0 && !stop);
-
-        item->dev->mutex.unlock();
-#ifdef _SHOW_TIME
-        qDebug("command consume: %u[%d, %d], %d", time.elapsed(),
-               item->require->master_cmd, item->require->sub_cmd,
-               QTime::currentTime().msecsSinceStartOfDay());
-#endif
-//        hid_send_data(item->dev->hid, (hid_report_data*)item->require, (hid_report_data*)reply);
-        if (item->async) {
-            if (item->listener) {
-                item->listener->onCommandDone(item->dev, item->require, item->reply);
-            }
-            delete item->sem;
-            free(item);
-        } else {
-            item->sem->release(1);
+            }while(ret <= 0 && tryCount > 0 && !stop);
         }
+        readWriteLock.unlock();
     }
-#endif
-
     finshed = true;
     TDEBUG("command thread end");
-    exit(0);
+//    exit(0);
 }
+void CommandThread::DeviceCommunicationRead::run()
+{
+    int ret = 0;
+    int i = 0;
+    int j = 0;
+    int count = 0;
+    TDEBUG("DeviceCommunicationRead thread running");
+    //一直读取设备数据
+    touch_package reply;
+    touch_device *device = NULL;
+    while (!CommandThread::stop)
+    {
+        if(commandThread->mCommandItem.length() == 0)
+        {
+            QThread::msleep(1);
+            continue;
+        }
 
+        CommandThread::deviceListRWLock.lockForRead();
+        if(CommandThread::deviceList.length() == 0)
+        {
+            CommandThread::deviceListRWLock.unlock();
+            QThread::msleep(1);
+            continue;
+        }
+        if(j >= CommandThread::deviceList.length())
+        {
+            j = 0;
+        }
+        count++;
+        if(count % 2000 == 0)
+        {
+            QThread::msleep(1);
+            count = 0;
+        }
+//        TDEBUG("命令线程检测到设备个数：length =  %d,正在读取的设备序号 j = %d",CommandThread::deviceList.length(),j);
+        device = CommandThread::deviceList.at(j++);
+        memset((void *)&reply,0,sizeof(touch_package));
+        ret = TouchManager::wait_time_out(device->hid, (unsigned char *)&reply,HID_REPORT_DATA_LENGTH,0);
+        CommandThread::deviceListRWLock.unlock();
+        if(ret > 0)
+        {
+            commandThread->readWriteLock.lockForRead();
+            for(i = 0;i < commandThread->mCommandItem.length();i++)
+            {
+                CommandItem *item = commandThread->mCommandItem.at(i);
+                if(item->require->report_id != reply.report_id)
+                {
+                    break;
+                }
+//                TDEBUG("读取数据：dev = %s,主命令 = %0x,从命令 = %0x,随机数 = %d,command Length = %d",item->dev->touch.id_str,
+//                       reply.master_cmd,reply.sub_cmd,reply.magic,commandThread->mCommandItem.length());
+                if(reply.magic == item->require->magic)
+                {
+                    if(item->reply == NULL)
+                    {
+                        touch_package tp;
+                         item->reply = &tp;
+                    }
+                    commandThread->copyTouchPackage(item->reply,&reply);
+                    item->sem->release(1);
+                    break;
+                }
+            }
+            commandThread->readWriteLock.unlock();
+        }
+        else
+        {
+//            TDEBUG("read not");
+        }
+
+
+
+    }
+    TDEBUG("DeviceCommunicationRead thread end");
+}
 int CommandThread::addCommandToQueue(touch_device *dev, touch_package *require,
                                      touch_package *reply,int async, CommandListener *listener)
 {
@@ -99,6 +151,7 @@ int CommandThread::addCommandToQueue(touch_device *dev, touch_package *require,
         TWARNING("%s: require is NULL", __func__);
         return -2;
     }
+
     CommandItem *item = (CommandItem*)malloc(sizeof(struct CommandItem));
     memset(item, 0, sizeof(CommandItem));
 
@@ -106,22 +159,55 @@ int CommandThread::addCommandToQueue(touch_device *dev, touch_package *require,
     item->require = require;
     item->reply = reply;
     item->async = async;
+    item->written = false;
 
     item->sem = new QSemaphore(0);
-    mutex.lock();
-    mCommandItem.enqueue(item);
-    mutex.unlock();
+
+//    TDEBUG("增加命令：主命令 = %0x,从命令 = %0x,随机数 = %d,command Length = %d",item->require->master_cmd,item->require->sub_cmd,
+//           item->require->magic,mCommandItem.length());
+    mCommandItem.append(item);
+
     sem.release();
-
-    if (async == 1) {        
-        if (listener != NULL) {
-            item->listener = listener;
+    int tryCouny = 30 * 1000;
+    for(int i = 0;i < tryCouny;i++)
+    {
+        if(!item->dev->touch.connected)
+        {
+            break;
         }
-    } else {
+        if(item->sem->tryAcquire(1,1))
+        {
+            break;
+        }
 
-        item->sem->acquire();
-        delete item->sem;
-        free(item);
     }
+//    item->sem->tryAcquire(1,30000);
+    readWriteLock.lockForWrite();
+//    TDEBUG("删除命令：主命令 = %0x,从命令 = %0x,随机数 = %d,command Length = %d",item->require->master_cmd,item->require->sub_cmd,
+//           item->require->magic,mCommandItem.length());
+    mCommandItem.removeOne(item); 
+    readWriteLock.unlock();
+    delete item->sem;
+    free(item);
     return 0;
+}
+
+
+
+
+void CommandThread::copyTouchPackage(touch_package *dst, touch_package *src)
+{
+    dst->report_id = src->report_id;
+    dst->version = src->version ;
+    dst->magic = src->magic;
+    dst->flow = src->flow;
+    dst->reserved1 = src->reserved1;
+    dst->master_cmd = src->master_cmd;
+    dst->sub_cmd = src->sub_cmd;
+    dst->reserved2 = src->reserved2;
+    dst->data_length = src->data_length;
+    for(int i = 0;i < src->data_length && i < HID_REPORT_DATA_LENGTH;i++)
+    {
+        dst->data[i] = src->data[i];
+    }
 }
