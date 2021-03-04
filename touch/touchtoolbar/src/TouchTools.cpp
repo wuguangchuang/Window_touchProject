@@ -775,12 +775,9 @@ QVariant TouchTools::getRelativeInfo()
         info += polishingString(polishingSize,tr("Fireware version:")) + QString().sprintf("0x%04X\n", toWord(dev->fireware.version_l, dev->fireware.version_h));
         info += polishingString(polishingSize,tr("Fireware checksum:")) + QString().sprintf("0x%04X\n", toWord(dev->fireware.checksum_l, dev->fireware.checksum_h));
         info += polishingString(polishingSize,tr("Support touch number:")) + QString().sprintf("%d\n", dev->fireware.touch_point);
-//        info += QString().sprintf("设备名称:          %s\n", dev->touch.model);
-//        info += QString().sprintf("固件版本:          0x%04X\n", toWord(finfo.version_l, finfo.version_h));
-//        info += QString().sprintf("固件验证码:        0x%04X\n", toWord(finfo.checksum_l, finfo.checksum_h));
-//        info += QString().sprintf("支持的触摸点数:    %d\n", finfo.touch_point);
         info += polishingString(polishingSize,tr("USB VID:")) + QString().sprintf("0x%04X\n", toWord(dev->fireware.usb_vid_l, dev->fireware.usb_vid_h));
         info += polishingString(polishingSize,tr("USB PID:")) + QString().sprintf("0x%04X\n", toWord(dev->fireware.usb_pid_l, dev->fireware.usb_pid_h));
+        info += polishingString(polishingSize,tr("Serial number:")) + QString().sprintf("%s\n",dev->touch.serial_number);
     }
 
     info += "\n" + tr("Software information") + "\n";

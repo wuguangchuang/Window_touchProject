@@ -853,6 +853,10 @@
         <source>Chart</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Serial number:</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>main</name>
@@ -930,10 +934,6 @@
     </message>
     <message>
         <source>During upgrade</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Up to 10 pieces of firmware can be stored</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1058,6 +1058,10 @@
     </message>
     <message>
         <source>The last upgrade failed because: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to change firmware while upgrading</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

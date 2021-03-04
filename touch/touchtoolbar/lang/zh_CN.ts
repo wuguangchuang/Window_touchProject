@@ -707,7 +707,7 @@
     <name>Touch::TouchTools</name>
     <message>
         <location filename="../src/TouchTools.cpp" line="50"/>
-        <location filename="../src/TouchTools.cpp" line="591"/>
+        <location filename="../src/TouchTools.cpp" line="586"/>
         <source>connected</source>
         <translation>已连接</translation>
     </message>
@@ -717,290 +717,294 @@
         <translation>已断开</translation>
     </message>
     <message>
-        <location filename="../src/TouchTools.cpp" line="1440"/>
+        <location filename="../src/TouchTools.cpp" line="1452"/>
         <source>Cancel test</source>
         <translation>取消测试</translation>
     </message>
     <message>
-        <location filename="../src/TouchTools.cpp" line="368"/>
-        <location filename="../src/TouchTools.cpp" line="459"/>
+        <location filename="../src/TouchTools.cpp" line="354"/>
+        <location filename="../src/TouchTools.cpp" line="445"/>
         <source>Error</source>
         <translation>错误</translation>
     </message>
     <message>
-        <location filename="../src/TouchTools.cpp" line="368"/>
-        <location filename="../src/TouchTools.cpp" line="762"/>
-        <location filename="../src/TouchTools.cpp" line="836"/>
-        <location filename="../src/TouchTools.cpp" line="989"/>
+        <location filename="../src/TouchTools.cpp" line="354"/>
+        <location filename="../src/TouchTools.cpp" line="768"/>
+        <location filename="../src/TouchTools.cpp" line="839"/>
+        <location filename="../src/TouchTools.cpp" line="1005"/>
         <source>No connected devices!</source>
         <translation>没找到连接的设备!</translation>
     </message>
     <message>
-        <location filename="../src/TouchTools.cpp" line="1435"/>
-        <location filename="../src/TouchTools.cpp" line="1443"/>
+        <location filename="../src/TouchTools.cpp" line="1447"/>
+        <location filename="../src/TouchTools.cpp" line="1455"/>
         <source>Test</source>
         <translation>测试</translation>
     </message>
     <message>
-        <location filename="../src/TouchTools.cpp" line="384"/>
+        <location filename="../src/TouchTools.cpp" line="370"/>
         <source>Start test</source>
         <translation>开始测试</translation>
     </message>
     <message>
-        <location filename="../src/TouchTools.cpp" line="454"/>
+        <location filename="../src/TouchTools.cpp" line="440"/>
         <source>Cancel upgrade</source>
         <translation>取消升级</translation>
     </message>
     <message>
-        <location filename="../src/TouchTools.cpp" line="459"/>
+        <location filename="../src/TouchTools.cpp" line="445"/>
         <source>Please plug in device</source>
         <translation>请插入设备</translation>
     </message>
     <message>
-        <location filename="../src/TouchTools.cpp" line="470"/>
-        <location filename="../src/TouchTools.cpp" line="491"/>
-        <location filename="../src/TouchTools.cpp" line="1513"/>
-        <location filename="../src/TouchTools.cpp" line="1516"/>
+        <location filename="../src/TouchTools.cpp" line="456"/>
+        <location filename="../src/TouchTools.cpp" line="477"/>
+        <location filename="../src/TouchTools.cpp" line="1525"/>
+        <location filename="../src/TouchTools.cpp" line="1528"/>
         <source>Upgrade</source>
         <translation>升级</translation>
     </message>
     <message>
-        <location filename="../src/TouchTools.cpp" line="481"/>
+        <location filename="../src/TouchTools.cpp" line="467"/>
         <source>Upgrading! Do not disconnect the device</source>
         <translation>升级中!请勿断开设备</translation>
     </message>
     <message>
-        <location filename="../src/TouchTools.cpp" line="491"/>
+        <location filename="../src/TouchTools.cpp" line="477"/>
         <source>Uprade failure</source>
         <translation>升级失败</translation>
     </message>
     <message>
-        <location filename="../src/TouchTools.cpp" line="766"/>
-        <location filename="../src/TouchTools.cpp" line="819"/>
+        <location filename="../src/TouchTools.cpp" line="772"/>
+        <location filename="../src/TouchTools.cpp" line="822"/>
         <source>Device infomation</source>
         <translation>设备信息</translation>
     </message>
     <message>
-        <location filename="../src/TouchTools.cpp" line="768"/>
-        <location filename="../src/TouchTools.cpp" line="820"/>
-        <location filename="../src/TouchTools.cpp" line="864"/>
+        <location filename="../src/TouchTools.cpp" line="774"/>
+        <location filename="../src/TouchTools.cpp" line="823"/>
+        <location filename="../src/TouchTools.cpp" line="867"/>
         <source>Device name:</source>
         <translation>设备名称：</translation>
     </message>
     <message>
-        <location filename="../src/TouchTools.cpp" line="59"/>
-        <location filename="../src/TouchTools.cpp" line="769"/>
-        <location filename="../src/TouchTools.cpp" line="821"/>
-        <location filename="../src/TouchTools.cpp" line="874"/>
-        <location filename="../src/TouchTools.cpp" line="993"/>
+        <location filename="../src/TouchTools.cpp" line="57"/>
+        <location filename="../src/TouchTools.cpp" line="775"/>
+        <location filename="../src/TouchTools.cpp" line="824"/>
+        <location filename="../src/TouchTools.cpp" line="877"/>
+        <location filename="../src/TouchTools.cpp" line="1008"/>
         <source>Fireware version:</source>
         <translation>固件版本：</translation>
     </message>
     <message>
-        <location filename="../src/TouchTools.cpp" line="59"/>
-        <location filename="../src/TouchTools.cpp" line="770"/>
-        <location filename="../src/TouchTools.cpp" line="822"/>
-        <location filename="../src/TouchTools.cpp" line="876"/>
-        <location filename="../src/TouchTools.cpp" line="994"/>
+        <location filename="../src/TouchTools.cpp" line="57"/>
+        <location filename="../src/TouchTools.cpp" line="776"/>
+        <location filename="../src/TouchTools.cpp" line="825"/>
+        <location filename="../src/TouchTools.cpp" line="879"/>
+        <location filename="../src/TouchTools.cpp" line="1009"/>
         <source>Fireware checksum:</source>
         <translation>固件验证码：</translation>
     </message>
     <message>
-        <location filename="../src/TouchTools.cpp" line="168"/>
+        <location filename="../src/TouchTools.cpp" line="167"/>
         <source>file does no exist</source>
         <translation>升级文件不存在</translation>
     </message>
     <message>
-        <location filename="../src/TouchTools.cpp" line="272"/>
-        <location filename="../src/TouchTools.cpp" line="316"/>
+        <location filename="../src/TouchTools.cpp" line="271"/>
         <source>Device disconnect</source>
         <translation>设备未连接</translation>
     </message>
     <message>
-        <location filename="../src/TouchTools.cpp" line="771"/>
-        <location filename="../src/TouchTools.cpp" line="823"/>
+        <location filename="../src/TouchTools.cpp" line="777"/>
+        <location filename="../src/TouchTools.cpp" line="826"/>
         <source>Support touch number:</source>
         <translation>支持的触摸点数:</translation>
     </message>
     <message>
-        <location filename="../src/TouchTools.cpp" line="776"/>
+        <location filename="../src/TouchTools.cpp" line="778"/>
         <source>USB VID:</source>
         <translation>USB VID：</translation>
     </message>
     <message>
-        <location filename="../src/TouchTools.cpp" line="777"/>
+        <location filename="../src/TouchTools.cpp" line="779"/>
         <source>USB PID:</source>
         <translation>USB PID：</translation>
     </message>
     <message>
         <location filename="../src/TouchTools.cpp" line="780"/>
-        <location filename="../src/TouchTools.cpp" line="885"/>
+        <source>Serial number:</source>
+        <translation>序列号：</translation>
+    </message>
+    <message>
+        <location filename="../src/TouchTools.cpp" line="783"/>
+        <location filename="../src/TouchTools.cpp" line="888"/>
         <source>Software information</source>
         <translation>软件信息</translation>
     </message>
     <message>
-        <location filename="../src/TouchTools.cpp" line="781"/>
+        <location filename="../src/TouchTools.cpp" line="784"/>
         <source>Software Name</source>
         <translation>软件名称：</translation>
     </message>
     <message>
-        <location filename="../src/TouchTools.cpp" line="802"/>
-        <location filename="../src/TouchTools.cpp" line="887"/>
+        <location filename="../src/TouchTools.cpp" line="805"/>
+        <location filename="../src/TouchTools.cpp" line="890"/>
         <source>Software version:</source>
         <translation>软件版本：</translation>
     </message>
     <message>
-        <location filename="../src/TouchTools.cpp" line="803"/>
-        <location filename="../src/TouchTools.cpp" line="888"/>
+        <location filename="../src/TouchTools.cpp" line="806"/>
+        <location filename="../src/TouchTools.cpp" line="891"/>
         <source>OS name:</source>
         <translation>操作系统名称：</translation>
     </message>
     <message>
-        <location filename="../src/TouchTools.cpp" line="804"/>
-        <location filename="../src/TouchTools.cpp" line="889"/>
+        <location filename="../src/TouchTools.cpp" line="807"/>
+        <location filename="../src/TouchTools.cpp" line="892"/>
         <source>OS version:</source>
         <translation>操作系统版本：</translation>
     </message>
     <message>
-        <location filename="../src/TouchTools.cpp" line="826"/>
+        <location filename="../src/TouchTools.cpp" line="829"/>
         <source>Serial number:
 </source>
         <translation>序列号：</translation>
     </message>
     <message>
-        <location filename="../src/TouchTools.cpp" line="886"/>
+        <location filename="../src/TouchTools.cpp" line="889"/>
         <source>Software Name:</source>
         <translation>软件名称：</translation>
     </message>
     <message>
-        <location filename="../src/TouchTools.cpp" line="1597"/>
+        <location filename="../src/TouchTools.cpp" line="1609"/>
         <source>Being detected! Do not touch!</source>
         <translation>正在检测中!请勿触摸!</translation>
     </message>
     <message>
-        <location filename="../src/TouchTools.cpp" line="1599"/>
+        <location filename="../src/TouchTools.cpp" line="1611"/>
         <source>Check the onboard test result failed</source>
         <translation>检查板载测试结果失败</translation>
     </message>
     <message>
-        <location filename="../src/TouchTools.cpp" line="1600"/>
+        <location filename="../src/TouchTools.cpp" line="1612"/>
         <source>Failed to get test item</source>
         <translation>获取测试项失败</translation>
     </message>
     <message>
-        <location filename="../src/TouchTools.cpp" line="1601"/>
+        <location filename="../src/TouchTools.cpp" line="1613"/>
         <source>Failed to switch to touch mode</source>
         <translation>切换到触摸模式失败</translation>
     </message>
     <message>
-        <location filename="../src/TouchTools.cpp" line="1602"/>
+        <location filename="../src/TouchTools.cpp" line="1614"/>
         <source>Please draw a picture around the touch frame</source>
         <translation>请围绕触摸框四边画图</translation>
     </message>
     <message>
-        <location filename="../src/TouchTools.cpp" line="1603"/>
+        <location filename="../src/TouchTools.cpp" line="1615"/>
         <source>The onboard test function is not activated</source>
         <translation>未启动板载测试功能</translation>
     </message>
     <message>
-        <location filename="../src/TouchTools.cpp" line="1604"/>
+        <location filename="../src/TouchTools.cpp" line="1616"/>
         <source>Onboard test failed</source>
         <translation>板载测试失败</translation>
     </message>
     <message>
-        <location filename="../src/TouchTools.cpp" line="1605"/>
+        <location filename="../src/TouchTools.cpp" line="1617"/>
         <source>Onboard test passed</source>
         <translation>板载测试通过</translation>
     </message>
     <message>
-        <location filename="../src/TouchTools.cpp" line="1606"/>
+        <location filename="../src/TouchTools.cpp" line="1618"/>
         <source>The firmware package size is larger than the report package</source>
         <translation>固件包大小比report包大</translation>
     </message>
     <message>
-        <location filename="../src/TouchTools.cpp" line="1607"/>
+        <location filename="../src/TouchTools.cpp" line="1619"/>
         <source>Failed to switch to upgrade mode</source>
         <translation>切换到升级模式下失败</translation>
     </message>
     <message>
-        <location filename="../src/TouchTools.cpp" line="1608"/>
+        <location filename="../src/TouchTools.cpp" line="1620"/>
         <source>Failed to verify firmware</source>
         <translation>校验固件失败</translation>
     </message>
     <message>
-        <location filename="../src/TouchTools.cpp" line="1609"/>
+        <location filename="../src/TouchTools.cpp" line="1621"/>
         <source>Failed to download firmware</source>
         <translation>下载固件失败</translation>
     </message>
     <message>
-        <location filename="../src/TouchTools.cpp" line="1610"/>
+        <location filename="../src/TouchTools.cpp" line="1622"/>
         <source>IAP failed</source>
         <translation>IAP失败</translation>
     </message>
     <message>
-        <location filename="../src/TouchTools.cpp" line="1611"/>
+        <location filename="../src/TouchTools.cpp" line="1623"/>
         <source>Firmware error</source>
         <translation>固件出错</translation>
     </message>
     <message>
-        <location filename="../src/TouchTools.cpp" line="1612"/>
+        <location filename="../src/TouchTools.cpp" line="1624"/>
         <source>Calibrate</source>
         <translation>校准</translation>
     </message>
     <message>
-        <location filename="../src/TouchTools.cpp" line="1613"/>
+        <location filename="../src/TouchTools.cpp" line="1625"/>
         <source>Settings</source>
         <translation>设置</translation>
     </message>
     <message>
-        <location filename="../src/TouchTools.cpp" line="1614"/>
+        <location filename="../src/TouchTools.cpp" line="1626"/>
         <source>About</source>
         <translation>关于</translation>
     </message>
     <message>
-        <location filename="../src/TouchTools.cpp" line="1615"/>
+        <location filename="../src/TouchTools.cpp" line="1627"/>
         <source>Mode</source>
         <translation>更多</translation>
     </message>
     <message>
-        <location filename="../src/TouchTools.cpp" line="1616"/>
+        <location filename="../src/TouchTools.cpp" line="1628"/>
         <source>Open</source>
         <translation>打开软件</translation>
     </message>
     <message>
-        <location filename="../src/TouchTools.cpp" line="1617"/>
+        <location filename="../src/TouchTools.cpp" line="1629"/>
         <source>Exit</source>
         <translation>退出</translation>
     </message>
     <message>
-        <location filename="../src/TouchTools.cpp" line="1618"/>
+        <location filename="../src/TouchTools.cpp" line="1630"/>
         <source>Chart</source>
         <translation>信号图</translation>
     </message>
     <message>
-        <location filename="../src/TouchTools.cpp" line="1619"/>
+        <location filename="../src/TouchTools.cpp" line="1631"/>
         <source>Init signal error</source>
         <translation>初始化信号错误</translation>
     </message>
     <message>
-        <location filename="../src/TouchTools.cpp" line="1598"/>
+        <location filename="../src/TouchTools.cpp" line="1610"/>
         <source>test failed</source>
         <translation>测试失败</translation>
     </message>
     <message>
-        <location filename="../src/TouchTools.cpp" line="1432"/>
-        <location filename="../src/TouchTools.cpp" line="1433"/>
+        <location filename="../src/TouchTools.cpp" line="1444"/>
+        <location filename="../src/TouchTools.cpp" line="1445"/>
         <source>Test pass</source>
         <translation>测试通过</translation>
     </message>
     <message>
-        <location filename="../src/TouchTools.cpp" line="1432"/>
-        <location filename="../src/TouchTools.cpp" line="1433"/>
+        <location filename="../src/TouchTools.cpp" line="1444"/>
+        <location filename="../src/TouchTools.cpp" line="1445"/>
         <source>Test failed</source>
         <translation>测试失败</translation>
     </message>
     <message>
-        <location filename="../src/TouchTools.cpp" line="1441"/>
+        <location filename="../src/TouchTools.cpp" line="1453"/>
         <source>You have cancelled the test</source>
         <translation>您已取消测试</translation>
     </message>
@@ -1009,34 +1013,34 @@
         <translation type="vanished">测试</translation>
     </message>
     <message>
-        <location filename="../src/TouchTools.cpp" line="1491"/>
+        <location filename="../src/TouchTools.cpp" line="1503"/>
         <source>Load fireware done</source>
         <translation>加载升级文件成功</translation>
     </message>
     <message>
-        <location filename="../src/TouchTools.cpp" line="1494"/>
+        <location filename="../src/TouchTools.cpp" line="1506"/>
         <source>Reboot device done</source>
         <translation>重启设备成功</translation>
     </message>
     <message>
-        <location filename="../src/TouchTools.cpp" line="1497"/>
+        <location filename="../src/TouchTools.cpp" line="1509"/>
         <source>Enter download mode</source>
         <translation>进入升级模式</translation>
     </message>
     <message>
-        <location filename="../src/TouchTools.cpp" line="1500"/>
+        <location filename="../src/TouchTools.cpp" line="1512"/>
         <source>Start download fireware</source>
         <translation>开始加载升级文件</translation>
     </message>
     <message>
-        <location filename="../src/TouchTools.cpp" line="1513"/>
-        <location filename="../src/TouchTools.cpp" line="1514"/>
+        <location filename="../src/TouchTools.cpp" line="1525"/>
+        <location filename="../src/TouchTools.cpp" line="1526"/>
         <source>Upgrade success</source>
         <translation>升级成功</translation>
     </message>
     <message>
-        <location filename="../src/TouchTools.cpp" line="1516"/>
-        <location filename="../src/TouchTools.cpp" line="1517"/>
+        <location filename="../src/TouchTools.cpp" line="1528"/>
+        <location filename="../src/TouchTools.cpp" line="1529"/>
         <source>Upgrade failed</source>
         <translation>升级失败</translation>
     </message>
@@ -1068,7 +1072,7 @@
         <location filename="../main.qml" line="164"/>
         <location filename="../main.qml" line="203"/>
         <location filename="../main.qml" line="213"/>
-        <location filename="../main.qml" line="1410"/>
+        <location filename="../main.qml" line="1416"/>
         <source>Upgrade</source>
         <translation>升级</translation>
     </message>
@@ -1079,8 +1083,8 @@
     </message>
     <message>
         <location filename="../main.qml" line="279"/>
-        <location filename="../main.qml" line="741"/>
-        <location filename="../main.qml" line="1340"/>
+        <location filename="../main.qml" line="745"/>
+        <location filename="../main.qml" line="1346"/>
         <source>Select upgrade file</source>
         <translation>选择升级文件</translation>
     </message>
@@ -1098,20 +1102,20 @@
     </message>
     <message>
         <location filename="../main.qml" line="86"/>
-        <location filename="../main.qml" line="531"/>
-        <location filename="../main.qml" line="594"/>
-        <location filename="../main.qml" line="604"/>
-        <location filename="../main.qml" line="2272"/>
+        <location filename="../main.qml" line="533"/>
+        <location filename="../main.qml" line="596"/>
+        <location filename="../main.qml" line="606"/>
+        <location filename="../main.qml" line="2152"/>
         <source>Test</source>
         <translation>测试</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="1186"/>
+        <location filename="../main.qml" line="1192"/>
         <source>Cancel test</source>
         <translation>取消测试</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="982"/>
+        <location filename="../main.qml" line="996"/>
         <source>Signal chart</source>
         <translation>信号图</translation>
     </message>
@@ -1120,12 +1124,12 @@
         <translation type="vanished">加速老化</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="1221"/>
+        <location filename="../main.qml" line="1227"/>
         <source>stop accelerate aging</source>
         <translation>停止加速老化</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="1449"/>
+        <location filename="../main.qml" line="1452"/>
         <source>Paint</source>
         <translation>全屏画图</translation>
     </message>
@@ -1138,139 +1142,142 @@
         <translation type="vanished">关于</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="1409"/>
+        <location filename="../main.qml" line="1415"/>
         <source>Accelerate aging</source>
         <translation>加速老化</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="1469"/>
+        <location filename="../main.qml" line="1472"/>
         <source>Settings</source>
         <translation>设置</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="1537"/>
+        <location filename="../main.qml" line="1540"/>
         <source>About</source>
         <translation>关于</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="1930"/>
         <source>Up to 10 pieces of firmware can be stored</source>
-        <translation>最多可以存放10条固件</translation>
+        <translation type="vanished">最多可以存放10条固件</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="1873"/>
+        <location filename="../main.qml" line="1805"/>
         <source>bin file</source>
         <translation>Bin文件</translation>
     </message>
     <message>
         <location filename="../main.qml" line="103"/>
-        <location filename="../main.qml" line="2508"/>
+        <location filename="../main.qml" line="2390"/>
         <source>No connected devices!</source>
         <translation>没找到连接的设备!</translation>
     </message>
     <message>
         <location filename="../main.qml" line="302"/>
-        <location filename="../main.qml" line="1811"/>
-        <location filename="../main.qml" line="1912"/>
+        <location filename="../main.qml" line="1736"/>
         <source>Please unlock and then select firmware</source>
         <translation>请先解锁然后在选择固件</translation>
     </message>
     <message>
         <location filename="../main.qml" line="343"/>
-        <location filename="../main.qml" line="364"/>
+        <location filename="../main.qml" line="365"/>
         <source>clear history(up to ten)</source>
         <translation>清空历史（最多存放10个文件）</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="384"/>
+        <location filename="../main.qml" line="385"/>
         <source>Used to lock the firmware.</source>
         <translation>被用于固件上锁。</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="384"/>
+        <location filename="../main.qml" line="385"/>
         <source>Cannot select firmware when locked.</source>
         <translation>当处于上锁状态时，不允许选择以及添加固件。</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="595"/>
-        <location filename="../main.qml" line="608"/>
+        <location filename="../main.qml" line="597"/>
+        <location filename="../main.qml" line="610"/>
         <source>Violence upgrade</source>
         <translation>连续升级</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="611"/>
+        <location filename="../main.qml" line="613"/>
         <source>Violence test</source>
         <translation>连续测试</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="655"/>
-        <location filename="../main.qml" line="2251"/>
-        <location filename="../main.qml" line="2315"/>
+        <location filename="../main.qml" line="658"/>
+        <location filename="../main.qml" line="2131"/>
+        <location filename="../main.qml" line="2197"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="663"/>
-        <location filename="../main.qml" line="2174"/>
-        <location filename="../main.qml" line="2195"/>
-        <location filename="../main.qml" line="2201"/>
+        <location filename="../main.qml" line="666"/>
+        <location filename="../main.qml" line="2054"/>
+        <location filename="../main.qml" line="2075"/>
+        <location filename="../main.qml" line="2081"/>
         <source>Number of successful upgrades: </source>
         <translation>升级成功的次数：</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="664"/>
-        <location filename="../main.qml" line="2175"/>
-        <location filename="../main.qml" line="2196"/>
-        <location filename="../main.qml" line="2202"/>
+        <location filename="../main.qml" line="667"/>
+        <location filename="../main.qml" line="2055"/>
+        <location filename="../main.qml" line="2076"/>
+        <location filename="../main.qml" line="2082"/>
         <source>Number of failed upgrades: </source>
         <translation>升级失败的次数：</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="1080"/>
+        <location filename="../main.qml" line="1094"/>
         <source>Batch</source>
         <translation>批处理</translation>
+    </message>
+    <message>
+        <location filename="../main.qml" line="1741"/>
+        <source>Unable to change firmware while upgrading</source>
+        <translation>升级过程中无法更改固件</translation>
     </message>
     <message>
         <source>Start again</source>
         <translation type="vanished">开始老化</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="1157"/>
+        <location filename="../main.qml" line="1171"/>
         <source>Stop aging</source>
         <translation>停止老化</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="1172"/>
+        <location filename="../main.qml" line="1185"/>
         <source>Cancel upgrade</source>
         <translation>取消升级</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="1228"/>
+        <location filename="../main.qml" line="1234"/>
         <source>Stop upgrading. New connected devices will no longer be upgraded.</source>
         <translation>停止升级。新连接设备将不再升级。</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="1233"/>
+        <location filename="../main.qml" line="1239"/>
         <source>Stop testing. New connected devices will no longer be tested.</source>
         <translation>停止测试，新连接设备将不再测试。</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="1095"/>
-        <location filename="../main.qml" line="1282"/>
-        <location filename="../main.qml" line="1431"/>
-        <location filename="../main.qml" line="1756"/>
+        <location filename="../main.qml" line="1109"/>
+        <location filename="../main.qml" line="1288"/>
+        <location filename="../main.qml" line="1435"/>
+        <location filename="../main.qml" line="1706"/>
         <source>Start aging</source>
         <translation>开始老化</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="1290"/>
-        <location filename="../main.qml" line="1760"/>
+        <location filename="../main.qml" line="1296"/>
+        <location filename="../main.qml" line="1710"/>
         <source>Start upgrade</source>
         <translation>开始升级</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="1297"/>
-        <location filename="../main.qml" line="1765"/>
+        <location filename="../main.qml" line="1303"/>
+        <location filename="../main.qml" line="1715"/>
         <source>Start test</source>
         <translation>开始测试</translation>
     </message>
@@ -1279,55 +1286,55 @@
         <translation type="vanished">老化</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="1873"/>
-        <location filename="../main.qml" line="1893"/>
+        <location filename="../main.qml" line="1805"/>
+        <location filename="../main.qml" line="1825"/>
         <source>all files</source>
         <translation>所有文件</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="1893"/>
+        <location filename="../main.qml" line="1825"/>
         <source>json file</source>
         <translation>json文件</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="2197"/>
+        <location filename="../main.qml" line="2077"/>
         <source>The last upgrade failed because: </source>
         <translation>最后一次升级失败原因：</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="2275"/>
+        <location filename="../main.qml" line="2155"/>
         <source>Volience upgrade</source>
         <translation>连续升级</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="2278"/>
+        <location filename="../main.qml" line="2158"/>
         <source>Volience test</source>
         <translation>连续测试</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="2687"/>
+        <location filename="../main.qml" line="2569"/>
         <source>Saved successfully</source>
         <translation>保存成功</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="2815"/>
+        <location filename="../main.qml" line="2697"/>
         <source>Upgrading! Please do not close the program</source>
         <translation>正在升级!请不要关闭程序</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="2819"/>
+        <location filename="../main.qml" line="2701"/>
         <source>Testing! Please do not close the program</source>
         <translation>正在测试!请不要关闭程序</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="2849"/>
-        <location filename="../main.qml" line="2895"/>
+        <location filename="../main.qml" line="2731"/>
+        <location filename="../main.qml" line="2777"/>
         <source>During upgrade,don&apos;t switch infterface</source>
         <translation>正在升级中，请勿切换到其他页面！</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="2854"/>
-        <location filename="../main.qml" line="2900"/>
+        <location filename="../main.qml" line="2736"/>
+        <location filename="../main.qml" line="2782"/>
         <source>During test,don&apos;t switch infterface</source>
         <translation>正在测试中，请勿切换到其他页面！</translation>
     </message>

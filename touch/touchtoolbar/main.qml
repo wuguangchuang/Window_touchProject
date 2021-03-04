@@ -1571,50 +1571,14 @@ Window {
                                     fontSize: 13
                                 }
                             }
-//                            Rectangle
-//                            {
-//                                Layout.fillWidth: true
-//                                height: parent.height
-//                                anchors.top:parent.top
-//                                anchors.left: deviceInfoNameID.right
-//                                anchors.leftMargin: defaultMargin
-//                                anchors.topMargin: defaultMargin
-//                                MyLabel{
-//                                    width: parent.width
-//                                    height: parent.height
-//                                    textStr: deviceInfoString + "\n" +softwareInfo
-//                                }
-//                            }
 
                         }
 
                     }
                 }
-                function showDeviceInfo()
+                onRefreshInfo:
                 {
-                    deviceInfoString = touch.getDeviceInfo();
-
-                    if(!touch.whetherDeviceConnect())
-                    {
-                        deviceInfoName = deviceInfoString;
-                        deviceInfoString = "";
-                        deviceHeight = 50;
-                        deviceWidth = 250;
-                        deviceInfoHeight = 0;
-                    }
-                    else
-                    {
-                        deviceInfoName = touch.getDeviceInfoName();
-                        deviceHeight = 300;
-                        deviceWidth = 250;
-                        deviceInfoHeight = deviceHeight
-                    }
-                    softwareInfoName = touch.getSoftwareInfoName();
-                    softwareInfo = touch.getSoftwareInfo();
-                }
-                Component.onCompleted:
-                {
-                    infoTab.refreshInfo.connect(showDeviceInfo);
+                    deviceInfoName =  touch.getRelativeInfo();
                 }
                 onVisibleChanged: {
                     if (visible) {
