@@ -2395,12 +2395,6 @@ QMessageBox::Critical	3	an icon indicating that the message represents a critica
             deviceMainInfo = _deviceMainInfo;
             deviceConnectImage = "qrc:/dialog/images/success.png";
         }
-        if(currenttab === mTAB_Aging)
-        {
-//            touch.setBatchLock(true);
-//            refreshBatchDeviceInfo();
-//            touch.setBatchLock(false);
-        }
         if (plugin) {
             deviceCount++;
             if(deviceCount == 1)
@@ -2435,7 +2429,7 @@ QMessageBox::Critical	3	an icon indicating that the message represents a critica
             }
         }
 
-        if (signalPageTab.visible && plugin && testChartPage !== null) {
+        if (mainTabView.getTab(mainTabView.currentIndex).what === mTAB_Signal  && signalPageTab.visible && plugin && testChartPage !== null) {
             console.log("start signal chart");
             testChartPage.clearModels();
             startSignalChart(true);

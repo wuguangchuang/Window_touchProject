@@ -407,17 +407,18 @@ Item {
                          }
                          ctx.fillStyle = signalColors[k];
                          ctx.strokeStyle = Qt.rgba(0, 0, 0, 0.6);
-                         ctx.fillText("" + testNames[signalIndexs[k]], 10, actualHeight * k + actualHeight / 2);
-                         ctx.fillText("" + signalIndexs[k],10, actualHeight  * k + actualHeight / 2 + fontSize + 10);
-                         ctx.fillText("" + standardStr, 30, actualHeight  * k + actualHeight  / 2 + fontSize + 10);
+                         ctx.fillText("" + testNames[signalIndexs[k]], 10, (chartBackgroundCanvas.height / Math.min(signalIndexs.length,testCount)) * (k + 1 / 2) - 20 );
+                         ctx.fillText("" + signalIndexs[k],10, (chartBackgroundCanvas.height / Math.min(signalIndexs.length,testCount)) * (k + 1 / 2)  + fontSize + 10 - 20);
+                         ctx.fillText("" + standardStr, 30, (chartBackgroundCanvas.height / Math.min(signalIndexs.length,testCount)) * (k + 1 / 2) + fontSize + 10 - 20);
                          if(signalResult[k])
                          {
-                             ctx.drawImage(signalImageYes,10,actualHeight  * k + actualHeight  / 2 + fontSize * 2 + 10,25,25);
+                             ctx.drawImage(signalImageYes,10,(chartBackgroundCanvas.height / Math.min(signalIndexs.length,testCount)) * (k + 1 / 2) + fontSize * 2 + 10 - 20,25,25);
                          }
                          else
                          {
-                             ctx.drawImage(signalImageNo,10,actualHeight  * k + actualHeight  / 2 + fontSize * 2 + 10,25,25);
+                             ctx.drawImage(signalImageNo,10,(chartBackgroundCanvas.height / Math.min(signalIndexs.length,testCount)) * (k + 1 / 2) + fontSize * 2 + 10 - 20,25,25);
                          }
+
 
                      }
                       touch.paintUnlock();
