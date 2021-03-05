@@ -223,6 +223,7 @@ Item {
         console.log("################stop aging, clear models");
 //        timeFlag = true;
         countdown.stop();
+        
         for (var i = 0; i < deviceCount; i++) {
 
             var model = deviceModel.get(i);

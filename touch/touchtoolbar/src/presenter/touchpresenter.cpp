@@ -662,7 +662,7 @@ void TouchPresenter::batchUpradeFinished()
     if (component == NULL) {
         return;
     }
-    QMetaObject::invokeMethod(component, "batchUpradeDone");
+    QMetaObject::invokeMethod(component, "batchDone");
 }
 
 

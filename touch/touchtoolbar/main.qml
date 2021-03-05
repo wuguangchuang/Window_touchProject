@@ -1157,7 +1157,7 @@ Window {
                                         //开始批量升级
                                         if(!agingPageTab.batchRunning)
                                         {
-                                            batchCheckResultTimer.restart();
+//                                            batchCheckResultTimer.restart();
                                             mainTabView.tabsVisible = false;
                                             batchComboBox.enabled = false;
                                             agingPageTab.batchRunning  = true;
@@ -1224,6 +1224,7 @@ Window {
 
                                                 }
                                                 agingPage.stopAging();
+                                                batchDone();
                                                 showToast(qsTr("stop accelerate aging"))
                                             }
                                             else if(agingPageTab.functionIndex === 1)
@@ -1429,7 +1430,7 @@ Window {
 //                    }
                     if(visible)
                     {
-                        batchComboBox.currentIndex = 0;
+//                        batchComboBox.currentIndex = 0;
                         agingPageTab.functionIndex = batchComboBox.currentIndex;
                         agingPage.functionIndex = batchComboBox.currentIndex;
                         batchWorkBtnStr = qsTr("Start aging");
@@ -1688,15 +1689,16 @@ Window {
                 {
                     touch.tPrintf("全部升级完成");
 
-                    batchCheckResultTimer.stop();
+//                    batchCheckResultTimer.stop();
                 }
             }
         }
 
     }
 
-    function batchUpradeDone()
+    function batchDone()
     {
+        touch.tPrintf("批处理完成");
         mainTabView.tabsVisible = true;
         agingPageTab.batchComboBox.enabled = true;
         agingPageTab.batchStartWork.enabled = true;
