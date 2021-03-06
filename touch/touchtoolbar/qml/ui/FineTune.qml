@@ -9,6 +9,8 @@ import QtQuick.Layouts 1.3
 Item {
     signal exitTune();
 
+    property int offset:5
+
     property int left_direction:1
     property int right_direction:2
     property int up_direction:3
@@ -40,24 +42,29 @@ Item {
     property var golbalSceneY:0
 
     property bool left_rightBtn:false
-    property var midMessage:qsTr("Please draw vertical lines on the left and right and horizontal lines up and down to tune.")
+//    property var midMessage:qsTr("Please draw vertical lines on the left and right and horizontal lines up and down to tune.")
+    property var midMessage:qsTr("Please draw a vertical line in the left and right boxes, and a horizontal line in the upper and lower boxes respectively, and detect the left and right offset positions of the vertical lines and the up and down offset positions of the horizontal lines respectively, and then click the left, right, up, and down keys to adjust.")
+    property string leftPlaceholderStr:qsTr("Please draw a vertical line in this box to detect the offset position, and then click the left and right buttons to adjust.")
+    property string rightPlaceholderStr:qsTr("Please draw a vertical line in this box to detect the offset position, and then click the left and right buttons to adjust.")
+    property string upPlaceholderStr:qsTr("Please draw a horizontal line in this box to detect the offset position, and then click the up and down buttons to adjust.")
+    property string downPlaceholderStr:qsTr("Please draw a horizontal line in this box to detect the offset position, and then click the up and down buttons to adjust.")
     property int imageSize:64
 
     focus: false
-    Keys.enabled: false
-    Keys.onPressed: {
-        console.log("按键按下%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%")
-        switch (event.key){
-        case Qt.Key_Escape:
+//    Keys.enabled: false
+//    Keys.onPressed: {
+//        console.log("按键按下%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%")
+//        switch (event.key){
+//        case Qt.Key_Escape:
 
-            clearCanvas();
-            exitTune();
-            break;
-        case Qt.Key_C:
-            clearCanvas();
-            break;
-        }
-    }
+//            clearCanvas();
+//            exitTune();
+//            break;
+//        case Qt.Key_C:
+//            clearCanvas();
+//            break;
+//        }
+//    }
 
     function onPressed(event)
     {
@@ -88,22 +95,7 @@ Item {
     Menu {
         id: tuneMenu
         style:MenuStyle{
-//            itemDelegate.background: Rectangle{
-
-//                height: 80
-//                width: 300
-//                border.width: 1
-//                border.color: "grey"
-//            }
-//            itemDelegate.label: Text{
-//                height:40
-//                width:300
-//                font.pointSize:12
-//                color: "grey"
-////                font.family:"微软雅黑"
-
-//            }
-            font: Qt.font({pointSize:12,color: "grey"})
+            font: Qt.font({pointSize:15,color: "black"})
         }
 
         MenuItem{
@@ -140,6 +132,7 @@ Item {
     }
     Rectangle{
         anchors.fill: parent
+
         MultiPointTouchArea{
             anchors.fill: parent
             enabled: true
@@ -178,6 +171,7 @@ Item {
             }
 
         }
+
         Rectangle{
             id:leftDrawArea
             visible: true
@@ -218,10 +212,12 @@ Item {
 
                     leftSceneX = touchPointL1.sceneX - parent.x;
                     leftSceneY = touchPointL1.sceneY - parent.y;
+                    leftPlaceholderStr = ""
                     leftCanvas.requestPaint();
 
                 }
             }
+
             Canvas{
                 id:leftCanvas
                 anchors.fill: parent
@@ -240,168 +236,84 @@ Item {
                     leftPreviousY = leftSceneY;
                 }
             }
+            Text {
+                id: leftPlaceholder
+                anchors.top: parent.top
+                anchors.left: parent.left
+                anchors.leftMargin: 5
+                anchors.right: parent.right
+                anchors.rightMargin: 5
+                anchors.bottom: parent.bottom
+                color: "#7f7f7f"
+                text: leftPlaceholderStr
+                lineHeight: 1.5
+//                horizontalAlignment: Text.AlignHCenter
+                verticalAlignment: Text.AlignVCenter
+                wrapMode: Text.Wrap
+            }
 
         }
         ToolButton{
-            id:left_right_5
+            id:left_right
             visible: true
             x:leftDrawArea.x + leftDrawArea.width + 15
             y:leftDrawArea.y + leftDrawArea.height / 2 - height / 2
-            width: 120
+            width: 110
             height: 64
             Image {
-                id:left_right_5_image
+                id:left_right_image
                 width: 64
                 height: 64
                 fillMode: Image.Stretch
                 source: "qrc:/dialog/images/triangle_right.png"
             }
             Text{
-                id:left_right_5_text
-                anchors.left: left_right_5_image.right
-                text:"* 5"
+                id:left_right_text
+                anchors.left: left_right_image.right
+                text:"* " + offset.toString()
                 anchors.verticalCenter: parent.verticalCenter
                 font.pointSize: 15
             }
-
+            style: Rectangle{
+                width: left_right.width
+                height: left_right.height
+                color: left_right.pressed ? "#d9ebf9":"#ffffff"
+            }
             onClicked: {
-                changeCalibrationData(left_direction,-5);
+                changeCalibrationData(left_direction,offset - 2 * offset);
             }
 
         }
-        ToolButton{
-            id:left_right_2
-            visible: true
-            width: 120
-            height: 64
-            anchors.left: leftDrawArea.right
-            anchors.leftMargin: 15
-            anchors.bottom:left_right_5.top
-            anchors.bottomMargin: 10
-            Image {
-                id:left_right_2_image
-                width: 64
-                height: 64
-                fillMode: Image.Stretch
-                source: "qrc:/dialog/images/triangle_right.png"
-            }
-            Text{
-                id:left_right_2_text
-                anchors.left: left_right_2_image.right
-                text:"* 2"
-                anchors.verticalCenter: parent.verticalCenter
-                font.pointSize: 15
-            }
 
-            onClicked: {
-                changeCalibrationData(left_direction,-2);
-            }
-        }
         ToolButton{
-            id:left_right_10
+            id:left_left
             visible: true
-            width: 120
-            height: 64
-            anchors.left: leftDrawArea.right
-            anchors.leftMargin: 15
-            anchors.top: left_right_5.bottom
-            anchors.topMargin: 10
-            Image {
-                id:left_right_10_image
-                width: 64
-                height: 64
-                fillMode: Image.Stretch
-                source: "qrc:/dialog/images/triangle_right.png"
-            }
-            Text{
-                id:left_right_10_text
-                anchors.left: left_right_10_image.right
-                text:"* 10"
-                anchors.verticalCenter: parent.verticalCenter
-                font.pointSize: 15
-            }
-            onClicked: {
-                changeCalibrationData(left_direction,-10);
-            }
-        }
-        ToolButton{
-            id:left_left_5
-            visible: true
-            x:leftDrawArea.x -  135
+            x:leftDrawArea.x -  125
             y:leftDrawArea.y + leftDrawArea.height / 2 - height / 2
-            width: 120
+            width: 110
             height: 64
             Text{
-                id:left_left_5_text
-                anchors.right: left_left_5_image.left
-                text:"5 *"
+                id:left_left_text
+                anchors.right: left_left_image.left
+                text:offset.toString() + " *"
                 anchors.verticalCenter: parent.verticalCenter
                 font.pointSize: 15
             }
             Image {
-                id:left_left_5_image
+                id:left_left_image
                 width: 64
                 height: 64
                 anchors.right: parent.right
                 fillMode: Image.Stretch
                 source: "qrc:/dialog/images/triangle_left.png"
             }
-            onClicked: {
-                changeCalibrationData(left_direction,5);
-            }
-        }
-        ToolButton{
-            id:left_left_2
-            visible: true
-            x:leftDrawArea.x -  135
-            anchors.bottom: left_left_5.top
-            anchors.bottomMargin: 10
-            width: 120
-            height: 64
-            Text{
-                id:left_left_2_text
-                anchors.right: left_left_2_image.left
-                text:"2 *"
-                anchors.verticalCenter: parent.verticalCenter
-                font.pointSize: 15
-            }
-            Image {
-                id:left_left_2_image
-                width: 64
-                height: 64
-                anchors.right: parent.right
-                fillMode: Image.Stretch
-                source: "qrc:/dialog/images/triangle_left.png"
+            style: Rectangle{
+                width: left_left.width
+                height: left_left.height
+                color: left_left.pressed ? "#d9ebf9":"#ffffff"
             }
             onClicked: {
-                changeCalibrationData(left_direction,2);
-            }
-        }
-        ToolButton{
-            id:left_left_10
-            visible: true
-            x:leftDrawArea.x -  135
-            anchors.top: left_left_5.bottom
-            anchors.topMargin: 10
-            width: 120
-            height: 64
-            Text{
-                id:left_left_10_text
-                anchors.right: left_left_10_image.left
-                text:"10 *"
-                anchors.verticalCenter: parent.verticalCenter
-                font.pointSize: 15
-            }
-            Image {
-                id:left_left_10_image
-                width: 64
-                height: 64
-                anchors.right: parent.right
-                fillMode: Image.Stretch
-                source: "qrc:/dialog/images/triangle_left.png"
-            }
-            onClicked: {
-                changeCalibrationData(left_direction,10);
+                changeCalibrationData(left_direction,offset);
             }
         }
 
@@ -439,6 +351,7 @@ Item {
                 onUpdated: {
                     rightSceneX = touchPointR1.sceneX - parent.x;
                     rightSceneY = touchPointR1.sceneY - parent.y;
+                    rightPlaceholderStr = ""
                     rightCanvas.requestPaint();
                 }
             }
@@ -460,166 +373,85 @@ Item {
                     rightPreviousY = rightSceneY;
                 }
             }
+            Text {
+                id: rightPlaceholder
+                anchors.top: parent.top
+                anchors.left: parent.left
+                anchors.leftMargin: 5
+                anchors.right: parent.right
+                anchors.rightMargin: 5
+                anchors.bottom: parent.bottom
+                color: "#7f7f7f"
+                text: rightPlaceholderStr
+                lineHeight: 1.5
+//                horizontalAlignment: Text.AlignHCenter
+                verticalAlignment: Text.AlignVCenter
+                wrapMode: Text.Wrap
+            }
 
         }
         ToolButton{
-            id:right_right_5
+            id:right_right
             visible: true
             x:rightDrawArea.x + rightDrawArea.width + 15
             y:rightDrawArea.y + rightDrawArea.height / 2 - height / 2
-            width: 120
+            width: 110
             height: 64
             Image {
-                id:right_right_5_image
+                id:right_right_image
                 width: 64
                 height: 64
                 fillMode: Image.Stretch
                 source: "qrc:/dialog/images/triangle_right.png"
             }
             Text{
-                id:right_right_5_text
-                anchors.left: right_right_5_image.right
-                text:"* 5"
+                id:right_right_text
+                anchors.left: right_right_image.right
+                text:"* " + offset.toString()
                 anchors.verticalCenter: parent.verticalCenter
                 font.pointSize: 15
             }
-            onClicked: {
-                changeCalibrationData(right_direction,-5);
-            }
-        }
-        ToolButton{
-            id:right_right_2
-            visible: true
-            x:rightDrawArea.x + rightDrawArea.width + 15
-            anchors.bottom: right_right_5.top
-            anchors.bottomMargin: 10
-            width: 120
-            height: 64
-            Image {
-                id:right_right_2_image
-                width: 64
-                height: 64
-                fillMode: Image.Stretch
-                source: "qrc:/dialog/images/triangle_right.png"
-            }
-            Text{
-                id:right_right_2_text
-                anchors.left: right_right_2_image.right
-                text:"* 2"
-                anchors.verticalCenter: parent.verticalCenter
-                font.pointSize: 15
+            style: Rectangle{
+                width: right_right.width
+                height: right_right.height
+                color: right_right.pressed ? "#d9ebf9":"#ffffff"
             }
             onClicked: {
-                changeCalibrationData(right_direction,-2);
-            }
-        }
-        ToolButton{
-            id:right_right_10
-            visible: true
-            x:rightDrawArea.x + rightDrawArea.width + 15
-            anchors.top: right_right_5.bottom
-            anchors.topMargin: 10
-            width: 120
-            height: 64
-            Image {
-                id:right_right_10_image
-                width: 64
-                height: 64
-                fillMode: Image.Stretch
-                source: "qrc:/dialog/images/triangle_right.png"
-            }
-            Text{
-                id:right_right_10_text
-                anchors.left: right_right_10_image.right
-                text:"* 10"
-                anchors.verticalCenter: parent.verticalCenter
-                font.pointSize: 15
-            }
-            onClicked: {
-                changeCalibrationData(right_direction,-10);
-            }
-        }
-        ToolButton{
-            id:right_left_5
-            visible: true
-            x:rightDrawArea.x -  135
-            y:rightDrawArea.y + rightDrawArea.height / 2 - height / 2
-            width: 120
-            height: 64
-            Text{
-                id:right_left_5_text
-                anchors.right: right_left_5_image.left
-                text:"5 *"
-                anchors.verticalCenter: parent.verticalCenter
-                font.pointSize: 15
-            }
-            Image {
-                id:right_left_5_image
-                width: 64
-                height: 64
-                anchors.right: parent.right
-                fillMode: Image.Stretch
-                source: "qrc:/dialog/images/triangle_left.png"
-            }
-            onClicked: {
-                changeCalibrationData(right_direction,5);
-            }
-        }
-        ToolButton{
-            id:right_left_2
-            visible: true
-            x:rightDrawArea.x -  135
-            anchors.bottom: right_left_5.top
-            anchors.bottomMargin: 10
-            width: 120
-            height: 64
-            Text{
-                id:right_left_2_text
-                anchors.right: right_left_2_image.left
-                text:"2 *"
-                anchors.verticalCenter: parent.verticalCenter
-                font.pointSize: 15
-            }
-            Image {
-                id:right_left_2_image
-                width: 64
-                height: 64
-                anchors.right: parent.right
-                fillMode: Image.Stretch
-                source: "qrc:/dialog/images/triangle_left.png"
-            }
-            onClicked: {
-                changeCalibrationData(right_direction,2);
-            }
-        }
-        ToolButton{
-            id:right_left_10
-            visible: true
-            x:rightDrawArea.x -  135
-            anchors.top: right_left_5.bottom
-            anchors.topMargin: 10
-            width: 120
-            height: 64
-            Text{
-                id:right_left_10_text
-                anchors.right: right_left_10_image.left
-                text:"10 *"
-                anchors.verticalCenter: parent.verticalCenter
-                font.pointSize: 15
-            }
-            Image {
-                id:right_left_10_image
-                width: 64
-                height: 64
-                anchors.right: parent.right
-                fillMode: Image.Stretch
-                source: "qrc:/dialog/images/triangle_left.png"
-            }
-            onClicked: {
-                changeCalibrationData(right_direction,10);
+                changeCalibrationData(right_direction,offset - 2 * offset);
             }
         }
 
+        ToolButton{
+            id:right_left
+            visible: true
+            x:rightDrawArea.x -  125
+            y:rightDrawArea.y + rightDrawArea.height / 2 - height / 2
+            width: 110
+            height: 64
+            Text{
+                id:right_left_text
+                anchors.right: right_left_image.left
+                text:offset.toString() + " *"
+                anchors.verticalCenter: parent.verticalCenter
+                font.pointSize: 15
+            }
+            Image {
+                id:right_left_image
+                width: 64
+                height: 64
+                anchors.right: parent.right
+                fillMode: Image.Stretch
+                source: "qrc:/dialog/images/triangle_left.png"
+            }
+            style: Rectangle{
+                width: right_left.width
+                height: right_left.height
+                color: right_left.pressed ? "#d9ebf9":"#ffffff"
+            }
+            onClicked: {
+                changeCalibrationData(right_direction,offset);
+            }
+        }
 
         Rectangle{
             id:upDrawArea
@@ -654,6 +486,7 @@ Item {
                 onUpdated: {
                     upSceneX = touchPointU1.sceneX - parent.x;
                     upSceneY = touchPointU1.sceneY - parent.y;
+                    upPlaceholderStr = ""
                     upCanvas.requestPaint();
                 }
             }
@@ -675,16 +508,32 @@ Item {
                     upPreviousY = upSceneY;
                 }
             }
+            Text {
+                id: upPlaceholder
+                anchors.top: parent.top
+                anchors.left: parent.left
+                anchors.leftMargin: 5
+                anchors.right: parent.right
+                anchors.rightMargin: 5
+                anchors.bottom: parent.bottom
+                color: "#7f7f7f"
+                text: upPlaceholderStr
+                lineHeight: 1.5
+                horizontalAlignment: Text.AlignHCenter
+                verticalAlignment: Text.AlignVCenter
+                wrapMode: Text.Wrap
+            }
+
         }
         ToolButton{
-            id:up_down_5
+            id:up_down
             visible: true
             x:upDrawArea.x + upDrawArea.width / 2 - width / 2
             y:upDrawArea.y + upDrawArea.height + 15
             width: 64
-            height: 120
+            height: 110
             Image {
-                id:up_down_5_image
+                id:up_down_image
                 width: 64
                 height: 64
                 anchors.top: parent.top
@@ -692,91 +541,40 @@ Item {
                 source: "qrc:/dialog/images/triangle_down.png"
             }
             Text{
-                id:up_down_5_text
-                anchors.top: up_down_5_image.bottom
-                text:"5 *"
+                id:up_down_text
+                anchors.top: up_down_image.bottom
+                text:offset.toString() + " *"
                 anchors.horizontalCenter: parent.horizontalCenter
                 font.pointSize: 15
                 rotation: 270
             }
-            onClicked: {
-                changeCalibrationData(up_direction,-5);
-            }
-        }
-        ToolButton{
-            id:up_down_2
-            visible: true
-            anchors.right:up_down_5.left
-            anchors.rightMargin: 10
-            y:upDrawArea.y + upDrawArea.height + 15
-            width: 64
-            height: 120
-            Image {
-                id:up_down_2_image
-                width: 64
-                height: 64
-                anchors.top: parent.top
-                fillMode: Image.Stretch
-                source: "qrc:/dialog/images/triangle_down.png"
-            }
-            Text{
-                id:up_down_2_text
-                anchors.top: up_down_2_image.bottom
-                text:"2 *"
-                anchors.horizontalCenter: parent.horizontalCenter
-                font.pointSize: 15
-                rotation: 270
+            style: Rectangle{
+                width: up_down.width
+                height: up_down.height
+                color: up_down.pressed ? "#d9ebf9":"#ffffff"
             }
             onClicked: {
-                changeCalibrationData(up_direction,-2);
-            }
-        }
-        ToolButton{
-            id:up_down_10
-            visible: true
-            anchors.left: up_down_5.right
-            anchors.leftMargin: 10
-            y:upDrawArea.y + upDrawArea.height + 15
-            width: 64
-            height: 120
-            Image {
-                id:up_down_10_image
-                width: 64
-                height: 64
-                anchors.top: parent.top
-                fillMode: Image.Stretch
-                source: "qrc:/dialog/images/triangle_down.png"
-            }
-            Text{
-                id:up_down_10_text
-                anchors.top: up_down_10_image.bottom
-                text:"10 *"
-                anchors.horizontalCenter: parent.horizontalCenter
-                font.pointSize: 15
-                rotation: 270
-            }
-            onClicked: {
-                changeCalibrationData(up_direction,-10);
+                changeCalibrationData(up_direction,offset - 2 * offset);
             }
         }
 
         ToolButton{
-            id:up_up_5
+            id:up_up
             visible: true
             x:upDrawArea.x + upDrawArea.width / 2 - width / 2
-            y:upDrawArea.y - 135
+            y:upDrawArea.y - 125
             width: 64
-            height: 120
+            height: 110
             Text{
-                id:up_up_5_text
-                anchors.bottom: up_up_5_image.top
+                id:up_up_text
+                anchors.bottom: up_up_image.top
                 anchors.horizontalCenter: parent.horizontalCenter
-                text:"* 5"
+                text:"* " + offset.toString()
                 font.pointSize: 15
                 rotation: 270
             }
             Image {
-                id:up_up_5_image
+                id:up_up_image
                 width: 64
                 height: 64
                 anchors.bottom: parent.bottom
@@ -784,68 +582,16 @@ Item {
                 fillMode: Image.Stretch
                 source: "qrc:/dialog/images/triangle_up.png"
             }
+            style: Rectangle{
+                width: up_up.width
+                height: up_up.height
+                color: up_up.pressed ? "#d9ebf9":"#ffffff"
+            }
             onClicked: {
-                changeCalibrationData(up_direction,5);
+                changeCalibrationData(up_direction,offset);
             }
         }
-        ToolButton{
-            id:up_up_2
-            visible: true
-            anchors.right: up_up_5.left
-            anchors.rightMargin: 10
-            y:upDrawArea.y - 135
-            width: 64
-            height: 120
-            Text{
-                id:up_up_2_text
-                anchors.bottom: up_up_2_image.top
-                anchors.horizontalCenter: parent.horizontalCenter
-                text:"* 2"
-                font.pointSize: 15
-                rotation: 270
-            }
-            Image {
-                id:up_up_2_image
-                width: 64
-                height: 64
-                anchors.bottom: parent.bottom
 
-                fillMode: Image.Stretch
-                source: "qrc:/dialog/images/triangle_up.png"
-            }
-            onClicked: {
-                changeCalibrationData(up_direction,2);
-            }
-        }
-        ToolButton{
-            id:up_up_10
-            visible: true
-            anchors.left: up_up_5.right
-            anchors.leftMargin: 10
-            y:upDrawArea.y - 135
-            width: 64
-            height: 120
-            Text{
-                id:up_up_10_text
-                anchors.bottom: up_up_10_image.top
-                anchors.horizontalCenter: parent.horizontalCenter
-                text:"* 10"
-                font.pointSize: 15
-                rotation: 270
-            }
-            Image {
-                id:up_up_10_image
-                width: 64
-                height: 64
-                anchors.bottom: parent.bottom
-
-                fillMode: Image.Stretch
-                source: "qrc:/dialog/images/triangle_up.png"
-            }
-            onClicked: {
-                changeCalibrationData(up_direction,10);
-            }
-        }
 
         Rectangle{
             id:downDrawArea
@@ -881,6 +627,7 @@ Item {
                 onUpdated: {
                     downSceneX = touchPointD1.sceneX - parent.x;
                     downSceneY = touchPointD1.sceneY - parent.y;
+                    downPlaceholderStr = ""
                     downCanvas.requestPaint();
                 }
             }
@@ -902,16 +649,31 @@ Item {
                     downPreviousY = downSceneY;
                 }
             }
+            Text {
+                id: downPlaceholder
+                anchors.top: parent.top
+                anchors.left: parent.left
+                anchors.leftMargin: 5
+                anchors.right: parent.right
+                anchors.rightMargin: 5
+                anchors.bottom: parent.bottom
+                color: "#7f7f7f"
+                text: downPlaceholderStr
+                lineHeight: 1.5
+                horizontalAlignment: Text.AlignHCenter
+                verticalAlignment: Text.AlignVCenter
+                wrapMode: Text.Wrap
+            }
         }
         ToolButton{
-            id:down_down_5
+            id:down_down
             visible: true
             x:downDrawArea.x + downDrawArea.width / 2 - width / 2
             y:downDrawArea.y + downDrawArea.height + 15
             width: 64
-            height: 120
+            height: 110
             Image {
-                id:down_down_5_image
+                id:down_down_image
                 width:64
                 height: 64
                 anchors.top: parent.top
@@ -921,85 +683,32 @@ Item {
             }
             Text{
                 id:down_down_text
-                anchors.top: down_down_5_image.bottom
+                anchors.top: down_down_image.bottom
                 anchors.horizontalCenter: parent.horizontalCenter
-                text:"5 *"
+                text:offset.toString() + " *"
                 font.pointSize: 15
                 rotation: 270
             }
-            onClicked: {
-                changeCalibrationData(down_direction,-5);
-            }
-        }
-        ToolButton{
-            id:down_down_2
-            visible: true
-            anchors.right: down_down_5.left
-            anchors.rightMargin: 10
-            y:downDrawArea.y + downDrawArea.height + 15
-            width: 64
-            height: 120
-            Image {
-                id:down_down_2_image
-                width:64
-                height: 64
-                anchors.top: parent.top
-                anchors.horizontalCenter: parent.horizontalCenter
-                fillMode: Image.Stretch
-                source: "qrc:/dialog/images/triangle_down.png"
-            }
-            Text{
-                id:down_down_2_text
-                anchors.top: down_down_2_image.bottom
-                anchors.horizontalCenter: parent.horizontalCenter
-                text:"2 *"
-                font.pointSize: 15
-                rotation: 270
+            style: Rectangle{
+                width: down_down.width
+                height: down_down.height
+                color: down_down.pressed ? "#d9ebf9":"#ffffff"
             }
             onClicked: {
-                changeCalibrationData(down_direction,-2);
-            }
-        }
-        ToolButton{
-            id:down_down_10
-            visible: true
-            anchors.left: down_down_5.right
-            anchors.leftMargin: 10
-            y:downDrawArea.y + downDrawArea.height + 15
-            width: 64
-            height: 120
-            Image {
-                id:down_down_10_image
-                width:64
-                height: 64
-                anchors.top: parent.top
-                anchors.horizontalCenter: parent.horizontalCenter
-                fillMode: Image.Stretch
-                source: "qrc:/dialog/images/triangle_down.png"
-            }
-            Text{
-                id:down_down_10_text
-                anchors.top: down_down_10_image.bottom
-                anchors.horizontalCenter: parent.horizontalCenter
-                text:"10 *"
-                font.pointSize: 15
-                rotation: 270
-            }
-            onClicked: {
-                changeCalibrationData(down_direction,-10);
+                changeCalibrationData(down_direction,offset - 2 * offset);
             }
         }
 
 
         ToolButton{
-            id:down_up_5
+            id:down_up
             visible: true
             x:downDrawArea.x + downDrawArea.width / 2 - width / 2
-            y:downDrawArea.y - 135
+            y:downDrawArea.y - 125
             width: 64
-            height: 120
+            height: 110
             Image {
-                id:down_up_5_image
+                id:down_up_image
                 width: 64
                 height: 64
                 anchors.bottom: parent.bottom
@@ -1007,98 +716,172 @@ Item {
                 source: "qrc:/dialog/images/triangle_up.png"
             }
             Text{
-                id:down_up_5_text
-                anchors.bottom: down_up_5_image.top
+                id:down_up_text
+                anchors.bottom: down_up_image.top
                 anchors.horizontalCenter: parent.horizontalCenter
-                text:"* 5"
+                text:"* " + offset.toString()
                 font.pointSize: 15
                 rotation: 270
             }
-            onClicked: {
-                changeCalibrationData(down_direction,5);
-            }
-        }
-        ToolButton{
-            id:down_up_2
-            visible: true
-            anchors.right: down_up_5.left
-            anchors.rightMargin: 10
-            y:downDrawArea.y - 135
-            width: 64
-            height: 120
-            Image {
-                id:down_up_2_image
-                width: 64
-                height: 64
-                anchors.bottom: parent.bottom
-                fillMode: Image.Stretch
-                source: "qrc:/dialog/images/triangle_up.png"
-            }
-            Text{
-                id:down_up_2_text
-                anchors.bottom: down_up_2_image.top
-                anchors.horizontalCenter: parent.horizontalCenter
-                text:"* 2"
-                font.pointSize: 15
-                rotation: 270
+            style: Rectangle{
+                width: down_up.width
+                height: down_up.height
+                color: down_up.pressed ? "#d9ebf9":"#ffffff"
             }
             onClicked: {
-                changeCalibrationData(down_direction,2);
-            }
-        }
-        ToolButton{
-            id:down_up_10
-            visible: true
-            anchors.left: down_up_5.right
-            anchors.leftMargin: 10
-            y:downDrawArea.y - 135
-            width: 64
-            height: 120
-            Image {
-                id:down_up_10_image
-                width: 64
-                height: 64
-                anchors.bottom: parent.bottom
-                fillMode: Image.Stretch
-                source: "qrc:/dialog/images/triangle_up.png"
-            }
-            Text{
-                id:down_up_10_text
-                anchors.bottom: down_up_10_image.top
-                anchors.horizontalCenter: parent.horizontalCenter
-                text:"* 10"
-                font.pointSize: 15
-                rotation: 270
-            }
-            onClicked: {
-                changeCalibrationData(down_direction,10);
+                changeCalibrationData(down_direction,offset);
             }
         }
 
-        Rectangle{
-            id:midTextRect
-            visible: true
-            x:left_right_5.x + left_right_5.width + 30
-            y:up_down_5.y + up_down_5.height + 20
-            width: right_left_5.x - x - 30
-            height: down_up_5.y - y - 10
-    //        border.width: 1
-    //        border.color: "#a5a5a5"
 
-            Text{
-                anchors.fill: parent
-                anchors.topMargin: 10
-                text:midMessage
-    //            font.italic: true
-                font.pointSize: 15
-                wrapMode: Text.Wrap
-            }
-        }
+//        Rectangle{
+//            id:midTextRect
+//            visible: true
+//            x:left_right.x + left_right.width + 10
+//            y:up_down.y + up_down.height + 10
+//            width: right_left.x - x - 20
+//            height: down_up.y - y - 20
+////            border.color: "#f0f0f0"
+////            border.width: 1
+//            Text{
+
+//                anchors.top: parent.top
+//                anchors.bottom: parent.bottom
+//                anchors.left: parent.left
+//                anchors.right: parent.right
+//                verticalAlignment: Text.AlignVCenter
+////                horizontalAlignment: Text.AlignHCenter
+//                text:midMessage
+//                lineHeight: 1.5
+//                font.pointSize: 12
+//                wrapMode: Text.WordWrap
+
+//            }
+//        }
+
+
     }
+    property int fineTuneComboBoxHeight:40
+    Rectangle{
+        id:offsetRect
+        x:defaultMargin
+        y:defaultMargin
+//        height: fineTuneComboBoxHeight
+        ToolButton
+        {
+            id:exitBtn
+            width: 160
+            height: fineTuneComboBoxHeight
+            tooltip: qsTr("Exit the fine-tuning interface.")
+
+            style:ButtonStyle{
+                background: Rectangle{
+                    width: exitBtn.width
+                    height: exitBtn.height
+                    color: exitBtn.pressed ? "#d9ebf9":"#f0f0f0"
+                }
+                label: Text{
+                    verticalAlignment: Text.AlignVCenter
+                    horizontalAlignment: Text.AlignHCenter
+                    font.pointSize: 14
+                    text:qsTr("exit")
+                }
+
+            }
+            onClicked:
+            {
+                clearCanvas();
+                exitTune();
+            }
+        }
+        ToolButton
+        {
+            id:clearBtn
+            width: 160
+            height: fineTuneComboBoxHeight
+            anchors.top: parent.top
+            anchors.left: exitBtn.right
+            anchors.leftMargin: 5
+            tooltip: qsTr("Clear line trace.")
+
+            style:ButtonStyle{
+                background: Rectangle{
+                    width: clearBtn.width
+                    height: clearBtn.height
+                    color: clearBtn.pressed ? "#d9ebf9":"#f0f0f0"
+                }
+                label: Text{
+//                    width: clearBtn.width
+//                    height: clearBtn.height
+                    verticalAlignment: Text.AlignVCenter
+                    horizontalAlignment: Text.AlignHCenter
+                    font.pointSize: 14
+                    text:qsTr("clear")
+                }
+
+            }
+            onClicked:
+            {
+                clearCanvas();
+            }
+        }
+        Text {
+
+            id: offestText
+            width: 160
+            height: fineTuneComboBoxHeight
+            anchors.top: exitBtn.bottom
+            anchors.topMargin: 5
+            anchors.left: parent.left
+            verticalAlignment: Text.AlignVCenter
+            horizontalAlignment: Text.AlignRight
+            text: qsTr("offest:")
+            font.pointSize: 14
+        }
+        FineTuneComboBox{
+            id:fineTuneId
+            visible: true
+            width: 120 + fineTuneComboBoxHeight
+            height: fineTuneComboBoxHeight
+            anchors.top: exitBtn.bottom
+            anchors.topMargin: 5
+            anchors.left: offestText.right
+            anchors.leftMargin: 5
+            itemWidth: 120
+            itemHeight: fineTuneComboBoxHeight
+
+            onComboClicked:
+            {
+                offset = itemsModel.get(comboBox.selectedIndex).text;
+            }
+            onVisibleChanged:
+            {
+                if(visible)
+                {
+                    if(itemsModel.count === 0)
+                    {
+                        itemsModel.insert(0,{"text":"10"})
+                        itemsModel.insert(0,{"text":"5"})
+                        itemsModel.insert(0,{"text":"2"})
+                        itemsModel.insert(0,{"text":"1"})
+                    }
+                    chosenItemTextStr = itemsModel.get(2).text;
+                }
+            }
+        }
+
+
+    }
+
+
+
+
+
     function clearCanvas(){
         var leftCtx = leftCanvas.getContext("2d");
         leftCtx.clearRect(0,0,leftCanvas.width,leftCanvas.height);
         leftCanvas.requestPaint();
+
 
         var rightCtx = rightCanvas.getContext("2d");
         rightCtx.clearRect(0,0,rightCanvas.width,rightCanvas.height);
@@ -1111,9 +894,15 @@ Item {
         var downCtx = downCanvas.getContext("2d");
         downCtx.clearRect(0,0,downCanvas.width,downCanvas.height);
         downCanvas.requestPaint();
+
+        leftPlaceholderStr = qsTr("Please draw a vertical line in this box to detect the offset position, and then click the left and right buttons to adjust.")
+        rightPlaceholderStr = qsTr("Please draw a vertical line in this box to detect the offset position, and then click the left and right buttons to adjust.")
+        upPlaceholderStr = qsTr("Please draw a horizontal line in this box to detect the offset position, and then click the up and down buttons to adjust.")
+        downPlaceholderStr = qsTr("Please draw a horizontal line in this box to detect the offset position, and then click the up and down buttons to adjust.")
     }
     function changeCalibrationData(direction,value)
     {
+//        touch.tPrintf("校准数据加减 value = " + value);
         var datas = touch.getCalibrationDatas(1);
         touch.debug(JSON.stringify(datas));
         if (datas.count === undefined || datas.count <= 0 || direction > datas.count)

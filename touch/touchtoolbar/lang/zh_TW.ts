@@ -161,15 +161,35 @@
 <context>
     <name>FineTune</name>
     <message>
-        <source>Please draw vertical lines on the left and right and horizontal lines up and down to tune.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>clear</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>exit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Please draw a vertical line in the left and right boxes, and a horizontal line in the upper and lower boxes respectively, and detect the left and right offset positions of the vertical lines and the up and down offset positions of the horizontal lines respectively, and then click the left, right, up, and down keys to adjust.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Please draw a vertical line in this box to detect the offset position, and then click the left and right buttons to adjust.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Please draw a horizontal line in this box to detect the offset position, and then click the up and down buttons to adjust.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Exit the fine-tuning interface.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Clear line trace.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>offest:</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

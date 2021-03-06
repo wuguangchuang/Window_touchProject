@@ -28,7 +28,7 @@ Item {
         text:textStr
         font.pointSize: fontSize
         textFormat: Text.AutoText
-        textMargin: 1.5
+        textMargin: 2.0
 
     }
 

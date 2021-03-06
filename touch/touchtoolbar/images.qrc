@@ -38,5 +38,6 @@
         <file>images/unlock_1.png</file>
         <file>images/unlock.png</file>
         <file>images/lock.png</file>
+        <file>images/dropDown.png</file>
     </qresource>
 </RCC>
