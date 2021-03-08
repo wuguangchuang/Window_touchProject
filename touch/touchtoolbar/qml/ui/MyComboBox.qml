@@ -7,7 +7,9 @@ Item {
     property Item comboBox:comboBox
     property var itemsModel
     property int defCurrentIndex:0
-    property string chosenItemTextStr:itemsModel.get(defCurrentIndex).text
+    property string chosenItemTextStr:""
+    property Item chosenItemText:chosenItemText
+    property Item listView : listView
     signal comboClicked;
     Rectangle {
         id:comboBox
@@ -90,6 +92,7 @@ Item {
                             var prevSelection=chosenItemText.text
                             chosenItemText.text = modelData;
                             listView.currentIndex=index;
+
                             if(chosenItemText.text !=prevSelection){
                                 comboClicked();
                             }

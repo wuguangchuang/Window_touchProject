@@ -203,8 +203,23 @@ Window {
                                 property var text: qsTr("Upgrade")
                                 Layout.minimumWidth: fileSeleected.width
                                 Layout.minimumHeight: fileSeleected.height
-                                style: TButtonStyle{
-                                    text: upgradeBtn.text
+                                style: ButtonStyle{
+                                    label: Text{
+                                        text: upgradeBtn.text
+                                        color: "#FFFFFF"
+                                        font.pointSize: Math.min(fontSize + (Math.min(upgradeTestWidth,upgradeTestHeight) - 1)*5,30)
+                                        verticalAlignment: Text.AlignVCenter
+                                        horizontalAlignment: Text.AlignHCenter
+                                    }
+                                    background: Rectangle{
+
+                                        implicitWidth: upgradeBtn.width
+                                        implicitHeight: upgradeBtn.height
+//                                        border.width: 1
+                                        color: (updatePage.flag ? "#64B5F6":"#BDBDBD")
+                                        radius: 2
+                                    }
+
 
                                 }
 
@@ -212,13 +227,13 @@ Window {
                                     if (enabled) {
                                         text = qsTr("Upgrade");
 
-                                        flag = true;
+                                        updatePage.flag = true;
 
 
                                     } else {
                                         text = qsTr("During upgrade");
 
-                                        flag = false;
+                                        updatePage.flag = false;
                                     }
                                 }
 
@@ -286,7 +301,7 @@ Window {
                                         implicitWidth: upgradeBtn.width
                                         implicitHeight: upgradeBtn.height
 //                                        border.width: 1
-                                        color: (flag ? "#64B5F6":"#BDBDBD")
+                                        color: (updatePage.flag ? "#64B5F6":"#BDBDBD")
                                         radius: 2
                                     }
                                 }
@@ -295,7 +310,7 @@ Window {
 
                                 onClicked: {
                                     //Qt.quit();
-                                    if(flag)
+                                    if(updatePage.flag)
                                     {
                                         if(lockCheck)
                                         {
@@ -410,6 +425,37 @@ Window {
                        }
 
 
+                        Rectangle{
+                            id:upgradePageMainInfo
+                            Layout.preferredHeight: 30
+                            Layout.fillWidth: true
+                            anchors.bottom: parent.bottom
+                            anchors.left: parent.left
+                            border.width: 1
+                            border.color: "#aaaaaa"
+                               RowLayout{
+                                   anchors.fill: parent
+                                   Image{
+                                       id:upgradeDeviceImage
+                                       Layout.preferredHeight: 25
+                                       Layout.preferredWidth: 25
+                                       source: deviceConnectImage
+                                       fillMode: Image.Stretch
+                                       anchors.verticalCenter: parent.verticalCenter
+                                       anchors.left: parent.left
+                                       anchors.leftMargin: defaultMargin
+                                   }
+                                   MyLabel{
+                                       id: upgradeDeviceInfo
+                                       textStr: deviceMainInfo
+                                       Layout.fillWidth: true
+                                       Layout.fillHeight: true
+                                       anchors.left: upgradeDeviceImage.right
+                                       anchors.topMargin: 5
+
+                                   }
+                               }
+                        }
                         Rectangle
                         {
                             border.width: 1
@@ -418,6 +464,8 @@ Window {
                             Layout.fillHeight: true
                             id:updateShowMsgId
                             property Item messageBox:messageBox
+                            anchors.bottom: upgradePageMainInfo.top
+                            anchors.bottomMargin: 5
 //                            property Item updateShowDialog:updateShowDialog
                             RowLayout
                             {
@@ -475,41 +523,7 @@ Window {
                             }
 
                         }
-                        Rectangle{
-                            Layout.preferredHeight: 30
-                            Layout.fillWidth: true
-                            border.width: 1
-                            border.color: "#aaaaaa"
-                               RowLayout{
-                                   anchors.fill: parent
-                                   Image{
-                                       id:upgradeDeviceImage
-                                       Layout.preferredHeight: 25
-                                       Layout.preferredWidth: 25
-                                       source: deviceConnectImage
-                                       fillMode: Image.Stretch
-                                       anchors.verticalCenter: parent.verticalCenter
-                                       anchors.left: parent.left
-                                       anchors.leftMargin: defaultMargin
-                                   }
-                                   MyLabel{
-                                       id: upgradeDeviceInfo
-                                       textStr: deviceMainInfo
-                                       Layout.fillWidth: true
-                                       Layout.fillHeight: true
-                                       anchors.left: upgradeDeviceImage.right
-                                       anchors.topMargin: 5
 
-                                   }
-//                                   Text {
-//                                       id: upgradeDeviceInfo
-//                                       text: deviceMainInfo
-//                                       anchors.left: upgradeDeviceImage.right
-//                                       anchors.leftMargin: defaultMargin
-//                                       anchors.verticalCenter: parent.verticalCenter
-//                                   }
-                               }
-                        }
                     }
 
                 }
@@ -542,13 +556,18 @@ Window {
                 property Item volienceUpgradeFileRow:(item != null) ? item.volienceUpgradeFileRow : null
                 property Item volienceUpgradeFileText:(item != null) ? item.volienceUpgradeFileText : null
 
+                property bool flag : true
+
                 signal sendOnboardTestStart()
 
 
                 property int what: mTAB_Test
 
+
+
                 Rectangle {
                     id: rectangle
+                    anchors.fill: parent
                     property Item messageView: (isSupportOnboardtest ?onboardTest.onboardTestMessage:messageTextTest)
                     property Item messageBox: (isSupportOnboardtest ? onboardTest.showFailMessage:testRect.messageBoxTest)
                     property Item testShowDialog:testRect.testShowDialog
@@ -562,87 +581,57 @@ Window {
                     property Item volienceUpgradeFileText:volienceUpgradeFileText
                     property Item volienceUpgradeFileRec:volienceUpgradeFileRec
                     property Item volienceFileSeleected:volienceFileSeleected
+                    property Item twoRect:twoRect
+
+                    MouseArea{
+                        anchors.fill: parent
+                        hoverEnabled: true
+                        propagateComposedEvents: true
+                        onClicked: {
+                            mouse.accepted = true;
+                            testComboBox.comboBox.state = ""
+                        }
+                    }
 
 
-                    anchors.fill: parent
+
                     ColumnLayout {
                         anchors.fill: parent
                         anchors.top: parent.top
                         anchors.topMargin: defaultMargin
-                        //测试界面的ComboBox
-//                        ComboBox{
-//                            id:testComboBox
-//                            visible: (touch.getAppType() === mAPP_RD) ? true : false
-//                            model: testComboBoxList
-//                            currentIndex: 0
-//                            enabled: true
-//                            anchors.top: parent.top
-//                            anchors.left: parent.left
-//                            Layout.fillWidth: true
-//                            Layout.preferredHeight: 40
-
-//                            style: ComboBoxStyle{
-//                                label:Text{
-//                                    width: testComboBox.width
-//                                    height: testComboBox.height
-//                                    verticalAlignment: Text.AlignVCenter;
-//                                    horizontalAlignment: Text.AlignHCenter;
-//                                    text: testComboBox.currentText
-//                                    font.pointSize: 15
-
-//                                }
-//                            }
-//                            Component.onCompleted: {
-//                                testComboBoxList.insert(0,{"text":qsTr("Test")});
-//                                testComboBoxList.insert(1,{"text":qsTr("Violence upgrade")});
-////                                testComboBoxList.insert(2,{"text":qsTr("Violence test")});
-//                            }
-//                            onCurrentIndexChanged: {
-//                                testPage.testComboBoxIndex = currentIndex;
-//                                clearTestInfo();
-//                                switch(currentIndex)
-//                                {
-//                                case 0:
-//                                    testBtnName = qsTr("Test");
-//                                    break;
-//                                case 1:
-
-//                                    testBtnName = qsTr("Violence upgrade");
-//                                    break;
-//                                case 2:
-//                                    testBtnName = qsTr("Violence test");
-//                                    break;
-//                                }
-//                            }
-//                        }
-
-                        RowLayout {
-                            Layout.fillWidth: true
+                        anchors.left: parent.left
+                        //测试按钮一行布局
+                        Rectangle{
+                            id:oneRect
+                            anchors.top: parent.top
+                            anchors.topMargin: (touch.getAppType() === mAPP_RD) ? testComboBox.height + 5:0
                             anchors.left: parent.left
+                            Layout.fillWidth: true
+                            height: Math.min(Math.max(buttonMinHeight,upgradeTestHeight * buttonMinHeight),windowHeight / 5.0)
                             //测试或者连续升级的按钮
                             Button{
                                 id:testBtn;
                                 checkable: true
                                 anchors.top: parent.top
-                                anchors.topMargin: (touch.getAppType() === mAPP_RD) ? 40:0
-                                Layout.preferredWidth: Math.min(Math.max(buttonMinWidth,upgradeTestWidth * buttonMinWidth),windowWidth / 2.0);
-                                Layout.preferredHeight:Math.min(Math.max(buttonMinHeight,upgradeTestHeight * buttonMinHeight),windowHeight / 5.0);
-                                onVisibleChanged: {
-                                    if (visible) {
-//                                        messageTextStringUpdate = messageTextString;
-//                                        messageTextString = messageTextStringTest;
-                                    } else {
-//                                        messageTextStringTest = messageTextString;
-//                                        messageTextString = messageTextStringUpdate;
-                                    }
-                                }
-                                style: TButtonStyle{
+                                anchors.left: parent.left
+                                width: Math.min(Math.max(buttonMinWidth,upgradeTestWidth * buttonMinWidth),windowWidth / 2.0);
+                                height:Math.min(Math.max(buttonMinHeight,upgradeTestHeight * buttonMinHeight),windowHeight / 5.0);
+
+                                style:ButtonStyle{
                                     label: Text {
                                         color: "#FFFFFF"
                                         text:testBtnName
                                         font.pointSize: Math.min(fontSize + (Math.min(upgradeTestWidth,upgradeTestHeight) - 1)*5,30)
                                         verticalAlignment: Text.AlignVCenter
                                         horizontalAlignment: Text.AlignHCenter
+                                    }
+                                    background: Rectangle{
+
+                                        width: testBtn.width
+                                        height: testBtn.height
+//                                        border.width: 1
+                                        color: testBtn.enabled ? "#64B5F6" : "#BDBDBD"
+                                        radius: 2
                                     }
 
                                 }
@@ -674,6 +663,8 @@ Window {
                                             touch.setUpdatePath(testPage.volienceUpgradeFileText.text);
                                             touch.startVolienceTest(testPage.testComboBoxIndex);
                                             updatingFw = true;
+
+
                                             break;
                                         case 2:
                                             break;
@@ -681,6 +672,7 @@ Window {
                                     }
                                     else
                                     {
+
 
                                         if(testPage.testComboBoxIndex === 0)
                                         {
@@ -694,6 +686,7 @@ Window {
 
                                             touch.setCancelVolienceTest(false);
                                             testPage.testBtn.enabled = false;
+
                                         }
 
 
@@ -710,8 +703,11 @@ Window {
                                 minimumValue: 0;
                                 maximumValue: 100;
                                 value: 0;
-                                implicitHeight: testBtn.height;
-                                Layout.fillWidth: true
+                                anchors.top: parent.top
+                                anchors.left: testBtn.right
+                                anchors.leftMargin: 5
+                                width: parent.width - testBtn.width - 5
+                                height: testBtn.height;
                                 style: ProgressBarStyle {
                                     background: Rectangle {
                                         radius: 2
@@ -728,20 +724,24 @@ Window {
                                 }
                             }
                         }
+
                         //连续升级的模式下的选择文件部分
-                        RowLayout{
-                            Layout.fillWidth: true
-                            Layout.preferredHeight: testBtn.height
-                            anchors.top: testBtn.bottom
+                        Rectangle{
+                            id:twoRect
+                            Layout.preferredWidth: parent.width
+                            Layout.preferredHeight: testPage.testComboBoxIndex === 1 ? oneRect.height + 5 : 0
+                            anchors.top: oneRect.bottom
+                            anchors.topMargin: 5
                             anchors.left: parent.left
-                            visible: testComboBox.comboBox.selectedIndex === 1 ? true : false
                             Button{
                                 id:volienceFileSeleected
+                                visible: testPage.testComboBoxIndex === 1 ? true : false
                                 enabled: (testBtn.checked || updatingFw)? false : true
-                                Layout.preferredWidth: testBtn.width
-                                Layout.preferredHeight:testBtn.height
+                                width: testBtn.width
+                                height:testBtn.height
                                 anchors.top:parent.top
                                 anchors.left: parent.left
+
                                 style: ButtonStyle {
                                     label: Text {
                                         color: "#FFFFFF"
@@ -752,8 +752,8 @@ Window {
                                     }
                                     background: Rectangle{
 
-                                        implicitWidth: volienceFileSeleected.width
-                                        implicitHeight: volienceFileSeleected.height
+                                        width: volienceFileSeleected.width
+                                        height: volienceFileSeleected.height
                                         color: (testBtn.checked || updatingFw)? "#BDBDBD" : "#64B5F6"
                                         radius: 2
                                     }
@@ -765,10 +765,12 @@ Window {
                             }
                             Rectangle{
                                 id:volienceUpgradeFileRec
-
-                                Layout.fillWidth: true
-                                Layout.preferredHeight: parent.height
-
+                                visible: testPage.testComboBoxIndex === 1 ? true : false
+                                width: parent.width - volienceFileSeleected.width - 5
+                                height: volienceFileSeleected.height
+                                anchors.top: parent.top
+                                anchors.left: volienceFileSeleected.right
+                                anchors.leftMargin: 5
                                 border.width: 1
                                 border.color: "gray"
                                 Text {
@@ -780,15 +782,54 @@ Window {
 
                                 }
                             }
+
                         }
+                        //测试界面的设备主要信息部分
+                        Rectangle{
+                            id:testMainInfoRec
+                            Layout.preferredHeight: 30
+                            Layout.fillWidth: true
+                            border.width: 1
+                            border.color: "#aaaaaa"
+
+                            anchors.bottom: parent.bottom
+                            anchors.left: parent.left
+                               RowLayout{
+                                   anchors.fill: parent
+                                   Image{
+                                       id:testDeviceImage
+                                       Layout.preferredHeight: 25
+                                       Layout.preferredWidth: 25
+                                       source: deviceConnectImage
+                                       fillMode: Image.Stretch
+                                       anchors.verticalCenter: parent.verticalCenter
+                                       anchors.left: parent.left
+                                       anchors.leftMargin: defaultMargin
+                                   }
+                                   MyLabel{
+                                       id: testDeviceInfo
+                                       textStr: deviceMainInfo
+                                       Layout.fillWidth: true
+                                       Layout.fillHeight: true
+                                       anchors.left: testDeviceImage.right
+                                       anchors.topMargin: 5
+                                   }
+                               }
+                        }
+
                         //中间显示打印信息以及显示图片的部分
                         Rectangle
                         {
                             id:testTextInfo
                             border.width: 1
                             border.color: "#aaaaaa"
+                            anchors.top: twoRect.bottom
+                            anchors.left: parent.left
+                            anchors.bottom: testMainInfoRec.top
+                            anchors.bottomMargin: 5
                             Layout.fillHeight: true
                             Layout.fillWidth: true
+
                             //板载测试模式
                             OnboardTestInterface
                             {
@@ -836,6 +877,7 @@ Window {
                             Rectangle
                             {
                                 anchors.fill: parent
+
 
                                 id:testRect
                                 border.width: 1
@@ -889,28 +931,19 @@ Window {
                                         Layout.preferredWidth: parent.width / 2.0
                                         Layout.preferredHeight:parent.height
 
+
 //                                        color:"#aaaaaa"
-                                        // ColumnLayout{
-                                        //     visible:true
-                                            // anchors.left: parent.left
-                                            // anchors.top: parent.top
-                                            // anchors.right: parent.right
-                                            // anchors.bottom: parent.bottom
-                                            // Layout.preferredHeight: parent.height
-                                            // Layout.preferredWidth: parent.width
                                             Rectangle{
                                                 id:testShowDialog
                                                 anchors.left: parent.left
-                                                // anchors.top: volientTestInfo.bottom
                                                 anchors.top: parent.top
-//                                                anchors.topMargin: defaultMargin + volientTestInfo.height
                                                 anchors.right: parent.right
                                                 anchors.bottom: parent.bottom
                                                 Layout.preferredWidth: parent.width  / 2.0
-//                                                Layout.preferredHeight: parent.height - volientTestInfo.height
                                                 Layout.preferredHeight: parent.height
                                                 border.width: 1
                                                 border.color: "#aaaaaa"
+
                                             }
                                             Rectangle{
                                                 id:volientTestInfo
@@ -926,7 +959,7 @@ Window {
                                                     text:volienceUpgradeInfo
                                                 }
                                             }
-                                        // }
+
 
                                     }
                                 }
@@ -943,14 +976,17 @@ Window {
                             Layout.preferredHeight: 40
                             itemHeight: height
                             itemWidth: width - height
+                            chosenItemTextStr:qsTr("Test")
                             Component.onCompleted: {
                                 testComboBoxList.insert(0,{"text":qsTr("Test")});
                                 testComboBoxList.insert(1,{"text":qsTr("Violence upgrade")});
                                 testComboBoxList.insert(2,{"text":qsTr("Reset")});
                             }
                             onComboClicked: {
+
                                 testPage.testComboBoxIndex = comboBox.selectedIndex;
                                 clearTestInfo();
+
                                 switch(comboBox.selectedIndex)
                                 {
                                 case 0:
@@ -967,41 +1003,7 @@ Window {
                             }
 
                         }
-                        //测试界面的设备主要信息部分
-                        Rectangle{
-                            Layout.preferredHeight: 30
-                            Layout.fillWidth: true
-                            border.width: 1
-                            border.color: "#aaaaaa"
-                               RowLayout{
-                                   anchors.fill: parent
-                                   Image{
-                                       id:testDeviceImage
-                                       Layout.preferredHeight: 25
-                                       Layout.preferredWidth: 25
-                                       source: deviceConnectImage
-                                       fillMode: Image.Stretch
-                                       anchors.verticalCenter: parent.verticalCenter
-                                       anchors.left: parent.left
-                                       anchors.leftMargin: defaultMargin
-                                   }
-                                   MyLabel{
-                                       id: testDeviceInfo
-                                       textStr: deviceMainInfo
-                                       Layout.fillWidth: true
-                                       Layout.fillHeight: true
-                                       anchors.left: testDeviceImage.right
-                                       anchors.topMargin: 5
-                                   }
-//                                   Text {
-//                                       id: testDeviceInfo
-//                                       text: deviceMainInfo
-//                                       anchors.left: testDeviceImage.right
-//                                       anchors.leftMargin: defaultMargin
-//                                       anchors.verticalCenter: parent.verticalCenter
-//                                   }
-                               }
-                        }
+
 
                     }
 

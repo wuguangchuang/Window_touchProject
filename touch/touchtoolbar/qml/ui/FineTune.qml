@@ -122,6 +122,7 @@ Item {
             }
         }
     }
+
     MouseArea{
         anchors.fill: parent
         acceptedButtons: Qt.AllButtons
@@ -136,6 +137,7 @@ Item {
                 break;
             }
         }
+
     }
     Rectangle{
         anchors.fill: parent
@@ -901,7 +903,7 @@ Item {
                 text: qsTr("offest:")
                 font.pointSize: 14
             }
-            FineTuneComboBox{
+            MyComboBox{
                 id:fineTuneId
                 visible: true
                 width: parent.btnWidth
@@ -912,7 +914,9 @@ Item {
                 anchors.leftMargin: 5
                 itemWidth: parent.btnWidth - parent.fineTuneComboBoxHeight
                 itemHeight: parent.fineTuneComboBoxHeight
-
+                defCurrentIndex: 2
+                chosenItemTextStr:"5"
+                itemsModel: itemsModel
                 onComboClicked:
                 {
                     offset = itemsModel.get(comboBox.selectedIndex).text;
@@ -978,6 +982,10 @@ Item {
             font.pointSize: 14
         }
 
+    }
+
+    ListModel{
+        id:itemsModel
     }
 
 
