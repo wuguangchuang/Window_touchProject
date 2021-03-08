@@ -23,6 +23,7 @@ Item {
             height:comboBox.height;
             border.color:"#cccccc"
             border.width: 1
+            color: "#fafafa"
             Text {
                 anchors.centerIn: parent
                 id:chosenItemText
@@ -57,7 +58,6 @@ Item {
             height:0;
             clip:true;
             anchors.top: chosenItem.bottom;
-//                color:"#f0f0f0"
 
             ListView {
                 id:listView

@@ -4,6 +4,7 @@ import QtQuick.Controls 1.2
 import QtQuick.Controls 2.0
 import QtQuick.Controls.Styles 1.4
 import QtQuick.Layouts 1.3
+import QtQml 2.2
 Item {
     property int  defaultSpacing: 10
     property int labelWidth:200
@@ -67,6 +68,9 @@ Item {
                     onClicked: {
                         showProgessing();
                         touch.setCalibrationDatas(createCalibrationData());
+                        touch.debug("设置的校准数据：");
+                        var calJson = JSON.stringify(createCalibrationData());
+                        touch.debug(calJson);
                         hideProgessing();var result = touch.saveCalibration();
                         if (result === false) {
                             showToast(qsTr("save data failure"));
@@ -222,9 +226,9 @@ Item {
                    maxValue: maxX
                    onTextChanged:
                    {
-                       console.log("changeTargetX = " + text);
-                       targetX = text;
-                       console.log("targetX = " + targetX);
+//                       console.log("changeTargetX = " + text);
+                       targetX = text * 1;
+//                       console.log("targetX = " + targetX);
                    }
                    value: targetX
                }
@@ -235,9 +239,9 @@ Item {
                    maxValue: maxY
                    onTextChanged:
                    {
-                       console.log("changeTargetY = " + text);
-                       targetY = text;
-                       console.log("targetY = " + targetX);
+//                       console.log("changeTargetY = " + text);
+                       targetY = text * 1;
+//                       console.log("targetY = " + targetX);
                    }
                    value: targetY
                }
@@ -247,9 +251,9 @@ Item {
                    height: parent.implicitHeight
                    maxValue: maxX
                    onTextChanged: {
-                       console.log("changeCollectX = " + text);
-                       collectX = text;
-                       console.log("collectX = " + collectX);
+//                       console.log("changeCollectX = " + text);
+                       collectX = text * 1;
+//                       console.log("collectX = " + collectX);
                    }
                    value: collectX
 
@@ -260,9 +264,9 @@ Item {
                    height: parent.implicitHeight
                    maxValue: maxY
                    onTextChanged: {
-                       console.log("changeCollectY = " + text);
-                       collectY = text;
-                       console.log("collectY = " + collectY);
+//                       console.log("changeCollectY = " + text);
+                       collectY = text * 1;
+//                       console.log("collectY = " + collectY);
                    }
                    value: collectY
 

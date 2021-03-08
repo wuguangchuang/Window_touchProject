@@ -48,7 +48,14 @@ Item {
     property string rightPlaceholderStr:qsTr("Please draw a vertical line in this box to detect the offset position, and then click the left and right buttons to adjust.")
     property string upPlaceholderStr:qsTr("Please draw a horizontal line in this box to detect the offset position, and then click the up and down buttons to adjust.")
     property string downPlaceholderStr:qsTr("Please draw a horizontal line in this box to detect the offset position, and then click the up and down buttons to adjust.")
-    property int imageSize:64
+    property int point0X:0
+    property int point0Y:0
+    property int point1X:0
+    property int point1Y:0
+    property int point2X:0
+    property int point2Y:0
+    property int point3X:0
+    property int point3Y:0
 
     focus: false
 //    Keys.enabled: false
@@ -132,7 +139,7 @@ Item {
     }
     Rectangle{
         anchors.fill: parent
-
+        color: "#fafafa"
         MultiPointTouchArea{
             anchors.fill: parent
             enabled: true
@@ -175,12 +182,13 @@ Item {
         Rectangle{
             id:leftDrawArea
             visible: true
-            x:parent.width / 8 + imageSize
-            y:parent.height / 4 + imageSize
+            x:parent.width / 8
+            y:parent.height / 4 + 50
             width:parent.width / 8
-            height: parent.height / 2 - imageSize * 2
+            height: parent.height / 2 - 100
             border.width: 1
             border.color: "#a5a5a5"
+            color: "#fafafa"
             MultiPointTouchArea{
                 id:leftTouchPoint
                 anchors.fill: parent
@@ -245,6 +253,7 @@ Item {
                 anchors.rightMargin: 5
                 anchors.bottom: parent.bottom
                 color: "#7f7f7f"
+                font.pointSize: 12
                 text: leftPlaceholderStr
                 lineHeight: 1.5
 //                horizontalAlignment: Text.AlignHCenter
@@ -256,28 +265,33 @@ Item {
         ToolButton{
             id:left_right
             visible: true
-            x:leftDrawArea.x + leftDrawArea.width + 15
+            x:leftDrawArea.x + leftDrawArea.width + defaultMargin
             y:leftDrawArea.y + leftDrawArea.height / 2 - height / 2
-            width: 110
+            width: 100
             height: 64
             Image {
                 id:left_right_image
                 width: 64
                 height: 64
+                anchors.centerIn: parent
                 fillMode: Image.Stretch
                 source: "qrc:/dialog/images/triangle_right.png"
             }
             Text{
                 id:left_right_text
-                anchors.left: left_right_image.right
-                text:"* " + offset.toString()
-                anchors.verticalCenter: parent.verticalCenter
+                width: 64
+                height: 64
+                verticalAlignment: Text.AlignVCenter
+                anchors.left: parent.left
+                anchors.leftMargin: (parent.width - left_right_image.width) / 2 + 10
+                color: "#ffffff"
+                text:offset.toString()
                 font.pointSize: 15
             }
             style: Rectangle{
                 width: left_right.width
                 height: left_right.height
-                color: left_right.pressed ? "#d9ebf9":"#ffffff"
+                color: left_right.pressed ? "#d9ebf9":"#fafafa"
             }
             onClicked: {
                 changeCalibrationData(left_direction,offset - 2 * offset);
@@ -288,29 +302,34 @@ Item {
         ToolButton{
             id:left_left
             visible: true
-            x:leftDrawArea.x -  125
+            x:leftDrawArea.x -  (width + defaultMargin)
             y:leftDrawArea.y + leftDrawArea.height / 2 - height / 2
-            width: 110
+            width: 100
             height: 64
-            Text{
-                id:left_left_text
-                anchors.right: left_left_image.left
-                text:offset.toString() + " *"
-                anchors.verticalCenter: parent.verticalCenter
-                font.pointSize: 15
-            }
             Image {
                 id:left_left_image
                 width: 64
                 height: 64
-                anchors.right: parent.right
+                anchors.centerIn: parent
                 fillMode: Image.Stretch
                 source: "qrc:/dialog/images/triangle_left.png"
+            }
+            Text{
+                id:left_left_text
+                width: 64
+                height: 64
+                anchors.right: parent.right
+                anchors.rightMargin: (parent.width - left_left_image.width) / 2 + 10
+                verticalAlignment: Text.AlignVCenter
+                horizontalAlignment: Text.AlignRight
+                color: "#ffffff"
+                text:offset.toString()
+                font.pointSize: 15
             }
             style: Rectangle{
                 width: left_left.width
                 height: left_left.height
-                color: left_left.pressed ? "#d9ebf9":"#ffffff"
+                color: left_left.pressed ? "#d9ebf9":"#fafafa"
             }
             onClicked: {
                 changeCalibrationData(left_direction,offset);
@@ -321,12 +340,13 @@ Item {
         Rectangle{
             id:rightDrawArea
             visible: true
-            x:parent.width /  4 * 3 - imageSize
+            x:parent.width /  4 * 3
             y:leftDrawArea.y
             width:leftDrawArea.width
             height: leftDrawArea.height
             border.width: 1
             border.color: "#a5a5a5"
+            color: "#fafafa"
             MultiPointTouchArea{
                 id:rightTouchPoint
                 anchors.fill: parent
@@ -384,6 +404,7 @@ Item {
                 color: "#7f7f7f"
                 text: rightPlaceholderStr
                 lineHeight: 1.5
+                font.pointSize: 12
 //                horizontalAlignment: Text.AlignHCenter
                 verticalAlignment: Text.AlignVCenter
                 wrapMode: Text.Wrap
@@ -393,28 +414,33 @@ Item {
         ToolButton{
             id:right_right
             visible: true
-            x:rightDrawArea.x + rightDrawArea.width + 15
+            x:rightDrawArea.x + rightDrawArea.width + defaultMargin
             y:rightDrawArea.y + rightDrawArea.height / 2 - height / 2
-            width: 110
+            width: 100
             height: 64
             Image {
                 id:right_right_image
                 width: 64
                 height: 64
+                anchors.centerIn: parent
                 fillMode: Image.Stretch
                 source: "qrc:/dialog/images/triangle_right.png"
             }
             Text{
                 id:right_right_text
-                anchors.left: right_right_image.right
-                text:"* " + offset.toString()
-                anchors.verticalCenter: parent.verticalCenter
+                width: 64
+                height: 64
+                verticalAlignment: Text.AlignVCenter
+                anchors.left: parent.left
+                anchors.leftMargin: (parent.width - right_right_image.width) / 2 + 10
+                color: "#ffffff"
+                text:offset.toString()
                 font.pointSize: 15
             }
             style: Rectangle{
                 width: right_right.width
                 height: right_right.height
-                color: right_right.pressed ? "#d9ebf9":"#ffffff"
+                color: right_right.pressed ? "#d9ebf9":"#fafafa"
             }
             onClicked: {
                 changeCalibrationData(right_direction,offset - 2 * offset);
@@ -424,29 +450,35 @@ Item {
         ToolButton{
             id:right_left
             visible: true
-            x:rightDrawArea.x -  125
+            x:rightDrawArea.x -  (width + defaultMargin)
             y:rightDrawArea.y + rightDrawArea.height / 2 - height / 2
-            width: 110
+            width: 100
             height: 64
-            Text{
-                id:right_left_text
-                anchors.right: right_left_image.left
-                text:offset.toString() + " *"
-                anchors.verticalCenter: parent.verticalCenter
-                font.pointSize: 15
-            }
+
             Image {
                 id:right_left_image
                 width: 64
                 height: 64
-                anchors.right: parent.right
+                anchors.centerIn: parent
                 fillMode: Image.Stretch
                 source: "qrc:/dialog/images/triangle_left.png"
+            }
+            Text{
+                id:right_left_text
+                width: 64
+                height: 64
+                verticalAlignment: Text.AlignVCenter
+                anchors.right: parent.right
+                anchors.rightMargin: (parent.width - right_left_image.width) / 2 + 10
+                horizontalAlignment: Text.AlignRight
+                color: "#ffffff"
+                text:offset.toString()
+                font.pointSize: 15
             }
             style: Rectangle{
                 width: right_left.width
                 height: right_left.height
-                color: right_left.pressed ? "#d9ebf9":"#ffffff"
+                color: right_left.pressed ? "#d9ebf9":"#fafafa"
             }
             onClicked: {
                 changeCalibrationData(right_direction,offset);
@@ -456,12 +488,14 @@ Item {
         Rectangle{
             id:upDrawArea
             visible: true
-            x:parent.width / 4 + imageSize
-            y:parent.height / 8 + imageSize
-            width:parent.width / 2 - imageSize * 2
-            height: parent.height / 8
+            x:parent.width / 4
+            y:parent.height / 8
+//            y:parent.height / 8
+            width:parent.width / 2
+            height: parent.height / 8 + 50
             border.width: 1
             border.color: "#a5a5a5"
+            color: "#fafafa"
             MultiPointTouchArea{
                 id:upTouchPoint
                 anchors.fill: parent
@@ -519,6 +553,7 @@ Item {
                 color: "#7f7f7f"
                 text: upPlaceholderStr
                 lineHeight: 1.5
+                font.pointSize: 12
                 horizontalAlignment: Text.AlignHCenter
                 verticalAlignment: Text.AlignVCenter
                 wrapMode: Text.Wrap
@@ -529,29 +564,41 @@ Item {
             id:up_down
             visible: true
             x:upDrawArea.x + upDrawArea.width / 2 - width / 2
-            y:upDrawArea.y + upDrawArea.height + 15
+            y:upDrawArea.y + upDrawArea.height + defaultMargin
             width: 64
-            height: 110
+            height: 100
             Image {
                 id:up_down_image
                 width: 64
                 height: 64
-                anchors.top: parent.top
+                anchors.centerIn: parent
                 fillMode: Image.Stretch
                 source: "qrc:/dialog/images/triangle_down.png"
             }
+//            Text{
+//                id:up_down_text
+//                anchors.top: up_down_image.bottom
+//                text:offset.toString() + " *"
+//                anchors.horizontalCenter: parent.horizontalCenter
+//                font.pointSize: 15
+//                rotation: 270
+//            }
             Text{
                 id:up_down_text
-                anchors.top: up_down_image.bottom
-                text:offset.toString() + " *"
-                anchors.horizontalCenter: parent.horizontalCenter
+                width: 64
+                height: 64
+                horizontalAlignment: Text.AlignHCenter
+                verticalAlignment: Text.AlignTop
+                anchors.top: parent.top
+                anchors.topMargin: (parent.height - up_down_image.height) / 2 + 10
+                color: "#ffffff"
+                text:offset.toString()
                 font.pointSize: 15
-                rotation: 270
             }
             style: Rectangle{
                 width: up_down.width
                 height: up_down.height
-                color: up_down.pressed ? "#d9ebf9":"#ffffff"
+                color: up_down.pressed ? "#d9ebf9":"#fafafa"
             }
             onClicked: {
                 changeCalibrationData(up_direction,offset - 2 * offset);
@@ -562,30 +609,41 @@ Item {
             id:up_up
             visible: true
             x:upDrawArea.x + upDrawArea.width / 2 - width / 2
-            y:upDrawArea.y - 125
+            y:upDrawArea.y - (height + defaultMargin)
             width: 64
-            height: 110
-            Text{
-                id:up_up_text
-                anchors.bottom: up_up_image.top
-                anchors.horizontalCenter: parent.horizontalCenter
-                text:"* " + offset.toString()
-                font.pointSize: 15
-                rotation: 270
-            }
+            height: 100
+//            Text{
+//                id:up_up_text
+//                anchors.bottom: up_up_image.top
+//                anchors.horizontalCenter: parent.horizontalCenter
+//                text:"* " + offset.toString()
+//                font.pointSize: 15
+//                rotation: 270
+//            }
             Image {
                 id:up_up_image
                 width: 64
                 height: 64
-                anchors.bottom: parent.bottom
-
+                anchors.centerIn: parent
                 fillMode: Image.Stretch
                 source: "qrc:/dialog/images/triangle_up.png"
+            }
+            Text{
+                id:up_up_text
+                width: 64
+                height: 64
+                horizontalAlignment: Text.AlignHCenter
+                verticalAlignment: Text.AlignBottom
+                anchors.bottom: parent.bottom
+                anchors.bottomMargin: (parent.height - up_up_image.height) / 2 + 10
+                color: "#ffffff"
+                text:offset.toString()
+                font.pointSize: 15
             }
             style: Rectangle{
                 width: up_up.width
                 height: up_up.height
-                color: up_up.pressed ? "#d9ebf9":"#ffffff"
+                color: up_up.pressed ? "#d9ebf9":"#fafafa"
             }
             onClicked: {
                 changeCalibrationData(up_direction,offset);
@@ -597,11 +655,12 @@ Item {
             id:downDrawArea
             visible: true
             x:upDrawArea.x
-            y:parent.height / 4 * 3 - imageSize
+            y:leftDrawArea.y + leftDrawArea.height
             width:upDrawArea.width
             height: upDrawArea.height
             border.width: 1
             border.color: "#a5a5a5"
+            color: "#fafafa"
             MultiPointTouchArea{
                 id:downTouchPoint
                 anchors.fill: parent
@@ -660,6 +719,7 @@ Item {
                 color: "#7f7f7f"
                 text: downPlaceholderStr
                 lineHeight: 1.5
+                font.pointSize: 12
                 horizontalAlignment: Text.AlignHCenter
                 verticalAlignment: Text.AlignVCenter
                 wrapMode: Text.Wrap
@@ -669,30 +729,41 @@ Item {
             id:down_down
             visible: true
             x:downDrawArea.x + downDrawArea.width / 2 - width / 2
-            y:downDrawArea.y + downDrawArea.height + 15
+            y:downDrawArea.y + downDrawArea.height + defaultMargin
             width: 64
-            height: 110
+            height: 100
             Image {
                 id:down_down_image
                 width:64
                 height: 64
-                anchors.top: parent.top
-                anchors.horizontalCenter: parent.horizontalCenter
+                anchors.centerIn: parent
                 fillMode: Image.Stretch
                 source: "qrc:/dialog/images/triangle_down.png"
             }
+//            Text{
+//                id:down_down_text
+//                anchors.top: down_down_image.bottom
+//                anchors.horizontalCenter: parent.horizontalCenter
+//                text:offset.toString() + " *"
+//                font.pointSize: 15
+//                rotation: 270
+//            }
             Text{
                 id:down_down_text
-                anchors.top: down_down_image.bottom
-                anchors.horizontalCenter: parent.horizontalCenter
-                text:offset.toString() + " *"
+                width: 64
+                height: 64
+                horizontalAlignment: Text.AlignHCenter
+                verticalAlignment: Text.AlignTop
+                anchors.top: parent.top
+                anchors.topMargin: (parent.height - down_down_image.height) / 2 + 10
+                color: "#ffffff"
+                text:offset.toString()
                 font.pointSize: 15
-                rotation: 270
             }
             style: Rectangle{
                 width: down_down.width
                 height: down_down.height
-                color: down_down.pressed ? "#d9ebf9":"#ffffff"
+                color: down_down.pressed ? "#d9ebf9":"#fafafa"
             }
             onClicked: {
                 changeCalibrationData(down_direction,offset - 2 * offset);
@@ -704,178 +775,232 @@ Item {
             id:down_up
             visible: true
             x:downDrawArea.x + downDrawArea.width / 2 - width / 2
-            y:downDrawArea.y - 125
+            y:downDrawArea.y - (height + defaultMargin)
             width: 64
-            height: 110
+            height: 100
             Image {
                 id:down_up_image
                 width: 64
                 height: 64
-                anchors.bottom: parent.bottom
+//                anchors.bottom: parent.bottom
+                anchors.centerIn: parent
                 fillMode: Image.Stretch
                 source: "qrc:/dialog/images/triangle_up.png"
             }
+//            Text{
+//                id:down_up_text
+//                anchors.bottom: down_up_image.top
+//                anchors.horizontalCenter: parent.horizontalCenter
+//                text:"* " + offset.toString()
+//                font.pointSize: 15
+//                rotation: 270
+//            }
             Text{
                 id:down_up_text
-                anchors.bottom: down_up_image.top
-                anchors.horizontalCenter: parent.horizontalCenter
-                text:"* " + offset.toString()
+                width: 64
+                height: 64
+                horizontalAlignment: Text.AlignHCenter
+                verticalAlignment: Text.AlignBottom
+                anchors.bottom: parent.bottom
+                anchors.bottomMargin: (parent.height - down_up_image.height) / 2 + 10
+                color: "#ffffff"
+                text:offset.toString()
                 font.pointSize: 15
-                rotation: 270
             }
             style: Rectangle{
                 width: down_up.width
                 height: down_up.height
-                color: down_up.pressed ? "#d9ebf9":"#ffffff"
+                color: down_up.pressed ? "#d9ebf9":"#fafafa"
             }
             onClicked: {
                 changeCalibrationData(down_direction,offset);
             }
         }
 
+        //中间位置
+        Rectangle{
+            id:midTextRect
+            visible: true
+            x:left_right.x + left_right.width + 10
+            y:up_down.y + up_down.height + 10
+            width: right_left.x - x - 10
+            height: down_up.y - y - 10
+            color: "#fafafa"
 
-//        Rectangle{
-//            id:midTextRect
-//            visible: true
-//            x:left_right.x + left_right.width + 10
-//            y:up_down.y + up_down.height + 10
-//            width: right_left.x - x - 20
-//            height: down_up.y - y - 20
-////            border.color: "#f0f0f0"
-////            border.width: 1
-//            Text{
-
-//                anchors.top: parent.top
-//                anchors.bottom: parent.bottom
-//                anchors.left: parent.left
-//                anchors.right: parent.right
-//                verticalAlignment: Text.AlignVCenter
-////                horizontalAlignment: Text.AlignHCenter
-//                text:midMessage
-//                lineHeight: 1.5
-//                font.pointSize: 12
-//                wrapMode: Text.WordWrap
-
-//            }
-//        }
-
-
-    }
-    property int fineTuneComboBoxHeight:40
-    Rectangle{
-        id:offsetRect
-        x:defaultMargin
-        y:defaultMargin
-//        height: fineTuneComboBoxHeight
-        ToolButton
-        {
-            id:exitBtn
-            width: 160
-            height: fineTuneComboBoxHeight
-            tooltip: qsTr("Exit the fine-tuning interface.")
-
-            style:ButtonStyle{
-                background: Rectangle{
-                    width: exitBtn.width
-                    height: exitBtn.height
-                    color: exitBtn.pressed ? "#d9ebf9":"#f0f0f0"
-                }
-                label: Text{
-                    verticalAlignment: Text.AlignVCenter
-                    horizontalAlignment: Text.AlignHCenter
-                    font.pointSize: 14
-                    text:qsTr("exit")
-                }
-
-            }
-            onClicked:
+            property int fineTuneComboBoxHeight:60
+            property int btnWidth:180
+            ToolButton
             {
-                clearCanvas();
-                exitTune();
-            }
-        }
-        ToolButton
-        {
-            id:clearBtn
-            width: 160
-            height: fineTuneComboBoxHeight
-            anchors.top: parent.top
-            anchors.left: exitBtn.right
-            anchors.leftMargin: 5
-            tooltip: qsTr("Clear line trace.")
+                id:exitBtn
+                x:parent.width / 2 - width
+                y:parent.height / 2 - height
+                width: parent.btnWidth
+                height: parent.fineTuneComboBoxHeight
 
-            style:ButtonStyle{
-                background: Rectangle{
-                    width: clearBtn.width
-                    height: clearBtn.height
-                    color: clearBtn.pressed ? "#d9ebf9":"#f0f0f0"
-                }
-                label: Text{
-//                    width: clearBtn.width
-//                    height: clearBtn.height
-                    verticalAlignment: Text.AlignVCenter
-                    horizontalAlignment: Text.AlignHCenter
-                    font.pointSize: 14
-                    text:qsTr("clear")
-                }
+                tooltip: qsTr("Exit the fine-tuning interface.")
 
+                style:ButtonStyle{
+                    background: Rectangle{
+                        width: exitBtn.width
+                        height: exitBtn.height
+                        color: exitBtn.pressed ? "#d9ebf9":"#f0f0f0"
+                    }
+                    label: Text{
+                        verticalAlignment: Text.AlignVCenter
+                        horizontalAlignment: Text.AlignHCenter
+                        font.pointSize: 14
+                        text:qsTr("exit")
+                    }
+
+                }
+                onClicked:
+                {
+                    clearCanvas();
+                    exitTune();
+                }
             }
-            onClicked:
+            ToolButton
             {
-                clearCanvas();
-            }
-        }
-        Text {
+                id:clearBtn
+                x:exitBtn.x + exitBtn.width + 5
+                y:exitBtn.y
+                width: parent.btnWidth
+                height: parent.fineTuneComboBoxHeight
+                tooltip: qsTr("Clear line trace.")
 
-            id: offestText
-            width: 160
-            height: fineTuneComboBoxHeight
-            anchors.top: exitBtn.bottom
-            anchors.topMargin: 5
-            anchors.left: parent.left
-            verticalAlignment: Text.AlignVCenter
+                style:ButtonStyle{
+                    background: Rectangle{
+                        width: clearBtn.width
+                        height: clearBtn.height
+                        color: clearBtn.pressed ? "#d9ebf9":"#f0f0f0"
+                    }
+                    label: Text{
+    //                    width: clearBtn.width
+    //                    height: clearBtn.height
+                        verticalAlignment: Text.AlignVCenter
+                        horizontalAlignment: Text.AlignHCenter
+                        font.pointSize: 14
+                        text:qsTr("clear")
+                    }
+
+                }
+                onClicked:
+                {
+                    clearCanvas();
+                }
+            }
+            Text {
+
+                id: offestText
+                width: parent.btnWidth
+                height: parent.fineTuneComboBoxHeight
+                x:exitBtn.x
+                y:exitBtn.y + exitBtn.height + 5
+                verticalAlignment: Text.AlignVCenter
+                horizontalAlignment: Text.AlignRight
+                text: qsTr("offest:")
+                font.pointSize: 14
+            }
+            FineTuneComboBox{
+                id:fineTuneId
+                visible: true
+                width: parent.btnWidth
+                height: parent.fineTuneComboBoxHeight
+                anchors.top: exitBtn.bottom
+                anchors.topMargin: 5
+                anchors.left: offestText.right
+                anchors.leftMargin: 5
+                itemWidth: parent.btnWidth - parent.fineTuneComboBoxHeight
+                itemHeight: parent.fineTuneComboBoxHeight
+
+                onComboClicked:
+                {
+                    offset = itemsModel.get(comboBox.selectedIndex).text;
+                }
+                onVisibleChanged:
+                {
+                    if(visible)
+                    {
+                        if(itemsModel.count === 0)
+                        {
+                            itemsModel.insert(0,{"text":"10"})
+                            itemsModel.insert(0,{"text":"5"})
+                            itemsModel.insert(0,{"text":"2"})
+                            itemsModel.insert(0,{"text":"1"})
+                        }
+                        chosenItemTextStr = itemsModel.get(2).text;
+                    }
+                }
+            }
+
+
+        }
+        //显示四个校准点的数据：
+
+        Text{
+            x:leftDrawArea.x
+            y:upDrawArea.y
+            width: leftDrawArea.width - defaultMargin
+            height: upDrawArea.height - defaultMargin
             horizontalAlignment: Text.AlignRight
-            text: qsTr("offest:")
+            verticalAlignment: Text.AlignBottom
+            text:"(" + point0X + "," + point0Y + ")"
             font.pointSize: 14
         }
-        FineTuneComboBox{
-            id:fineTuneId
-            visible: true
-            width: 120 + fineTuneComboBoxHeight
-            height: fineTuneComboBoxHeight
-            anchors.top: exitBtn.bottom
-            anchors.topMargin: 5
-            anchors.left: offestText.right
-            anchors.leftMargin: 5
-            itemWidth: 120
-            itemHeight: fineTuneComboBoxHeight
-
-            onComboClicked:
-            {
-                offset = itemsModel.get(comboBox.selectedIndex).text;
-            }
-            onVisibleChanged:
-            {
-                if(visible)
-                {
-                    if(itemsModel.count === 0)
-                    {
-                        itemsModel.insert(0,{"text":"10"})
-                        itemsModel.insert(0,{"text":"5"})
-                        itemsModel.insert(0,{"text":"2"})
-                        itemsModel.insert(0,{"text":"1"})
-                    }
-                    chosenItemTextStr = itemsModel.get(2).text;
-                }
-            }
+        Text{
+            x:rightDrawArea.x + defaultMargin
+            y:upDrawArea.y
+            width: rightDrawArea.width - defaultMargin
+            height: upDrawArea.height - defaultMargin
+            horizontalAlignment: Text.AlignLeft
+            verticalAlignment: Text.AlignBottom
+            text:"(" + point1X + "," + point1Y + ")"
+            font.pointSize: 14
         }
-
+        Text{
+            x:leftDrawArea.x
+            y:leftDrawArea.y + leftDrawArea.height +defaultMargin
+            width: leftDrawArea.width - defaultMargin
+            height: downDrawArea.height - defaultMargin
+            horizontalAlignment: Text.AlignRight
+            verticalAlignment: Text.AlignTop
+            text:"(" + point2X + "," + point2Y + ")"
+            font.pointSize: 14
+        }
+        Text{
+            x:downDrawArea.x + downDrawArea.width + defaultMargin
+            y:downDrawArea.y + defaultMargin
+            width: rightDrawArea.width - defaultMargin
+            height: downDrawArea.height - defaultMargin
+            horizontalAlignment: Text.AlignLeft
+            verticalAlignment: Text.AlignTop
+            text:"(" + point3X + "," + point3Y + ")"
+            font.pointSize: 14
+        }
 
     }
 
 
 
+    function initPointData()
+    {
+        var tryCount = 3;
+        var datas;
+        do{
+            datas = touch.getCalibrationDatas(1);
+            tryCount--;
+        }while((datas.count === undefined || datas.count <= 0) && tryCount > 0);
+        var points = datas.points;
+        point0X = points[0].collectX;
+        point0Y = points[0].collectY;
+        point1X = points[1].collectX;
+        point1Y = points[1].collectY;
+        point2X = points[2].collectX;
+        point2Y = points[2].collectY;
+        point3X = points[3].collectX;
+        point3Y = points[3].collectY;
 
+    }
 
     function clearCanvas(){
         var leftCtx = leftCanvas.getContext("2d");
@@ -909,32 +1034,33 @@ Item {
             return;
         var i;
         var points = datas.points;
-        var point0,point1,point2,point3;
         switch(direction)
         {
         case left_direction:
-            point0 = points[0];
-            point0.collectX += value;
-            point2 = points[2];
-            point2.collectX += value;
+            points[0].collectX += value;
+            point0X += value;
+            points[2].collectX += value;
+            point2X += value;
             break;
         case right_direction:
-            point1 = points[1];
-            point1.collectX += value;
-            point3 = points[3];
-            point3.collectX += value;
+
+            points[1].collectX += value;
+            point1X += value;
+            points[3].collectX += value;
+            point3X += value;
             break;
          case up_direction:
-             point0 = points[0];
-             point0.collectY += value;
-             point1 = points[1];
-             point1.collectY += value;
+
+             points[0].collectY += value;
+             point0Y += value;
+             points[1].collectY += value;
+             point1Y += value;
              break;
          case down_direction:
-             point2 = points[2];
-             point2.collectY += value;
-             point3 = points[3];
-             point3.collectY += value;
+             points[2].collectY += value;
+             point2Y += value;
+             points[3].collectY += value;
+             point3Y += value;
              break;
 
         }

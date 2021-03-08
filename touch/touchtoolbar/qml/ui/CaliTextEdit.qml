@@ -35,6 +35,17 @@ Item {
         validator: RegExpValidator {
             regExp: /[0-9]+/
         }
+        onShowHintChanged:
+        {
+            if (text === "") {
+                text = "0";
+                return;
+            }
+            if (parseInt(text) > maxValue) {
+                text = "" + maxValue;
+            }
+            root.textChanged(text);
+        }
         onActiveFocusChanged: {
             if (activeFocus === true)
                 return;

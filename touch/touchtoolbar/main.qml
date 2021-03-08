@@ -570,51 +570,52 @@ Window {
                         anchors.top: parent.top
                         anchors.topMargin: defaultMargin
                         //测试界面的ComboBox
-                        ComboBox{
-                            id:testComboBox
-                            visible: (touch.getAppType() === mAPP_RD) ? true : false
-                            model: testComboBoxList
-                            currentIndex: 0
-                            enabled: true
-                            anchors.top: parent.top
-                            anchors.left: parent.left
-                            Layout.fillWidth: true
-                            Layout.preferredHeight: 40
+//                        ComboBox{
+//                            id:testComboBox
+//                            visible: (touch.getAppType() === mAPP_RD) ? true : false
+//                            model: testComboBoxList
+//                            currentIndex: 0
+//                            enabled: true
+//                            anchors.top: parent.top
+//                            anchors.left: parent.left
+//                            Layout.fillWidth: true
+//                            Layout.preferredHeight: 40
 
-                            style: ComboBoxStyle{
-                                label:Text{
-                                    width: testComboBox.width
-                                    height: testComboBox.height
-                                    verticalAlignment: Text.AlignVCenter;
-                                    horizontalAlignment: Text.AlignHCenter;
-                                    text: testComboBox.currentText
-                                    font.pointSize: 15
+//                            style: ComboBoxStyle{
+//                                label:Text{
+//                                    width: testComboBox.width
+//                                    height: testComboBox.height
+//                                    verticalAlignment: Text.AlignVCenter;
+//                                    horizontalAlignment: Text.AlignHCenter;
+//                                    text: testComboBox.currentText
+//                                    font.pointSize: 15
 
-                                }
-                            }
-                            Component.onCompleted: {
-                                testComboBoxList.insert(0,{"text":qsTr("Test")});
-                                testComboBoxList.insert(1,{"text":qsTr("Violence upgrade")});
-//                                testComboBoxList.insert(2,{"text":qsTr("Violence test")});
-                            }
-                            onCurrentIndexChanged: {
-                                testPage.testComboBoxIndex = currentIndex;
-                                clearTestInfo();
-                                switch(currentIndex)
-                                {
-                                case 0:
-                                    testBtnName = qsTr("Test");
-                                    break;
-                                case 1:
+//                                }
+//                            }
+//                            Component.onCompleted: {
+//                                testComboBoxList.insert(0,{"text":qsTr("Test")});
+//                                testComboBoxList.insert(1,{"text":qsTr("Violence upgrade")});
+////                                testComboBoxList.insert(2,{"text":qsTr("Violence test")});
+//                            }
+//                            onCurrentIndexChanged: {
+//                                testPage.testComboBoxIndex = currentIndex;
+//                                clearTestInfo();
+//                                switch(currentIndex)
+//                                {
+//                                case 0:
+//                                    testBtnName = qsTr("Test");
+//                                    break;
+//                                case 1:
 
-                                    testBtnName = qsTr("Violence upgrade");
-                                    break;
-                                case 2:
-                                    testBtnName = qsTr("Violence test");
-                                    break;
-                                }
-                            }
-                        }
+//                                    testBtnName = qsTr("Violence upgrade");
+//                                    break;
+//                                case 2:
+//                                    testBtnName = qsTr("Violence test");
+//                                    break;
+//                                }
+//                            }
+//                        }
+
                         RowLayout {
                             Layout.fillWidth: true
                             anchors.left: parent.left
@@ -622,6 +623,8 @@ Window {
                             Button{
                                 id:testBtn;
                                 checkable: true
+                                anchors.top: parent.top
+                                anchors.topMargin: (touch.getAppType() === mAPP_RD) ? 40:0
                                 Layout.preferredWidth: Math.min(Math.max(buttonMinWidth,upgradeTestWidth * buttonMinWidth),windowWidth / 2.0);
                                 Layout.preferredHeight:Math.min(Math.max(buttonMinHeight,upgradeTestHeight * buttonMinHeight),windowHeight / 5.0);
                                 onVisibleChanged: {
@@ -731,7 +734,7 @@ Window {
                             Layout.preferredHeight: testBtn.height
                             anchors.top: testBtn.bottom
                             anchors.left: parent.left
-                            visible: testComboBox.currentIndex === 1 ? true : false
+                            visible: testComboBox.comboBox.selectedIndex === 1 ? true : false
                             Button{
                                 id:volienceFileSeleected
                                 enabled: (testBtn.checked || updatingFw)? false : true
@@ -911,9 +914,9 @@ Window {
                                             }
                                             Rectangle{
                                                 id:volientTestInfo
-                                                visible: testComboBox.currentIndex === 1 ? true : false
+                                                visible: testComboBox.comboBox.selectedIndex === 1 ? true : false
                                                 Layout.preferredWidth:parent.width
-                                                Layout.preferredHeight: testComboBox.currentIndex === 1 ? (upgradeFailedNum > 0 ? 80 : 50) : 0
+                                                Layout.preferredHeight: testComboBox.comboBox.selectedIndex === 1 ? (upgradeFailedNum > 0 ? 80 : 50) : 0
                                                 anchors.left: parent.left
                                                 anchors.top: parent.top
                                                 anchors.topMargin: defaultMargin
@@ -929,6 +932,40 @@ Window {
                                 }
 
                             }
+                        }
+                        MyComboBox{
+                            id:testComboBox
+                            visible: (touch.getAppType() === mAPP_RD) ? true : false
+                            itemsModel: testComboBoxList
+                            anchors.top: parent.top
+                            anchors.left: parent.left
+                            Layout.fillWidth: true
+                            Layout.preferredHeight: 40
+                            itemHeight: height
+                            itemWidth: width - height
+                            Component.onCompleted: {
+                                testComboBoxList.insert(0,{"text":qsTr("Test")});
+                                testComboBoxList.insert(1,{"text":qsTr("Violence upgrade")});
+                                testComboBoxList.insert(2,{"text":qsTr("Reset")});
+                            }
+                            onComboClicked: {
+                                testPage.testComboBoxIndex = comboBox.selectedIndex;
+                                clearTestInfo();
+                                switch(comboBox.selectedIndex)
+                                {
+                                case 0:
+                                    testBtnName = qsTr("Test");
+                                    break;
+                                case 1:
+
+                                    testBtnName = qsTr("Violence upgrade");
+                                    break;
+                                case 2:
+                                    testBtnName = qsTr("Violence test");
+                                    break;
+                                }
+                            }
+
                         }
                         //测试界面的设备主要信息部分
                         Rectangle{
@@ -1659,6 +1696,12 @@ Window {
             visible: false
             onExitTune: {
                 exitFineTune();
+            }
+            onVisibleChanged: {
+                if(visible)
+                {
+                    initPointData();
+                }
             }
         }
 
