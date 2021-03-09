@@ -563,6 +563,16 @@ void TouchPresenter::saveUpgradeResultNum(bool result, QString info)
                               Q_ARG(QVariant, info));
 }
 
+void TouchPresenter::resetNum(int count)
+{
+    if (component == NULL) {
+        TDebug::warning("component is NULL");
+        return;
+    }
+    QMetaObject::invokeMethod(component, "resetNum",
+                              Q_ARG(QVariant, count));
+}
+
 void TouchPresenter::updateSignalList(QVariant list)
 {
     if (!list.canConvert<QVariantList>()) {

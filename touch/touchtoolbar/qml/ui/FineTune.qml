@@ -87,18 +87,6 @@ Item {
         }
     }
 
-    Timer{
-        id: golbalTimer
-        interval: 1000
-        repeat: false
-        running: false
-        triggeredOnStart: false
-        onTriggered: {
-            tuneMenu.popup();
-
-        }
-    }
-
     Menu {
         id: tuneMenu
         style:MenuStyle{
@@ -125,8 +113,11 @@ Item {
 
     MouseArea{
         anchors.fill: parent
+        enabled: true
         acceptedButtons: Qt.AllButtons
         onClicked: {
+
+            fineTuneId.comboBox.state = ""
             switch (mouse.button) {
             case Qt.LeftButton:
                 mouse.accepted = true;
@@ -137,49 +128,16 @@ Item {
                 break;
             }
         }
+        //长按
+        onPressAndHold:
+        {
+            tuneMenu.popup();
+        }
 
     }
     Rectangle{
         anchors.fill: parent
         color: "#fafafa"
-        MultiPointTouchArea{
-            anchors.fill: parent
-            enabled: true
-            mouseEnabled: true
-            maximumTouchPoints: 1
-            minimumTouchPoints: 1
-            touchPoints: [
-                TouchPoint
-                {
-                    id:golbalMultTouch1
-                }
-            ]
-            onPressed: {
-
-                golbalPreviousX = golbalMultTouch1.sceneX;
-                golbalPreviousY = golbalMultTouch1.sceneY;
-                golbalSceneX = golbalPreviousX;
-                golbalSceneY = golbalPreviousY;
-                golbalTimer.start();
-
-            }
-            onReleased: {
-
-                golbalTimer.stop();
-
-            }
-            onUpdated: {
-                golbalSceneX = golbalMultTouch1.sceneX;
-                golbalSceneY = golbalMultTouch1.sceneY;
-                if(Math.abs(golbalSceneX - golbalPreviousX) > 64 ||
-                        Math.abs(golbalSceneY - golbalPreviousY) > 64)
-                {
-
-                    golbalTimer.stop();
-                }
-            }
-
-        }
 
         Rectangle{
             id:leftDrawArea
@@ -195,7 +153,7 @@ Item {
                 id:leftTouchPoint
                 anchors.fill: parent
                 enabled: true
-                mouseEnabled: true
+                mouseEnabled: false
                 maximumTouchPoints: 1
                 minimumTouchPoints: 1
                 touchPoints: [
@@ -353,7 +311,7 @@ Item {
                 id:rightTouchPoint
                 anchors.fill: parent
                 enabled: true
-                mouseEnabled: true
+                mouseEnabled: false
                 maximumTouchPoints: 1
                 minimumTouchPoints: 1
                 touchPoints: [
@@ -502,7 +460,7 @@ Item {
                 id:upTouchPoint
                 anchors.fill: parent
                 enabled: true
-                mouseEnabled: true
+                mouseEnabled: false
                 maximumTouchPoints: 1
                 minimumTouchPoints: 1
                 touchPoints: [
@@ -667,7 +625,7 @@ Item {
                 id:downTouchPoint
                 anchors.fill: parent
                 enabled: true
-                mouseEnabled: true
+                mouseEnabled: false
                 maximumTouchPoints: 1
                 minimumTouchPoints: 1
                 touchPoints: [

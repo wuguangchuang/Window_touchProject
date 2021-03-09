@@ -565,6 +565,18 @@ Window {
 
 
 
+                onTestComboBoxIndexChanged:
+                {
+                    if(testComboBoxIndex === 1)
+                    {
+                        volienceInfo = qsTr("Number of successful upgrades: ") + volienceSuccessfullyNum + "\n" +
+                                                                qsTr("Number of failed upgrades: ") + volienceFailedNum;
+                    }
+                    else if(testComboBoxIndex === 2)
+                    {
+                        volienceInfo = qsTr("Number of restarts:") + restartNum;
+                    }
+                }
                 Rectangle {
                     id: rectangle
                     anchors.fill: parent
@@ -583,16 +595,16 @@ Window {
                     property Item volienceFileSeleected:volienceFileSeleected
                     property Item twoRect:twoRect
 
+
                     MouseArea{
                         anchors.fill: parent
-                        hoverEnabled: true
-                        propagateComposedEvents: true
+                        enabled: true
+                        acceptedButtons: Qt.AllButtons
                         onClicked: {
-                            mouse.accepted = true;
+//                            console.log("#################################测试界面鼠标点击");
                             testComboBox.comboBox.state = ""
                         }
                     }
-
 
 
                     ColumnLayout {
@@ -614,7 +626,7 @@ Window {
                                 checkable: true
                                 anchors.top: parent.top
                                 anchors.left: parent.left
-                                width: Math.min(Math.max(buttonMinWidth,upgradeTestWidth * buttonMinWidth),windowWidth / 2.0);
+                                width:testPage.testComboBoxIndex !==2 ? Math.min(Math.max(buttonMinWidth,upgradeTestWidth * buttonMinWidth),windowWidth / 2.0) : parent.width;
                                 height:Math.min(Math.max(buttonMinHeight,upgradeTestHeight * buttonMinHeight),windowHeight / 5.0);
 
                                 style:ButtonStyle{
@@ -655,18 +667,20 @@ Window {
                                             touch.startTest();
                                             break;
                                         case 1:
-                                            volienceUpgradeInfo = qsTr("Number of successful upgrades: ") + 0 + "\n" +
+                                            volienceInfo = qsTr("Number of successful upgrades: ") + 0 + "\n" +
                                                                                     qsTr("Number of failed upgrades: ") + 0;
-                                            upgradeSuccessfullyNum = 0;
-                                            upgradeFailedNum = 0;
+                                            volienceSuccessfullyNum = 0;
+                                            volienceFailedNum = 0;
                                             console.log("升级文件：" + testPage.volienceUpgradeFileText.text);
                                             touch.setUpdatePath(testPage.volienceUpgradeFileText.text);
                                             touch.startVolienceTest(testPage.testComboBoxIndex);
                                             updatingFw = true;
-
-
                                             break;
                                         case 2:
+                                            volienceSuccessfullyNum = 0;
+                                            volienceFailedNum = 0;
+                                            volienceInfo = qsTr("Number of restarts:") + 0
+                                            touch.startVolienceTest(testPage.testComboBoxIndex);
                                             break;
                                         }
                                     }
@@ -706,7 +720,7 @@ Window {
                                 anchors.top: parent.top
                                 anchors.left: testBtn.right
                                 anchors.leftMargin: 5
-                                width: parent.width - testBtn.width - 5
+                                width:testPage.testComboBoxIndex !==2 ? parent.width - testBtn.width - 5 : 0
                                 height: testBtn.height;
                                 style: ProgressBarStyle {
                                     background: Rectangle {
@@ -901,6 +915,16 @@ Window {
                                             anchors.fill: parent
                                             horizontalScrollBarPolicy: Qt.ScrollBarAlwaysOff
 
+                                            MouseArea{
+                                                anchors.fill: parent
+                                                acceptedButtons: Qt.AllButtons
+                                                propagateComposedEvents: true
+                                                onClicked: {
+                                                    mouse.accepted = false;
+//                                                    console.log("########### ScrollView 区域点击");
+                                                }
+                                            }
+
                                             Text {
                                                 id: messageTextTest
 //                                                renderType: Text.NativeRendering
@@ -947,16 +971,16 @@ Window {
                                             }
                                             Rectangle{
                                                 id:volientTestInfo
-                                                visible: testComboBox.comboBox.selectedIndex === 1 ? true : false
+                                                visible: testComboBox.comboBox.selectedIndex !== 0 ? true : false
                                                 Layout.preferredWidth:parent.width
-                                                Layout.preferredHeight: testComboBox.comboBox.selectedIndex === 1 ? (upgradeFailedNum > 0 ? 80 : 50) : 0
+                                                Layout.preferredHeight: testComboBox.comboBox.selectedIndex !== 0 ? 80 : 0
                                                 anchors.left: parent.left
                                                 anchors.top: parent.top
                                                 anchors.topMargin: defaultMargin
                                                 anchors.leftMargin: 5
                                                 Text{
                                                     font.pointSize: 10
-                                                    text:volienceUpgradeInfo
+                                                    text:volienceInfo
                                                 }
                                             }
 
@@ -980,7 +1004,7 @@ Window {
                             Component.onCompleted: {
                                 testComboBoxList.insert(0,{"text":qsTr("Test")});
                                 testComboBoxList.insert(1,{"text":qsTr("Violence upgrade")});
-                                testComboBoxList.insert(2,{"text":qsTr("Reset")});
+                                testComboBoxList.insert(2,{"text":qsTr("Continuous restart")});
                             }
                             onComboClicked: {
 
@@ -997,7 +1021,7 @@ Window {
                                     testBtnName = qsTr("Violence upgrade");
                                     break;
                                 case 2:
-                                    testBtnName = qsTr("Violence test");
+                                    testBtnName = qsTr("Continuous restart");
                                     break;
                                 }
                             }
@@ -1667,7 +1691,7 @@ Window {
 
         //校准界面
         property Item calibrationUi : calibrationUi
-        Calibration {
+        Calibration{
             id: calibrationUi
             Keys.enabled: false
             x: 0
@@ -2098,38 +2122,47 @@ QMessageBox::Critical	3	an icon indicating that the message represents a critica
        }
 
     }
-    property string volienceUpgradeInfo:qsTr("Number of successful upgrades: ") + 0 + "\n" +
-                                        qsTr("Number of failed upgrades: ") + 0
-    property int upgradeSuccessfullyNum:0
-    property int upgradeFailedNum:0
+//    property string volienceInfo:qsTr("Number of successful upgrades: ") + 0 + "\n" +
+//                                        qsTr("Number of failed upgrades: ") + 0
+    property string volienceInfo:""
+    property int volienceSuccessfullyNum:0
+    property int volienceFailedNum:0
     property string lastFailedReason:""
+
+    property int restartNum:0
     function saveUpgradeResultNum(result,info)
     {
         console.log("升级完成结果result = " + result ? 1 : 0);
         if(result)
         {
-            upgradeSuccessfullyNum += 1;
+            volienceSuccessfullyNum += 1;
 
         }
         else
         {
-            upgradeFailedNum += 1;
+            volienceFailedNum += 1;
             lastFailedReason = info;
         }
-        console.log("升级成功次数 = " + upgradeSuccessfullyNum + ",升级失败的次数 = " + upgradeFailedNum);
-        if(upgradeFailedNum > 0)
+        console.log("升级成功次数 = " + volienceSuccessfullyNum + ",升级失败的次数 = " + volienceFailedNum);
+        if(volienceFailedNum > 0)
         {
-            volienceUpgradeInfo = qsTr("Number of successful upgrades: ") + upgradeSuccessfullyNum + "\n" +
-                    qsTr("Number of failed upgrades: ") + upgradeFailedNum + "\n" +
+            volienceInfo = qsTr("Number of successful upgrades: ") + volienceSuccessfullyNum + "\n" +
+                    qsTr("Number of failed upgrades: ") + volienceFailedNum + "\n" +
                     qsTr("The last upgrade failed because: ") + lastFailedReason;
         }
         else
         {
-            volienceUpgradeInfo = qsTr("Number of successful upgrades: ") + upgradeSuccessfullyNum + "\n" +
-                    qsTr("Number of failed upgrades: ") + upgradeFailedNum ;
+            volienceInfo = qsTr("Number of successful upgrades: ") + volienceSuccessfullyNum + "\n" +
+                    qsTr("Number of failed upgrades: ") + volienceFailedNum ;
         }
 
 
+    }
+
+    function resetNum(count)
+    {
+        restartNum = count;
+        volienceInfo = qsTr("Number of restarts:") + restartNum;
     }
     function setText(message) {
         if (messageView === null)
@@ -2202,7 +2235,7 @@ QMessageBox::Critical	3	an icon indicating that the message represents a critica
                 testBtnName = qsTr("Volience upgrade");
                 break;
             case 2:
-                testBtnName = qsTr("Volience test");
+                testBtnName = qsTr("Continuous restart");
                 break;
             }
         }

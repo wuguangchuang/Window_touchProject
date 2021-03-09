@@ -1242,6 +1242,7 @@ void TouchTools::startVolienceTest(int volienceMode)
 }
 
 
+
 TouchTools::~TouchTools()
 {
 #if 1  
@@ -1669,25 +1670,34 @@ void TouchTools::BatchUpgradeListener::batchUpradeFinished()
 //字符串后位空格补齐
 void TouchTools::VolienceTestThread::run()
 {
+    int restartCount = 0;
     while(touchTool->volienceTest)
     {
 
+        touch_device *dev = touchTool->mTouchManager->firstConnectedDevice();
         if(volienceTestMode == VOLIENCE_UPGRADE)
         {
             //不在升级状态且有设备连接上便继续升级
-            touch_device *dev = touchTool->mTouchManager->firstConnectedDevice();
             if(dev != NULL && dev->touch.connected && !TouchTools::upgrading)
             {
                 TDEBUG("暴力升级") ;
                 touchTool->startUpgrade();
             }
         }
-        else if(volienceTestMode == VOLIENCE_TEST)
-        {
-            TDEBUG("暴力测试") ;
+        else if(volienceTestMode == COMTINUOUS_RESTART)
+        {           
+            if(dev != NULL && dev->touch.connected && !dev->touch.booloader)
+            {
+                TDEBUG("连续重启") ;
+                if(touchTool->mTouchManager->reset(dev, RESET_DST_BOOLOADER, 1) >= 0)
+                {
+                    restartCount++;
+                    touchTool->presenter->resetNum(restartCount);
+                }
+            }
         }
 
-        QThread::sleep(3);
+        QThread::sleep(5);
     }
     while(TouchTools::upgrading)
     {

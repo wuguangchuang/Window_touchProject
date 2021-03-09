@@ -18,8 +18,8 @@ namespace Touch {
 #define zh_CN 1
 
 //暴力测试部分
-#define VOLIENCE_UPGRADE 1
-#define VOLIENCE_TEST 2
+#define VOLIENCE_UPGRADE    1
+#define COMTINUOUS_RESTART  2
 
 struct TouchData {
     unsigned char report_id;

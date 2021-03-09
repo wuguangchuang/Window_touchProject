@@ -1021,10 +1021,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Violence test</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Batch</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1065,10 +1061,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Volience test</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Number of successful upgrades: </source>
         <translation type="unfinished"></translation>
     </message>
@@ -1082,6 +1074,14 @@
     </message>
     <message>
         <source>Unable to change firmware while upgrading</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Number of restarts:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Continuous restart</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

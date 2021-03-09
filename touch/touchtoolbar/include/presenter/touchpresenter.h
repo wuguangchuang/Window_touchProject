@@ -52,6 +52,7 @@ public:
     virtual void setBatchCancel(bool batchCancel) = 0;
     virtual void startVolienceTest(int volienceMode) = 0;
     virtual void setCancelVolienceTest(bool cancelVolienceTest) = 0;
+
     virtual void setBatchLock(bool enable) = 0;
     virtual void batchFinished(int functionIndex) = 0;
 
@@ -400,12 +401,13 @@ public:
     Q_INVOKABLE void batchFinished(int functionIndex);
 
 
-    //暴力升级、测试等
+    //暴力升级、测试、重启等
 
     Q_INVOKABLE void startVolienceTest(int volienceMode);
     Q_INVOKABLE void setCancelVolienceTest(bool cancelVolienceTest);
-    void saveUpgradeResultNum(bool result,QString info = "");
 
+    void saveUpgradeResultNum(bool result,QString info = "");
+    void resetNum(int count);
 
 
     // call qml
