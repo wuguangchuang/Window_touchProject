@@ -1,4 +1,4 @@
-import QtQuick 2.0
+import QtQuick 2.7
 
 Item {
     property int itemWidth:100
@@ -30,10 +30,14 @@ Item {
             border.color:"gray"
             border.width: 1
             Text {
-                anchors.centerIn: parent
+
                 id:chosenItemText
                 text:chosenItemTextStr
                 font.pointSize: 14
+                anchors.fill: parent
+                verticalAlignment:Text.AlignVCenter
+                anchors.left: parent.left
+                anchors.leftMargin: 5
                 elide:Text.ElideLeft
                 smooth:true
             }
@@ -95,15 +99,15 @@ Item {
                     }
                     Text {
                         id:listViewText
-                        anchors.centerIn: parent
+                        anchors.fill: parent
                         anchors.top: lineRect.bottom
+                        anchors.left: parent.left
+                        anchors.leftMargin: 5
+                        verticalAlignment: Text.AlignVCenter
                         text: modelData
                         font.pointSize: 14
                         elide:Text.ElideLeft
-
                     }
-
-
 
                     MouseArea {
                         anchors.fill: parent;
@@ -116,7 +120,6 @@ Item {
                             var prevSelection=chosenItemText.text
                             chosenItemText.text = modelData;
                             listView.currentIndex=index;
-
                             if(chosenItemText.text !=prevSelection){
                                 comboClicked();
                             }

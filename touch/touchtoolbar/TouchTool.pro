@@ -107,7 +107,8 @@ DISTFILES += \
     qml/ui/ModeSetting.qml \
     qml/ui/MyComboBox.qml \
     qml/ui/MyLabel.qml \
-    qml/ui/FineTuneComboBox.qml
+    qml/ui/FineTuneComboBox.qml \
+    qml/ui/MyComboBoxLeft.qml
 
 # Default rules for deployment.
 include(deployment.pri)

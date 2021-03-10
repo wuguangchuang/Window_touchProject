@@ -1107,21 +1107,21 @@
     </message>
     <message>
         <location filename="../main.qml" line="164"/>
-        <location filename="../main.qml" line="203"/>
-        <location filename="../main.qml" line="228"/>
-        <location filename="../main.qml" line="1470"/>
+        <location filename="../main.qml" line="212"/>
+        <location filename="../main.qml" line="237"/>
+        <location filename="../main.qml" line="1544"/>
         <source>Upgrade</source>
         <translation>升级</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="234"/>
+        <location filename="../main.qml" line="243"/>
         <source>During upgrade</source>
         <translation>升级中</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="294"/>
-        <location filename="../main.qml" line="762"/>
-        <location filename="../main.qml" line="1400"/>
+        <location filename="../main.qml" line="450"/>
+        <location filename="../main.qml" line="803"/>
+        <location filename="../main.qml" line="1474"/>
         <source>Select upgrade file</source>
         <translation>选择升级文件</translation>
     </message>
@@ -1139,21 +1139,21 @@
     </message>
     <message>
         <location filename="../main.qml" line="86"/>
-        <location filename="../main.qml" line="547"/>
-        <location filename="../main.qml" line="993"/>
-        <location filename="../main.qml" line="995"/>
-        <location filename="../main.qml" line="1007"/>
-        <location filename="../main.qml" line="2222"/>
+        <location filename="../main.qml" line="599"/>
+        <location filename="../main.qml" line="1063"/>
+        <location filename="../main.qml" line="1065"/>
+        <location filename="../main.qml" line="1077"/>
+        <location filename="../main.qml" line="2305"/>
         <source>Test</source>
         <translation>测试</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="1245"/>
+        <location filename="../main.qml" line="1319"/>
         <source>Cancel test</source>
         <translation>取消测试</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="1049"/>
+        <location filename="../main.qml" line="1123"/>
         <source>Signal chart</source>
         <translation>信号图</translation>
     </message>
@@ -1162,12 +1162,12 @@
         <translation type="vanished">加速老化</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="1281"/>
+        <location filename="../main.qml" line="1355"/>
         <source>stop accelerate aging</source>
         <translation>停止加速老化</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="1506"/>
+        <location filename="../main.qml" line="1580"/>
         <source>Paint</source>
         <translation>全屏画图</translation>
     </message>
@@ -1180,17 +1180,17 @@
         <translation type="vanished">关于</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="1469"/>
+        <location filename="../main.qml" line="1543"/>
         <source>Accelerate aging</source>
         <translation>加速老化</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="1526"/>
+        <location filename="../main.qml" line="1600"/>
         <source>Settings</source>
         <translation>设置</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="1594"/>
+        <location filename="../main.qml" line="1668"/>
         <source>About</source>
         <translation>关于</translation>
     </message>
@@ -1199,48 +1199,50 @@
         <translation type="vanished">最多可以存放10条固件</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="1866"/>
+        <location filename="../main.qml" line="1949"/>
         <source>bin file</source>
         <translation>Bin文件</translation>
     </message>
     <message>
         <location filename="../main.qml" line="103"/>
-        <location filename="../main.qml" line="2460"/>
+        <location filename="../main.qml" line="2543"/>
         <source>No connected devices!</source>
         <translation>没找到连接的设备!</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="317"/>
-        <location filename="../main.qml" line="1797"/>
+        <location filename="../main.qml" line="473"/>
+        <location filename="../main.qml" line="1871"/>
         <source>Please unlock and then select firmware</source>
         <translation>请先解锁然后在选择固件</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="358"/>
-        <location filename="../main.qml" line="380"/>
+        <location filename="../main.qml" line="508"/>
+        <location filename="../main.qml" line="514"/>
+        <location filename="../main.qml" line="533"/>
+        <location filename="../main.qml" line="1884"/>
         <source>clear history(up to ten)</source>
         <translation>清空历史（最多存放10个文件）</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="400"/>
+        <location filename="../main.qml" line="552"/>
         <source>Used to lock the firmware.</source>
         <translation>被用于固件上锁。</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="400"/>
+        <location filename="../main.qml" line="552"/>
         <source>Cannot select firmware when locked.</source>
         <translation>当处于上锁状态时，不允许选择以及添加固件。</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="577"/>
-        <location filename="../main.qml" line="682"/>
-        <location filename="../main.qml" line="2155"/>
+        <location filename="../main.qml" line="630"/>
+        <location filename="../main.qml" line="723"/>
+        <location filename="../main.qml" line="2238"/>
         <source>Number of restarts:</source>
         <translation>重启次数：</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="996"/>
-        <location filename="../main.qml" line="1011"/>
+        <location filename="../main.qml" line="1066"/>
+        <location filename="../main.qml" line="1081"/>
         <source>Violence upgrade</source>
         <translation>连续升级</translation>
     </message>
@@ -1249,42 +1251,42 @@
         <translation type="vanished">连续测试</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="662"/>
-        <location filename="../main.qml" line="2201"/>
-        <location filename="../main.qml" line="2267"/>
+        <location filename="../main.qml" line="703"/>
+        <location filename="../main.qml" line="2284"/>
+        <location filename="../main.qml" line="2350"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="572"/>
-        <location filename="../main.qml" line="670"/>
-        <location filename="../main.qml" line="2139"/>
-        <location filename="../main.qml" line="2145"/>
+        <location filename="../main.qml" line="625"/>
+        <location filename="../main.qml" line="711"/>
+        <location filename="../main.qml" line="2222"/>
+        <location filename="../main.qml" line="2228"/>
         <source>Number of successful upgrades: </source>
         <translation>升级成功的次数：</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="573"/>
-        <location filename="../main.qml" line="671"/>
-        <location filename="../main.qml" line="2140"/>
-        <location filename="../main.qml" line="2146"/>
+        <location filename="../main.qml" line="626"/>
+        <location filename="../main.qml" line="712"/>
+        <location filename="../main.qml" line="2223"/>
+        <location filename="../main.qml" line="2229"/>
         <source>Number of failed upgrades: </source>
         <translation>升级失败的次数：</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="997"/>
-        <location filename="../main.qml" line="1014"/>
-        <location filename="../main.qml" line="2228"/>
+        <location filename="../main.qml" line="1067"/>
+        <location filename="../main.qml" line="1084"/>
+        <location filename="../main.qml" line="2311"/>
         <source>Continuous restart</source>
         <translation>连续重启</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="1147"/>
+        <location filename="../main.qml" line="1221"/>
         <source>Batch</source>
         <translation>批处理</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="1802"/>
+        <location filename="../main.qml" line="1876"/>
         <source>Unable to change firmware while upgrading</source>
         <translation>升级过程中无法更改固件</translation>
     </message>
@@ -1293,42 +1295,42 @@
         <translation type="vanished">开始老化</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="1224"/>
+        <location filename="../main.qml" line="1298"/>
         <source>Stop aging</source>
         <translation>停止老化</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="1238"/>
+        <location filename="../main.qml" line="1312"/>
         <source>Cancel upgrade</source>
         <translation>取消升级</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="1288"/>
+        <location filename="../main.qml" line="1362"/>
         <source>Stop upgrading. New connected devices will no longer be upgraded.</source>
         <translation>停止升级。新连接设备将不再升级。</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="1293"/>
+        <location filename="../main.qml" line="1367"/>
         <source>Stop testing. New connected devices will no longer be tested.</source>
         <translation>停止测试，新连接设备将不再测试。</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="1162"/>
-        <location filename="../main.qml" line="1342"/>
-        <location filename="../main.qml" line="1489"/>
-        <location filename="../main.qml" line="1767"/>
+        <location filename="../main.qml" line="1236"/>
+        <location filename="../main.qml" line="1416"/>
+        <location filename="../main.qml" line="1563"/>
+        <location filename="../main.qml" line="1841"/>
         <source>Start aging</source>
         <translation>开始老化</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="1350"/>
-        <location filename="../main.qml" line="1771"/>
+        <location filename="../main.qml" line="1424"/>
+        <location filename="../main.qml" line="1845"/>
         <source>Start upgrade</source>
         <translation>开始升级</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="1357"/>
-        <location filename="../main.qml" line="1776"/>
+        <location filename="../main.qml" line="1431"/>
+        <location filename="../main.qml" line="1850"/>
         <source>Start test</source>
         <translation>开始测试</translation>
     </message>
@@ -1337,23 +1339,23 @@
         <translation type="vanished">老化</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="1866"/>
-        <location filename="../main.qml" line="1886"/>
+        <location filename="../main.qml" line="1949"/>
+        <location filename="../main.qml" line="1969"/>
         <source>all files</source>
         <translation>所有文件</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="1886"/>
+        <location filename="../main.qml" line="1969"/>
         <source>json file</source>
         <translation>json文件</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="2141"/>
+        <location filename="../main.qml" line="2224"/>
         <source>The last upgrade failed because: </source>
         <translation>最后一次升级失败原因：</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="2225"/>
+        <location filename="../main.qml" line="2308"/>
         <source>Volience upgrade</source>
         <translation>连续升级</translation>
     </message>
@@ -1362,29 +1364,29 @@
         <translation type="vanished">连续测试</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="2633"/>
+        <location filename="../main.qml" line="2716"/>
         <source>Saved successfully</source>
         <translation>保存成功</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="2761"/>
+        <location filename="../main.qml" line="2844"/>
         <source>Upgrading! Please do not close the program</source>
         <translation>正在升级!请不要关闭程序</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="2765"/>
+        <location filename="../main.qml" line="2848"/>
         <source>Testing! Please do not close the program</source>
         <translation>正在测试!请不要关闭程序</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="2795"/>
-        <location filename="../main.qml" line="2841"/>
+        <location filename="../main.qml" line="2878"/>
+        <location filename="../main.qml" line="2924"/>
         <source>During upgrade,don&apos;t switch infterface</source>
         <translation>正在升级中，请勿切换到其他页面！</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="2800"/>
-        <location filename="../main.qml" line="2846"/>
+        <location filename="../main.qml" line="2883"/>
+        <location filename="../main.qml" line="2929"/>
         <source>During test,don&apos;t switch infterface</source>
         <translation>正在测试中，请勿切换到其他页面！</translation>
     </message>

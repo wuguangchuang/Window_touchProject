@@ -179,6 +179,7 @@ Window {
                 property bool flag: true
                 property int messageBoxWidth:updateShowMsgId.width
                 property int showDialogWidth:0
+                property bool showComboBox:false
 
                 Rectangle {
                     property Item upgradeBtn: upgradeBtn
@@ -192,17 +193,25 @@ Window {
                     property Item lockIcon:lockIcon
                     anchors.fill: parent
 
+
+
                     ColumnLayout {//纵向布局
+
                         anchors.fill: parent
                         anchors.top: parent.top
                         anchors.topMargin: defaultMargin
 
-                        RowLayout {//横向布局
+                        Rectangle {//横向布局
+                            id:upgradePageOneRect
+                            Layout.fillWidth: true
+                            height: upgradeBtn.height
+                            anchors.top: parent.top
+                            anchors.left: parent.left
                             Button{
                                 id:upgradeBtn;
                                 property var text: qsTr("Upgrade")
-                                Layout.minimumWidth: fileSeleected.width
-                                Layout.minimumHeight: fileSeleected.height
+                                width:Math.min(Math.max(buttonMinWidth,upgradeTestWidth * buttonMinWidth),windowWidth / 2.0);
+                                height:Math.min(Math.max(buttonMinHeight,upgradeTestHeight * buttonMinHeight),windowHeight / 5.0);
                                 style: ButtonStyle{
                                     label: Text{
                                         text: upgradeBtn.text
@@ -247,8 +256,16 @@ Window {
 
                                     }
                                     mainPage.sendDestroyDialog();
-                                    console.log("升级文件：" + updatePage.updateComBoxId.currentText);
-                                    touch.setUpdatePath(updatePage.updateComBoxId.currentText);
+                                    if(updatePage.updateComBoxId.currentIndex >= 0)
+                                    {
+                                        console.log("升级文件：" + fileText.get(updatePage.updateComBoxId.currentIndex).text);
+                                        touch.setUpdatePath(fileText.get(updatePage.updateComBoxId.currentIndex).text);
+                                    }
+                                    else
+                                    {
+                                        touch.setUpdatePath("");
+                                    }
+
                                     touch.startUpgrade();
 //                                    updatePage.showDialogWidth = updateShowMsgId.width/2;
                                     updatePage.messageBoxWidth = updateShowMsgId.width/2;
@@ -262,9 +279,10 @@ Window {
                                 maximumValue: 100;
                                 anchors.left: upgradeBtn.right
                                 anchors.leftMargin: 5
+                                anchors.top: parent.top
                                 value: 0;
-                                Layout.preferredHeight: upgradeBtn.height
-                                Layout.fillWidth: true
+                                height: upgradeBtn.height
+                                width: parent.width - upgradeBtn.width - 5
 
                                 style: ProgressBarStyle {
                                     background: Rectangle {
@@ -282,7 +300,145 @@ Window {
                                 }
                             }
                         }
-                        RowLayout {
+
+                        //升级界面显示设备信息
+                        Rectangle{
+                            id:upgradePageMainInfo
+                            Layout.preferredHeight: 30
+                            Layout.fillWidth: true
+                            anchors.bottom: parent.bottom
+                            anchors.left: parent.left
+                            border.width: 1
+                            border.color: "#aaaaaa"
+                               RowLayout{
+                                   anchors.fill: parent
+                                   Image{
+                                       id:upgradeDeviceImage
+                                       Layout.preferredHeight: 25
+                                       Layout.preferredWidth: 25
+                                       source: deviceConnectImage
+                                       fillMode: Image.Stretch
+                                       anchors.verticalCenter: parent.verticalCenter
+                                       anchors.left: parent.left
+                                       anchors.leftMargin: defaultMargin
+                                   }
+                                   MyLabel{
+                                       id: upgradeDeviceInfo
+                                       textStr: deviceMainInfo
+                                       Layout.fillWidth: true
+                                       Layout.fillHeight: true
+                                       anchors.left: upgradeDeviceImage.right
+                                       anchors.topMargin: 5
+
+                                   }
+                               }
+                        }
+                        //升级界面显示升级信息
+                        Rectangle
+                        {
+
+                            border.width: 1
+                            border.color: "#aaaaaa"
+                            Layout.fillWidth: true
+                            Layout.fillHeight: true
+                            id:updateShowMsgId
+                            property Item messageBox:messageBox
+                            anchors.bottom: upgradePageMainInfo.top
+                            anchors.bottomMargin: 5
+//                            property Item updateShowDialog:updateShowDialog
+
+                            MouseArea{
+                                anchors.fill: parent
+                                enabled: true
+                                acceptedButtons: Qt.AllButtons
+                                onClicked: {
+                                    updatePage.showComboBox = false;
+                                    updateComBoxId.comboBox.state = ""
+                                }
+                            }
+                            RowLayout
+                            {
+                                anchors.fill:parent
+                                Rectangle
+                                {
+
+                                    border.width: 1
+                                    border.color: "#aaaaaa"
+//                                    Layout.preferredWidth: updatePage.messageBoxWidth
+                                    Layout.preferredWidth: parent.width / 2.0
+                                    Layout.preferredHeight:parent.height
+
+
+                                    ScrollView {
+                                        anchors.fill: parent
+                                        horizontalScrollBarPolicy: Qt.ScrollBarAlwaysOff
+                                        id: messageBox
+
+                                        Text {
+                                            id: messageText
+//                                            renderType: Text.NativeRendering
+                                            anchors.top: parent.top
+                                            anchors.topMargin: 10
+                                            anchors.left: parent.left
+                                            anchors.leftMargin: 5
+                                            anchors.bottomMargin: 10
+                                            text:upgradeShowStr
+                                            wrapMode: Text.Wrap
+                                            font.pointSize: 10
+                                            onTextChanged:
+                                            {
+                                                if (messageText.contentHeight > messageBox.height) {
+                                                    messageBox.flickableItem.contentY = messageText.contentHeight - messageBox.height + 20;
+                                                }
+                                            }
+
+                                        }
+
+
+                                    }
+                                    Rectangle{
+                                        anchors.fill: parent
+                                        anchors.top: parent.top
+                                        anchors.left: parent.left
+                                        anchors.bottom: parent.bottom
+                                        anchors.right: parent.right
+                                        opacity: 0
+                                        visible: updatePage.showComboBox ? true : false
+                                        MouseArea{
+                                            anchors.fill: parent
+                                            enabled: true
+                                            acceptedButtons: Qt.AllButtons
+                                            onClicked: {
+                                                updateComBoxId.comboBox.state = ""
+                                                updatePage.showComboBox = false;
+                                            }
+                                        }
+                                    }
+
+                                }
+
+                                Rectangle
+                                {
+                                    id:updateShowDialog
+                                    border.width: 1
+                                    border.color: "#aaaaaa"
+                                    anchors.top: parent.top
+                                    anchors.left: messageBox.right
+                                    anchors.right: parent.right
+                                    Layout.preferredWidth: parent.width / 2.0
+                                    Layout.preferredHeight:parent.height
+                                }
+                            }
+
+                        }
+                        //选择升级升级文件部分
+                        Rectangle {
+                            id:upgradePageTwoRect
+                            anchors.top:upgradePageOneRect.bottom
+                            anchors.topMargin: 5
+                            anchors.bottom: updateShowMsgId.top
+                            Layout.preferredHeight: upgradePageOneRect.height
+                            Layout.fillWidth: true
                             Button{
                                 id:fileSeleected;
 //                                property color backgroundColor: ((control.enabled === true) ? ((control.pressed === true) ? "#42A5F5" : "#64B5F6") : "#BDBDBD")
@@ -323,65 +479,61 @@ Window {
 
                             }
 
-                            ComboBox
+                            MyComboBoxLeft
                             {
                                 id:updateComBoxId
-//                                implicitHeight: upgradeBtn.height;
-                                Layout.preferredHeight: upgradeBtn.height
-                                Layout.fillWidth: true
-    //                                    editable: true
-                                currentIndex: 0
-                                visible: true
-                                model:fileText
-                                enabled: updatingFw ? false : true
+                                height: fileSeleected.height
+                                width: parent.width - fileSeleected.width - 5
+                                defCurrentIndex: 0
+                                itemsModel: fileText
                                 anchors.left: fileSeleected.right
                                 anchors.leftMargin: 5
-                                style: ComboBoxStyle{
-                                    label:Text{
-                                        width: updateComBoxId.width
-                                        height: updateComBoxId.height
-                                        verticalAlignment: Text.AlignVCenter;
-                                        text: updateComBoxId.currentText
-                                        elide: Text.ElideLeft // 超出范围左边使用...表示
-                                        font.pointSize: 15
+                                itemHeight: height
+                                itemWidth: width - height
+                                chosenItemTextStr:""
 
-                                    }
-//                                    background:Rectangle{
-//                                        width: updateComBoxId.width
-//                                        height: updateComBoxId.height
-//                                        color:"#cdcdcd"
-//                                    }
-                                }
-                                onCurrentTextChanged:
+                                property int currentIndex:-1
+
+                                onComboClicked:
                                 {
-
-                                    if(currentText === qsTr("clear history(up to ten)"))
+                                    currentIndex = listView.currentIndex;
+                                    console.log("当前序号 currentIndex = " + currentIndex);
+                                }
+                                onShowCombox:
+                                {
+                                    updatePage.showComboBox = val;
+                                }
+                                onCurrentIndexChanged:
+                                {
+                                    if(fileText.get(currentIndex).text === qsTr("clear history(up to ten)"))
                                     {
                                         touch.clearComboBoxData();
-                                        fileText.insert(0,{"text":""});
-                                        updateComBoxId.currentIndex = 0;
+                                        updateComBoxId.defCurrentIndex = 0;
+                                        chosenItemText.text = "";
                                         fileText.clear();
+                                        fileText.insert(0,{"text":qsTr("clear history(up to ten)")});
+                                        currentIndex = -1;
+
                                         touch.setUpdatePath("");
                                         touch.setUpgradeFile("Clear upgrade file");
                                     }
                                     else
                                     {
-                                        touch.setUpdatePath(currentText);
+                                        touch.setUpdatePath(fileText.get(currentIndex).text);
+                                        console.log("升级文件为：" + fileText.get(currentIndex).text)
                                     }
 
-    //                                        console.log("onCurrentTextChanged@@@@@@@currentText = " + currentText);
                                 }
-                                property bool firstTime:true
+//                                property bool firstTime:true
                                 Component.onCompleted:
                                 {
-                                    if(firstTime)
+                                    if(fileText.count === 0)
                                     {
-                                        firstTime = false;
+//                                        firstTime = false;
                                         fileText.insert(0,{"text":qsTr("clear history(up to ten)")});
                                     }
 
                                 }
-
                             }
 
                             Rectangle{
@@ -424,106 +576,6 @@ Window {
                             }
                        }
 
-
-                        Rectangle{
-                            id:upgradePageMainInfo
-                            Layout.preferredHeight: 30
-                            Layout.fillWidth: true
-                            anchors.bottom: parent.bottom
-                            anchors.left: parent.left
-                            border.width: 1
-                            border.color: "#aaaaaa"
-                               RowLayout{
-                                   anchors.fill: parent
-                                   Image{
-                                       id:upgradeDeviceImage
-                                       Layout.preferredHeight: 25
-                                       Layout.preferredWidth: 25
-                                       source: deviceConnectImage
-                                       fillMode: Image.Stretch
-                                       anchors.verticalCenter: parent.verticalCenter
-                                       anchors.left: parent.left
-                                       anchors.leftMargin: defaultMargin
-                                   }
-                                   MyLabel{
-                                       id: upgradeDeviceInfo
-                                       textStr: deviceMainInfo
-                                       Layout.fillWidth: true
-                                       Layout.fillHeight: true
-                                       anchors.left: upgradeDeviceImage.right
-                                       anchors.topMargin: 5
-
-                                   }
-                               }
-                        }
-                        Rectangle
-                        {
-                            border.width: 1
-                            border.color: "#aaaaaa"
-                            Layout.fillWidth: true
-                            Layout.fillHeight: true
-                            id:updateShowMsgId
-                            property Item messageBox:messageBox
-                            anchors.bottom: upgradePageMainInfo.top
-                            anchors.bottomMargin: 5
-//                            property Item updateShowDialog:updateShowDialog
-                            RowLayout
-                            {
-                                anchors.fill:parent
-                                Rectangle
-                                {
-
-                                    border.width: 1
-                                    border.color: "#aaaaaa"
-//                                    Layout.preferredWidth: updatePage.messageBoxWidth
-                                    Layout.preferredWidth: parent.width / 2.0
-                                    Layout.preferredHeight:parent.height
-
-                                    ScrollView {
-                                        anchors.fill: parent
-
-                                        horizontalScrollBarPolicy: Qt.ScrollBarAlwaysOff
-                                        id: messageBox
-
-                                        Text {
-                                            id: messageText
-//                                            renderType: Text.NativeRendering
-                                            anchors.top: parent.top
-                                            anchors.topMargin: 10
-                                            anchors.left: parent.left
-                                            anchors.leftMargin: 5
-                                            anchors.bottomMargin: 10
-                                            text:upgradeShowStr
-                                            wrapMode: Text.Wrap
-                                            font.pointSize: 10
-                                            onTextChanged:
-                                            {
-                                                if (messageText.contentHeight > messageBox.height) {
-                                                    messageBox.flickableItem.contentY = messageText.contentHeight - messageBox.height + 20;
-                                                }
-                                            }
-                                        }
-
-
-                                    }
-
-                                }
-
-                                Rectangle
-                                {
-                                    id:updateShowDialog
-                                    border.width: 1
-                                    border.color: "#aaaaaa"
-                                    anchors.top: parent.top
-                                    anchors.left: messageBox.right
-                                    anchors.right: parent.right
-                                    Layout.preferredWidth: parent.width / 2.0
-                                    Layout.preferredHeight:parent.height
-                                }
-                            }
-
-                        }
-
                     }
 
                 }
@@ -556,6 +608,7 @@ Window {
                 property Item volienceUpgradeFileRow:(item != null) ? item.volienceUpgradeFileRow : null
                 property Item volienceUpgradeFileText:(item != null) ? item.volienceUpgradeFileText : null
 
+                property bool showComboBox:false
                 property bool flag : true
 
                 signal sendOnboardTestStart()
@@ -594,18 +647,6 @@ Window {
                     property Item volienceUpgradeFileRec:volienceUpgradeFileRec
                     property Item volienceFileSeleected:volienceFileSeleected
                     property Item twoRect:twoRect
-
-
-                    MouseArea{
-                        anchors.fill: parent
-                        enabled: true
-                        acceptedButtons: Qt.AllButtons
-                        onClicked: {
-//                            console.log("#################################测试界面鼠标点击");
-                            testComboBox.comboBox.state = ""
-                        }
-                    }
-
 
                     ColumnLayout {
                         anchors.fill: parent
@@ -844,6 +885,15 @@ Window {
                             Layout.fillHeight: true
                             Layout.fillWidth: true
 
+                            MouseArea{
+                                anchors.fill: parent
+                                enabled: true
+                                acceptedButtons: Qt.AllButtons
+                                onClicked: {
+                                    testComboBox.comboBox.state = ""
+                                    testPage.showComboBox = false;
+                                }
+                            }
                             //板载测试模式
                             OnboardTestInterface
                             {
@@ -915,16 +965,6 @@ Window {
                                             anchors.fill: parent
                                             horizontalScrollBarPolicy: Qt.ScrollBarAlwaysOff
 
-                                            MouseArea{
-                                                anchors.fill: parent
-                                                acceptedButtons: Qt.AllButtons
-                                                propagateComposedEvents: true
-                                                onClicked: {
-                                                    mouse.accepted = false;
-//                                                    console.log("########### ScrollView 区域点击");
-                                                }
-                                            }
-
                                             Text {
                                                 id: messageTextTest
 //                                                renderType: Text.NativeRendering
@@ -943,6 +983,26 @@ Window {
                                                 }
                                             }
 
+                                        }
+                                        Rectangle{
+                                            anchors.fill: parent
+                                            anchors.top: parent.top
+                                            anchors.left: parent.left
+                                            anchors.bottom: parent.bottom
+                                            anchors.right: parent.right
+                                            opacity: 0
+                                            visible: testPage.showComboBox ? true : false
+                                            MouseArea{
+                                                anchors.fill: parent
+                                                enabled: true
+                                                acceptedButtons: Qt.AllButtons
+                                                propagateComposedEvents: true
+                                                onClicked: {
+                                                    mouse.accepted = false;
+                                                    testPage.testComboBox.comboBox.state = ""
+                                                    testPage.showComboBox = false;
+                                                }
+                                            }
                                         }
                                     }
 
@@ -1024,6 +1084,10 @@ Window {
                                     testBtnName = qsTr("Continuous restart");
                                     break;
                                 }
+                            }
+                            onShowCombox:
+                            {
+                                testPage.showComboBox = val;
                             }
 
                         }
@@ -1815,6 +1879,10 @@ Window {
         file = "" + file;
         if(currenttab === mTAB_Upgrade || type === 0)
         {
+            if(fileText.count === 0)
+            {
+                fileText.insert(0,{"text":qsTr("clear history(up to ten)")});
+            }
             var existFlsg = false;
             for(var i = 0;i < fileText.count;i++)
             {
@@ -1828,18 +1896,23 @@ Window {
             if(!existFlsg)
             {
                 fileText.insert(0,{"text":file});
+
                 //保存文件
                 touch.setUpgradeFile(file);
                 if(fileText.count > 10)
                 {
                     fileText.remove(fileText.count - 1);
                 }
+
+
             }
             for(i = 0;i < fileText.count;i++)
             {
                 if(fileText.get(i).text === file)
                 {
                     updateComBoxId.currentIndex = i;
+                    updateComBoxId.chosenItemText.text = file;
+                    updateComBoxId.listView.currentIndex = i;
                     break;
                 }
             }

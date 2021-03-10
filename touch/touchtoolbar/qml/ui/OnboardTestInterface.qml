@@ -344,6 +344,26 @@ Item
                             }
                         }
                     }
+                    Rectangle{
+                        anchors.fill: parent
+                        anchors.top: parent.top
+                        anchors.left: parent.left
+                        anchors.bottom: parent.bottom
+                        anchors.right: parent.right
+                        opacity: 0
+                        visible: testPage.showComboBox ? true : false
+                        MouseArea{
+                            anchors.fill: parent
+                            enabled: true
+                            acceptedButtons: Qt.AllButtons
+                            propagateComposedEvents: true
+                            onClicked: {
+                                mouse.accepted = false;
+                                testPage.testComboBox.comboBox.state = ""
+                                testPage.showComboBox = false;
+                            }
+                        }
+                    }
                 }
 
                 Rectangle

@@ -35,5 +35,6 @@
         <file>qml/ui/MyLabel.qml</file>
         <file>qml/ui/MyComboBox.qml</file>
         <file>qml/ui/FineTuneComboBox.qml</file>
+        <file>qml/ui/MyComboBoxLeft.qml</file>
     </qresource>
 </RCC>
