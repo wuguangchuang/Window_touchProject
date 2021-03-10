@@ -483,7 +483,7 @@ Window {
                             {
                                 id:updateComBoxId
                                 height: fileSeleected.height
-                                width: parent.width - fileSeleected.width - 5
+                                width: parent.width - fileSeleected.width  - lockIcon.width - 10
                                 defCurrentIndex: 0
                                 itemsModel: fileText
                                 anchors.left: fileSeleected.right
@@ -538,14 +538,13 @@ Window {
 
                             Rectangle{
                                 id:lockIcon
-//                                Layout.preferredWidth: fileSeleected.height
-//                                Layout.preferredHeight: fileSeleected.height
-                                Layout.preferredWidth: fileSeleected.height
-                                Layout.preferredHeight: fileSeleected.height
+                                width: fileSeleected.height
+                                height: fileSeleected.height
                                 border.width: 1
                                 border.color: "#cdcdcd"
                                 visible: true
-
+                                anchors.left: updateComBoxId.right
+                                anchors.leftMargin: 5
                                 ToolButton{
                                     id:lockBtn
                                     anchors.fill: parent
@@ -557,6 +556,8 @@ Window {
                                         fillMode: Image.Stretch
                                     }
                                     onClicked: {
+                                        updateComBoxId.comboBox.state = ""
+                                        updatePage.showComboBox = false;
                                         if(!lockCheck)
                                         {
                                             updateComBoxId.enabled = false;
@@ -1230,13 +1231,17 @@ Window {
                 property Item batchUpgradeFileRec:(item !== null) ? item.batchUpgradeFileRec : null
                 property Item batchStartWork:(item !== null) ? item.batchStartWork : null
                 property int batchChooseBtnHeight: 50
-                property int batchWorkingBtnHeight: 40
+                property int batchWorkingBtnHeight: 50
 
                 property int functionIndex:0  //默认是加速老化(0)、升级(1)、测试(2)
                 property string batchWorkBtnStr:qsTr("Start aging")
                 property var batchRunning:false
+
+                property bool showComboBox:false
                 Rectangle {
                     anchors.fill: parent
+                    anchors.top: parent.top
+
 
                     property Item agingPageV:agingPageId
                     property Item batchUpgrade:batchUpgrade
@@ -1246,281 +1251,187 @@ Window {
                     property Item batchComboBox:batchComboBox
                     property Item batchStartWork:batchStartWork
 
-                    ColumnLayout{
-                        anchors.fill: parent
+                    Button{
+                        id:batchStartWork
+                        width:200
+                        height:agingPageTab.batchWorkingBtnHeight
                         anchors.top: parent.top
                         anchors.topMargin: defaultMargin
-                        RowLayout{
-                            Layout.preferredHeight: agingPageTab.batchWorkingBtnHeight
-                            Layout.preferredWidth: parent.width
-                            Button{
-                                    id:batchStartWork
-                                    Layout.preferredWidth:200
-                                    Layout.preferredHeight:agingPageTab.batchWorkingBtnHeight
-                                    anchors.top: parent.top
-//                                    anchors.topMargin: 5
-                                    anchors.right:parent.right
-                                    style: ButtonStyle {
-                                        label: Text {
-                                            Layout.preferredWidth:batchChooseFile.width
-                                            Layout.preferredHeight: batchChooseFile.height
-                                            color: "#FFFFFF"
-                                            text: agingPageTab.batchWorkBtnStr
-                                            font.pointSize: 15
-                                            verticalAlignment: Text.AlignVCenter
-                                            horizontalAlignment: Text.AlignHCenter
-                                        }
-                                        background: Rectangle{
-                                            Layout.preferredWidth:batchChooseFile.width
-                                            Layout.preferredHeight: batchChooseFile.height
+                        anchors.right:parent.right
+                        style: ButtonStyle {
+                            label: Text {
+                                Layout.preferredWidth:batchChooseFile.width
+                                Layout.preferredHeight: batchChooseFile.height
+                                color: "#FFFFFF"
+                                text: agingPageTab.batchWorkBtnStr
+                                font.pointSize: 15
+                                verticalAlignment: Text.AlignVCenter
+                                horizontalAlignment: Text.AlignHCenter
+                            }
+                            background: Rectangle{
+                                Layout.preferredWidth:batchChooseFile.width
+                                Layout.preferredHeight: batchChooseFile.height
 //                                            border.width: 1
 //                                            border.color: (batchFlag ? "#64B5F6":"#f0f0f0")
-                                            color: (batchStartWork.enabled ? "#64B5F6":"#404244")
-                                            radius: 2
-                                        }
-                                    }
-                                    onClicked:
-                                    {
-                                        //开始批量升级
-                                        if(!agingPageTab.batchRunning)
-                                        {
+                                color: (batchStartWork.enabled ? "#64B5F6":"#404244")
+                                radius: 2
+                            }
+                        }
+                        onClicked:
+                        {
+                            //开始批量升级
+                            if(!agingPageTab.batchRunning)
+                            {
 //                                            batchCheckResultTimer.restart();
-                                            mainTabView.tabsVisible = false;
-                                            batchComboBox.enabled = false;
-                                            agingPageTab.batchRunning  = true;
-                                            setBatchCancel(false);
-                                            initBatchDeviceInfo();
-                                            switch(agingPageTab.functionIndex)
-                                            {
+                                mainTabView.tabsVisible = false;
+                                batchComboBox.enabled = false;
+                                agingPageTab.batchRunning  = true;
+                                setBatchCancel(false);
+                                initBatchDeviceInfo();
+                                switch(agingPageTab.functionIndex)
+                                {
 
-                                            case 0:
-                                                //加速老化
-                                                agingPageTab.batchWorkBtnStr = qsTr("Stop aging");
-                                                for(var i = 0;i < batchConnectDeviceInfoList.length;i++)
-                                                {
-                                                    agingPageTab.agingPage.timeFlag[i] = true;
-                                                    agingPageTab.agingPage.setDeviceResult(i,agingPage.batchRunning);
-                                                    agingPageTab.agingPage.setDeviceTime(i,agingPage.passAgingTime);
-                                                }  
-                                                startAging();
-                                                startAgingTest();
-                                                break;
-
-                                            case 1:
-                                                //升级
-                                                updatingFw = true;
-                                                agingPageTab.batchWorkBtnStr = qsTr("Cancel upgrade");
-                                                agingPageTab.batchChooseFile.enabled = false;
-                                                startBatchUpgrade();
-                                                break;
-
-                                            case 2:
-                                                //测试
-                                                agingPageTab.batchWorkBtnStr = qsTr("Cancel test");
-                                                for(i = 0;i < batchConnectDeviceInfoList.length;i++)
-                                                {
-                                                    if(agingPage.getDeviceStatus(i) === agingPage.deviceConnected && agingPage.getDeviceBootloader(i) === 0)
-                                                    {
-//                                                        console.log("测试序号index = " + i);
-                                                        startBatchTest(i);
-                                                        agingPageTab.agingPage.setDeviceResult(i,agingPage.batchRunning)
-                                                    }
-                                                }
-                                                break;
-
-                                            }
-                                        }
-                                        else
-                                        {
-                                            //取消批处理
-                                            setBatchCancel(true);
-                                            agingPageTab.batchRunning = false;
-                                            batchStartWork.enabled = false;
-
-                                            if(agingPageTab.functionIndex === 0)
-                                            {
-//                                                agingPageTab.batchWorkBtnStr = qsTr("Aging");
-//                                                stopAgingTest();
-                                                for(i = 0;i < batchConnectDeviceInfoList.length;i++)
-                                                {
-                                                    if(agingPage.getDeviceResult(i) === agingPage.batchRunning)
-                                                    {
-
-                                                        agingPage.agingFinished(i);
-                                                    }
-
-                                                }
-                                                agingPage.stopAging();
-                                                batchDone();
-                                                showToast(qsTr("stop accelerate aging"))
-                                            }
-                                            else if(agingPageTab.functionIndex === 1)
-                                            {
-
-//                                                updatingFw = false;
-//                                                agingPageTab.batchWorkBtnStr = qsTr("Upgrade");
-                                                showToast(qsTr("Stop upgrading. New connected devices will no longer be upgraded."))
-                                            }
-                                            else if(agingPageTab.functionIndex === 2)
-                                            {
-//                                                agingPageTab.batchWorkBtnStr = qsTr("Test");
-                                                showToast(qsTr("Stop testing. New connected devices will no longer be tested."))
-                                            }
-
-                                        }
-                                        
-
-                                    }
-                                }
-                            ComboBox{
-                                id:batchComboBox
-                                Layout.fillWidth: true
-                                Layout.preferredHeight: 40
-                                visible: true
-                                enabled: true
-                                currentIndex: 0
-                                model:batchText
-                                anchors.top: parent.top
-//                                anchors.topMargin: 5
-                                anchors.left:parent.left
-                                anchors.right:batchStartWork.left
-                                anchors.rightMargin:defaultMargin
-
-                                style: ComboBoxStyle{
-                                    label:Text{
-                                        width: batchComboBox.width
-                                        height: batchComboBox.height
-                                        verticalAlignment: Text.AlignVCenter;
-                                        horizontalAlignment: Text.AlignHCenter;
-                                        text: batchComboBox.currentText
-                                        font.pointSize: 15
-
-                                    }
-//                                    background: Rectangle{
-//                                        width: batchComboBox.width
-//                                        height: batchComboBox.height
-//                                        color: batchComboBox.enabled ? "#f1f1f1" : "#e1e1e1"
-//                                        radius: 2
-//                                    }
-                                }
-                                onCurrentIndexChanged: {
-                                    initBatchDeviceInfo();
-                                    console.log("current index = " + currentIndex);
-                                    agingPageTab.functionIndex = currentIndex;
-//                                    agingPageId.functionIndex = currentIndex;
-//                                    agingPage.functionIndex = currentIndex;
-                                    agingPage.setFunctionIndex(currentIndex);
-                                    switch(currentIndex)
+                                case 0:
+                                    //加速老化
+                                    agingPageTab.batchWorkBtnStr = qsTr("Stop aging");
+                                    for(var i = 0;i < batchConnectDeviceInfoList.length;i++)
                                     {
-                                    case 0:
-                                        agingPageTab.batchWorkBtnStr = qsTr("Start aging")
-                                        agingPageTab.batchChooseFile.visible = false;
-                                        agingPageTab.batchUpgradeFileRec.visible = false;
-                                        agingPageTab.batchChooseBtnHeight = 0;
-                                        agingPageTab.batchWorkingBtnHeight = 40;
-
-                                        break;
-                                    case 1:
-                                        agingPageTab.batchWorkBtnStr = qsTr("Start upgrade")
-                                        batchChooseFile.visible = true;
-                                        batchUpgradeFileRec.visible = true;
-                                        agingPageTab.batchChooseBtnHeight = 50;
-                                        agingPageTab.batchWorkingBtnHeight = 90;
-                                        break;
-                                    case 2:
-                                        agingPageTab.batchWorkBtnStr = qsTr("Start test")
-                                        batchChooseFile.visible = false;
-                                        batchUpgradeFileRec.visible = false;
-                                        agingPageTab.batchChooseBtnHeight = 0;
-                                        agingPageTab.batchWorkingBtnHeight = 40;
-                                        break;
+                                        agingPageTab.agingPage.timeFlag[i] = true;
+                                        agingPageTab.agingPage.setDeviceResult(i,agingPage.batchRunning);
+                                        agingPageTab.agingPage.setDeviceTime(i,agingPage.passAgingTime);
                                     }
+                                    startAging();
+                                    startAgingTest();
+                                    break;
+
+                                case 1:
+                                    //升级
+                                    updatingFw = true;
+                                    agingPageTab.batchWorkBtnStr = qsTr("Cancel upgrade");
+                                    agingPageTab.batchChooseFile.enabled = false;
+                                    startBatchUpgrade();
+                                    break;
+
+                                case 2:
+                                    //测试
+                                    agingPageTab.batchWorkBtnStr = qsTr("Cancel test");
+                                    for(i = 0;i < batchConnectDeviceInfoList.length;i++)
+                                    {
+                                        if(agingPage.getDeviceStatus(i) === agingPage.deviceConnected && agingPage.getDeviceBootloader(i) === 0)
+                                        {
+//                                                        console.log("测试序号index = " + i);
+                                            startBatchTest(i);
+                                            agingPageTab.agingPage.setDeviceResult(i,agingPage.batchRunning)
+                                        }
+                                    }
+                                    break;
 
                                 }
                             }
-    //                        MyComboBox
-    //                        {
-    //                            id: batchComboBox
-    //                            model: ["加速老化", "升级", "测试"]
-    //                            textColor: "white"
-    //                            radius: 2
-    //                            itemNormalColor: "skyblue"
-    //                            itemHighlightColor: "darkCyan"
-    //                            indicatorSource: "qrc:/updown.png"
-    //                            background: Rectangle{
-    //                                color: basic_combobox2_2.hovered?Qt.lighter("green"):"green"
-    //                                border.width: 1
-    //                                border.color: "black"
-    //                            }
-    //                        }
-//                            RowLayout{
-//                                Layout.preferredWidth: parent.width
-//                                Layout.preferredHeight: 50
-//                                anchors.topMargin: 5
-                                Button{
-                                        id:batchChooseFile
-                                        visible: false
-                                        Layout.preferredWidth: 150
-                                        Layout.preferredHeight:agingPageTab.batchChooseBtnHeight
-                                        anchors.bottomMargin: 5
-                                        anchors.top:batchComboBox.bottom
-                                        anchors.topMargin: 5
-                                        anchors.left:parent.left
-                                        style: ButtonStyle {
-                                            label: Text {
-                                                Layout.preferredWidth:batchChooseFile.width
-                                                Layout.preferredHeight: batchChooseFile.height
-                                                color: "#FFFFFF"
-                                                text: qsTr("Select upgrade file")
-                                                verticalAlignment: Text.AlignVCenter
-                                                horizontalAlignment: Text.AlignHCenter
-                                            }
-                                            background: Rectangle{
-                                                Layout.preferredWidth:batchChooseFile.width
-                                                Layout.preferredHeight: batchChooseFile.height
-                                                border.width: 1
-                                                border.color: (enabled ? "#64B5F6":"#BDBDBD")
-                                                color: (enabled ? "#64B5F6":"#BDBDBD")
-                                                radius: 2
-                                            }
+                            else
+                            {
+                                //取消批处理
+                                setBatchCancel(true);
+                                agingPageTab.batchRunning = false;
+                                batchStartWork.enabled = false;
 
+                                if(agingPageTab.functionIndex === 0)
+                                {
+//                                                agingPageTab.batchWorkBtnStr = qsTr("Aging");
+//                                                stopAgingTest();
+                                    for(i = 0;i < batchConnectDeviceInfoList.length;i++)
+                                    {
+                                        if(agingPage.getDeviceResult(i) === agingPage.batchRunning)
+                                        {
 
-                                        }
-                                        onClicked: {
-                                            //Qt.quit();
-                                            fileDialog.open();
+                                            agingPage.agingFinished(i);
                                         }
 
                                     }
-                                    Rectangle{
-                                        id:batchUpgradeFileRec
-                                        visible: false
-                                        Layout.fillWidth: true
-                                        Layout.preferredHeight: agingPageTab.batchChooseBtnHeight - 5
-                                        anchors.top:batchComboBox.bottom
-                                        anchors.topMargin: 5
-                                        anchors.bottomMargin: 5
-                                        anchors.left:batchChooseFile.right
-                                        anchors.right: batchStartWork.left
-                                        anchors.leftMargin: 5
-                                        anchors.rightMargin: defaultMargin
-                                        border.width: 1
-                                        border.color: "gray"
-                                        Text {
-                                            id: batchUpgradeFileText
-                                            anchors.fill: parent
-                                            elide: Text.ElideLeft // 超出范围左边使用...表示
-                                            font.pointSize: 15
-                                            verticalAlignment: Text.AlignVCenter
+                                    agingPage.stopAging();
+                                    batchDone();
+                                    showToast(qsTr("stop accelerate aging"))
+                                }
+                                else if(agingPageTab.functionIndex === 1)
+                                {
 
-                                        }
-                                    }
-//                                }
+//                                                updatingFw = false;
+//                                                agingPageTab.batchWorkBtnStr = qsTr("Upgrade");
+                                    showToast(qsTr("Stop upgrading. New connected devices will no longer be upgraded."))
+                                }
+                                else if(agingPageTab.functionIndex === 2)
+                                {
+//                                                agingPageTab.batchWorkBtnStr = qsTr("Test");
+                                    showToast(qsTr("Stop testing. New connected devices will no longer be tested."))
+                                }
+
+                            }
+
+
+                        }
+                    }
+
+                    Button{
+                            id:batchChooseFile
+                            visible: false
+                            width: 200
+                            height:batchComboBox.height
+                            anchors.top:batchComboBox.bottom
+                            anchors.topMargin: 5
+                            anchors.left:parent.left
+                            style: ButtonStyle {
+                                label: Text {
+                                    Layout.preferredWidth:batchChooseFile.width
+                                    Layout.preferredHeight: batchChooseFile.height
+                                    color: "#FFFFFF"
+                                    text: qsTr("Select upgrade file")
+                                    verticalAlignment: Text.AlignVCenter
+                                    horizontalAlignment: Text.AlignHCenter
+                                }
+                                background: Rectangle{
+                                    Layout.preferredWidth:batchChooseFile.width
+                                    Layout.preferredHeight: batchChooseFile.height
+                                    border.width: 1
+                                    border.color: (enabled ? "#64B5F6":"#BDBDBD")
+                                    color: (enabled ? "#64B5F6":"#BDBDBD")
+                                    radius: 2
+                                }
+
+
+                            }
+                            onClicked: {
+                                //Qt.quit();
+                                fileDialog.open();
+                            }
+
+                        }
+                        Rectangle{
+                            id:batchUpgradeFileRec
+                            visible: false
+                            width:parent.width - batchChooseFile.width - batchStartWork.width - 10
+                            height: batchChooseFile.height
+                            anchors.top:batchComboBox.bottom
+                            anchors.topMargin: 5
+                            anchors.left:batchChooseFile.right
+                            anchors.right: batchStartWork.left
+                            anchors.leftMargin: 5
+                            anchors.rightMargin: defaultMargin
+                            border.width: 1
+                            border.color: "gray"
+                            Text {
+                                id: batchUpgradeFileText
+                                anchors.fill: parent
+                                elide: Text.ElideLeft // 超出范围左边使用...表示
+                                font.pointSize: 15
+                                verticalAlignment: Text.AlignVCenter
+
+                            }
                         }
                         Rectangle{
                             anchors.top: batchStartWork.bottom
-                            Layout.fillWidth: true
-                            Layout.fillHeight: true
+                            width: parent.width
+                            height: parent.height - batchStartWork.height - defaultMargin
+
                             Aging{
                                 anchors.fill: parent
                                 anchors.top: parent.top
@@ -1536,25 +1447,87 @@ Window {
 
                             }
                         }
-                    }
+                        Rectangle{
+                            anchors.top: batchStartWork.bottom
+                            width: parent.width
+                            height: parent.height - batchStartWork.height - defaultMargin
+                            opacity: 0
+                            visible: agingPageTab.showComboBox ? true : false
+                            MouseArea{
+                                anchors.fill: parent
+                                enabled: true
+                                acceptedButtons: Qt.AllButtons
+                                onClicked: {
+                                    batchComboBox.comboBox.state = ""
+                                    agingPageTab.showComboBox = false;
+                                }
+                            }
+                        }
+                        MyComboBox{
+                            id:batchComboBox
+                            width:parent.width - batchStartWork.width - 5
+                            height: 50
+                            visible: true
+                            enabled: true
+                            defCurrentIndex: 0
+                            itemsModel: batchText
+                            anchors.top: parent.top
+                            anchors.topMargin: defaultMargin
+                            anchors.left:parent.left
+                            anchors.right:batchStartWork.left
+                            anchors.rightMargin:defaultMargin
+                            itemWidth: width - height
+                            itemHeight: height
+                            chosenItemTextStr:qsTr("Accelerate aging")
 
-                }
+                            property int currentIndex:defCurrentIndex
+                            onComboClicked: {
+                                currentIndex = comboBox.selectedIndex;
+                                initBatchDeviceInfo();
+                                console.log("current index = " + currentIndex);
+                                agingPageTab.functionIndex = currentIndex;
+                                agingPage.setFunctionIndex(currentIndex);
+                                switch(currentIndex)
+                                {
+                                case 0:
+                                    agingPageTab.batchWorkBtnStr = qsTr("Start aging")
+                                    agingPageTab.batchChooseFile.visible = false;
+                                    agingPageTab.batchUpgradeFileRec.visible = false;
+                                    agingPageTab.batchChooseBtnHeight = 0;
+                                    agingPageTab.batchWorkingBtnHeight = 50;
+
+                                    break;
+                                case 1:
+                                    agingPageTab.batchWorkBtnStr = qsTr("Start upgrade")
+                                    batchChooseFile.visible = true;
+                                    batchUpgradeFileRec.visible = true;
+                                    agingPageTab.batchChooseBtnHeight = 50;
+                                    agingPageTab.batchWorkingBtnHeight = 105;
+                                    break;
+//                                    case 2:
+//                                        agingPageTab.batchWorkBtnStr = qsTr("Start test")
+//                                        batchChooseFile.visible = false;
+//                                        batchUpgradeFileRec.visible = false;
+//                                        agingPageTab.batchChooseBtnHeight = 0;
+//                                        agingPageTab.batchWorkingBtnHeight = 40;
+//                                        break;
+                                }
+                            }
+                            onShowCombox:
+                            {
+                                agingPageTab.showComboBox = val;
+                            }
+
+
+                        }
+
+                    }
                 Component.onCompleted: {
                     batchText.insert(0,{"text":qsTr("Accelerate aging")});
                     batchText.insert(1,{"text":qsTr("Upgrade")});
 //                    batchText.insert(2,{"text":qsTr("Test")});
                 }
                 onVisibleChanged: {
-
-//                    if (visible) {
-//                        for(var i = 0;i < agingPageTab.agingPage.deviceCount;i++)
-//                            agingPageTab.agingPage.timeFlag[i] = true;
-//                        startAging();
-//                        startAgingTest();
-//                    } else {
-//                        stopAgingTest();
-//                        showToast(qsTr("stop accelerate aging"))
-//                    }
                     if(visible)
                     {
 //                        batchComboBox.currentIndex = 0;
