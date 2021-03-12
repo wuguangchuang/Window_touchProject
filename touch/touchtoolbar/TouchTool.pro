@@ -31,7 +31,8 @@ QML_IMPORT_PATH = qml/jbQuick/ qml/jbQuick/Charts qml config
 
 TRANSLATIONS += \
     lang/zh_CN.ts \
-    lang/zh_TW.ts
+    lang/zh_TW.ts \
+    lang/en_US.ts
 
 #    internationalization/language_English.ts \
 
@@ -108,7 +109,10 @@ DISTFILES += \
     qml/ui/MyComboBox.qml \
     qml/ui/MyLabel.qml \
     qml/ui/FineTuneComboBox.qml \
-    qml/ui/MyComboBoxLeft.qml
+    qml/ui/MyComboBoxLeft.qml \
+    qml/ui/SettingConfigurationPage.qml \
+    qml/ui/EditText.qml \
+    qml/ui/EdgeStrech.qml
 
 # Default rules for deployment.
 include(deployment.pri)

@@ -58,6 +58,9 @@ Item {
     property int point3Y:0
 
     focus: false
+
+//    property Item leftTimer:leftTimer
+
 //    Keys.enabled: false
 //    Keys.onPressed: {
 //        console.log("按键按下%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%")
@@ -153,7 +156,7 @@ Item {
                 id:leftTouchPoint
                 anchors.fill: parent
                 enabled: true
-                mouseEnabled: false
+                mouseEnabled: true
                 maximumTouchPoints: 1
                 minimumTouchPoints: 1
                 touchPoints: [
@@ -172,7 +175,7 @@ Item {
                     leftPreviousY = touchPointL1.sceneY - parent.y;
                     leftSceneX = touchPointL1.sceneX - parent.x;
                     leftSceneY = touchPointL1.sceneY - parent.y;
-
+                    fineTuneId.comboBox.state = ""
                 }
                 onReleased: {
                 }
@@ -181,10 +184,12 @@ Item {
                     leftSceneX = touchPointL1.sceneX - parent.x;
                     leftSceneY = touchPointL1.sceneY - parent.y;
                     leftPlaceholderStr = ""
+//                    leftTimer.stop();
                     leftCanvas.requestPaint();
 
-                }
+                }   
             }
+
 
             Canvas{
                 id:leftCanvas
@@ -220,6 +225,39 @@ Item {
                 verticalAlignment: Text.AlignVCenter
                 wrapMode: Text.Wrap
             }
+//            Rectangle
+//            {
+//               id:dynamicLeft
+//               x:10
+//               y:10
+//               width: 2
+//               height: 0
+//               color: "red"
+
+//               Behavior on height {
+//                   PropertyAnimation{duration: 1500}
+//               }
+//            }
+//            Timer{
+//                id:leftTimer
+//                interval: 1510
+//                running: false
+//                repeat: true
+//                triggeredOnStart: false
+//                onTriggered: {
+//                    if(dynamicLeft.height === 0)
+//                    {
+//                        dynamicLeft.visible = true;
+//                        dynamicLeft.height = 300;
+//                    }
+//                    else
+//                    {
+//                        dynamicLeft.visible = false;
+//                        dynamicLeft.height = 0
+//                    }
+
+//                }
+//            }
 
         }
         ToolButton{
@@ -311,7 +349,7 @@ Item {
                 id:rightTouchPoint
                 anchors.fill: parent
                 enabled: true
-                mouseEnabled: false
+                mouseEnabled: true
                 maximumTouchPoints: 1
                 minimumTouchPoints: 1
                 touchPoints: [
@@ -324,7 +362,7 @@ Item {
                     rightPreviousY = touchPointR1.sceneY - parent.y;
                     rightSceneX = touchPointR1.sceneX - parent.x;
                     rightSceneY = touchPointR1.sceneY - parent.y;
-
+                    fineTuneId.comboBox.state = ""
                 }
                 onReleased: {
                 }
@@ -460,7 +498,7 @@ Item {
                 id:upTouchPoint
                 anchors.fill: parent
                 enabled: true
-                mouseEnabled: false
+                mouseEnabled: true
                 maximumTouchPoints: 1
                 minimumTouchPoints: 1
                 touchPoints: [
@@ -473,7 +511,7 @@ Item {
                     upPreviousY = touchPointU1.sceneY - parent.y;
                     upSceneX = touchPointU1.sceneX - parent.x;
                     upSceneY = touchPointU1.sceneY - parent.y;
-
+                    fineTuneId.comboBox.state = ""
                 }
                 onReleased: {
                 }
@@ -625,7 +663,7 @@ Item {
                 id:downTouchPoint
                 anchors.fill: parent
                 enabled: true
-                mouseEnabled: false
+                mouseEnabled: true
                 maximumTouchPoints: 1
                 minimumTouchPoints: 1
                 touchPoints: [
@@ -638,7 +676,7 @@ Item {
                     downPreviousY = touchPointD1.sceneY - parent.y;
                     downSceneX = touchPointD1.sceneX - parent.x;
                     downSceneY = touchPointD1.sceneY - parent.y;
-
+                    fineTuneId.comboBox.state = ""
                 }
                 onReleased: {
 
@@ -815,6 +853,7 @@ Item {
                 }
                 onClicked:
                 {
+//                    leftTimer.stop();
                     clearCanvas();
                     exitTune();
                 }
@@ -966,9 +1005,12 @@ Item {
         point3X = points[3].collectX;
         point3Y = points[3].collectY;
 
+//        leftTimer.start();
+
     }
 
     function clearCanvas(){
+//        leftTimer.restart();
         var leftCtx = leftCanvas.getContext("2d");
         leftCtx.clearRect(0,0,leftCanvas.width,leftCanvas.height);
         leftCanvas.requestPaint();

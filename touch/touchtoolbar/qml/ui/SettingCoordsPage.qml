@@ -6,7 +6,7 @@ import QtQuick.Controls.Styles 1.4
 import QtQuick.Layouts 1.3
 Item {
     property int  defaultSpacing: 10
-    property int labelWidth:200
+    property int labelWidth:250
 
     property var usbModeEnabledBox:usbModeEnabledBox
     property var usbModeGroup:usbModeGroup
@@ -51,10 +51,8 @@ Item {
                     text: qsTr("usb coordinate mode") + "(1)"
                     Layout.preferredHeight:parent.implicitHeight
                     Layout.preferredWidth: labelWidth
-    //                height: parent.implicitHeight
-    //                width:labelWidth
                     verticalAlignment: Text.AlignVCenter
-        //            width: font.pointSize * labelSize
+                    font.pointSize: 14
                 }
 
                 CheckBox {
@@ -87,6 +85,7 @@ Item {
                 RadioButton {
                     id: usbModeMouse
                     text: qsTr("simulate mouse")
+                    font.pointSize: 14
                     ButtonGroup.group: usbModeGroup
                     property int mode: 1
                     MouseArea{
@@ -110,6 +109,7 @@ Item {
                     id: usbModeTouch
                     property int mode: 2
                     text: qsTr("multitouch")
+                    font.pointSize: 14
                     ButtonGroup.group: usbModeGroup
                     //enabled: ((winVersion === undefined || winVersion !== winXPVersion) ? true : false);
                     MouseArea{
@@ -161,6 +161,7 @@ Item {
     //                height: parent.implicitHeight
     //                width:labelWidth
                     verticalAlignment: Text.AlignVCenter
+                    font.pointSize: 14
                 }
 
 
@@ -191,6 +192,7 @@ Item {
                 RadioButton {
                     visible: false
                     text: qsTr("exclude touch size")
+                    font.pointSize: 14
                     ButtonGroup.group: serialModeGroup
                     property int mode: 1
                 }
@@ -198,6 +200,7 @@ Item {
                     visible: false
                     property int mode: 2
                     text: qsTr("include touch size")
+                    font.pointSize: 14
                     checked: true
                     ButtonGroup.group: serialModeGroup
                 }

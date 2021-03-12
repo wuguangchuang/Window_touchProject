@@ -10,12 +10,11 @@ Button {
     property int clickBtn:1
     property string tooltipStr:""
     id:rootBtn
-//    width: 150
-//    height: 40
-    Layout.preferredWidth: btnIcon.width + btnText.width + 35
-    Layout.preferredHeight: 40
+    property int defaultWidth:btnIcon.width + btnText.width + 35
+    property int defaultHeight:50
+    Layout.preferredWidth: defaultWidth
+    Layout.preferredHeight: defaultHeight
     tooltip: tooltipStr
-//    contentItem: Item{
         RowLayout{
             id:btnRect
             spacing: 10
@@ -41,8 +40,8 @@ Button {
                 anchors.left: btnIcon.right
                 anchors.leftMargin: 5
                 anchors.verticalCenter: parent.verticalCenter
+                font.pointSize: 14
             }
 
         }
-//    }
 }

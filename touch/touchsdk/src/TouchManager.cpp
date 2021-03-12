@@ -3521,6 +3521,7 @@ bool TouchManager::isSameDeviceInPort(touch_device *a, touch_device *b)
 
 void TouchManager::doBatchUpgrade(QString path,BatchUpgradeListener *batchUpgradeListener)
 {
+    bool bootloaderUpgradFinished =true;
     this->batchUpgradeListenter = batchUpgradeListener;
     touch_device *connectDevice = devices();
 
@@ -3554,13 +3555,38 @@ void TouchManager::doBatchUpgrade(QString path,BatchUpgradeListener *batchUpgrad
                 TDEBUG("序号 index = %d 是一个BootLoader设备,现在开始升级",curDev->upgradeIndex);
                 curDev->upgradeStatus = 1;
                 startBatchUpgrade(curDev->upgradeIndex,curDev->dev,path,batchUpgradeListener);
+                existBootLoaderDev = true;
+
             }
             if(curDev->dev->touch.connected && curDev->dev->touch.booloader)
             {
                 existBootLoaderDev = true;
             }
+
             curDev = curDev->next;
         }
+        //检测BootLoader设备是否全部升级完成
+
+        while(true)
+        {
+            curDev = batchUpgradeDevList;
+            bootloaderUpgradFinished = true;
+            while(curDev)
+            {
+                if(curDev->upgradeStatus == 1)
+                {
+                    bootloaderUpgradFinished = false;
+                    break;
+                }
+                curDev = curDev->next;
+            }
+            if(bootloaderUpgradFinished)
+            {
+                break;
+            }
+            QThread::msleep(100);
+        }
+
         //开始逐个升级APP设备
         curDev = batchUpgradeDevList;
 //        TDEBUG("开始逐个升级APP设备: batchUpgradeDevList->upgradeIndex",batchUpgradeDevList->upgradeIndex);
@@ -3588,10 +3614,8 @@ void TouchManager::doBatchUpgrade(QString path,BatchUpgradeListener *batchUpgrad
                 QThread::msleep(100);
             }
         }
-        else
-        {
-            QThread::msleep(100);
-        }
+
+        QThread::msleep(100);
 
     }
 
@@ -4166,6 +4190,10 @@ do_upgrade_end:
         {
             info = manager->translator->getTr("Upgrade success");
 
+        }
+        else
+        {
+            info = manager->translator->getTr("Upgrade failed");
         }
         TDEBUG("升级正常结束");
         manager->batchUpgradeListenter->onUpgradeDone(upgradeIndex,result,info);

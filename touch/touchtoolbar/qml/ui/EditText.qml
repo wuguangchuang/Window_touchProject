@@ -1,21 +1,21 @@
 import QtQuick 2.7
-import QtQuick.Controls 2.0 as Cont2
+import QtQuick.Controls 2.0
 
 Item {
     id: root
-    property var maxValue: ""
-    property var value: ""
-    height: textField.implicitHeight
+//    property var maxValue: ""
+    property var value: "0"
+    property int defaultHeight:40
+    property bool read_only:false
+    property bool focusVal:true
+//    height: textField.implicitHeight
+    height: defaultHeight
+
     signal textChanged(var text);
-    Cont2.TextField {
+    TextField {
         id: textField
         property bool showHint: false
-
-        Cont2.Label {
-            visible: parent.showHint
-            text: maxValue
-            anchors.bottom: parent.top
-        }
+        readOnly: read_only
         MouseArea {
             anchors.fill: parent
             hoverEnabled: true
@@ -26,23 +26,23 @@ Item {
             focus: false
             acceptedButtons: Qt.NoButton
         }
-        font.pointSize: 14
+
         Component.onCompleted: {
             root.height = textField.height
             text = value
         }
         width: root.width
-        validator: RegExpValidator {
-            regExp: /[0-9]+/
-        }
+        height: defaultHeight
+        font.pointSize: 14
+        focus: focusVal
+//        validator: RegExpValidator {
+//            regExp: /[0-9]+/
+//        }
         onShowHintChanged:
         {
             if (text === "") {
                 text = "0";
                 return;
-            }
-            if (parseInt(text) > maxValue) {
-                text = "" + maxValue;
             }
             root.textChanged(text);
         }
@@ -53,9 +53,7 @@ Item {
                 text = "0";
                 return;
             }
-            if (parseInt(text) > maxValue) {
-                text = "" + maxValue;
-            }
+
             root.textChanged(text);
         }
     }

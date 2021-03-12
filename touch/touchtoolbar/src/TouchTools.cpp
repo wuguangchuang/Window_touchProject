@@ -1621,6 +1621,7 @@ void TouchTools::addTouchManagerTr(){
     tr("Failed to verify firmware");
     tr("Failed to download firmware");
     tr("IAP failed");
+    tr("Upgrade failed");
     tr("Firmware error");
     tr("Calibrate");
     tr("Settings");

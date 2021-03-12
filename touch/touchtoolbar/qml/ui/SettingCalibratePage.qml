@@ -155,6 +155,7 @@ Item {
                         topPadding: 10
                         bottomPadding: 15
                         text: qsTr("Number")
+                        font.pointSize: 14
                         horizontalAlignment: Text.left
                         Layout.preferredWidth:calibrationTextWidth
 
@@ -163,6 +164,7 @@ Item {
                         topPadding: 10
                         bottomPadding: 15
                         text: qsTr("target point %1").arg("X")
+                        font.pointSize: 14
                         horizontalAlignment: Text.Center
     //                    width: calibrationTextWidth
                         Layout.preferredWidth:calibrationTextWidth
@@ -172,6 +174,7 @@ Item {
                         topPadding: 10
                         bottomPadding: 15
                         text: qsTr("target point %1").arg("Y")
+                        font.pointSize: 14
                         horizontalAlignment: Text.Center
     //                    width: calibrationTextWidth
                         Layout.preferredWidth:calibrationTextWidth
@@ -181,6 +184,7 @@ Item {
                         topPadding: 10
                         bottomPadding: 15
                         text: qsTr("collect point %1").arg("X")
+                        font.pointSize: 14
                         horizontalAlignment: Text.Center
     //                    width: calibrationTextWidth
                         Layout.preferredWidth:calibrationTextWidth
@@ -190,6 +194,7 @@ Item {
                         topPadding: 10
                         bottomPadding: 15
                         text: qsTr("collect point %1").arg("Y")
+                        font.pointSize: 14
                         horizontalAlignment: Text.Center
     //                    width: calibrationTextWidth
                         Layout.preferredWidth:calibrationTextWidth
@@ -204,7 +209,7 @@ Item {
     }
 
        property real calibrationLabelHeight: 50
-       property real calibrationTextWidth: 110
+       property real calibrationTextWidth: 130
        Component {
            id: calibrationDataDelegate
            Row {

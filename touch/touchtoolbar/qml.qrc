@@ -36,5 +36,8 @@
         <file>qml/ui/MyComboBox.qml</file>
         <file>qml/ui/FineTuneComboBox.qml</file>
         <file>qml/ui/MyComboBoxLeft.qml</file>
+        <file>qml/ui/SettingConfigurationPage.qml</file>
+        <file>qml/ui/EditText.qml</file>
+        <file>qml/ui/EdgeStrech.qml</file>
     </qresource>
 </RCC>

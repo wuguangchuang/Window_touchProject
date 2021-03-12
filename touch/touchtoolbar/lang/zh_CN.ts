@@ -157,6 +157,24 @@
     </message>
 </context>
 <context>
+    <name>EdgeStrech</name>
+    <message>
+        <location filename="../qml/ui/EdgeStrech.qml" line="188"/>
+        <source>Edge stretch value:</source>
+        <translation>边缘拉伸参数：</translation>
+    </message>
+    <message>
+        <location filename="../qml/ui/EdgeStrech.qml" line="364"/>
+        <source>Painting board</source>
+        <translation>画图板</translation>
+    </message>
+    <message>
+        <location filename="../qml/ui/EdgeStrech.qml" line="390"/>
+        <source>Exit</source>
+        <translation>退出</translation>
+    </message>
+</context>
+<context>
     <name>FineTune</name>
     <message>
         <source>Please draw vertical lines on the left and right and horizontal lines up and down to tune.</source>
@@ -170,43 +188,43 @@
     <message>
         <location filename="../qml/ui/FineTune.qml" line="47"/>
         <location filename="../qml/ui/FineTune.qml" line="48"/>
-        <location filename="../qml/ui/FineTune.qml" line="989"/>
-        <location filename="../qml/ui/FineTune.qml" line="990"/>
+        <location filename="../qml/ui/FineTune.qml" line="1031"/>
+        <location filename="../qml/ui/FineTune.qml" line="1032"/>
         <source>Please draw a vertical line in this box to detect the offset position, and then click the left and right buttons to adjust.</source>
         <translation>请在此框中画一条垂直线以检测左右方向偏移位置，然后单击左右按钮进行调整。</translation>
     </message>
     <message>
         <location filename="../qml/ui/FineTune.qml" line="49"/>
         <location filename="../qml/ui/FineTune.qml" line="50"/>
-        <location filename="../qml/ui/FineTune.qml" line="991"/>
-        <location filename="../qml/ui/FineTune.qml" line="992"/>
+        <location filename="../qml/ui/FineTune.qml" line="1033"/>
+        <location filename="../qml/ui/FineTune.qml" line="1034"/>
         <source>Please draw a horizontal line in this box to detect the offset position, and then click the up and down buttons to adjust.</source>
         <translation>请在此框中画一条横线以检测南北方向偏移位置，然后单击上下按钮进行调整。</translation>
     </message>
     <message>
-        <location filename="../qml/ui/FineTune.qml" line="99"/>
-        <location filename="../qml/ui/FineTune.qml" line="843"/>
+        <location filename="../qml/ui/FineTune.qml" line="102"/>
+        <location filename="../qml/ui/FineTune.qml" line="882"/>
         <source>clear</source>
         <translation>清除</translation>
     </message>
     <message>
-        <location filename="../qml/ui/FineTune.qml" line="106"/>
-        <location filename="../qml/ui/FineTune.qml" line="812"/>
+        <location filename="../qml/ui/FineTune.qml" line="109"/>
+        <location filename="../qml/ui/FineTune.qml" line="850"/>
         <source>exit</source>
         <translation>退出</translation>
     </message>
     <message>
-        <location filename="../qml/ui/FineTune.qml" line="800"/>
+        <location filename="../qml/ui/FineTune.qml" line="838"/>
         <source>Exit the fine-tuning interface.</source>
         <translation>退出微调界面。</translation>
     </message>
     <message>
-        <location filename="../qml/ui/FineTune.qml" line="829"/>
+        <location filename="../qml/ui/FineTune.qml" line="868"/>
         <source>Clear line trace.</source>
         <translation>清除画线轨迹。</translation>
     </message>
     <message>
-        <location filename="../qml/ui/FineTune.qml" line="861"/>
+        <location filename="../qml/ui/FineTune.qml" line="900"/>
         <source>offest:</source>
         <translation>偏移量：</translation>
     </message>
@@ -331,16 +349,85 @@
         <translation>编号</translation>
     </message>
     <message>
-        <location filename="../qml/ui/SettingCalibratePage.qml" line="165"/>
-        <location filename="../qml/ui/SettingCalibratePage.qml" line="174"/>
+        <location filename="../qml/ui/SettingCalibratePage.qml" line="166"/>
+        <location filename="../qml/ui/SettingCalibratePage.qml" line="176"/>
         <source>target point %1</source>
         <translation>目标点 %1</translation>
     </message>
     <message>
-        <location filename="../qml/ui/SettingCalibratePage.qml" line="183"/>
-        <location filename="../qml/ui/SettingCalibratePage.qml" line="192"/>
+        <location filename="../qml/ui/SettingCalibratePage.qml" line="186"/>
+        <location filename="../qml/ui/SettingCalibratePage.qml" line="196"/>
         <source>collect point %1</source>
         <translation>采集点 %1</translation>
+    </message>
+</context>
+<context>
+    <name>SettingConfigurationPage</name>
+    <message>
+        <location filename="../qml/ui/SettingConfigurationPage.qml" line="36"/>
+        <source>Edge strech</source>
+        <translation>边缘拉伸</translation>
+    </message>
+    <message>
+        <location filename="../qml/ui/SettingConfigurationPage.qml" line="38"/>
+        <location filename="../qml/ui/SettingConfigurationPage.qml" line="62"/>
+        <source>Set the edge stretch value to the firmware.</source>
+        <translation>设置边缘拉伸参数到固件中。</translation>
+    </message>
+    <message>
+        <location filename="../qml/ui/SettingConfigurationPage.qml" line="48"/>
+        <source>Refresh</source>
+        <translation>刷新</translation>
+    </message>
+    <message>
+        <location filename="../qml/ui/SettingConfigurationPage.qml" line="49"/>
+        <source>Refresh edge stretch value.</source>
+        <translation>刷新边缘拉伸参数。</translation>
+    </message>
+    <message>
+        <location filename="../qml/ui/SettingConfigurationPage.qml" line="60"/>
+        <source>Apply</source>
+        <translation>设置</translation>
+    </message>
+    <message>
+        <location filename="../qml/ui/SettingConfigurationPage.qml" line="73"/>
+        <source>Factory reset</source>
+        <translation>恢复出厂</translation>
+    </message>
+    <message>
+        <location filename="../qml/ui/SettingConfigurationPage.qml" line="74"/>
+        <source>Restore factory edge stretch value.</source>
+        <translation>恢复出厂边缘拉伸参数。</translation>
+    </message>
+    <message>
+        <location filename="../qml/ui/SettingConfigurationPage.qml" line="96"/>
+        <source>Number:</source>
+        <translation>编号：</translation>
+    </message>
+    <message>
+        <location filename="../qml/ui/SettingConfigurationPage.qml" line="103"/>
+        <source>0</source>
+        <translation>0</translation>
+    </message>
+    <message>
+        <location filename="../qml/ui/SettingConfigurationPage.qml" line="116"/>
+        <source>1</source>
+        <translation>1</translation>
+    </message>
+    <message>
+        <location filename="../qml/ui/SettingConfigurationPage.qml" line="129"/>
+        <source>2</source>
+        <translation>2</translation>
+    </message>
+    <message>
+        <location filename="../qml/ui/SettingConfigurationPage.qml" line="142"/>
+        <source>3</source>
+        <translation>3</translation>
+    </message>
+    <message>
+        <location filename="../qml/ui/SettingConfigurationPage.qml" line="168"/>
+        <source>Edge stretch value:</source>
+        <translation>边缘拉伸参数：</translation>
     </message>
 </context>
 <context>
@@ -351,12 +438,12 @@
         <translation>USB坐标模式</translation>
     </message>
     <message>
-        <location filename="../qml/ui/SettingCoordsPage.qml" line="89"/>
+        <location filename="../qml/ui/SettingCoordsPage.qml" line="87"/>
         <source>simulate mouse</source>
         <translation>模拟鼠标</translation>
     </message>
     <message>
-        <location filename="../qml/ui/SettingCoordsPage.qml" line="112"/>
+        <location filename="../qml/ui/SettingCoordsPage.qml" line="111"/>
         <source>multitouch</source>
         <translation>多点触摸</translation>
     </message>
@@ -366,32 +453,32 @@
         <translation>UART坐标模式</translation>
     </message>
     <message>
-        <location filename="../qml/ui/SettingCoordsPage.qml" line="193"/>
+        <location filename="../qml/ui/SettingCoordsPage.qml" line="194"/>
         <source>exclude touch size</source>
         <translation>不包含触摸点大小的多点触摸</translation>
     </message>
     <message>
-        <location filename="../qml/ui/SettingCoordsPage.qml" line="200"/>
+        <location filename="../qml/ui/SettingCoordsPage.qml" line="202"/>
         <source>include touch size</source>
         <translation>包含触摸点大小的多点触摸</translation>
     </message>
     <message>
-        <location filename="../qml/ui/SettingCoordsPage.qml" line="251"/>
+        <location filename="../qml/ui/SettingCoordsPage.qml" line="254"/>
         <source>USB coordinate channel switch.</source>
         <translation>USB 坐标通道的开关。</translation>
     </message>
     <message>
-        <location filename="../qml/ui/SettingCoordsPage.qml" line="270"/>
+        <location filename="../qml/ui/SettingCoordsPage.qml" line="273"/>
         <source>Switch to simulated mouse mode.</source>
         <translation>切换为模拟鼠标模式。</translation>
     </message>
     <message>
-        <location filename="../qml/ui/SettingCoordsPage.qml" line="288"/>
+        <location filename="../qml/ui/SettingCoordsPage.qml" line="291"/>
         <source>Switch to multi-touch mode.It will take effect when the device supports multi-touch.</source>
         <translation>切换为多点触摸模式，当设备支持多点触摸时才生效。</translation>
     </message>
     <message>
-        <location filename="../qml/ui/SettingCoordsPage.qml" line="307"/>
+        <location filename="../qml/ui/SettingCoordsPage.qml" line="310"/>
         <source>Serial coordinate channel switch.</source>
         <translation>UART坐标模式的开关。</translation>
     </message>
@@ -399,38 +486,43 @@
 <context>
     <name>SettingPage</name>
     <message>
-        <location filename="../qml/ui/SettingPage.qml" line="483"/>
+        <location filename="../qml/ui/SettingPage.qml" line="507"/>
         <source>Coordinate</source>
         <translation>坐标</translation>
     </message>
     <message>
-        <location filename="../qml/ui/SettingPage.qml" line="497"/>
+        <location filename="../qml/ui/SettingPage.qml" line="521"/>
         <source>Spin</source>
         <translation>旋转</translation>
     </message>
     <message>
-        <location filename="../qml/ui/SettingPage.qml" line="511"/>
+        <location filename="../qml/ui/SettingPage.qml" line="535"/>
         <source>Calibrate</source>
         <translation>校准</translation>
     </message>
     <message>
-        <location filename="../qml/ui/SettingPage.qml" line="523"/>
+        <location filename="../qml/ui/SettingPage.qml" line="547"/>
+        <source>Configuration</source>
+        <translation>配置</translation>
+    </message>
+    <message>
+        <location filename="../qml/ui/SettingPage.qml" line="559"/>
         <source>mode</source>
         <translation>更多</translation>
     </message>
     <message>
-        <location filename="../qml/ui/SettingPage.qml" line="538"/>
+        <location filename="../qml/ui/SettingPage.qml" line="574"/>
         <source>System display direction</source>
         <translation>系统显示方向</translation>
     </message>
     <message>
-        <location filename="../qml/ui/SettingPage.qml" line="539"/>
+        <location filename="../qml/ui/SettingPage.qml" line="575"/>
         <source>System display orientation is inconsistent with firmware screen orientation.The current display direction of the system is %1°.
 </source>
         <translation>固件获取的屏幕显示方向与系统的显示方向不一致。当前系统的显示方向为%1°。</translation>
     </message>
     <message>
-        <location filename="../qml/ui/SettingPage.qml" line="540"/>
+        <location filename="../qml/ui/SettingPage.qml" line="576"/>
         <source>Is the firmware screen display orientation set to the system display orientation?</source>
         <translation>是否设置为固件屏幕显示方向为系统的显示方向？</translation>
     </message>
@@ -452,90 +544,90 @@
         <translation>触摸框翻转</translation>
     </message>
     <message>
-        <location filename="../qml/ui/SettingSpinPage.qml" line="46"/>
+        <location filename="../qml/ui/SettingSpinPage.qml" line="47"/>
         <source>turn over X</source>
         <translation>X轴翻转</translation>
     </message>
     <message>
-        <location filename="../qml/ui/SettingSpinPage.qml" line="72"/>
+        <location filename="../qml/ui/SettingSpinPage.qml" line="74"/>
         <source>turn over Y</source>
         <translation>Y轴翻转</translation>
     </message>
     <message>
-        <location filename="../qml/ui/SettingSpinPage.qml" line="98"/>
-        <location filename="../qml/ui/SettingSpinPage.qml" line="238"/>
-        <location filename="../qml/ui/SettingSpinPage.qml" line="377"/>
+        <location filename="../qml/ui/SettingSpinPage.qml" line="101"/>
+        <location filename="../qml/ui/SettingSpinPage.qml" line="246"/>
+        <location filename="../qml/ui/SettingSpinPage.qml" line="390"/>
         <source>factory reset</source>
         <translation>恢复出厂</translation>
     </message>
     <message>
-        <location filename="../qml/ui/SettingSpinPage.qml" line="100"/>
+        <location filename="../qml/ui/SettingSpinPage.qml" line="103"/>
         <source>Restore factory touch frame flip parameters.</source>
         <translation>恢复出厂触摸框翻转参数。</translation>
     </message>
     <message>
-        <location filename="../qml/ui/SettingSpinPage.qml" line="136"/>
+        <location filename="../qml/ui/SettingSpinPage.qml" line="139"/>
         <source>touch clockwise rotation</source>
         <translation>触摸框顺时针旋转</translation>
     </message>
     <message>
-        <location filename="../qml/ui/SettingSpinPage.qml" line="240"/>
+        <location filename="../qml/ui/SettingSpinPage.qml" line="248"/>
         <source>Restore factory touch frame to rotate clockwise parameters.</source>
         <translation>恢复出厂触摸框顺时针旋转参数。</translation>
     </message>
     <message>
-        <location filename="../qml/ui/SettingSpinPage.qml" line="276"/>
+        <location filename="../qml/ui/SettingSpinPage.qml" line="284"/>
         <source>screen clockwise rotation</source>
         <translation>屏幕顺时针旋转</translation>
     </message>
     <message>
-        <location filename="../qml/ui/SettingSpinPage.qml" line="379"/>
+        <location filename="../qml/ui/SettingSpinPage.qml" line="392"/>
         <source>Restore factory screen clockwise rotation parameters.</source>
         <translation>恢复出厂屏幕顺时针旋转参数。</translation>
     </message>
     <message>
-        <location filename="../qml/ui/SettingSpinPage.qml" line="409"/>
-        <location filename="../qml/ui/SettingSpinPage.qml" line="428"/>
+        <location filename="../qml/ui/SettingSpinPage.qml" line="422"/>
+        <location filename="../qml/ui/SettingSpinPage.qml" line="441"/>
         <source>Keep the value of the y axis unchanged,and flip the value of the x axis.</source>
         <translation>保持y轴的值不变，x轴的值发生翻转。</translation>
     </message>
     <message>
-        <location filename="../qml/ui/SettingSpinPage.qml" line="448"/>
+        <location filename="../qml/ui/SettingSpinPage.qml" line="461"/>
         <source>0° means no rotation, this value is the default value of the origin of the touch frame.</source>
         <translation>0°表示不旋转，该值为触摸框原点的默认值。</translation>
     </message>
     <message>
-        <location filename="../qml/ui/SettingSpinPage.qml" line="467"/>
+        <location filename="../qml/ui/SettingSpinPage.qml" line="480"/>
         <source>Rotate 90° relative to the origin of the touch frame.</source>
         <translation>相对于触摸框的原点旋转90°。</translation>
     </message>
     <message>
-        <location filename="../qml/ui/SettingSpinPage.qml" line="486"/>
+        <location filename="../qml/ui/SettingSpinPage.qml" line="499"/>
         <source>Rotate 180° relative to the origin of the touch frame.</source>
         <translation>相对于触摸框的原点旋转180°。</translation>
     </message>
     <message>
-        <location filename="../qml/ui/SettingSpinPage.qml" line="505"/>
+        <location filename="../qml/ui/SettingSpinPage.qml" line="518"/>
         <source>Rotate 270° relative to the origin of the touch frame.</source>
         <translation>相对于触摸框的原点旋转270°。</translation>
     </message>
     <message>
-        <location filename="../qml/ui/SettingSpinPage.qml" line="524"/>
+        <location filename="../qml/ui/SettingSpinPage.qml" line="537"/>
         <source>0° means no rotation, this value is the default value of the screen origin.</source>
         <translation>0°表示不旋转，此值为屏幕原点的默认值。</translation>
     </message>
     <message>
-        <location filename="../qml/ui/SettingSpinPage.qml" line="543"/>
+        <location filename="../qml/ui/SettingSpinPage.qml" line="556"/>
         <source>Rotate 90° relative to the origin of the screen.</source>
         <translation>相对于屏幕原点旋转90°。</translation>
     </message>
     <message>
-        <location filename="../qml/ui/SettingSpinPage.qml" line="562"/>
+        <location filename="../qml/ui/SettingSpinPage.qml" line="575"/>
         <source>Rotate 180° relative to the origin of the screen.</source>
         <translation>相对于屏幕原点旋转180°。</translation>
     </message>
     <message>
-        <location filename="../qml/ui/SettingSpinPage.qml" line="581"/>
+        <location filename="../qml/ui/SettingSpinPage.qml" line="594"/>
         <source>Rotate 270° relative to the origin of the screen.</source>
         <translation>相对于屏幕原点旋转270°。</translation>
     </message>
@@ -979,47 +1071,47 @@
         <translation>IAP失败</translation>
     </message>
     <message>
-        <location filename="../src/TouchTools.cpp" line="1624"/>
+        <location filename="../src/TouchTools.cpp" line="1625"/>
         <source>Firmware error</source>
         <translation>固件出错</translation>
     </message>
     <message>
-        <location filename="../src/TouchTools.cpp" line="1625"/>
+        <location filename="../src/TouchTools.cpp" line="1626"/>
         <source>Calibrate</source>
         <translation>校准</translation>
     </message>
     <message>
-        <location filename="../src/TouchTools.cpp" line="1626"/>
+        <location filename="../src/TouchTools.cpp" line="1627"/>
         <source>Settings</source>
         <translation>设置</translation>
     </message>
     <message>
-        <location filename="../src/TouchTools.cpp" line="1627"/>
+        <location filename="../src/TouchTools.cpp" line="1628"/>
         <source>About</source>
         <translation>关于</translation>
     </message>
     <message>
-        <location filename="../src/TouchTools.cpp" line="1628"/>
+        <location filename="../src/TouchTools.cpp" line="1629"/>
         <source>Mode</source>
         <translation>更多</translation>
     </message>
     <message>
-        <location filename="../src/TouchTools.cpp" line="1629"/>
+        <location filename="../src/TouchTools.cpp" line="1630"/>
         <source>Open</source>
         <translation>打开软件</translation>
     </message>
     <message>
-        <location filename="../src/TouchTools.cpp" line="1630"/>
+        <location filename="../src/TouchTools.cpp" line="1631"/>
         <source>Exit</source>
         <translation>退出</translation>
     </message>
     <message>
-        <location filename="../src/TouchTools.cpp" line="1631"/>
+        <location filename="../src/TouchTools.cpp" line="1632"/>
         <source>Chart</source>
         <translation>信号图</translation>
     </message>
     <message>
-        <location filename="../src/TouchTools.cpp" line="1632"/>
+        <location filename="../src/TouchTools.cpp" line="1633"/>
         <source>Init signal error</source>
         <translation>初始化信号错误</translation>
     </message>
@@ -1078,6 +1170,7 @@
     <message>
         <location filename="../src/TouchTools.cpp" line="1529"/>
         <location filename="../src/TouchTools.cpp" line="1530"/>
+        <location filename="../src/TouchTools.cpp" line="1624"/>
         <source>Upgrade failed</source>
         <translation>升级失败</translation>
     </message>
@@ -1109,7 +1202,7 @@
         <location filename="../main.qml" line="164"/>
         <location filename="../main.qml" line="212"/>
         <location filename="../main.qml" line="237"/>
-        <location filename="../main.qml" line="1544"/>
+        <location filename="../main.qml" line="1528"/>
         <source>Upgrade</source>
         <translation>升级</translation>
     </message>
@@ -1120,8 +1213,8 @@
     </message>
     <message>
         <location filename="../main.qml" line="450"/>
-        <location filename="../main.qml" line="803"/>
-        <location filename="../main.qml" line="1474"/>
+        <location filename="../main.qml" line="804"/>
+        <location filename="../main.qml" line="1387"/>
         <source>Select upgrade file</source>
         <translation>选择升级文件</translation>
     </message>
@@ -1139,21 +1232,21 @@
     </message>
     <message>
         <location filename="../main.qml" line="86"/>
-        <location filename="../main.qml" line="599"/>
-        <location filename="../main.qml" line="1063"/>
-        <location filename="../main.qml" line="1065"/>
-        <location filename="../main.qml" line="1077"/>
-        <location filename="../main.qml" line="2305"/>
+        <location filename="../main.qml" line="600"/>
+        <location filename="../main.qml" line="1064"/>
+        <location filename="../main.qml" line="1066"/>
+        <location filename="../main.qml" line="1078"/>
+        <location filename="../main.qml" line="2297"/>
         <source>Test</source>
         <translation>测试</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="1319"/>
+        <location filename="../main.qml" line="1317"/>
         <source>Cancel test</source>
         <translation>取消测试</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="1123"/>
+        <location filename="../main.qml" line="1124"/>
         <source>Signal chart</source>
         <translation>信号图</translation>
     </message>
@@ -1162,12 +1255,12 @@
         <translation type="vanished">加速老化</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="1355"/>
+        <location filename="../main.qml" line="1353"/>
         <source>stop accelerate aging</source>
         <translation>停止加速老化</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="1580"/>
+        <location filename="../main.qml" line="1555"/>
         <source>Paint</source>
         <translation>全屏画图</translation>
     </message>
@@ -1180,17 +1273,18 @@
         <translation type="vanished">关于</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="1543"/>
+        <location filename="../main.qml" line="1482"/>
+        <location filename="../main.qml" line="1527"/>
         <source>Accelerate aging</source>
         <translation>加速老化</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="1600"/>
+        <location filename="../main.qml" line="1575"/>
         <source>Settings</source>
         <translation>设置</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="1668"/>
+        <location filename="../main.qml" line="1643"/>
         <source>About</source>
         <translation>关于</translation>
     </message>
@@ -1199,19 +1293,19 @@
         <translation type="vanished">最多可以存放10条固件</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="1949"/>
+        <location filename="../main.qml" line="1941"/>
         <source>bin file</source>
         <translation>Bin文件</translation>
     </message>
     <message>
         <location filename="../main.qml" line="103"/>
-        <location filename="../main.qml" line="2543"/>
+        <location filename="../main.qml" line="2535"/>
         <source>No connected devices!</source>
         <translation>没找到连接的设备!</translation>
     </message>
     <message>
         <location filename="../main.qml" line="473"/>
-        <location filename="../main.qml" line="1871"/>
+        <location filename="../main.qml" line="1863"/>
         <source>Please unlock and then select firmware</source>
         <translation>请先解锁然后在选择固件</translation>
     </message>
@@ -1219,30 +1313,30 @@
         <location filename="../main.qml" line="508"/>
         <location filename="../main.qml" line="514"/>
         <location filename="../main.qml" line="533"/>
-        <location filename="../main.qml" line="1884"/>
+        <location filename="../main.qml" line="1876"/>
         <source>clear history(up to ten)</source>
         <translation>清空历史（最多存放10个文件）</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="552"/>
+        <location filename="../main.qml" line="551"/>
         <source>Used to lock the firmware.</source>
         <translation>被用于固件上锁。</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="552"/>
+        <location filename="../main.qml" line="551"/>
         <source>Cannot select firmware when locked.</source>
         <translation>当处于上锁状态时，不允许选择以及添加固件。</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="630"/>
-        <location filename="../main.qml" line="723"/>
-        <location filename="../main.qml" line="2238"/>
+        <location filename="../main.qml" line="631"/>
+        <location filename="../main.qml" line="724"/>
+        <location filename="../main.qml" line="2230"/>
         <source>Number of restarts:</source>
         <translation>重启次数：</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="1066"/>
-        <location filename="../main.qml" line="1081"/>
+        <location filename="../main.qml" line="1067"/>
+        <location filename="../main.qml" line="1082"/>
         <source>Violence upgrade</source>
         <translation>连续升级</translation>
     </message>
@@ -1251,42 +1345,42 @@
         <translation type="vanished">连续测试</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="703"/>
-        <location filename="../main.qml" line="2284"/>
-        <location filename="../main.qml" line="2350"/>
+        <location filename="../main.qml" line="704"/>
+        <location filename="../main.qml" line="2276"/>
+        <location filename="../main.qml" line="2342"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="625"/>
-        <location filename="../main.qml" line="711"/>
-        <location filename="../main.qml" line="2222"/>
-        <location filename="../main.qml" line="2228"/>
+        <location filename="../main.qml" line="626"/>
+        <location filename="../main.qml" line="712"/>
+        <location filename="../main.qml" line="2214"/>
+        <location filename="../main.qml" line="2220"/>
         <source>Number of successful upgrades: </source>
         <translation>升级成功的次数：</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="626"/>
-        <location filename="../main.qml" line="712"/>
-        <location filename="../main.qml" line="2223"/>
-        <location filename="../main.qml" line="2229"/>
+        <location filename="../main.qml" line="627"/>
+        <location filename="../main.qml" line="713"/>
+        <location filename="../main.qml" line="2215"/>
+        <location filename="../main.qml" line="2221"/>
         <source>Number of failed upgrades: </source>
         <translation>升级失败的次数：</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="1067"/>
-        <location filename="../main.qml" line="1084"/>
-        <location filename="../main.qml" line="2311"/>
+        <location filename="../main.qml" line="1068"/>
+        <location filename="../main.qml" line="1085"/>
+        <location filename="../main.qml" line="2303"/>
         <source>Continuous restart</source>
         <translation>连续重启</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="1221"/>
+        <location filename="../main.qml" line="1222"/>
         <source>Batch</source>
         <translation>批处理</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="1876"/>
+        <location filename="../main.qml" line="1868"/>
         <source>Unable to change firmware while upgrading</source>
         <translation>升级过程中无法更改固件</translation>
     </message>
@@ -1295,42 +1389,40 @@
         <translation type="vanished">开始老化</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="1298"/>
+        <location filename="../main.qml" line="1296"/>
         <source>Stop aging</source>
         <translation>停止老化</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="1312"/>
+        <location filename="../main.qml" line="1310"/>
         <source>Cancel upgrade</source>
         <translation>取消升级</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="1362"/>
+        <location filename="../main.qml" line="1360"/>
         <source>Stop upgrading. New connected devices will no longer be upgraded.</source>
         <translation>停止升级。新连接设备将不再升级。</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="1367"/>
+        <location filename="../main.qml" line="1365"/>
         <source>Stop testing. New connected devices will no longer be tested.</source>
         <translation>停止测试，新连接设备将不再测试。</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="1236"/>
-        <location filename="../main.qml" line="1416"/>
-        <location filename="../main.qml" line="1563"/>
-        <location filename="../main.qml" line="1841"/>
+        <location filename="../main.qml" line="1237"/>
+        <location filename="../main.qml" line="1494"/>
+        <location filename="../main.qml" line="1833"/>
         <source>Start aging</source>
         <translation>开始老化</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="1424"/>
-        <location filename="../main.qml" line="1845"/>
+        <location filename="../main.qml" line="1502"/>
+        <location filename="../main.qml" line="1837"/>
         <source>Start upgrade</source>
         <translation>开始升级</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="1431"/>
-        <location filename="../main.qml" line="1850"/>
+        <location filename="../main.qml" line="1842"/>
         <source>Start test</source>
         <translation>开始测试</translation>
     </message>
@@ -1339,23 +1431,23 @@
         <translation type="vanished">老化</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="1949"/>
-        <location filename="../main.qml" line="1969"/>
+        <location filename="../main.qml" line="1941"/>
+        <location filename="../main.qml" line="1961"/>
         <source>all files</source>
         <translation>所有文件</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="1969"/>
+        <location filename="../main.qml" line="1961"/>
         <source>json file</source>
         <translation>json文件</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="2224"/>
+        <location filename="../main.qml" line="2216"/>
         <source>The last upgrade failed because: </source>
         <translation>最后一次升级失败原因：</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="2308"/>
+        <location filename="../main.qml" line="2300"/>
         <source>Volience upgrade</source>
         <translation>连续升级</translation>
     </message>
@@ -1364,29 +1456,29 @@
         <translation type="vanished">连续测试</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="2716"/>
+        <location filename="../main.qml" line="2708"/>
         <source>Saved successfully</source>
         <translation>保存成功</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="2844"/>
+        <location filename="../main.qml" line="2836"/>
         <source>Upgrading! Please do not close the program</source>
         <translation>正在升级!请不要关闭程序</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="2848"/>
+        <location filename="../main.qml" line="2840"/>
         <source>Testing! Please do not close the program</source>
         <translation>正在测试!请不要关闭程序</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="2878"/>
-        <location filename="../main.qml" line="2924"/>
+        <location filename="../main.qml" line="2870"/>
+        <location filename="../main.qml" line="2920"/>
         <source>During upgrade,don&apos;t switch infterface</source>
         <translation>正在升级中，请勿切换到其他页面！</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="2883"/>
-        <location filename="../main.qml" line="2929"/>
+        <location filename="../main.qml" line="2875"/>
+        <location filename="../main.qml" line="2925"/>
         <source>During test,don&apos;t switch infterface</source>
         <translation>正在测试中，请勿切换到其他页面！</translation>
     </message>

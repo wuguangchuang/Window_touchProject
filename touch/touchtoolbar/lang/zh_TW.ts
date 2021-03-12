@@ -159,6 +159,21 @@
     </message>
 </context>
 <context>
+    <name>EdgeStrech</name>
+    <message>
+        <source>Edge stretch value:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Painting board</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Exit</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>FineTune</name>
     <message>
         <source>clear</source>
@@ -300,6 +315,61 @@
     </message>
 </context>
 <context>
+    <name>SettingConfigurationPage</name>
+    <message>
+        <source>Edge strech</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Set the edge stretch value to the firmware.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Refresh</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Refresh edge stretch value.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Apply</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Factory reset</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Restore factory edge stretch value.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Number:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>0</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>3</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Edge stretch value:</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>SettingCoordsPage</name>
     <message>
         <source>usb coordinate mode</source>
@@ -371,6 +441,10 @@
     </message>
     <message>
         <source>Is the firmware screen display orientation set to the system display orientation?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Configuration</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

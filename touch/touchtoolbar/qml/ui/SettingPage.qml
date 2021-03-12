@@ -41,6 +41,7 @@ Item{
     property var calibrationButtonRow:settingCalibratePage.calibrationButtonRow
     property var caliDataModel: settingCalibratePage.caliDataModel
 
+    //可配置参数界面
 
 
     id: root
@@ -409,7 +410,22 @@ Item{
 
         }
         Rectangle{
-            //currentIndex === 3 : 更多设置页
+            //currentIndex === 3 : 配置参数页
+            SettingConfigurationPage{
+                id:settingConfigurationPage
+                anchors.top: parent.top
+                anchors.topMargin: 2 * defaultMargin
+                anchors.left: parent.left
+                anchors.leftMargin: 3 * defaultMargin
+                anchors.fill: parent
+
+                onEnterEdgeStrech: {
+                    mainPage.enterEdgeStrech();
+                }
+            }
+        }
+        Rectangle{
+            //currentIndex === 4 : 更多设置页
 //            gradient: Gradient{
 //                GradientStop{position: 0.0;color: "#f6f6f6"}
 //                GradientStop{position: 1.0;color: "#e3ddf9"}
@@ -451,6 +467,14 @@ Item{
                 settingCoordsPage.visible = false;
                 settingSpinPage.visible = false;
                 settingCalibratePage.visible = false;
+                settingConfigurationPage.visible = true
+                modeSettingPage.visible = false;
+                break;
+            case 4:
+                settingCoordsPage.visible = false;
+                settingSpinPage.visible = false;
+                settingCalibratePage.visible = false;
+                settingConfigurationPage.visible = false
                 modeSettingPage.visible = true;
                 break;
             }
@@ -466,7 +490,7 @@ Item{
 
         anchors.top: parent.top
 
-        width: 150
+        width: 180
         height: parent.height;
         color: "#dedaef"
         ColumnLayout{
@@ -515,15 +539,27 @@ Item{
                 }
             }
             SettingMyToolButton{
-                id:modeSetting
+                id:configurationBtn
                 width: parent.width
                 Layout.preferredHeight: listBtnheight
                 Layout.fillWidth: true
                 what:3
-                textStr:qsTr("mode")
+                textStr:qsTr("Configuration")
                 onClicked: {
                     swipeView.currentIndex = 3;
                     checkBtn = 3;
+                }
+            }
+            SettingMyToolButton{
+                id:modeSetting
+                width: parent.width
+                Layout.preferredHeight: listBtnheight
+                Layout.fillWidth: true
+                what:4
+                textStr:qsTr("mode")
+                onClicked: {
+                    swipeView.currentIndex = 4;
+                    checkBtn = 4;
                 }
             }
 

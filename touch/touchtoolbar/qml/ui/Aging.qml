@@ -173,8 +173,9 @@ Item {
                            (result ===  batchCancel? cError :"red"))))
                 }
                 Text {
-                    font.pointSize: itemWidth / ((result ===  batchSuccess ||
-                                                 result === deviceFinished || functionIndex === functionAging)? 12 : 18)
+//                    font.pointSize: (result ===  batchSuccess ||
+//                                                 result === deviceFinished || functionIndex === functionAging)? 10:8
+                    font.pixelSize: itemWidth / 10
                     text: info
                     wrapMode: Text.Wrap
                     color: (result === deviceFinished ? cFinished :

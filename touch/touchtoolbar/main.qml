@@ -1264,7 +1264,7 @@ Window {
                                 Layout.preferredHeight: batchChooseFile.height
                                 color: "#FFFFFF"
                                 text: agingPageTab.batchWorkBtnStr
-                                font.pointSize: 15
+                                font.pointSize: 14
                                 verticalAlignment: Text.AlignVCenter
                                 horizontalAlignment: Text.AlignHCenter
                             }
@@ -1385,6 +1385,7 @@ Window {
                                     Layout.preferredHeight: batchChooseFile.height
                                     color: "#FFFFFF"
                                     text: qsTr("Select upgrade file")
+                                    font.pointSize: 14
                                     verticalAlignment: Text.AlignVCenter
                                     horizontalAlignment: Text.AlignHCenter
                                 }
@@ -1422,7 +1423,7 @@ Window {
                                 id: batchUpgradeFileText
                                 anchors.fill: parent
                                 elide: Text.ElideLeft // 超出范围左边使用...表示
-                                font.pointSize: 15
+                                font.pointSize: 14
                                 verticalAlignment: Text.AlignVCenter
 
                             }
@@ -1533,7 +1534,8 @@ Window {
 //                        batchComboBox.currentIndex = 0;
                         agingPageTab.functionIndex = batchComboBox.currentIndex;
                         agingPage.functionIndex = batchComboBox.currentIndex;
-                        batchWorkBtnStr = qsTr("Start aging");
+//                        batchWorkBtnStr = qsTr("Start aging");
+                        batchWorkBtnStr = batchText.get(batchComboBox.currentIndex).text;
                         batchRunning = false;
                         initBatchDeviceInfo();
                     }
@@ -1767,6 +1769,23 @@ Window {
                 }
             }
         }
+
+        EdgeStrech{
+            id:edgeStrech
+            x: 0
+            y: 0
+            z: 1
+
+            width: Screen.width
+            height: Screen.height
+            focus: false
+            visible: false
+
+            onExitEdgeStrech: {
+                mainPage.exitEdgeStrech();
+            }
+        }
+
 
 
     }
@@ -2882,12 +2901,16 @@ QMessageBox::Critical	3	an icon indicating that the message represents a critica
     }
     //界面跳转
     /*
-    * 设置界面: 0
-    * 校准界面: 1
-    * 微调校准数据界面: 2*/
-    property int settingsPage:0
-    property int calibrationPage: 1
-    property int fineTunePage:    2
+    * 设置界面:         0
+    * 校准界面:         1
+    * 微调校准数据界面:   2
+    * 边缘拉伸界面：     3
+    */
+    property int settingsPage:      0
+    property int calibrationPage:   1
+    property int fineTunePage:      2
+    property int edgeStrechPage:    3
+    //跳转的界面
     property int enterInterface:0
 
      function enterCalibrate()
@@ -2941,7 +2964,24 @@ QMessageBox::Critical	3	an icon indicating that the message represents a critica
          fineTune.visible = false;
          mainPage.visibility = lastVisibility;
          settingsTabId.settingsPage.visible = true;
+         settingsTabId.settingsPage.focus = true;
          enterInterface = settingsPage;
+     }
+
+     function enterEdgeStrech(){
+         edgeStrech.visible = true;
+         lastVisibility = mainPage.visibility;
+         showFullScreen();
+         settingsTabId.settingsPage.visible = false;
+         enterInterface = edgeStrechPage;
+     }
+     function exitEdgeStrech(){
+         edgeStrech.focus = false;
+         edgeStrech.visible = false;
+         mainPage.visibility = lastVisibility;
+         settingsTabId.settingsPage.visible = true;
+         settingsTabId.settingsPage.focus = true;
+         enterInterface = edgeStrechPage;
      }
      //批处理
      function initBatchDeviceInfo()

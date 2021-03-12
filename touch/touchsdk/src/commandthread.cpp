@@ -94,7 +94,7 @@ void CommandThread::DeviceCommunicationRead::run()
             j = 0;
         }
         count++;
-        if(count % 2000 == 0)
+        if(count % 100 == 0)
         {
             QThread::msleep(1);
             count = 0;

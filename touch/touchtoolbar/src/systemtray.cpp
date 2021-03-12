@@ -78,7 +78,7 @@ void SystemTray::initMidAction()
     layout1->setContentsMargins(5,0,5,10);
 
     chartBtn = new QToolButton();
-    chartBtn->setIcon(QIcon(":/dialog/images/mode.png"));
+    chartBtn->setIcon(QIcon(":/dialog/images/signal_chart.png"));
     chartBtn->setIconSize(QSize(50,50));
     chartBtn->setText(translator->getTr("Chart"));
     chartBtn->setAutoRaise(true);

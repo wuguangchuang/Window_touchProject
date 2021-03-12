@@ -7,7 +7,7 @@ import QtQuick.Layouts 1.3
 
 Item {
     property int  defaultSpacing: 10
-    property int labelWidth:200
+    property int labelWidth:250
 
     property var xMirrorCheckBox:xMirrorCheckBox
     property var yMirrorCheckBox:yMirrorCheckBox
@@ -34,6 +34,7 @@ Item {
                 }
                 Label {
                     text: qsTr("turn over") + "(3)"
+                    font.pointSize: 14
                     Layout.preferredHeight:defaultSpacing
                     Layout.preferredWidth: labelWidth
     //                width: labelWidth
@@ -44,6 +45,7 @@ Item {
 
                 CheckBox {
                     text: qsTr("turn over X")
+                    font.pointSize: 14
                     id: xMirrorCheckBox
                     anchors.rightMargin: 10
                     onCheckedChanged: {
@@ -70,6 +72,7 @@ Item {
                 CheckBox {
                     id: yMirrorCheckBox
                     text: qsTr("turn over Y")
+                    font.pointSize: 14
                     anchors.rightMargin: 10
                     onCheckedChanged: {
                         if (refreshing) return;
@@ -118,7 +121,7 @@ Item {
                 onCheckedButtonChanged: {
                     if (refreshing) return;
                     console.log("触摸框旋转");
-                    touch.setSettings("touchRotation", checkedButton.mode)
+                    touch.setSettings("touchRotation", checkedButton.mode);
                 }
             }
             RowLayout {
@@ -138,12 +141,14 @@ Item {
                     Layout.preferredWidth: labelWidth
                     verticalAlignment: Text.AlignVCenter
                     anchors.verticalCenter: parent.verticalCenter
+                    font.pointSize: 14
                 }
 
                 RadioButton {
                     id:touchSpin0
                     property int mode: 0
                     text: "0°"
+                    font.pointSize: 14
                     checked: true
                     ButtonGroup.group: touchRotationGroup
                     anchors.rightMargin: 10
@@ -168,6 +173,7 @@ Item {
                     id:touchSpin1
                     property int mode: 1
                     text: "90°"
+                    font.pointSize: 14
                     ButtonGroup.group: touchRotationGroup
                     anchors.rightMargin: 10
 
@@ -192,6 +198,7 @@ Item {
                     id:touchSpin2
                     property int mode: 2
                     text: "180°"
+                    font.pointSize: 14
                     ButtonGroup.group: touchRotationGroup
                     anchors.rightMargin: 10
                     MouseArea{
@@ -215,6 +222,7 @@ Item {
                     id:touchSpin3
                     property int mode: 3
                     text: "270°"
+                    font.pointSize: 14
                     ButtonGroup.group: touchRotationGroup
                     anchors.rightMargin: 10
                     MouseArea{
@@ -274,6 +282,7 @@ Item {
                 }
                 Label {
                     text: qsTr("screen clockwise rotation") + "(5)"
+                    font.pointSize: 14
                     Layout.preferredHeight:defaultSpacing
                     Layout.preferredWidth: labelWidth
                     verticalAlignment: Text.AlignVCenter
@@ -284,6 +293,7 @@ Item {
                     id:screenSpin0
                     property int mode: 0
                     text: "0°"
+                    font.pointSize: 14
                     checked: true
                     ButtonGroup.group: screenRotationGroup
                     anchors.rightMargin: 10
@@ -308,6 +318,7 @@ Item {
                     id:screenSpin1
                     property int mode: 1
                     text: "90°"
+                    font.pointSize: 14
                     ButtonGroup.group: screenRotationGroup
                     anchors.rightMargin: 10
                     MouseArea{
@@ -331,6 +342,7 @@ Item {
                     id:screenSpin2
                     property int mode: 2
                     text: "180°"
+                    font.pointSize: 14
                     ButtonGroup.group: screenRotationGroup
                     anchors.rightMargin: 10
                     MouseArea{
@@ -354,6 +366,7 @@ Item {
                     id:screenSpin3
                     property int mode: 3
                     text: "270°"
+                    font.pointSize: 14
                     ButtonGroup.group: screenRotationGroup
                     anchors.rightMargin: 10
                     MouseArea{
