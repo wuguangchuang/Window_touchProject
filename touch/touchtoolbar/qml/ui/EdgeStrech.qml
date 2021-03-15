@@ -1,4 +1,4 @@
-import QtQuick 2.0
+import QtQuick 2.7
 import QtQuick.Layouts 1.1
 import QtQuick.Controls 1.4
 import QtQuick.Controls.Styles 1.4
@@ -14,10 +14,21 @@ Item {
     property int buttonheight:50
     property int midRectWidth:parent.width / 2
 
+    //边缘拉伸的值
     property int edgeStrech0:0
     property int edgeStrech1:0
     property int edgeStrech2:0
     property int edgeStrech3:0
+
+    //边缘拉伸进度
+    property int currentSide:0
+    property var no_0_progress:[]
+    property var no_1_progress:[]
+    property var no_2_progress:[]
+    property var no_3_progress:[]
+
+    property var refreshInfoTimer:refreshInfoTimer
+    property Item plt0Canvas:plt0Canvas
 
     Rectangle{
         anchors.fill: parent
@@ -38,6 +49,36 @@ Item {
             anchors.left: parent.left
             anchors.leftMargin: defaultProgressSize + defaultMargin
 
+            Canvas{
+                id:plt0Canvas
+                anchors.fill:parent
+                onPaint: {
+                    var ctx = plt0Canvas.getContext("2d");
+
+                    var rectWidth = (parent.width - 2)/ no_0_progress.length;
+                    ctx.lineWidth = 1;
+
+
+                    for(var i = no_0_progress.length - 1 ;i >= 0;i--)
+                    {
+                        ctx.beginPath();
+                        if(no_0_progress[i] > 0)
+                        {
+                            ctx.fillStyle = "#4ad122"
+                            ctx.strokeStyle = "#4ad122";
+                            ctx.fillRect((no_0_progress.length - 1 - i) * rectWidth + 1,1,rectWidth,parent.height - 2);
+                        }
+                        else
+                        {
+                            ctx.fillStyle = "#fafafa";
+                            ctx.strokeStyle = "#fafafa";
+                            ctx.fillRect((no_0_progress.length - 1 - i) * rectWidth + 1,1,rectWidth,parent.height - 2);
+                        }
+                        ctx.fill();
+                        ctx.stroke();
+                    }
+                }
+            }
 
         }
         Rectangle{
@@ -70,6 +111,35 @@ Item {
             anchors.top: parent.top
             anchors.topMargin: defaultProgressSize + defaultMargin
 
+            Canvas{
+                id:plt1Canvas
+                anchors.fill:parent
+                onPaint: {
+                    var ctx = plt1Canvas.getContext("2d");
+
+                    var rectHeight = (parent.height - 2)/ no_1_progress.length;
+                    ctx.lineWidth = 1;
+                    for(var i = 0 ;i <  no_1_progress.length;i++)
+                    {
+                        ctx.beginPath();
+                        if(no_1_progress[i] > 0)
+                        {
+                            ctx.fillStyle = "#4ad122"
+                            ctx.strokeStyle = "#4ad122";
+                            ctx.fillRect(1,i * rectHeight + 1,parent.width - 2,rectHeight);
+                        }
+                        else
+                        {
+                            ctx.fillStyle = "#fafafa";
+                            ctx.strokeStyle = "#fafafa";
+                            ctx.fillRect(1,i * rectHeight + 1,parent.width - 2,rectHeight);
+                        }
+                        ctx.fill();
+                        ctx.stroke();
+                    }
+                }
+            }
+
         }
         Rectangle{
             anchors.top:parent.top
@@ -100,6 +170,35 @@ Item {
             anchors.topMargin: defaultMargin
             anchors.left: parent.left
             anchors.leftMargin: defaultProgressSize + defaultMargin
+
+            Canvas{
+                id:plt2Canvas
+                anchors.fill:parent
+                onPaint: {
+                    var ctx = plt2Canvas.getContext("2d");
+
+                    var rectWidth = (parent.width - 2)/ no_2_progress.length;
+                    ctx.lineWidth = 1;
+                    for(var i = no_2_progress.length - 1 ;i >= 0;i--)
+                    {
+                        ctx.beginPath();
+                        if(no_2_progress[i] > 0)
+                        {
+                            ctx.fillStyle = "#4ad122"
+                            ctx.strokeStyle = "#4ad122";
+                            ctx.fillRect((no_2_progress.length - 1 - i) * rectWidth + 1,1,rectWidth,parent.height - 2);
+                        }
+                        else
+                        {
+                            ctx.fillStyle = "#fafafa";
+                            ctx.strokeStyle = "#fafafa";
+                            ctx.fillRect((no_2_progress.length - 1 - i) * rectWidth + 1,1,rectWidth,parent.height - 2);
+                        }
+                        ctx.fill();
+                        ctx.stroke();
+                    }
+                }
+            }
 
         }
         Rectangle{
@@ -132,6 +231,34 @@ Item {
             anchors.top: parent.top
             anchors.topMargin: defaultProgressSize + defaultMargin
 
+            Canvas{
+                id:plt3Canvas
+                anchors.fill:parent
+                onPaint: {
+                    var ctx = plt3Canvas.getContext("2d");
+
+                    var rectHeight = (parent.height - 2)/ no_3_progress.length;
+                    ctx.lineWidth = 1;
+                    for(var i = 0 ;i <  no_3_progress.length;i++)
+                    {
+                        ctx.beginPath();
+                        if(no_3_progress[i] > 0)
+                        {
+                            ctx.fillStyle = "#4ad122"
+                            ctx.strokeStyle = "#4ad122";
+                            ctx.fillRect(1,i * rectHeight + 1,parent.width - 2,rectHeight);
+                        }
+                        else
+                        {
+                            ctx.fillStyle = "#fafafa";
+                            ctx.strokeStyle = "#fafafa";
+                            ctx.fillRect(1,i * rectHeight + 1,parent.width - 2,rectHeight);
+                        }
+                        ctx.fill();
+                        ctx.stroke();
+                    }
+                }
+            }
         }
         Rectangle{
             anchors.left: no_3_rect.right
@@ -404,6 +531,7 @@ Item {
                 }
 
                 onClicked: {
+                    refreshInfoTimer.stop();
                     exitEdgeStrech();
                 }
 
@@ -416,12 +544,57 @@ Item {
 
 
 
+    }
+
+    Timer{
+        id:refreshInfoTimer
+        interval: 16
+        repeat: true
+        running: false
+        triggeredOnStart: true
+        onTriggered: {
+
+            plt0Canvas.requestPaint()
+
+            plt1Canvas.requestPaint()
 
 
+            plt2Canvas.requestPaint()
 
 
+            plt3Canvas.requestPaint()
 
+        }
 
+    }
+
+    function startEdgeStrech()
+    {
+        clearPltCanvas();
+        refreshInfoTimer.start();
+//        touch.startEdgeStrech();
+    }
+    function clearPltCanvas()
+    {
+        var ctx0 = plt0Canvas.getContext("2d");
+        ctx0.clearRect(0,0,plt0Canvas.width,plt0Canvas.height);
+        plt0Canvas.requestPaint();
+
+        var ctx1 = plt1Canvas.getContext("2d");
+        ctx0.clearRect(0,0,plt1Canvas.width,plt1Canvas.height);
+        plt1Canvas.requestPaint();
+
+        var ctx2 = plt2Canvas.getContext("2d");
+        ctx0.clearRect(0,0,plt2Canvas.width,plt2Canvas.height);
+        plt2Canvas.requestPaint();
+
+        var ctx3 = plt3Canvas.getContext("2d");
+        ctx0.clearRect(0,0,plt3Canvas.width,plt3Canvas.height);
+        plt3Canvas.requestPaint();
+    }
+    function getEdgeStrech()
+    {
+//        var datas = touch.getEdgeStrech();
     }
 
 }

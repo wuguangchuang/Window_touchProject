@@ -333,6 +333,11 @@ void TouchTools::batchFinished(int functionIndex)
 
 }
 
+QVariantMap TouchTools::getBatchUpgradeData()
+{
+    return mTouchManager->getBatchUpgradeData();;
+}
+
 
 
 void TouchTools::TestThread::run()
@@ -1241,6 +1246,11 @@ void TouchTools::startVolienceTest(int volienceMode)
     this->volatileTestThread->start();
 }
 
+void TouchTools::startEdgeStrech()
+{
+
+}
+
 
 
 TouchTools::~TouchTools()
@@ -1711,3 +1721,22 @@ void TouchTools::VolienceTestThread::run()
 }
 
 
+
+TouchTools::EdgeStrechThread::EdgeStrechThread(TouchTools *touchTool, bool cancelEdgeStrech)
+{
+    this->touchTool = touchTool;
+    this->cancelEdgeStrech = cancelEdgeStrech;
+}
+
+void TouchTools::EdgeStrechThread::setCancelEdgeStrech(bool cancelEdgeStrech)
+{
+    this->cancelEdgeStrech = cancelEdgeStrech;
+}
+
+void TouchTools::EdgeStrechThread::run()
+{
+    while(cancelEdgeStrech)
+    {
+
+    }
+}

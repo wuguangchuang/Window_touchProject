@@ -1014,7 +1014,7 @@ void TouchManager::doTest()
 test_retry:
     if(mtestStop)
         goto do_test_end;
-    QThread::msleep(1000); 
+    QThread::msleep(1000);
     testCount = getSignalTestItems(
                     mTestDevice,
                     items, sizeof(items), testThread->standardType);
@@ -1299,7 +1299,7 @@ onboard_test_retry:
     //======================================================
 do_test_end:
     if(!mtestStop)
-        mTestListener->inProgress(100, "");   
+        mTestListener->inProgress(100, "");
 
     //检测每个项是否正常
     checkOnboardtestDataAbnormal(&onboardTestDataResult,onboardTestItem,onboardTestItemCount);
@@ -1713,7 +1713,7 @@ int TouchManager::sendPackage(touch_package *package,touch_package *reply,
 
 
     do{
-        srand((unsigned)time(NULL));
+        srand(QDateTime::currentMSecsSinceEpoch());
         randomNum = rand() % 255;
         randomMutex.lock();
         if(randomArray[randomNum] == -1)
@@ -1723,6 +1723,7 @@ int TouchManager::sendPackage(touch_package *package,touch_package *reply,
             break;
         }
         randomMutex.unlock();
+        QThread::msleep(1);
     }while(true);
     package->magic = randomNum;
 //    package->magic = (int)package & 0xff;
@@ -1730,7 +1731,7 @@ int TouchManager::sendPackage(touch_package *package,touch_package *reply,
 
     int ret = addPackageToQueue(package, reply, device, async, listener);
     randomMutex.lock();
-    randomArray[package->magic] = -1;
+    randomArray[randomNum] = -1;
     randomMutex.unlock();
     return ret;
 }
@@ -1883,6 +1884,45 @@ void TouchManager::removeInitFailedDev(touch_device *dev)
         }
         break;
     }
+}
+
+void TouchManager::setBatchUpgradeInfo(int index, int progress, bool result, QString info)
+{
+    int i = 0;
+    struct BatchUpgradeDeviceList *curList = batchUpgradeDevList;
+    while(curList)
+    {
+        if(curList->upgradeIndex == index)
+        {
+            curList->progress = progress;
+            break;
+        }
+        curList = curList->next;
+    }
+}
+
+QVariantMap TouchManager::getBatchUpgradeData()
+{
+    QVariantMap map;
+    if(batchUpgradeDevList == NULL)
+    {
+        map.insert("result",0);
+        return map;
+    }
+
+    QVariantList infoList;
+    struct BatchUpgradeDeviceList *curList = batchUpgradeDevList;
+    while(curList)
+    {
+        QVariantMap curMap;
+        curMap.insert("index",curList->upgradeIndex);
+        curMap.insert("progress",curList->progress);
+        infoList.append(curMap);
+        curList = curList->next;
+    }
+    map.insert("batchUpgradeInfoList",infoList);
+    map["result"] = 1;
+    return map;
 }
 
 void TouchManager::freeBatchUpgradeList()
@@ -3319,7 +3359,7 @@ int TouchManager::getOnboardTestBoardAttribute(touch_device *device, unsigned ch
     }
 
     memcpy(boardAttribute,reply.data,7);
-    
+
 
    return 0;
 }
@@ -3621,6 +3661,7 @@ void TouchManager::doBatchUpgrade(QString path,BatchUpgradeListener *batchUpgrad
 
     batchUpgradeListener->batchUpradeFinished();
     TDEBUG("批量升级结束");
+
 }
 
 int TouchManager::startBatchUpgrade(int upgradeIndex, touch_device *device,QString path, TouchManager::BatchUpgradeListener *listener)
@@ -3678,6 +3719,7 @@ void TouchManager::addBatchDeveice(touch_device *device, int index)
     struct BatchUpgradeDeviceList *node = (struct BatchUpgradeDeviceList *)malloc(sizeof(struct BatchUpgradeDeviceList));
     node->dev = device;
     node->upgradeIndex = index;
+    node->progress = 0;
     node->upgradeStatus = 0;
     node->next = NULL;
     curDev = batchUpgradeDevList;
@@ -4042,8 +4084,9 @@ void TouchManager::BatchUpgradeThread::run()
     precent = 1;
     if(manager->batchUpgradeListenter != NULL)
     {
-       manager->batchMutex.lock();
-        manager->batchUpgradeListenter->inProgress(upgradeIndex,precent);
+        manager->batchMutex.lock();
+//        manager->batchUpgradeListenter->inProgress(upgradeIndex,precent);
+        manager->setBatchUpgradeInfo(upgradeIndex,precent);
         manager->batchMutex.unlock();
     }
 
@@ -4054,7 +4097,8 @@ void TouchManager::BatchUpgradeThread::run()
         if(manager->batchUpgradeListenter != NULL)
         {
             manager->batchMutex.lock();
-            manager->batchUpgradeListenter->inProgress(upgradeIndex,precent);
+//            manager->batchUpgradeListenter->inProgress(upgradeIndex,precent);
+            manager->setBatchUpgradeInfo(upgradeIndex,precent);
             manager->batchMutex.unlock();
         }
         dev = upgradeDev;
@@ -4070,7 +4114,8 @@ void TouchManager::BatchUpgradeThread::run()
         if(manager->batchUpgradeListenter != NULL)
         {
             manager->batchMutex.lock();
-            manager->batchUpgradeListenter->inProgress(upgradeIndex,precent);
+//            manager->batchUpgradeListenter->inProgress(upgradeIndex,precent);
+            manager->setBatchUpgradeInfo(upgradeIndex,precent);
             manager->batchMutex.unlock();
         }
 
@@ -4090,7 +4135,8 @@ void TouchManager::BatchUpgradeThread::run()
         if(manager->batchUpgradeListenter != NULL)
         {
             manager->batchMutex.lock();
-            manager->batchUpgradeListenter->inProgress(upgradeIndex,precent);
+//            manager->batchUpgradeListenter->inProgress(upgradeIndex,precent);
+            manager->setBatchUpgradeInfo(upgradeIndex,precent);
             manager->batchMutex.unlock();
         }
 
@@ -4147,7 +4193,8 @@ void TouchManager::BatchUpgradeThread::run()
                 if(manager->batchUpgradeListenter != NULL)
                 {
                     manager->batchMutex.lock();
-                    manager->batchUpgradeListenter->inProgress(upgradeIndex,precent);
+//                    manager->batchUpgradeListenter->inProgress(upgradeIndex,precent);
+                    manager->setBatchUpgradeInfo(upgradeIndex,precent);
                     manager->batchMutex.unlock();
                 }
 
@@ -4178,7 +4225,8 @@ void TouchManager::BatchUpgradeThread::run()
     if(manager->batchUpgradeListenter != NULL)
     {
         manager->batchMutex.lock();
-        manager->batchUpgradeListenter->inProgress(upgradeIndex,100);
+//        manager->batchUpgradeListenter->inProgress(upgradeIndex,100);
+        manager->setBatchUpgradeInfo(upgradeIndex,100);
         manager->batchMutex.unlock();
     }
 
@@ -4199,7 +4247,6 @@ do_upgrade_end:
         manager->batchUpgradeListenter->onUpgradeDone(upgradeIndex,result,info);
         TDEBUG("序号 upgradeIndex = %d 升级%s",upgradeIndex,result ? "成功":"失败");
     }
-
 
 }
 

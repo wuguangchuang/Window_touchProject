@@ -13,6 +13,9 @@ Item {
     property var yMirrorCheckBox:yMirrorCheckBox
     property var touchRotationGroup:touchRotationGroup
     property var screenRotationGroup:screenRotationGroup
+    property var touchTurnFactortReset:touchTurnFactortReset
+    property var touchRotationFactortReset:touchRotationFactortReset
+    property var screenFactortReset:screenFactortReset
 
     ScrollView{
         anchors.fill: parent
@@ -98,6 +101,7 @@ Item {
 
 
                 MyButton{
+                    id:touchTurnFactortReset
                     textStr: qsTr("factory reset")
                     imageSource:"qrc:/dialog/images/restort_blue.png"
                     tooltipStr: qsTr("Restore factory touch frame flip parameters.")
@@ -243,6 +247,7 @@ Item {
                     }
                 }
                 MyButton{
+                    id:touchRotationFactortReset
                     textStr: qsTr("factory reset")
                     imageSource:"qrc:/dialog/images/restort_blue.png"
                     tooltipStr: qsTr("Restore factory touch frame to rotate clockwise parameters.")
@@ -387,6 +392,7 @@ Item {
                     }
                 }
                 MyButton{
+                    id:screenFactortReset
                     textStr: qsTr("factory reset")
                     imageSource:"qrc:/dialog/images/restort_blue.png"
                     tooltipStr: qsTr("Restore factory screen clockwise rotation parameters.")

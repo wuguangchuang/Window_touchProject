@@ -467,6 +467,8 @@ public:
     CommandThread *commandThread;
     CommandThread::DeviceCommunicationRead *deviceCommunication;
     TOUCHSHARED_EXPORT void removeInitFailedDev(touch_device *dev);
+    TOUCHSHARED_EXPORT void setBatchUpgradeInfo(int index,int progress = 0,bool result = true,QString info = "");
+    TOUCHSHARED_EXPORT QVariantMap getBatchUpgradeData();
 
     struct BatchUpgradeDeviceList *batchUpgradeDevList;
     volatile bool batchFirstUpgrade;
@@ -504,6 +506,7 @@ struct InitDeviceThreadlist{
 struct BatchUpgradeDeviceList{
   touch_device *dev;
   int upgradeIndex;
+  int progress;
   /*
    *  upgradeStatus:升级状态
    *

@@ -262,6 +262,7 @@ public:
     void setBatchLock(bool enable);
     void batchFinished(int functionIndex);
 
+    QVariantMap getBatchUpgradeData();
 
     //暴力测试
 
@@ -281,6 +282,23 @@ public:
         TouchTools *touchTool;
 
     };
+    class EdgeStrechThread:public QThread{
+
+    public:
+        EdgeStrechThread(TouchTools *touchTool,bool cancelEdgeStrech);
+        void setCancelEdgeStrech(bool cancelEdgeStrech);
+    protected:
+        void run();
+    private:
+        bool cancelEdgeStrech;
+        TouchTools *touchTool;
+    };
+
+    //边缘拉伸
+    QVariantMap edgeStrechDataMap;
+    void startEdgeStrech();
+
+
 
     VolienceTestThread *volatileTestThread;
 

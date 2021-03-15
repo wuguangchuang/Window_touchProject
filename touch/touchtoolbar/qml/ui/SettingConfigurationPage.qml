@@ -10,10 +10,17 @@ Item {
     property int defaultCtrlWidth:130
     property int defaultBtnHeight:50
 
+    //分别对应0、1、2、3 这四边的边缘拉伸参数
     property Item no_0_editText:no_0_editText
     property Item no_1_editText:no_1_editText
     property Item no_2_editText:no_2_editText
     property Item no_3_editText:no_3_editText
+
+    //边缘拉伸的按钮
+    property Item enterEdgeStrechBtn:enterEdgeStrechBtn
+    property Item refreshEdgeStrechBtn:refreshEdgeStrechBtn
+    property Item settingEdgeStrechBtn:settingEdgeStrechBtn
+    property Item factoryResetEdgeStrech:factoryResetEdgeStrech
 
     signal enterEdgeStrech();
     Rectangle{
@@ -35,7 +42,7 @@ Item {
                     defaultHeight: defaultBtnHeight
                     textStr: qsTr("Edge strech")
 //                    imageSource:"qrc:/dialog/images/rectangle.png"
-                    tooltipStr:qsTr("Set the edge stretch value to the firmware.")
+                    tooltipStr:qsTr("Enter the edge stretch interface.")
                     onClicked: {
                         enterEdgeStrech();
                     }
@@ -66,7 +73,7 @@ Item {
                 }
 
                 MyButton{
-                    id:factoryReset
+                    id:factoryResetEdgeStrech
                     defaultHeight: defaultBtnHeight
                     anchors.left: settingEdgeStrechBtn.right
                     anchors.leftMargin: defaultMargin

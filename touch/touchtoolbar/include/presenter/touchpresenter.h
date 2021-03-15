@@ -55,6 +55,10 @@ public:
 
     virtual void setBatchLock(bool enable) = 0;
     virtual void batchFinished(int functionIndex) = 0;
+    virtual QVariantMap getBatchUpgradeData() = 0;
+
+    virtual void startEdgeStrech() = 0;
+
 
 };
 class ProcessStarter : public QProcess {
@@ -400,6 +404,7 @@ public:
     Q_INVOKABLE void setBatchLock(bool enable);
     Q_INVOKABLE void batchFinished(int functionIndex);
 
+    Q_INVOKABLE QVariantMap getBatchUpgradeData();
 
     //暴力升级、测试、重启等
 
@@ -408,6 +413,9 @@ public:
 
     void saveUpgradeResultNum(bool result,QString info = "");
     void resetNum(int count);
+
+    //边缘拉伸
+    Q_INVOKABLE void startEdgeStrech();
 
 
     // call qml

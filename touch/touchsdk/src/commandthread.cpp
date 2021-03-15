@@ -14,55 +14,56 @@ CommandThread::CommandThread() : sem(0)
 }
 void CommandThread::run()
 {
-    int ret;
-    int tryCount = 3;
-    int i = 0;
-    TDEBUG("command thread running");
+//    int ret;
+//    int tryCount = 3;
+//    int i = 0;
+//    TDEBUG("command thread running");
 
-    while(!stop)
-    {
-        if(!sem.tryAcquire(1,1))
-            continue;
-        CommandItem *item = NULL;
-        readWriteLock.lockForRead();
-        for(i = 0;i < mCommandItem.length() && !stop;i++)
-        {
-            if(!mCommandItem.at(i)->written)
-            {
-                item = mCommandItem.at(i);
-            }
-            else
-            {
-                continue;
-            }
+//    while(!stop)
+//    {
+//        if(!sem.tryAcquire(1,1))
+//            continue;
+//        CommandItem *item = NULL;
 
-            item->require->report_id = item->dev->touch.report_id;
+//        readWriteLock.lockForRead();
+//        for(i = 0;i < mCommandItem.length() && !stop;i++)
+//        {
+////            TDEBUG("命令长度 length = %d",mCommandItem.length());
 
-            touch_package tp;
-            if (item->reply == NULL)
-                item->reply = &tp;
+//            item = mCommandItem.at(i);
 
-            tryCount = 3;
-            do
-            {
-                ret = TouchManager::sendPackageToDevice(item->require, item->reply, item->dev);
-                if(ret > 0)
-                {
-                    item->written = true;
-//                    TDEBUG("发送命令：dev = %s,主命令 = %0x,从命令 = %0x,随机数 = %d,command Length = %d",item->dev->touch.id_str,
-//                           item->require->master_cmd,item->require->sub_cmd,item->require->magic,mCommandItem.length());
-                }
-                if(stop)
-                    break;
-                tryCount--;
+//            if(item->written)
+//            {
+//                continue;
+//            }
 
-            }while(ret <= 0 && tryCount > 0 && !stop);
-        }
-        readWriteLock.unlock();
-    }
-    finshed = true;
-    TDEBUG("command thread end");
-//    exit(0);
+//            item->require->report_id = item->dev->touch.report_id;
+
+//            touch_package tp;
+//            if (item->reply == NULL)
+//                item->reply = &tp;
+
+//            tryCount = 3;
+//            do
+//            {
+//                ret = TouchManager::sendPackageToDevice(item->require, item->reply, item->dev);
+//                if(ret > 0)
+//                {
+//                    item->written = true;
+////                    TDEBUG("发送命令：dev = %s,主命令 = %0x,从命令 = %0x,随机数 = %d,command Length = %d",item->dev->touch.id_str,
+////                           item->require->master_cmd,item->require->sub_cmd,item->require->magic,mCommandItem.length());
+//                }
+//                if(stop)
+//                    break;
+//                tryCount--;
+
+//            }while(ret <= 0 && tryCount > 0 && !stop);
+//        }
+//        readWriteLock.unlock();
+
+//    }
+//    finshed = true;
+//    TDEBUG("command thread end");
 }
 void CommandThread::DeviceCommunicationRead::run()
 {
@@ -94,7 +95,7 @@ void CommandThread::DeviceCommunicationRead::run()
             j = 0;
         }
         count++;
-        if(count % 100 == 0)
+        if(count % 40 == 0)
         {
             QThread::msleep(1);
             count = 0;
@@ -134,15 +135,13 @@ void CommandThread::DeviceCommunicationRead::run()
         {
 //            TDEBUG("read not");
         }
-
-
-
     }
     TDEBUG("DeviceCommunicationRead thread end");
 }
 int CommandThread::addCommandToQueue(touch_device *dev, touch_package *require,
                                      touch_package *reply,int async, CommandListener *listener)
 {
+    int ret = 0;
     if (dev == NULL && !dev->touch.connected) {
         TWARNING("%s: device is not ready", __func__);
         return -1;
@@ -165,19 +164,32 @@ int CommandThread::addCommandToQueue(touch_device *dev, touch_package *require,
 
 //    TDEBUG("增加命令：主命令 = %0x,从命令 = %0x,随机数 = %d,command Length = %d",item->require->master_cmd,item->require->sub_cmd,
 //           item->require->magic,mCommandItem.length());
-    mCommandItem.append(item);
 
-    sem.release();
+//    sem.release();
+    ret = TouchManager::sendPackageToDevice(item->require, item->reply, item->dev);
+    if(ret < 0)
+    {
+        return ret;
+    }
+    readWriteLock.lockForWrite();
+    mCommandItem.append(item);
+    readWriteLock.unlock();
     int tryCouny = 30 * 1000;
     for(int i = 0;i < tryCouny;i++)
     {
         if(!item->dev->touch.connected)
         {
+            ret = -3;
             break;
         }
         if(item->sem->tryAcquire(1,1))
         {
+            ret = 0;
             break;
+        }
+        else
+        {
+            ret = -4;
         }
 
     }

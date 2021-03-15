@@ -1310,6 +1310,7 @@ Window {
                                     agingPageTab.batchWorkBtnStr = qsTr("Cancel upgrade");
                                     agingPageTab.batchChooseFile.enabled = false;
                                     startBatchUpgrade();
+                                    refreshBatchInfoTimer.start();
                                     break;
 
                                 case 2:
@@ -1781,6 +1782,12 @@ Window {
             focus: false
             visible: false
 
+            onVisibleChanged: {
+                if(visible)
+                {
+                    startEdgeStrech();
+                }
+            }
             onExitEdgeStrech: {
                 mainPage.exitEdgeStrech();
             }
@@ -1824,6 +1831,7 @@ Window {
     function batchDone()
     {
         touch.tPrintf("批处理完成");
+        refreshBatchInfoTimer.stop();
         mainTabView.tabsVisible = true;
         agingPageTab.batchComboBox.enabled = true;
         agingPageTab.batchStartWork.enabled = true;
@@ -3011,6 +3019,33 @@ QMessageBox::Critical	3	an icon indicating that the message represents a critica
              }
          }
     }
+     Timer
+     {
+         id:refreshBatchInfoTimer
+         interval: 100
+         repeat: true
+         running: false
+         triggeredOnStart: false
+         onTriggered: {
+             batchRefreshUpgradeInfo();
+         }
+     }
+     function batchRefreshUpgradeInfo()
+     {
+         var datas = touch.getBatchUpgradeData();
+         if(datas["result"] === 0)
+         {
+             return;
+         }
+         var dataList = datas["batchUpgradeInfoList"];
+         for(var i = 0; i < dataList.length;i++)
+         {
+             var curInfo = dataList[i];
+             agingPage.setDeviceProgress(curInfo["index"],curInfo["progress"]);
+//             console.log("batchRefreshUpgradeInfo: index = " + curInfo["index"] + ",progress = " + curInfo["progress"]);
+         }
+
+     }
 
      function refreshBatchDeviceInfo()
      {

@@ -35,6 +35,9 @@ Item{
     property var yMirrorCheckBox:settingSpinPage.yMirrorCheckBox
     property var touchRotationGroup:settingSpinPage.touchRotationGroup
     property var screenRotationGroup:settingSpinPage.screenRotationGroup
+    property var touchTurnFactortReset:settingSpinPage.touchTurnFactortReset
+    property var touchRotationFactortReset:settingSpinPage.touchRotationFactortReset
+    property var screenFactortReset:settingSpinPage.screenFactortReset
 
     //校准界面
     property var calibrationList:settingCalibratePage.calibrationList
@@ -42,7 +45,17 @@ Item{
     property var caliDataModel: settingCalibratePage.caliDataModel
 
     //可配置参数界面
+    //分别对应0、1、2、3 这四边的边缘拉伸参数
+    property Item no_0_editText:settingConfigurationPage.no_0_editText
+    property Item no_1_editText:settingConfigurationPage.no_1_editText
+    property Item no_2_editText:settingConfigurationPage.no_2_editText
+    property Item no_3_editText:settingConfigurationPage.no_3_editText
 
+    //边缘拉伸的按钮
+    property Item enterEdgeStrechBtn:settingConfigurationPage.enterEdgeStrechBtn
+    property Item refreshEdgeStrechBtn:settingConfigurationPage.refreshEdgeStrechBtn
+    property Item settingEdgeStrechBtn:settingConfigurationPage.settingEdgeStrechBtn
+    property Item factoryResetEdgeStrech:settingConfigurationPage.factoryResetEdgeStrech
 
     id: root
     focus: true
@@ -299,9 +312,34 @@ Item{
             usbModeEnabledBox.checked = serialModeEnabledBox.checked = true;
             usbModeEnabledBox.checked = settings.usbEnabled === 1;
             serialModeEnabledBox.checked = settings.serialEnabled === 1;
+
+            touchRotationFactortReset.enabled = true;
+            touchTurnFactortReset.enabled = true;
+            screenFactortReset.enabled = true;
+
+            no_0_editText.enabled = true;
+            no_1_editText.enabled = true;
+            no_2_editText.enabled = true;
+            no_3_editText.enabled = true;
+            enterEdgeStrechBtn.enabled = true;
+            refreshEdgeStrechBtn.enabled = true;
+            settingEdgeStrechBtn.enabled = true;
+            factoryResetEdgeStrech.enabled = true;
         } else {
             usbModeEnabledBox.enabled = false;
             serialModeEnabledBox.enabled = false;
+            touchRotationFactortReset.enabled = false;
+            touchTurnFactortReset.enabled = false;
+            screenFactortReset.enabled = false;
+
+            no_0_editText.enabled = false;
+            no_1_editText.enabled = false;
+            no_2_editText.enabled = false;
+            no_3_editText.enabled = false;
+            enterEdgeStrechBtn.enabled = false;
+            refreshEdgeStrechBtn.enabled = false;
+            settingEdgeStrechBtn.enabled = false;
+            factoryResetEdgeStrech.enabled = false;
         }
 
 //        var lockAGC = settings.lockAGC;

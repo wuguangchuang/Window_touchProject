@@ -542,6 +542,11 @@ void TouchPresenter::batchFinished(int functionIndex)
     touch->batchFinished(functionIndex);
 }
 
+QVariantMap TouchPresenter::getBatchUpgradeData()
+{
+    return touch->getBatchUpgradeData();
+}
+
 void TouchPresenter::startVolienceTest(int volienceMode)
 {
     touch->startVolienceTest(volienceMode);
@@ -571,6 +576,11 @@ void TouchPresenter::resetNum(int count)
     }
     QMetaObject::invokeMethod(component, "resetNum",
                               Q_ARG(QVariant, count));
+}
+
+void TouchPresenter::startEdgeStrech()
+{
+    touch->startEdgeStrech();
 }
 
 void TouchPresenter::updateSignalList(QVariant list)
