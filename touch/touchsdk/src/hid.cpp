@@ -837,8 +837,6 @@ int hid_send_data(hid_device *dev, struct hid_report_data *data, struct hid_repo
     if (ret < 0)
         return ret;
     hid_set_nonblocking(dev, 0);
-    // FIXME: for this touch device, report id is in back data;
-    //back->report_id = data->report_id;
 
     return ret;
 }

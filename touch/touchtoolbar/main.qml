@@ -1190,7 +1190,7 @@ Window {
                 // handle signal chart
                 onVisibleChanged: {
                     if (!visible) {
-
+                        testChartPage.stopAutoRefresh();
                         touch.stopGetSignalDataBg();
                         if (testChartPage.needRestoreStatus) {
                             restoreCoords();
@@ -1201,8 +1201,8 @@ Window {
                         console.log("selected count = " + testChartPage.getSelectedCount());
                         console.log("deviceCount = " + deviceCount);
                         console.log("defaultTestItems.length = " + defaultTestItems.length);
-//                        if (testChartPage.getSelectedCount() === 0 && defaultTestItems !== undefined) {
-                        if (testChartPage.getSelectedCount() === 0 && deviceCount == 1 && defaultTestItems !== undefined && firstDeviceConnect) {
+                        if (testChartPage.getSelectedCount() === 0 && defaultTestItems !== undefined && firstDeviceConnect) {
+//                        if (testChartPage.getSelectedCount() === 0 && deviceCount == 1 &&  defaultTestItems !== undefined && firstDeviceConnect) {
                             firstDeviceConnect = false;
                             testChartPage.setSignalItems(defaultTestItems);
                             console.log("defaultTestItems is ok");
@@ -2548,27 +2548,21 @@ QMessageBox::Critical	3	an icon indicating that the message represents a critica
             deviceMainInfo = _deviceMainInfo;
             deviceConnectImage = "qrc:/dialog/images/success.png";
         }
+
         if (plugin) {
             deviceCount++;
             if(deviceCount == 1)
             {
-                signalPageTab.firstDeviceConnect = true;
+              signalPageTab.firstDeviceConnect = true;
+
             }
-//            if(testChartPage.selectedSignalCount === 0 && signalPageTab.firstDeviceConnect && mainTabView.currentIndex == mTAB_Signal)
-//            {
-//                signalPageTab.firstDeviceConnect = false;
-//                startSignalChart(false);
-//                testChartPage.setSignalItems(defaultTestItems);
-//                console.log("testChartPage.setSignalItems(defaultTestItems) is ok");
-//            }
-            if(signalPageTab.firstDeviceConnect && mainTabView.currentIndex == mTAB_Signal)
+            if(testChartPage.selectedSignalCount === 0 && signalPageTab.firstDeviceConnect && mainTabView.currentIndex == mTAB_Signal)
             {
                 signalPageTab.firstDeviceConnect = false;
                 startSignalChart(false);
                 testChartPage.setSignalItems(defaultTestItems);
                 console.log("testChartPage.setSignalItems(defaultTestItems) is ok");
             }
-
         }
 
         if (!plugin) {
@@ -2581,15 +2575,14 @@ QMessageBox::Critical	3	an icon indicating that the message represents a critica
                 //            testChartPage.refreshItems(true);
             }
         }
-
         if (mainTabView.getTab(mainTabView.currentIndex).what === mTAB_Signal  && signalPageTab.visible && plugin && testChartPage !== null) {
             console.log("start signal chart");
             testChartPage.clearModels();
             startSignalChart(true);
             testChartPage.restoreNumbers();
-        } else if (plugin && testChartPage !== null) {
-//            console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
         }
+
+
 
 
 
@@ -2849,6 +2842,15 @@ QMessageBox::Critical	3	an icon indicating that the message represents a critica
            close.accepted = false;
        }
 
+        if(currenttab === mTAB_Signal)
+        {
+            testChartPage.stopAutoRefresh();
+            touch.stopGetSignalDataBg();
+            if (testChartPage.needRestoreStatus) {
+                restoreCoords();
+            }
+        }
+
         if (close.accepted) {
             setWindowHidden(false);
             close.accepted = false;
@@ -2905,7 +2907,22 @@ QMessageBox::Critical	3	an icon indicating that the message represents a critica
         }
         mainPage.setVisible(visibled);
         if(visibled)
+        {
             mainPage.visibility =  Window.Maximized;
+            if(currenttab === mTAB_Signal)
+            {
+                startSignalChart(false);
+                if (testChartPage.getSelectedCount() === 0 && defaultTestItems !== undefined && firstDeviceConnect) {
+//                        if (testChartPage.getSelectedCount() === 0 && deviceCount == 1 &&  defaultTestItems !== undefined && firstDeviceConnect) {
+                    firstDeviceConnect = false;
+                    testChartPage.setSignalItems(defaultTestItems);
+                    console.log("defaultTestItems is ok");
+                } else {
+                    testChartPage.restoreNumbers();
+                }
+            }
+        }
+
     }
     //界面跳转
     /*
@@ -3022,7 +3039,7 @@ QMessageBox::Critical	3	an icon indicating that the message represents a critica
      Timer
      {
          id:refreshBatchInfoTimer
-         interval: 100
+         interval: 16
          repeat: true
          running: false
          triggeredOnStart: false

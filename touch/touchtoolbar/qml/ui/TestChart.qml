@@ -20,6 +20,7 @@ Item {
     property var fontSize: 12;
     property var testInfo: []
     property var testItems: []
+    property int refreshIndex:0
     property var signalIndexs: []
     property var signalDatas: []
     property string chartInfo: qsTr("standard range")
@@ -977,7 +978,7 @@ Item {
                                 }
 
                             }
-                            chartTitleInfo.requestPaint();
+//                            chartTitleInfo.requestPaint();
                         }
                         //点线
                         else
@@ -1076,7 +1077,7 @@ Item {
                                     signalResult[k] = true;
                                 }
                             }
-                            chartTitleInfo.requestPaint();
+//                            chartTitleInfo.requestPaint();
                         }
 
                     }
@@ -1179,7 +1180,7 @@ Item {
 
                             }
                         }
-                        chartTitleInfo.requestPaint();
+//                        chartTitleInfo.requestPaint();
                     }
 
                     touch.paintUnlock();
@@ -1314,25 +1315,7 @@ Item {
                    anchors.left: signalChartDeviceImage.right
 
                }
-//               Cont1.TextArea {
-//                   id: signalChartDeviceInfo
-//                   visible: true
-//                   Layout.fillHeight: true
-//                   Layout.fillWidth: true
-//                   anchors.left: signalChartDeviceImage.right
-//                   anchors.leftMargin: defaultMargin
-//                   anchors.verticalCenter: parent.verticalCenter
-//                   verticalScrollBarPolicy: Qt.ScrollBarAlwaysOff
-//                   antialiasing: true          //是否抗锯齿
-//                   readOnly: true
-//                   frameVisible : false        //去掉边框
-//                   backgroundVisible : false   //去掉背景
-//                   text:textStr
-//                   font.pointSize: fontSize
-//                   textFormat: Text.AutoText
-//                   textMargin: 1.5
 
-//               }
            }
         }
     }
@@ -1351,13 +1334,12 @@ Item {
         touch.paintLock();
 //        console.log("ready get signalDatas");
         signalDatas[datas["index"]] = datas;
-        dataDirty = true;
+//        dataDirty = true;
         touch.paintUnlock();
-//        touch.paintDefaultLock();
-//        touch.paintSemRelease(); // +1
+
         if (datas["count"] > maxDataCount)
             maxDataCount = datas["count"];
-//        repaintChart(false);
+
     }
 
     function showSingalChart(index) {
@@ -1534,10 +1516,15 @@ Item {
         running: false
         triggeredOnStart: false
         onTriggered: {
-//            console.log("dirty " + (new Date().getTime()))
-//            chartCanvas.requestPaint();
+            refreshSignalData();
         }
     }
+    function refreshSignalData(){
+//        var datas = touch.getSignalDataMap();
+//        updateSignalData(datas);
+        dataDirty = true;
+    }
+
     onDataDirtyChanged: {
 //        console.log("dirty " + (new Date().getTime()))
         chartCanvas.requestPaint();

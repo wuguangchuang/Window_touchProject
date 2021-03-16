@@ -368,6 +368,10 @@
         <source>Edge stretch value:</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Enter the edge stretch interface.</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>SettingCoordsPage</name>

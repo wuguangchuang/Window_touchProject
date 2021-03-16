@@ -184,6 +184,7 @@ public:
         virtual void inProgress(int index,int progress) = 0;
         virtual void onTestDone(int index,bool result, QString message) = 0;
     };
+
     class BatchUpgradeThread : public QThread
     {
     public:
@@ -206,6 +207,8 @@ public:
         virtual void setDeviceIfo(int index,QString msg) = 0;
         virtual void batchUpradeFinished() = 0;
     };
+    //边缘拉伸
+    TOUCHSHARED_EXPORT void getEdgeStrechVal();
 
 private:
     TouchManager();

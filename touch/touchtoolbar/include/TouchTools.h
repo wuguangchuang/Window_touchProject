@@ -26,7 +26,7 @@ struct TouchData {
     unsigned char data[HID_REPORT_DATA_LENGTH];
 };
 
-#define APP_VERSION_NAME ("v2.1.0")
+#define APP_VERSION_NAME ("V2.1.0")
 #define APP_VERSION_CODE (15)
 
 //#define THIS_APP_TYPE (APP_FACTORY)
@@ -297,6 +297,7 @@ public:
     //边缘拉伸
     QVariantMap edgeStrechDataMap;
     void startEdgeStrech();
+    void getEdgeStrechVal();
 
 
 

@@ -56,8 +56,9 @@ public:
     virtual void setBatchLock(bool enable) = 0;
     virtual void batchFinished(int functionIndex) = 0;
     virtual QVariantMap getBatchUpgradeData() = 0;
-
+    //边缘拉伸
     virtual void startEdgeStrech() = 0;
+    virtual void getEdgeStrechVal() = 0;
 
 
 };
@@ -416,6 +417,7 @@ public:
 
     //边缘拉伸
     Q_INVOKABLE void startEdgeStrech();
+    Q_INVOKABLE void getEdgeStrechVal();
 
 
     // call qml
@@ -523,7 +525,10 @@ private:
     QSettings settings;
     ProcessStarter starter;
     JSON *modeSettingFile;
+
+    QVariantMap signalDataMap;
 public:
+    Q_INVOKABLE QVariantMap getSignalDataMap();
     bool initSdkDone;
     void openProgress(bool isOpen);
     void changeTabIndex(int index);

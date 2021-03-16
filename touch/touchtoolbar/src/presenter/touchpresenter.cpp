@@ -89,6 +89,7 @@ void TouchPresenter::GetSignalThread::run()
         //TDEBUG("run start");
 //        presenter->paintLock();
         QVariantList list = presenter->signalList;
+//        TDEBUG("################################:list.length = %d",list.length());
         foreach (QVariant const &value, list) {
             index = value.toInt(&ok);
             if (!ok)
@@ -97,29 +98,32 @@ void TouchPresenter::GetSignalThread::run()
                 break;
 //            TDEBUG("get signal data");
 
-            QVariantMap map = presenter->getSignalData(index, count);
+//            presenter->signalDataMap.clear();
+             QVariantMap map = presenter->getSignalData(index, count);
 
             QMetaObject::invokeMethod(presenter->component, "updateSignalData",
                 Q_ARG(QVariant, QVariant::fromValue(map)));
         }
-
-//        presenter->paintUnlock();
-        long delay = period - time.elapsed();
-//        TDEBUG("consume: %d, delay: %d", time.elapsed(), delay);
-//        qDebug("consume: %d, delay: %d", time.elapsed(), delay);
-        if (delay > 0) {
-            // excess
-            if (!running)
-                break;
-            QThread::msleep(delay);
-            period = FIXED_PERIOD;
-        } else {
-            // insufficient, need add this overtime
-            period = FIXED_PERIOD + delay;
-        }
+//        TDEBUG("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@:list.length = %d",list.length());
+        QThread::msleep(1);
+//        long delay = period - time.elapsed();
+//        if (delay > 0) {
+//            // excess
+//            if (!running)
+//                break;
+//            QThread::msleep(delay);
+//            period = FIXED_PERIOD;
+//        } else {
+//            // insufficient, need add this overtime
+//            period = FIXED_PERIOD + delay;
+//        }
     }
     finshed = true;
     TDEBUG("GetSignalThread thread end");
+}
+QVariantMap TouchPresenter::getSignalDataMap()
+{
+    return this->signalDataMap;
 }
 
 QVariantMap TouchPresenter::getSettingsInfos()
@@ -583,6 +587,11 @@ void TouchPresenter::startEdgeStrech()
     touch->startEdgeStrech();
 }
 
+void TouchPresenter::getEdgeStrechVal()
+{
+    touch->getEdgeStrechVal();
+}
+
 void TouchPresenter::updateSignalList(QVariant list)
 {
     if (!list.canConvert<QVariantList>()) {
@@ -765,6 +774,8 @@ void TouchPresenter::newRunner()
     QMetaObject::invokeMethod(component, "newRunner");
     return;
 }
+
+
 
 void TouchPresenter::destroyQml()
 {

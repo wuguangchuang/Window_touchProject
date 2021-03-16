@@ -554,6 +554,7 @@ Item {
         triggeredOnStart: true
         onTriggered: {
 
+
             plt0Canvas.requestPaint()
 
             plt1Canvas.requestPaint()
@@ -572,7 +573,10 @@ Item {
     {
         clearPltCanvas();
         refreshInfoTimer.start();
-//        touch.startEdgeStrech();
+        //获取边缘拉伸的初值
+        getEdgeStrechVal();
+        //开始获取边缘拉伸的进度
+        touch.startEdgeStrech();
     }
     function clearPltCanvas()
     {
@@ -592,9 +596,9 @@ Item {
         ctx0.clearRect(0,0,plt3Canvas.width,plt3Canvas.height);
         plt3Canvas.requestPaint();
     }
-    function getEdgeStrech()
+    function getEdgeStrechVal()
     {
-//        var datas = touch.getEdgeStrech();
+        var datas = touch.getEdgeStrechVal();
     }
 
 }

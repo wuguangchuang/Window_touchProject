@@ -201,6 +201,9 @@ public:
         virtual void setDeviceIfo(int index,QString msg) = 0;
         virtual void batchUpradeFinished() = 0;
     };
+
+    //边缘拉伸
+    TOUCHSHARED_EXPORT void getEdgeStrechVal();
 private:
     TouchManager();
     int randomArray[256];

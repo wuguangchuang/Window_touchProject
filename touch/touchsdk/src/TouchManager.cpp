@@ -201,6 +201,8 @@ void TouchManager::freeInstance()
         mTouchManager = NULL;
     }
 }
+
+
 TouchManager::TouchManager() : mTesting(false), mUpgrading(false),
     mHotplugThread(this), mHotplugListener(NULL), untDataBuf(NULL),
     mCount(0), hotplugInterval(500), hotplugSem(0),mPauseHotplug(false),
@@ -1589,7 +1591,7 @@ void TouchManager::HotplugThread::run()
             {
                 CommandThread::deviceListRWLock.lockForWrite();
                 CommandThread::deviceList.removeAt(DL);
-                TDEBUG("删除掉一个通讯设备:设备个数 = %d",CommandThread::deviceList.length());
+                TDEBUG("删除掉一个通讯设备");
                 CommandThread::deviceListRWLock.unlock();
                 listLength = CommandThread::deviceList.length();
                 DL -= 1;
@@ -1613,6 +1615,7 @@ void TouchManager::HotplugThread::run()
         while (device) {
             cur = device;
             same = false;
+            cur->touch.connected = 1;
             CommandThread::deviceList.append(cur);
             TDEBUG("增加一个通讯设备:设备个数 = %d",CommandThread::deviceList.length());
             InitDeviceInfoThread *initDeviceInfoThread = new InitDeviceInfoThread(manager,cur);
@@ -1712,7 +1715,28 @@ int TouchManager::sendPackage(touch_package *package,touch_package *reply,
     bool exist = false;
 
 
+    QTime time;
+    time.start();
     do{
+        if(time.elapsed() > 1000)
+        {
+            randomMutex.lock();
+            for(int i = 0;i < sizeof(randomArray);i++)
+            {
+                if(randomArray[i] == -1)
+                {
+                    randomNum = i;
+                    randomArray[i] = randomNum;
+                    exist = true;
+                    break;
+                }
+            }
+            randomMutex.unlock();
+            if(exist)
+            {
+                break;
+            }
+        }
         srand(QDateTime::currentMSecsSinceEpoch());
         randomNum = rand() % 255;
         randomMutex.lock();
@@ -1723,12 +1747,13 @@ int TouchManager::sendPackage(touch_package *package,touch_package *reply,
             break;
         }
         randomMutex.unlock();
+
         QThread::msleep(1);
     }while(true);
+
     package->magic = randomNum;
 //    package->magic = (int)package & 0xff;
     package->flow = 1;
-
     int ret = addPackageToQueue(package, reply, device, async, listener);
     randomMutex.lock();
     randomArray[randomNum] = -1;
@@ -4315,5 +4340,9 @@ void TouchManager::InitDeviceInfoThread::run()
         device->touch.connected = 1;
         manager->mHotplugListener->onTouchHotplug(device, 1, found_old);
     }
+
+}
+void TouchManager::getEdgeStrechVal()
+{
 
 }

@@ -25,6 +25,7 @@ Item {
                 Label {
                     id:startupLabel
                     text: qsTr("Self-starting software")
+                    font.pointSize: 14
                     Layout.preferredHeight:parent.implicitHeight
                     Layout.minimumWidth: labelWidth
                     verticalAlignment: Text.AlignVCenter

@@ -27,6 +27,7 @@ Item {
         backgroundVisible : false   //去掉背景
         text:textStr
         font.pointSize: fontSize
+//        font.pixelSize: fontSize
         textFormat: Text.AutoText
         textMargin: 2.0
 

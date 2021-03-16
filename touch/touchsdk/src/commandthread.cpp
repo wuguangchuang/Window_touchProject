@@ -100,23 +100,25 @@ void CommandThread::DeviceCommunicationRead::run()
             QThread::msleep(1);
             count = 0;
         }
-//        TDEBUG("命令线程检测到设备个数：length =  %d,正在读取的设备序号 j = %d",CommandThread::deviceList.length(),j);
+//        TDEBUG("设备个数：length =  %d,正在读取的设备序号 j = %d",CommandThread::deviceList.length(),j);
         device = CommandThread::deviceList.at(j++);
         memset((void *)&reply,0,sizeof(touch_package));
         ret = TouchManager::wait_time_out(device->hid, (unsigned char *)&reply,HID_REPORT_DATA_LENGTH,0);
         CommandThread::deviceListRWLock.unlock();
+
         if(ret > 0)
         {
+            if(0xcd != reply.report_id)
+            {
+                continue;
+            }
+//            TDEBUG("读取数据:reply.report_id = %0x,主命令 = %0x,从命令 = %0x,随机数 = %d,command Length = %d",
+//                   reply.report_id,reply.master_cmd,reply.sub_cmd,reply.magic,commandThread->mCommandItem.length());
             commandThread->readWriteLock.lockForRead();
             for(i = 0;i < commandThread->mCommandItem.length();i++)
             {
                 CommandItem *item = commandThread->mCommandItem.at(i);
-                if(item->require->report_id != reply.report_id)
-                {
-                    break;
-                }
-//                TDEBUG("读取数据：dev = %s,主命令 = %0x,从命令 = %0x,随机数 = %d,command Length = %d",item->dev->touch.id_str,
-//                       reply.master_cmd,reply.sub_cmd,reply.magic,commandThread->mCommandItem.length());
+
                 if(reply.magic == item->require->magic)
                 {
                     if(item->reply == NULL)
@@ -126,6 +128,7 @@ void CommandThread::DeviceCommunicationRead::run()
                     }
                     commandThread->copyTouchPackage(item->reply,&reply);
                     item->sem->release(1);
+//                    TDEBUG("读取数据完成，返回");
                     break;
                 }
             }
@@ -162,40 +165,44 @@ int CommandThread::addCommandToQueue(touch_device *dev, touch_package *require,
 
     item->sem = new QSemaphore(0);
 
-//    TDEBUG("增加命令：主命令 = %0x,从命令 = %0x,随机数 = %d,command Length = %d",item->require->master_cmd,item->require->sub_cmd,
-//           item->require->magic,mCommandItem.length());
 
-//    sem.release();
-    ret = TouchManager::sendPackageToDevice(item->require, item->reply, item->dev);
-    if(ret < 0)
-    {
-        return ret;
-    }
     readWriteLock.lockForWrite();
     mCommandItem.append(item);
+//    TDEBUG("增加命令：主命令 = %0x,从命令 = %0x,随机数 = %d,command Length = %d,设备个数：%d",item->require->master_cmd,item->require->sub_cmd,
+//           item->require->magic,mCommandItem.length(),deviceList.length());
     readWriteLock.unlock();
-    int tryCouny = 30 * 1000;
-    for(int i = 0;i < tryCouny;i++)
+
+//    sem.release();
+//    TDEBUG("准备发送命令");
+    int tryCount = 3;
+    do{
+
+        ret = TouchManager::sendPackageToDevice(item->require, item->reply, item->dev);
+        tryCount--;
+    }while(ret < 0 && tryCount > 0);
+
+//    TDEBUG("Command send success：main command = %0x, slave = %0x,random number = %d,command Length = %d",item->require->master_cmd,item->require->sub_cmd,
+//           item->require->magic,mCommandItem.length());
+//    TDEBUG("发送命令成功");
+
+    tryCount = 3 * 1000;
+    for(int i = 0;i < tryCount && ret >= 0;i++)
     {
-        if(!item->dev->touch.connected)
+        if(item->dev == NULL || !item->dev->touch.connected)
         {
             ret = -3;
             break;
         }
-        if(item->sem->tryAcquire(1,1))
+        if(item->sem->tryAcquire(1,10))
         {
             ret = 0;
             break;
-        }
-        else
-        {
-            ret = -4;
         }
 
     }
 //    item->sem->tryAcquire(1,30000);
     readWriteLock.lockForWrite();
-//    TDEBUG("删除命令：主命令 = %0x,从命令 = %0x,随机数 = %d,command Length = %d",item->require->master_cmd,item->require->sub_cmd,
+//    TDEBUG("Delete command：main command = %0x, slave = %0x,random number = %d,command Length = %d",item->require->master_cmd,item->require->sub_cmd,
 //           item->require->magic,mCommandItem.length());
     mCommandItem.removeOne(item); 
     readWriteLock.unlock();

@@ -114,6 +114,7 @@ int main(int argc, char *argv[])
     //AA_EnableHighDpiScaling设置
     QGuiApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
     QApplication app(argc, argv);
+
     QTranslator translator;
     //bool ok = translator.load(":lang/zh_CN.qm");
     bool ok = false;

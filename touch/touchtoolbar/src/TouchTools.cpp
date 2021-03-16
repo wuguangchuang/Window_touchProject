@@ -776,17 +776,17 @@ QVariant TouchTools::getRelativeInfo()
 //        mTouchManager->getFirewareInfo(dev, &finfo);
         info += tr("Device infomation");
         info += "\n";
-        info += polishingString(polishingSize,tr("Device name:")) + QString(dev->touch.model) + "\n";
-        info += polishingString(polishingSize,tr("Fireware version:")) + QString().sprintf("0x%04X\n", toWord(dev->fireware.version_l, dev->fireware.version_h));
-        info += polishingString(polishingSize,tr("Fireware checksum:")) + QString().sprintf("0x%04X\n", toWord(dev->fireware.checksum_l, dev->fireware.checksum_h));
-        info += polishingString(polishingSize,tr("Support touch number:")) + QString().sprintf("%d\n", dev->fireware.touch_point);
-        info += polishingString(polishingSize,tr("USB VID:")) + QString().sprintf("0x%04X\n", toWord(dev->fireware.usb_vid_l, dev->fireware.usb_vid_h));
-        info += polishingString(polishingSize,tr("USB PID:")) + QString().sprintf("0x%04X\n", toWord(dev->fireware.usb_pid_l, dev->fireware.usb_pid_h));
-        info += polishingString(polishingSize,tr("Serial number:")) + QString().sprintf("%s\n",dev->touch.serial_number);
+        info += polishingString(polishingSize,tr("Device name:"))+QString(dev->touch.model) + "\r\n";
+        info += polishingString(polishingSize,tr("Fireware version:")) + QString().sprintf("0x%04X\r\n", toWord(dev->fireware.version_l, dev->fireware.version_h));
+        info += polishingString(polishingSize,tr("Fireware checksum:"))+ QString().sprintf("0x%04X\r\n", toWord(dev->fireware.checksum_l, dev->fireware.checksum_h));
+        info += polishingString(polishingSize,tr("Support touch number:"))+ QString().sprintf("%d\r\n", dev->fireware.touch_point);
+        info += polishingString(polishingSize,tr("USB VID:")) + QString().sprintf("0x%04X\r\n", toWord(dev->fireware.usb_vid_l, dev->fireware.usb_vid_h));
+        info += polishingString(polishingSize,tr("USB PID:")) + QString().sprintf("0x%04X\r\n", toWord(dev->fireware.usb_pid_l, dev->fireware.usb_pid_h));
+        info += polishingString(polishingSize,tr("Serial number:"))+ QString().sprintf("%s\r\n",dev->touch.serial_number);
     }
 
-    info += "\n" + tr("Software information") + "\n";
-    info += polishingString(polishingSize,tr("Software Name")) + "TouchAssistant\n";
+    info += "\r\n" + tr("Software information") + "\r\n";
+    info += polishingString(polishingSize,tr("Software Name")) + "TouchAssistant\r\n";
     char *versionType = "";
     switch (THIS_APP_TYPE) {
     case APP_FACTORY:
@@ -807,9 +807,9 @@ QVariant TouchTools::getRelativeInfo()
     default:
         break;
     }
-    info += polishingString(polishingSize,tr("Software version:")) + QString().sprintf("%s.%s\n",APP_VERSION_NAME, versionType);
-    info += polishingString(polishingSize,tr("OS name:")) + QSysInfo::prettyProductName() + "\n";
-    info += polishingString(polishingSize,tr("OS version:")) + QSysInfo::kernelVersion() + "\n";
+    info += polishingString(polishingSize,tr("Software version:")) + QString().sprintf("%s.%s\r\n",APP_VERSION_NAME, versionType);
+    info += polishingString(polishingSize,tr("OS name:")) + QSysInfo::prettyProductName() + "\r\n";
+    info += polishingString(polishingSize,tr("OS version:")) + QSysInfo::kernelVersion() + "\r\n";
 #endif
     return QVariant::fromValue(info);
 }
@@ -1209,7 +1209,8 @@ int TouchTools::gbk_strlen(const char *str)
 
     while(*p)
     {
-        if(*p < 0 && (*(p+1)<0 || *(p+1) < 63))			//中文汉字情况
+//        if(*p < 0 && (*(p+1)<0 || *(p+1) < 63))			//中文汉字情况
+        if(*p < 0 && *(p+1)<0 )
         {
             p = p + 3;
             len += 2;
@@ -1247,6 +1248,11 @@ void TouchTools::startVolienceTest(int volienceMode)
 }
 
 void TouchTools::startEdgeStrech()
+{
+
+}
+
+void TouchTools::getEdgeStrechVal()
 {
 
 }
@@ -1678,7 +1684,6 @@ void TouchTools::BatchUpgradeListener::batchUpradeFinished()
     manager->presenter->batchUpradeFinished();
 }
 
-//字符串后位空格补齐
 void TouchTools::VolienceTestThread::run()
 {
     int restartCount = 0;
@@ -1692,6 +1697,7 @@ void TouchTools::VolienceTestThread::run()
             if(dev != NULL && dev->touch.connected && !TouchTools::upgrading)
             {
                 TDEBUG("暴力升级") ;
+                QThread::msleep(1000);
                 touchTool->startUpgrade();
             }
         }
