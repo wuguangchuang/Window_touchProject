@@ -581,7 +581,7 @@ Item {
                     }
                     background: Rectangle{
                         anchors.fill: parent
-                        color: reedge_stretch.pressed ? "#64B5F6" : (reedge_stretch.hovered ? "#d9ebf9" : "#cdcdcd")
+                        color: reedge_stretch.pressed ? "#c2def5" : (reedge_stretch.hovered ? "#d9ebf9" : "#cdcdcd")
                     }
                 }
                 onClicked: {
@@ -608,7 +608,7 @@ Item {
                     }
                     background: Rectangle{
                         anchors.fill: parent
-                        color: nextEdge.pressed ? "#64B5F6" : (nextEdge.hovered ? "#d9ebf9" : "#cdcdcd")
+                        color: nextEdge.pressed ? "#c2def5" : (nextEdge.hovered ? "#d9ebf9" : "#cdcdcd")
                     }
                 }
                 onClicked: {
@@ -635,7 +635,7 @@ Item {
                     }
                     background: Rectangle{
                         anchors.fill: parent
-                        color: paintingBoardBtn.pressed ? "#64B5F6" : (paintingBoardBtn.hovered ? "#d9ebf9" : "#cdcdcd")
+                        color: paintingBoardBtn.pressed ? "#c2def5" : (paintingBoardBtn.hovered ? "#d9ebf9" : "#cdcdcd")
                     }
                 }
                 onClicked: {
@@ -661,7 +661,7 @@ Item {
                     }
                     background: Rectangle{
                         anchors.fill: parent
-                        color: exitBtn.pressed ? "#c6e0f7" : (exitBtn.hovered ? "#d9ebf9" : "#cdcdcd")
+                        color: exitBtn.pressed ? "#c2def5" : (exitBtn.hovered ? "#d9ebf9" : "#cdcdcd")
                     }
                 }
 

@@ -1272,7 +1272,7 @@ Window {
                                 Layout.preferredWidth:batchChooseFile.width
                                 Layout.preferredHeight: batchChooseFile.height
 //                                            border.width: 1
-//                                            border.color: (batchFlag ? "#64B5F6":"#f0f0f0")
+//                                            border.color: (batchFlag ? "#64B5F6":"#cfcfcf")
                                 color: (batchStartWork.enabled ? "#64B5F6":"#404244")
                                 radius: 2
                             }

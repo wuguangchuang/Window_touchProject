@@ -71,7 +71,7 @@ Item {
             height:0;
             clip:true;
             anchors.top: chosenItem.bottom;
-//                color:"#f0f0f0"
+//                color:"#cfcfcf"
 
             ListView {
                 id:listView
@@ -82,15 +82,15 @@ Item {
                     width:comboBox.width;
                     height: comboBox.height;
                     property bool flag:false
-                    color: flag ? "#d9ebf9" : "#f0f0f0"
+                    color: flag ? "#d9ebf9" : "#cfcfcf"
 
                     Rectangle{
                         id:lineRect
                         anchors.left: parent.left
                         width: parent.width
                         height: 1
-                        color: "#cdcdcd"
-                        border.color: "#cdcdcd"
+                        color: "#afafaf"
+                        border.color: "#afafaf"
                         border.width: 1
                     }
                     Text {

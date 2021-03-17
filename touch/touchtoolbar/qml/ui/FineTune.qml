@@ -289,7 +289,7 @@ Item {
             style: Rectangle{
                 width: left_right.width
                 height: left_right.height
-                color: left_right.pressed ? "#d9ebf9":"#fafafa"
+                color: left_right.pressed ? "#c2def5" : (left_right.hovered ? "#d9ebf9" : "#fafafa")
             }
             onClicked: {
                 changeCalibrationData(left_direction,offset - 2 * offset);
@@ -327,7 +327,7 @@ Item {
             style: Rectangle{
                 width: left_left.width
                 height: left_left.height
-                color: left_left.pressed ? "#d9ebf9":"#fafafa"
+                color: left_left.pressed ? "#c2def5" : (left_left.hovered ? "#d9ebf9" : "#fafafa")
             }
             onClicked: {
                 changeCalibrationData(left_direction,offset);
@@ -438,7 +438,7 @@ Item {
             style: Rectangle{
                 width: right_right.width
                 height: right_right.height
-                color: right_right.pressed ? "#d9ebf9":"#fafafa"
+                color: right_right.pressed ? "#c2def5" : (right_right.hovered ? "#d9ebf9" : "#fafafa")
             }
             onClicked: {
                 changeCalibrationData(right_direction,offset - 2 * offset);
@@ -476,7 +476,7 @@ Item {
             style: Rectangle{
                 width: right_left.width
                 height: right_left.height
-                color: right_left.pressed ? "#d9ebf9":"#fafafa"
+                color: right_left.pressed ? "#c2def5" : (right_left.hovered ? "#d9ebf9" : "#fafafa")
             }
             onClicked: {
                 changeCalibrationData(right_direction,offset);
@@ -596,7 +596,7 @@ Item {
             style: Rectangle{
                 width: up_down.width
                 height: up_down.height
-                color: up_down.pressed ? "#d9ebf9":"#fafafa"
+                color: up_down.pressed ? "#c2def5" : (up_down.hovered ? "#d9ebf9" : "#fafafa")
             }
             onClicked: {
                 changeCalibrationData(up_direction,offset - 2 * offset);
@@ -641,7 +641,7 @@ Item {
             style: Rectangle{
                 width: up_up.width
                 height: up_up.height
-                color: up_up.pressed ? "#d9ebf9":"#fafafa"
+                color: up_up.pressed ? "#c2def5" : (up_up.hovered ? "#d9ebf9" : "#fafafa")
             }
             onClicked: {
                 changeCalibrationData(up_direction,offset);
@@ -761,7 +761,7 @@ Item {
             style: Rectangle{
                 width: down_down.width
                 height: down_down.height
-                color: down_down.pressed ? "#d9ebf9":"#fafafa"
+                color: down_down.pressed ? "#c2def5" : (down_down.hovered ? "#d9ebf9" : "#fafafa")
             }
             onClicked: {
                 changeCalibrationData(down_direction,offset - 2 * offset);
@@ -808,7 +808,7 @@ Item {
             style: Rectangle{
                 width: down_up.width
                 height: down_up.height
-                color: down_up.pressed ? "#d9ebf9":"#fafafa"
+                color: down_up.pressed ? "#c2def5" : (down_up.hovered ? "#d9ebf9" : "#fafafa")
             }
             onClicked: {
                 changeCalibrationData(down_direction,offset);
@@ -841,7 +841,7 @@ Item {
                     background: Rectangle{
                         width: exitBtn.width
                         height: exitBtn.height
-                        color: exitBtn.pressed ? "#d9ebf9":"#f0f0f0"
+                        color: exitBtn.pressed ? "#c2def5" : (exitBtn.hovered ? "#d9ebf9" : "#cfcfcf")
                     }
                     label: Text{
                         verticalAlignment: Text.AlignVCenter
@@ -871,7 +871,7 @@ Item {
                     background: Rectangle{
                         width: clearBtn.width
                         height: clearBtn.height
-                        color: clearBtn.pressed ? "#d9ebf9":"#f0f0f0"
+                        color: clearBtn.pressed ? "#c2def5" : (clearBtn.hovered ? "#d9ebf9" : "#cfcfcf")
                     }
                     label: Text{
     //                    width: clearBtn.width

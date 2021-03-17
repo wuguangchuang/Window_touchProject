@@ -68,7 +68,7 @@ Item {
                     width:comboBox.width;
                     height: comboBox.height;
                     property bool flag:false
-                    color: flag ? "#d9ebf9" : "#f0f0f0"
+                    color: flag ? "#d9ebf9" : "#cfcfcf"
 
                     Text {
                         id:listViewText

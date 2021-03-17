@@ -3,6 +3,7 @@ import QtQuick.Controls 1.2
 import QtQml 2.2
 import QtQuick.Controls 1.4
 import QtQuick.Layouts 1.0
+import QtQuick.Controls.Styles 1.4
 
 Button {
     property string textStr:""
@@ -43,5 +44,11 @@ Button {
                 font.pointSize: 14
             }
 
+        }
+        style:ButtonStyle{
+            background: Rectangle{
+                anchors.fill: parent
+                color: rootBtn.pressed ? "#c2def5" : (rootBtn.hovered ? "#d9ebf9" : "#cdcdcd")
+            }
         }
 }
