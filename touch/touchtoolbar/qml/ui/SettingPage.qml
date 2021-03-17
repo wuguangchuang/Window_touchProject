@@ -57,6 +57,7 @@ Item{
     property Item settingEdgeStrechBtn:settingConfigurationPage.settingEdgeStrechBtn
     property Item factoryResetEdgeStrech:settingConfigurationPage.factoryResetEdgeStrech
 
+    property Item settingConfigurationPage:settingConfigurationPage
     id: root
     focus: true
     Keys.enabled: true
@@ -297,6 +298,9 @@ Item{
 //            }
 //        }
 
+        //刷新边缘拉伸的数据
+        settingConfigurationPage.getEdgeStrechVal();
+
         mSettings = settings;
         refreshing = false;
         var connected = touch.isDeviceConnected();
@@ -359,6 +363,7 @@ Item{
                 systemScreenDirectionMessage.visible = true;
             }
         }
+
 
     }
     Timer{

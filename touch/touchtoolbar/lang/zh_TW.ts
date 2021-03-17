@@ -172,6 +172,14 @@
         <source>Exit</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Please draw a line next to the edge of the blue serial number, and the range of the line must cover the entire edge.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Reedge stretch</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>FineTune</name>

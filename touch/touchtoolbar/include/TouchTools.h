@@ -285,19 +285,29 @@ public:
     class EdgeStrechThread:public QThread{
 
     public:
-        EdgeStrechThread(TouchTools *touchTool,bool cancelEdgeStrech);
         void setCancelEdgeStrech(bool cancelEdgeStrech);
+        void setActivityEdge(int activityEdge){this->activityEdge = activityEdge;}
+        void setTouchTool(TouchTools *touchTool){this->touchTool = touchTool;}
     protected:
         void run();
     private:
         bool cancelEdgeStrech;
+        int activityEdge;
         TouchTools *touchTool;
     };
 
     //边缘拉伸
+    EdgeStrechThread edgeStrechThread;
+    QMutex edgeStrechMutex;
     QVariantMap edgeStrechDataMap;
+    QVariantMap edgeStrechProgressData;
     void startEdgeStrech();
-    void getEdgeStrechVal();
+    void setEdgeStrechMode(bool flag);
+    QVariantMap getEdgeStrechVal(int initVal = 0);
+    QVariantMap getEdgeStrechProgressData();
+    void setNextActivityEdge(int activityEdge);
+    void setCancelEdgeStrech(bool cancelEdgeStrech);
+    void setEdgeStrechVal(QVariantList edgeStrechVal);
 
 
 

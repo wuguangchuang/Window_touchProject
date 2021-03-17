@@ -587,9 +587,47 @@ void TouchPresenter::startEdgeStrech()
     touch->startEdgeStrech();
 }
 
-void TouchPresenter::getEdgeStrechVal()
+void TouchPresenter::setEdgeStrechMode(bool flag)
 {
-    touch->getEdgeStrechVal();
+    touch->setEdgeStrechMode(flag);
+}
+
+QVariantMap TouchPresenter::getEdgeStrechVal(int initVal)
+{
+    return touch->getEdgeStrechVal(initVal);
+}
+
+void TouchPresenter::setNextActivityEdge(int activityEdge)
+{
+    touch->setNextActivityEdge(activityEdge);
+}
+
+void TouchPresenter::refreshEdgeStrechProgress(QVariantMap map)
+{
+    if (component == NULL) {
+        return;
+    }
+    QMetaObject::invokeMethod(component, "refreshEdgeStrechProgress",
+                              Q_ARG(QVariant, map));
+}
+
+void TouchPresenter::edgeStrechFinish(int activityEdge)
+{
+    if (component == NULL) {
+        return;
+    }
+    QMetaObject::invokeMethod(component, "edgeStrechFinish",
+                              Q_ARG(QVariant, activityEdge));
+}
+
+void TouchPresenter::setCancelEdgeStrech(bool cancelEdgeStrech)
+{
+    touch->setCancelEdgeStrech(cancelEdgeStrech);
+}
+
+void TouchPresenter::setEdgeStrechVal(QVariantList edgeStrechVal)
+{
+    touch->setEdgeStrechVal(edgeStrechVal);
 }
 
 void TouchPresenter::updateSignalList(QVariant list)

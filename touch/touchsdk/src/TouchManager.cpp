@@ -4342,7 +4342,76 @@ void TouchManager::InitDeviceInfoThread::run()
     }
 
 }
-void TouchManager::getEdgeStrechVal()
+QVariantMap TouchManager::getEdgeStrechVal(int initVal)
 {
+    QVariantMap map;
+    //通过命令获取边缘拉伸的值
+    if(initVal > 0)
+    {
+        //获取出厂初值
+        //拼接边缘拉伸的值
+        map.insert("edgeStrech0",5);
+        map.insert("edgeStrech1",6);
+        map.insert("edgeStrech2",7);
+        map.insert("edgeStrech3",8);
+    }
+    else
+    {
+        //获取设置的值
 
+
+        //拼接边缘拉伸的值
+        map.insert("edgeStrech0",0);
+        map.insert("edgeStrech1",1);
+        map.insert("edgeStrech2",2);
+        map.insert("edgeStrech3",3);
+    }
+
+
+    return map;
+}
+
+void TouchManager::setEdgeStrechMode(bool flag)
+{
+    //flag ? 进入边缘拉伸工作模式 ： 退出边缘拉伸工作模式
+
+}
+
+QVariantMap TouchManager::getEdgeStrechProgressData()
+{
+    QVariantMap map;
+    QVariantList edgeStrechDataList;
+    //通过命令获取边缘拉伸的进度
+
+
+    edgeStrechDataList.append(1);
+    edgeStrechDataList.append(0);
+    edgeStrechDataList.append(2);
+    edgeStrechDataList.append(3);
+    edgeStrechDataList.append(4);
+
+    //拼接边缘拉伸的值
+    map.insert("activityEdge",0);
+    map.insert("edgeStrechDataList",edgeStrechDataList);
+    return map;
+
+}
+
+bool TouchManager::edgeStrechFinish(int activityEdge)
+{
+    bool result = false;
+    //通过命令获取某一边是否完成
+
+    return result;
+}
+
+void TouchManager::setActivityEdge(int activityEdge)
+{
+    //设置活跃边
+}
+
+void TouchManager::setEdgeStrechVal(QVariantList edgeStrechVal)
+{
+    //发送命令设置边缘拉伸的值
+    TDEBUG("设置边缘拉伸的值为：%0.2f,%0.2f,%0.2f,%0.2f",edgeStrechVal.at(0).toFloat(),edgeStrechVal.at(1).toFloat(),edgeStrechVal.at(2).toFloat(),edgeStrechVal.at(3).toFloat());
 }

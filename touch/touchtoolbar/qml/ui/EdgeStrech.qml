@@ -27,8 +27,24 @@ Item {
     property var no_2_progress:[]
     property var no_3_progress:[]
 
-    property var refreshInfoTimer:refreshInfoTimer
+//    property var refreshInfoTimer:refreshInfoTimer
     property Item plt0Canvas:plt0Canvas
+
+    //活跃边
+    property int activityEdge:0
+
+    //每条边边缘拉伸完成的状态:下标0、1、2、3分别对应0、1、2、3的边，值为0表示未完成，1表示完成
+    property var edgeStrechStatus:[]
+    //初始状态、完成状态、活跃点的状态颜色
+    property color initColor:"gray"
+    property color finishColor:"#00CC5B"
+    property color activityColor:"#00B0F0"
+
+    //提示信息
+    property string tooltip:qsTr("Please draw a line next to the edge of the blue serial number, and the range of the line must cover the entire edge.");
+
+
+
 
     Rectangle{
         anchors.fill: parent
@@ -64,8 +80,8 @@ Item {
                         ctx.beginPath();
                         if(no_0_progress[i] > 0)
                         {
-                            ctx.fillStyle = "#4ad122"
-                            ctx.strokeStyle = "#4ad122";
+                            ctx.fillStyle = finishColor
+                            ctx.strokeStyle = finishColor
                             ctx.fillRect((no_0_progress.length - 1 - i) * rectWidth + 1,1,rectWidth,parent.height - 2);
                         }
                         else
@@ -86,16 +102,31 @@ Item {
             anchors.leftMargin: parent.width / 2
             anchors.bottom: no_0_rect.top
             anchors.bottomMargin: defaultMargin
-            height:40
+            height:60
             width: height
             radius: width / 2
             border.color: "gray"
             border.width: 1
-            color: "#fafafa"
-            Text{
-                text:"0"
-                font.pointSize: 14
-                anchors.centerIn: parent
+            Canvas{
+                id:number0Canvas
+                anchors.fill: parent
+                onPaint: {
+                    var ctx = number0Canvas.getContext("2d");
+                    ctx.reset();
+                    ctx.lineWidth = 1;
+                    ctx.fillStyle = (activityEdge === 0 ? activityColor : (edgeStrechStatus[0] === 1 ? finishColor : "#fafafa"));
+                    ctx.strokeStyle = "gray"
+                    ctx.arc(parent.width / 2, parent.height / 2,parent.height / 2 - 1, 0, Math.PI*2, true);
+                    ctx.fill();
+                    ctx.stroke();
+
+
+                    ctx.font = "40px 'Arial'";
+                    ctx.fillStyle = "#000000"
+                    ctx.strokeStyle = "#000000"
+                    ctx.fillText("0",parent.width / 3 - 2,parent.height / 4 * 3 );
+
+                }
             }
         }
         //1号板
@@ -124,8 +155,8 @@ Item {
                         ctx.beginPath();
                         if(no_1_progress[i] > 0)
                         {
-                            ctx.fillStyle = "#4ad122"
-                            ctx.strokeStyle = "#4ad122";
+                            ctx.fillStyle = finishColor;
+                            ctx.strokeStyle = finishColor;
                             ctx.fillRect(1,i * rectHeight + 1,parent.width - 2,rectHeight);
                         }
                         else
@@ -146,17 +177,33 @@ Item {
             anchors.topMargin: parent.height / 2
             anchors.right: no_1_rect.left
             anchors.rightMargin: defaultMargin
-            height:40
+            height:60
             width: height
             radius: width / 2
             border.color: "gray"
             border.width: 1
-            color: "#fafafa"
-            Text{
-                text:"1"
-                font.pointSize: 14
-                anchors.centerIn: parent
+            Canvas{
+                id:number1Canvas
+                anchors.fill: parent
+                onPaint: {
+                    var ctx = number1Canvas.getContext("2d");
+                    ctx.reset();
+                    ctx.lineWidth = 1;
+                    ctx.fillStyle = (activityEdge === 1 ? activityColor : (edgeStrechStatus[1] === 1 ? finishColor : "#fafafa"))
+                    ctx.strokeStyle = "gray"
+                    ctx.arc(parent.width / 2, parent.height / 2,parent.height / 2 - 1, 0, Math.PI*2, true);
+                    ctx.fill();
+                    ctx.stroke();
+
+
+                    ctx.font = "40px 'Arial'";
+                    ctx.fillStyle = "#000000"
+                    ctx.strokeStyle = "#000000"
+                    ctx.fillText("1",parent.width / 3 - 2,parent.height / 4 * 3 );
+
+                }
             }
+
         }
         //2号板
         Rectangle{
@@ -184,8 +231,8 @@ Item {
                         ctx.beginPath();
                         if(no_2_progress[i] > 0)
                         {
-                            ctx.fillStyle = "#4ad122"
-                            ctx.strokeStyle = "#4ad122";
+                            ctx.fillStyle = finishColor
+                            ctx.strokeStyle = finishColor
                             ctx.fillRect((no_2_progress.length - 1 - i) * rectWidth + 1,1,rectWidth,parent.height - 2);
                         }
                         else
@@ -206,16 +253,31 @@ Item {
             anchors.topMargin: defaultMargin
             anchors.left: parent.left
             anchors.leftMargin: parent.width / 2
-            height:40
+            height:60
             width: height
             radius: width / 2
             border.color: "gray"
             border.width: 1
-            color: "#fafafa"
-            Text{
-                text:"2"
-                font.pointSize: 14
-                anchors.centerIn: parent
+            Canvas{
+                id:number2Canvas
+                anchors.fill: parent
+                onPaint: {
+                    var ctx = number2Canvas.getContext("2d");
+                    ctx.reset();
+                    ctx.lineWidth = 1;
+                    ctx.fillStyle = (activityEdge === 2 ? activityColor : (edgeStrechStatus[2] === 1 ? finishColor : "#fafafa"));
+                    ctx.strokeStyle = "gray"
+                    ctx.arc(parent.width / 2, parent.height / 2,parent.height / 2 - 1, 0, Math.PI*2, true);
+                    ctx.fill();
+                    ctx.stroke();
+
+
+                    ctx.font = "40px 'Arial'";
+                    ctx.fillStyle = "#000000"
+                    ctx.strokeStyle = "#000000"
+                    ctx.fillText("2",parent.width / 3 - 2,parent.height / 4 * 3 );
+
+                }
             }
         }
         //3号板
@@ -244,8 +306,8 @@ Item {
                         ctx.beginPath();
                         if(no_3_progress[i] > 0)
                         {
-                            ctx.fillStyle = "#4ad122"
-                            ctx.strokeStyle = "#4ad122";
+                            ctx.fillStyle = finishColor
+                            ctx.strokeStyle = finishColor
                             ctx.fillRect(1,i * rectHeight + 1,parent.width - 2,rectHeight);
                         }
                         else
@@ -265,16 +327,31 @@ Item {
             anchors.leftMargin: defaultMargin
             anchors.top: parent.top
             anchors.topMargin: parent.height / 2
-            height:40
+            height:60
             width: height
             radius: width / 2
             border.color: "gray"
             border.width: 1
-            color: "#fafafa"
-            Text{
-                text:"3"
-                font.pointSize: 14
-                anchors.centerIn: parent
+            Canvas{
+                id:number3Canvas
+                anchors.fill: parent
+                onPaint: {
+                    var ctx = number3Canvas.getContext("2d");
+                    ctx.reset();
+                    ctx.lineWidth = 1;
+                    ctx.fillStyle = (activityEdge === 3 ? activityColor : (edgeStrechStatus[3] === 1 ? finishColor : "#fafafa"));
+                    ctx.strokeStyle = "gray"
+                    ctx.arc(parent.width / 2, parent.height / 2,parent.height / 2 - 1, 0, Math.PI*2, true);
+                    ctx.fill();
+                    ctx.stroke();
+
+
+                    ctx.font = "40px 'Arial'";
+                    ctx.fillStyle = "#000000"
+                    ctx.strokeStyle = "#000000"
+                    ctx.fillText("3",parent.width / 3 - 2,parent.height / 4 * 3 );
+
+                }
             }
         }
 
@@ -292,9 +369,12 @@ Item {
             anchors.leftMargin: (parent.width - midRectWidth) / 2
 
             Text{
-                anchors.centerIn: parent
-                text:"显示信息"
+                anchors.fill: parent
+                text:tooltip
                 font.pointSize: 18
+                wrapMode: Text.Wrap
+                horizontalAlignment: Text.AlignHCenter
+                verticalAlignment: Text.AlignVCenter
             }
         }
         //边缘拉伸参数
@@ -482,11 +562,66 @@ Item {
             anchors.left: parent.left
             anchors.leftMargin: (parent.width - midRectWidth) / 2
             color: "#fafafa"
+
+            Button{
+                id:reedge_stretch
+                width: buttonWidth
+                height: buttonheight
+                anchors.left: parent.left
+                anchors.top: parent.top
+                text: qsTr("Reedge stretch")
+                style:ButtonStyle{
+                    label: Text{
+                        anchors.fill: parent
+                        text:reedge_stretch.text
+                        font.pointSize: 14
+                        verticalAlignment: Text.AlignVCenter
+                        horizontalAlignment: Text.AlignHCenter
+
+                    }
+                    background: Rectangle{
+                        anchors.fill: parent
+                        color: reedge_stretch.pressed ? "#64B5F6" : (reedge_stretch.hovered ? "#d9ebf9" : "#cdcdcd")
+                    }
+                }
+                onClicked: {
+                    reedgeStretch();
+                }
+
+            }
+            Button{
+                id:nextEdge
+                width: buttonWidth
+                height: buttonheight
+                anchors.left: reedge_stretch.right
+                anchors.leftMargin: (parent.width - 4 * buttonWidth) / 3
+                anchors.top: parent.top
+                text: qsTr("Next side")
+                style:ButtonStyle{
+                    label: Text{
+                        anchors.fill: parent
+                        text:nextEdge.text
+                        font.pointSize: 14
+                        verticalAlignment: Text.AlignVCenter
+                        horizontalAlignment: Text.AlignHCenter
+
+                    }
+                    background: Rectangle{
+                        anchors.fill: parent
+                        color: nextEdge.pressed ? "#64B5F6" : (nextEdge.hovered ? "#d9ebf9" : "#cdcdcd")
+                    }
+                }
+                onClicked: {
+                    setNextActivityEdge(false);
+                }
+
+            }
             Button{
                 id:paintingBoardBtn
                 width: buttonWidth
                 height: buttonheight
-                anchors.left: parent.left
+                anchors.left: nextEdge.right
+                anchors.leftMargin: (parent.width - 4 * buttonWidth) / 3
                 anchors.top: parent.top
                 text: qsTr("Painting board")
                 style:ButtonStyle{
@@ -531,7 +666,8 @@ Item {
                 }
 
                 onClicked: {
-                    refreshInfoTimer.stop();
+//                    refreshInfoTimer.stop();
+                    touch.setEdgeStrechMode(false);
                     exitEdgeStrech();
                 }
 
@@ -546,36 +682,25 @@ Item {
 
     }
 
-    Timer{
-        id:refreshInfoTimer
-        interval: 16
-        repeat: true
-        running: false
-        triggeredOnStart: true
-        onTriggered: {
+//    Timer{
+//        id:refreshInfoTimer
+//        interval: 16
+//        repeat: true
+//        running: false
+//        triggeredOnStart: true
+//        onTriggered: {
+//        }
 
-
-            plt0Canvas.requestPaint()
-
-            plt1Canvas.requestPaint()
-
-
-            plt2Canvas.requestPaint()
-
-
-            plt3Canvas.requestPaint()
-
-        }
-
-    }
+//    }
 
     function startEdgeStrech()
     {
         clearPltCanvas();
-        refreshInfoTimer.start();
-        //获取边缘拉伸的初值
+        touch.setEdgeStrechMode(true);
+//        refreshInfoTimer.start();
+        //获取边缘拉伸的值
         getEdgeStrechVal();
-        //开始获取边缘拉伸的进度
+        //开始边缘拉伸
         touch.startEdgeStrech();
     }
     function clearPltCanvas()
@@ -595,10 +720,140 @@ Item {
         var ctx3 = plt3Canvas.getContext("2d");
         ctx0.clearRect(0,0,plt3Canvas.width,plt3Canvas.height);
         plt3Canvas.requestPaint();
+
+        activityEdge = 0;
+        for(var i = 0;i < 4;i++)
+        {
+            edgeStrechStatus[i] = 0;
+        }
+        no_0_progress.length = 0;
+        no_1_progress.length = 0;
+        no_2_progress.length = 0;
+        no_3_progress.length = 0;
+
+        number0Canvas.requestPaint();
+        number1Canvas.requestPaint();
+        number2Canvas.requestPaint();
+        number3Canvas.requestPaint();
+
     }
+    //设置下一个活跃点
+    function setNextActivityEdge(flag)
+    {
+        if(activityEdge === 3)
+        {
+            if(flag)
+            {
+                activityEdge = -1;
+            }
+            else
+            {
+                activityEdge = 0;
+            }
+
+        }
+        else
+        {
+            activityEdge++;
+        }
+        touch.setNextActivityEdge(activityEdge);
+
+        number0Canvas.requestPaint();
+        number1Canvas.requestPaint();
+        number2Canvas.requestPaint();
+        number3Canvas.requestPaint();
+
+        getEdgeStrechVal();
+
+    }
+
     function getEdgeStrechVal()
     {
         var datas = touch.getEdgeStrechVal();
+        edgeStrech0 = datas["edgeStrech0"];
+        edgeStrech1 = datas["edgeStrech1"];
+        edgeStrech2 = datas["edgeStrech2"];
+        edgeStrech3 = datas["edgeStrech3"];
+    }
+
+    function refreshEdgeStrechProgress(map)
+    {
+        var activityNum = map["activityEdge"];
+        var edgeStrechDataList = map["edgeStrechDataList"];
+        var i = 0;
+        switch(activityNum)
+        {
+        case 0:
+            no_0_progress.length = 0;
+            for(i = 0;i < edgeStrechDataList.length;i++)
+            {
+                no_0_progress[i] = edgeStrechDataList[i];
+            }
+            plt0Canvas.requestPaint();
+            break;
+        case 1:
+            no_1_progress.length = 0;
+            for(i = 0;i < edgeStrechDataList.length;i++)
+            {
+                no_1_progress[i] = edgeStrechDataList[i];
+            }
+            plt1Canvas.requestPaint();
+            break;
+        case 2:
+            no_2_progress.length = 0;
+            for(i = 0;i < edgeStrechDataList.length;i++)
+            {
+                no_2_progress[i] = edgeStrechDataList[i];
+            }
+            plt2Canvas.requestPaint();
+            break;
+        case 0:
+            no_3_progress.length = 0;
+            for(i = 0;i < edgeStrechDataList.length;i++)
+            {
+                no_3_progress[i] = edgeStrechDataList[i];
+            }
+            plt3Canvas.requestPaint();
+            break;
+        }
+    }
+
+    function reedgeStretch()
+    {
+        var i = 0;
+        clearPltCanvas();
+        for(i = 0; i < 4;i++)
+        {
+            edgeStrechStatus[i] = 0;
+        }
+        no_0_progress.length = 0;
+        no_1_progress.length = 0;
+        no_2_progress.length = 0;
+        no_3_progress.length = 0;
+
+        if(activityEdge < 0)
+        {
+            activityEdge = 0;
+            touch.setNextActivityEdge(activityEdge);
+            touch.startEdgeStrech();
+        }
+        else
+        {
+            activityEdge = 0
+            touch.setNextActivityEdge(activityEdge);
+        }
+
+        number0Canvas.requestPaint();
+        number1Canvas.requestPaint();
+        number2Canvas.requestPaint();
+        number3Canvas.requestPaint();
+
+        plt0Canvas.requestPaint();
+        plt1Canvas.requestPaint();
+        plt2Canvas.requestPaint();
+        plt3Canvas.requestPaint();
+
+        getEdgeStrechVal();
     }
 
 }

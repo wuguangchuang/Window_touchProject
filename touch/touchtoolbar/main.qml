@@ -2962,7 +2962,7 @@ QMessageBox::Critical	3	an icon indicating that the message represents a critica
          {
              calibrationUi.visible = true;
              lastVisibility = mainPage.visibility;
-             settingsTabId.settingsPage.visible = false;
+             settingsTabId.visible = false;
              enterInterface = calibrationPage;
              showFullScreen();
          }
@@ -2971,43 +2971,59 @@ QMessageBox::Critical	3	an icon indicating that the message represents a critica
      function exitCalibrate(){
          calibrationUi.focus = false;
          calibrationUi.visible = false;
-         settingsTabId.settingsPage.visible = true;
+         settingsTabId.visible = true;
          mainPage.visibility = lastVisibility;
          settingsTabId.settingsPage.focus = true;
          enterInterface = settingsPage;
 
      }
+     //微调
      function enterFineTune(){
          fineTune.visible = true;
          lastVisibility = mainPage.visibility;
          showFullScreen();
-         settingsTabId.settingsPage.visible = false;
+         settingsTabId.visible = false;
          enterInterface = fineTunePage;
      }
      function exitFineTune(){
          fineTune.focus = false;
          fineTune.visible = false;
          mainPage.visibility = lastVisibility;
-         settingsTabId.settingsPage.visible = true;
+         settingsTabId.visible = true;
          settingsTabId.settingsPage.focus = true;
          enterInterface = settingsPage;
      }
+
+     //边缘拉伸
 
      function enterEdgeStrech(){
          edgeStrech.visible = true;
          lastVisibility = mainPage.visibility;
          showFullScreen();
-         settingsTabId.settingsPage.visible = false;
+         settingsTabId.visible = false;
          enterInterface = edgeStrechPage;
      }
      function exitEdgeStrech(){
+         touch.setCancelEdgeStrech(true);
          edgeStrech.focus = false;
          edgeStrech.visible = false;
          mainPage.visibility = lastVisibility;
-         settingsTabId.settingsPage.visible = true;
+         settingsTabId.visible = true;
          settingsTabId.settingsPage.focus = true;
          enterInterface = edgeStrechPage;
+         settingsTabId.settingsPage.settingConfigurationPage.getEdgeStrechVal(0);
+
      }
+     function edgeStrechFinish(activityEdge)
+     {
+         edgeStrech.getEdgeStrechVal();
+         edgeStrech.setNextActivityEdge(true);
+     }
+     function refreshEdgeStrechProgress(map)
+     {
+         edgeStrech.refreshEdgeStrechProgress(map);
+     }
+
      //批处理
      function initBatchDeviceInfo()
      {
@@ -3178,5 +3194,7 @@ QMessageBox::Critical	3	an icon indicating that the message represents a critica
          }
         touch.currentTabRefresh(currenttab);
      }
+
+
 
 }

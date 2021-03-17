@@ -71,7 +71,8 @@ Item {
                         touch.debug("设置的校准数据：");
                         var calJson = JSON.stringify(createCalibrationData());
                         touch.debug(calJson);
-                        hideProgessing();var result = touch.saveCalibration();
+                        hideProgessing();
+                        var result = touch.saveCalibration();
                         if (result === false) {
                             showToast(qsTr("save data failure"));
                         } else {

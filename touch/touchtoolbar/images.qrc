@@ -41,5 +41,6 @@
         <file>images/dropDown.png</file>
         <file>images/signal_chart.png</file>
         <file>images/rectangle.png</file>
+        <file>images/edge_strech.png</file>
     </qresource>
 </RCC>

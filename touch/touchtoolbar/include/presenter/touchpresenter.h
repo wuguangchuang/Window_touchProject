@@ -58,8 +58,11 @@ public:
     virtual QVariantMap getBatchUpgradeData() = 0;
     //边缘拉伸
     virtual void startEdgeStrech() = 0;
-    virtual void getEdgeStrechVal() = 0;
-
+    virtual void setEdgeStrechMode(bool flag);
+    virtual QVariantMap getEdgeStrechVal(int initVal = 0) = 0;
+    virtual void setNextActivityEdge(int activityEdge) = 0;
+    virtual void setCancelEdgeStrech(bool cancelEdgeStrech) = 0;
+    virtual void setEdgeStrechVal(QVariantList edgeStrechVal);
 
 };
 class ProcessStarter : public QProcess {
@@ -417,7 +420,14 @@ public:
 
     //边缘拉伸
     Q_INVOKABLE void startEdgeStrech();
-    Q_INVOKABLE void getEdgeStrechVal();
+    Q_INVOKABLE void setEdgeStrechMode(bool flag);
+    Q_INVOKABLE QVariantMap getEdgeStrechVal(int initVal = 0);
+    Q_INVOKABLE void setNextActivityEdge(int activityEdge);
+    void refreshEdgeStrechProgress(QVariantMap map);
+    void edgeStrechFinish(int activityEdge);
+    Q_INVOKABLE void setCancelEdgeStrech(bool cancelEdgeStrech);
+    Q_INVOKABLE void setEdgeStrechVal(QVariantList edgeStrechVal);
+
 
 
     // call qml

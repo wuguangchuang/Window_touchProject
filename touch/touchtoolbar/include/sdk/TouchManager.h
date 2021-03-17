@@ -203,7 +203,12 @@ public:
     };
 
     //边缘拉伸
-    TOUCHSHARED_EXPORT void getEdgeStrechVal();
+    TOUCHSHARED_EXPORT QVariantMap getEdgeStrechVal(int initVal = 0);
+    TOUCHSHARED_EXPORT void setEdgeStrechMode(bool flag);
+    TOUCHSHARED_EXPORT QVariantMap getEdgeStrechProgressData();
+    TOUCHSHARED_EXPORT bool edgeStrechFinish(int activityEdge);
+    TOUCHSHARED_EXPORT void setActivityEdge(int activityEdge);
+    TOUCHSHARED_EXPORT void setEdgeStrechVal(QVariantList edgeStrechVal);
 private:
     TouchManager();
     int randomArray[256];

@@ -41,7 +41,7 @@ Item {
                     id:enterEdgeStrechBtn
                     defaultHeight: defaultBtnHeight
                     textStr: qsTr("Edge strech")
-//                    imageSource:"qrc:/dialog/images/rectangle.png"
+                    imageSource:"qrc:/dialog/images/edge_strech.png"
                     tooltipStr:qsTr("Enter the edge stretch interface.")
                     onClicked: {
                         enterEdgeStrech();
@@ -56,7 +56,8 @@ Item {
                     tooltipStr: qsTr("Refresh edge stretch value.")
                     imageSource:"qrc:/dialog/images/refresh_blue.png"
                     onClicked: {
-
+                        getEdgeStrechVal(0)
+                        showToast(qsTr("Refresh success"));
                     }
                 }
                 MyButton{
@@ -68,7 +69,8 @@ Item {
                     imageSource:"qrc:/dialog/images/setting_blue.png"
                     tooltipStr:qsTr("Set the edge stretch value to the firmware.")
                     onClicked: {
-
+                        setEdgeStrechVal();
+                        showToast(qsTr("Setting success"));
                     }
                 }
 
@@ -82,7 +84,7 @@ Item {
                     imageSource: "qrc:/dialog/images/restort_blue.png"
 
                     onClicked: {
-
+                        getEdgeStrechVal(1);
                     }
                 }
             }
@@ -183,7 +185,7 @@ Item {
                     Layout.preferredHeight: defaultCtrlHeight
                     anchors.left: parent.left
                     anchors.leftMargin: 250 + defaultMargin
-                    defaultHeight: edgeStrechBtn.height
+                    defaultHeight: 40
                     onTextChanged:
                     {
 //                        console.log("0号当前的值为：" + text);
@@ -195,7 +197,7 @@ Item {
                     Layout.preferredHeight: defaultCtrlHeight
                     anchors.left: no_0_editText.right
                     anchors.leftMargin: defaultMargin
-                    defaultHeight: edgeStrechBtn.height
+                    defaultHeight: 40
                     onTextChanged:
                     {
 //                        console.log("1号当前的值为：" + text);
@@ -207,7 +209,7 @@ Item {
                     Layout.preferredHeight: defaultCtrlHeight
                     anchors.left: no_1_editText.right
                     anchors.leftMargin: defaultMargin
-                    defaultHeight: edgeStrechBtn.height
+                    defaultHeight: 40
                     onTextChanged:
                     {
 //                        console.log("2号当前的值为：" + text);
@@ -219,7 +221,7 @@ Item {
                     Layout.preferredHeight: defaultCtrlHeight
                     anchors.left: no_2_editText.right
                     anchors.leftMargin: defaultMargin
-                    defaultHeight: edgeStrechBtn.height
+                    defaultHeight: 40
                     onTextChanged:
                     {
 //                        console.log("3号当前的值为：" + text);
@@ -233,6 +235,24 @@ Item {
 
     }
 
+    function getEdgeStrechVal(initVal)
+    {
+        var datas = touch.getEdgeStrechVal(initVal);
+        no_0_editText.textField.text = datas["edgeStrech0"];
+        no_1_editText.textField.text = datas["edgeStrech1"];
+        no_2_editText.textField.text = datas["edgeStrech2"];
+        no_3_editText.textField.text = datas["edgeStrech3"];
+        touch.tPrintf("获取边缘拉伸的值：" + datas["edgeStrech0"] + "," + datas["edgeStrech1"] + "," + datas["edgeStrech2"] + "," + datas["edgeStrech3"])
+    }
+    function setEdgeStrechVal()
+    {
+        var edgeStrechVal = [];
+        edgeStrechVal[0] = no_0_editText.textField.text;
+        edgeStrechVal[1] = no_1_editText.textField.text;
+        edgeStrechVal[2] = no_2_editText.textField.text;
+        edgeStrechVal[3] = no_3_editText.textField.text;
+        touch.setEdgeStrechVal(edgeStrechVal);
+    }
 
 
 }

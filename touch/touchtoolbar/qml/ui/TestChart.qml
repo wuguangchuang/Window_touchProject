@@ -978,7 +978,7 @@ Item {
                                 }
 
                             }
-//                            chartTitleInfo.requestPaint();
+                            chartTitleInfo.requestPaint();
                         }
                         //点线
                         else
@@ -1077,7 +1077,7 @@ Item {
                                     signalResult[k] = true;
                                 }
                             }
-//                            chartTitleInfo.requestPaint();
+                            chartTitleInfo.requestPaint();
                         }
 
                     }
@@ -1180,7 +1180,7 @@ Item {
 
                             }
                         }
-//                        chartTitleInfo.requestPaint();
+                        chartTitleInfo.requestPaint();
                     }
 
                     touch.paintUnlock();

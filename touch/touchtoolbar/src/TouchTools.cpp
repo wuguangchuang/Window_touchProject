@@ -1249,12 +1249,41 @@ void TouchTools::startVolienceTest(int volienceMode)
 
 void TouchTools::startEdgeStrech()
 {
-
+    edgeStrechThread.setCancelEdgeStrech(false);
+    edgeStrechThread.setTouchTool(this);
+    edgeStrechThread.setActivityEdge(0);
+    edgeStrechThread.start();
 }
 
-void TouchTools::getEdgeStrechVal()
+void TouchTools::setEdgeStrechMode(bool flag)
 {
+    mTouchManager->setEdgeStrechMode(flag);
+}
 
+QVariantMap TouchTools::getEdgeStrechVal(int initVal)
+{
+    return mTouchManager->getEdgeStrechVal(initVal);
+}
+
+QVariantMap TouchTools::getEdgeStrechProgressData()
+{
+    return mTouchManager->getEdgeStrechProgressData();
+}
+
+void TouchTools::setNextActivityEdge(int activityEdge)
+{
+    edgeStrechThread.setActivityEdge(activityEdge);
+    mTouchManager->setActivityEdge(activityEdge);
+}
+
+void TouchTools::setCancelEdgeStrech(bool cancelEdgeStrech)
+{
+    edgeStrechThread.setCancelEdgeStrech(cancelEdgeStrech);
+}
+
+void TouchTools::setEdgeStrechVal(QVariantList edgeStrechVal)
+{
+    mTouchManager->setEdgeStrechVal(edgeStrechVal);
 }
 
 
@@ -1727,13 +1756,6 @@ void TouchTools::VolienceTestThread::run()
 }
 
 
-
-TouchTools::EdgeStrechThread::EdgeStrechThread(TouchTools *touchTool, bool cancelEdgeStrech)
-{
-    this->touchTool = touchTool;
-    this->cancelEdgeStrech = cancelEdgeStrech;
-}
-
 void TouchTools::EdgeStrechThread::setCancelEdgeStrech(bool cancelEdgeStrech)
 {
     this->cancelEdgeStrech = cancelEdgeStrech;
@@ -1741,8 +1763,35 @@ void TouchTools::EdgeStrechThread::setCancelEdgeStrech(bool cancelEdgeStrech)
 
 void TouchTools::EdgeStrechThread::run()
 {
-    while(cancelEdgeStrech)
+    QTime time;
+    int periodTime = 1000;//60帧
+    bool result = false;
+    while(!cancelEdgeStrech)
     {
+        time.restart();
+        //获取边缘拉伸的进度
+        QVariantMap map =  touchTool->mTouchManager->getEdgeStrechProgressData();
+        touchTool->presenter->refreshEdgeStrechProgress(map);
+        //获取边缘拉伸活跃边是否完成
+        result = false;
+        result = touchTool->mTouchManager->edgeStrechFinish(this->activityEdge);
+        if(result)
+        {
+            touchTool->presenter->edgeStrechFinish(this->activityEdge);
+        }
+        //判断是否全部完成：完成即结束
+        if(activityEdge < 0)
+        {
+            break;
+        }
+        if(periodTime - time.elapsed() > 0)
+        {
+            QThread::msleep(periodTime - time.elapsed());
+        }
+        else
+        {
+            QThread::msleep(1);
+        }
 
     }
 }

@@ -11,6 +11,7 @@ Item {
 //    height: textField.implicitHeight
     height: defaultHeight
 
+    property Item textField: textField
     signal textChanged(var text);
     TextField {
         id: textField
