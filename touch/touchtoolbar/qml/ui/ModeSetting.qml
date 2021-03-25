@@ -54,7 +54,8 @@ Item {
                         tooltipStr: qsTr("Scanning seedlings to detect hardware drivers.")
                         imageSource:"qrc:/dialog/images/search.png"
                         onClicked: {
-
+                            refreshDriver.enabled = false;
+                            touch.refreshDriver();
                         }
 
                     }

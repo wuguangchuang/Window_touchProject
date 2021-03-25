@@ -1607,7 +1607,7 @@ void TouchManager::HotplugThread::run()
                     tmp->touch.connected = 0;
 //                    hid_close(tmp->hid);
                     TDEBUG("设备已断开");
-
+                    closeHandle(tmp->hid);
                     if (manager->mHotplugListener != NULL) {
                         tmp->touch.connected = 0;
                         manager->mHotplugListener->onTouchHotplug(tmp, 0, 1);
@@ -4552,14 +4552,11 @@ void TouchManager::DriverThread::run()
         {
             TPRINTF("子程序连接失败,错误码 = %d",GetLastError());
         }
+        //发送VID和PID
+        PipeWrite(QString().sprintf("%X",dev->info->vendor_id));
+        PipeWrite(QString().sprintf("%X",dev->info->product_id));
 
-//        do{
-            result = pipeRead();
-//            if(ret != 0)
-//                QThread::msleep(10);
-//        }while(ret);
-
-
+        result = pipeRead();
 
 
         if (m_hPipe!=NULL && m_hPipe != INVALID_HANDLE_VALUE)
@@ -4610,5 +4607,19 @@ int TouchManager::DriverThread::pipeRead()
             TPRINTF("读取数据失败,erroe = %d",GetLastError());
             return 0;
         }
+    }
+}
+//WriteFile会阻塞，等待客户端读取完毕
+void TouchManager::DriverThread::PipeWrite(QString str)
+{
+    DWORD   dwWritten;
+    if(!WriteFile(m_hPipe, str.toStdString().c_str(),str.length(), &dwWritten, NULL))
+    {
+        TDEBUG("%s send error,error = %d",str.toStdString().c_str(),GetLastError());
+
+    }
+    else
+    {
+        TDEBUG("PIPE send ok! data = %s",str.toStdString().c_str());
     }
 }

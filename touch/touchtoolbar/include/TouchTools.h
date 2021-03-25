@@ -347,6 +347,7 @@ public:
 
     //更多
     void removeDriver();
+    void refreshDriver();
     void setRemoveDriverBtnEnable(bool enable);
     void showShutDownMessage();
     void shutDown(bool flag);

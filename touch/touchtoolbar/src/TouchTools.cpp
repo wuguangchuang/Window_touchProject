@@ -790,6 +790,7 @@ QVariant TouchTools::getRelativeInfo()
         info += polishingString(polishingSize,tr("USB VID:")) + QString().sprintf("0x%04X\r\n", toWord(dev->fireware.usb_vid_l, dev->fireware.usb_vid_h));
         info += polishingString(polishingSize,tr("USB PID:")) + QString().sprintf("0x%04X\r\n", toWord(dev->fireware.usb_pid_l, dev->fireware.usb_pid_h));
         info += polishingString(polishingSize,tr("Serial number:"))+ QString().sprintf("%s\r\n",dev->touch.serial_number);
+
     }
 
     info += "\r\n" + tr("Software information") + "\r\n";
@@ -817,6 +818,7 @@ QVariant TouchTools::getRelativeInfo()
     info += polishingString(polishingSize,tr("Software version:")) + QString().sprintf("%s.%s\r\n",APP_VERSION_NAME, versionType);
     info += polishingString(polishingSize,tr("OS name:")) + QSysInfo::prettyProductName() + "\r\n";
     info += polishingString(polishingSize,tr("OS version:")) + QSysInfo::kernelVersion() + "\r\n";
+    info += polishingString(polishingSize,"软件路径：") + appPath + "\r\n";
 #endif
     return QVariant::fromValue(info);
 }
@@ -1344,7 +1346,7 @@ void TouchTools::removeDriver()
     QString fileName = appPath + "/needAdminPermission.exe";
     fileName = fileName.replace("/","\\");
     TPRINTF("启动子程序的路径：%s",fileName.toStdString().c_str());
-    int ret = (int)ShellExecute(NULL,L"runas",L"needAdminPermission.exe",L"uninstallDriver_14E1_3500",(LPCWSTR)(appPath.toStdString().c_str()),SW_HIDE);
+    int ret = (int)ShellExecute(NULL,L"runas",L"needAdminPermission.exe",L"uninstallDriver",(LPCWSTR)(appPath.toStdString().c_str()),SW_HIDE);
     TPRINTF("程序启动的结果%d",ret);
     if(ret <= 32)
     {
@@ -1352,6 +1354,11 @@ void TouchTools::removeDriver()
         setRemoveDriverBtnEnable(true);
         return;
     }
+
+}
+
+void TouchTools::refreshDriver()
+{
 
 }
 void TouchTools::readProcessData()

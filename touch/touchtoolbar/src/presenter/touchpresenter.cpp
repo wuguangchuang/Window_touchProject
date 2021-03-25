@@ -689,6 +689,11 @@ void TouchPresenter::removeDriver()
     touch->removeDriver();
 }
 
+void TouchPresenter::refreshDriver()
+{
+    touch->refreshDriver();
+}
+
 void TouchPresenter::setRemoveDriverBtnEnable(bool enable)
 {
     if (component == NULL) {

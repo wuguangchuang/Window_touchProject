@@ -219,6 +219,7 @@ public:
             this->type = type;
         }
     int pipeRead();
+    void PipeWrite(QString str);
     protected:
         void run();
     private:

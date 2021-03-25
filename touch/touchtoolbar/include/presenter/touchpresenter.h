@@ -66,6 +66,7 @@ public:
 
     //更多
     virtual void removeDriver() = 0;
+    virtual void refreshDriver() = 0;
     virtual void shutDown(bool flag) = 0;
 
 };
@@ -401,6 +402,7 @@ public:
     Q_INVOKABLE void modeSetting(bool startup = false);
     Q_INVOKABLE QVariantMap refreshModeSetting();
     Q_INVOKABLE void removeDriver();
+    Q_INVOKABLE void refreshDriver();
     void setRemoveDriverBtnEnable(bool enable);
     void showShutDownMessage(QString title,QString Message,int type);
     Q_INVOKABLE void shutDown(bool flag);

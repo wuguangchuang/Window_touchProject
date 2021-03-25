@@ -7,6 +7,8 @@
 #include <tdebug.h>
 #include <QProcess>
 #include <manager.h>
+#include <QTextCodec>
+#include <stdlib.h>
 
 //命名管道
 #define PIPE_NAME "\\\\.\\Pipe\\UninstallDdriver"
@@ -14,6 +16,7 @@
 
 //WriteFile会阻塞，等待客户端读取完毕
 void PipeWrite(bool result);
+int PipeRead(char *data,int maxLength);
 
 HANDLE m_hPipe;
 BOOL m_bConnected;
@@ -21,7 +24,8 @@ int main(int argc, char *argv[])
 {
 
 //    QCoreApplication app(argc, argv);
-
+    //设置编码格式为 utf-8
+    QTextCodec::setCodecForLocale(QTextCodec::codecForName("utf-8"));
     if(argc == 1)
     {
         TDEBUG("argc == 1");
@@ -55,18 +59,19 @@ int main(int argc, char *argv[])
     }
     int type = 0,vid = 0,pid = 0;
 
-    char seg[2] = "_";
-    char *str =  NULL;
-
-    str = strtok(argv[1],seg);
-    if(strcmp(str,"uninstallDriver") == 0)
+    if(strcmp(argv[1],"uninstallDriver") == 0)
     {
         type = 1;
         bool ok;
-        str = strtok(NULL,seg);
-        vid = QString("%1").arg(str).toInt(&ok,16);
-        str = strtok(NULL,seg);
-        pid = QString("%1").arg(str).toInt(&ok,16);
+        char buf[64] = {0};
+        if(PipeRead(buf,sizeof(buf)))
+        {
+            vid = QString("%1").arg(buf).toInt(&ok,16);
+        }
+        if(PipeRead(buf,sizeof(buf)))
+        {
+            pid = QString("%1").arg(buf).toInt(&ok,16);
+        }
     }
 
 
@@ -112,4 +117,25 @@ void PipeWrite(bool result)
     {
         TDEBUG("PIPE send ok! data = %s",buffer);
     }
+}
+//会阻塞等待有数据读取
+int PipeRead(char *data,int maxLength)
+{
+    DWORD   dwBytesRead;
+
+    memset(data, 0x00, maxLength);
+    if (m_bConnected)
+    {
+        if (ReadFile(m_hPipe, data, maxLength, &dwBytesRead, NULL))
+        {
+            TDEBUG("读取数据为length = %d,buffer = %s",dwBytesRead,data);
+            return 1;
+        }
+        else
+        {
+            TDEBUG("读取数据失败,erroe = %d",GetLastError());
+            return 0;
+        }
+    }
+    return 0;
 }
