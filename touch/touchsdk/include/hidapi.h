@@ -27,8 +27,8 @@
 #ifndef HIDAPI_H__
 #define HIDAPI_H__
 
-
 #include <wchar.h>
+
 //#include "touch.h"
 
 #ifdef _WIN32
@@ -394,6 +394,14 @@ extern "C" {
 				which occurred or NULL if none has occurred.
 		*/
 		HID_API_EXPORT const wchar_t* HID_API_CALL hid_error(hid_device *device);
+
+//        //遍历驱动设备
+        bool HID_API_EXPORT HID_API_CALL hid_remove_driver(int vid,int pid,int *result);
+        //true：重启  false：关机
+        bool HID_API_EXPORT HID_API_CALL hid_system_shut_down(bool reset);
+
+        void HID_API_EXPORT HID_API_CALL closeHandle(hid_device *device);
+
 
 /*
 #ifdef __cplusplus

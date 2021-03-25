@@ -44,5 +44,9 @@ unix {
     INSTALLS += target
 }
 win32 {
-    LIBS += -lsetupapi
+
+    LIBS += -lsetupapi -lpsapi -lnewdev
 }
+ #   LIBS += -LC:\Windows\System32 C:\Windows\System32\newdev.dll
+  #  LIBS += -LC:\Windows\System32 C:\Windows\System32\setupapi.dll
+

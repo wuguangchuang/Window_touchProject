@@ -9,6 +9,8 @@
 
 #include "touch_global.h"
 #include <QSemaphore>
+#include <QProcess>
+#include <windows.h>
 #define MAX_TOUCH_COUNT 9
 
 
@@ -207,6 +209,39 @@ public:
         virtual void setDeviceIfo(int index,QString msg) = 0;
         virtual void batchUpradeFinished() = 0;
     };
+
+    //驱动处理线程
+    class DriverThread : public QThread{
+    public:
+        DriverThread(TouchManager *manager,touch_device *dev,int type):manager(NULL),type(0),dev(NULL){
+            this->manager = manager;
+            this->dev = dev;
+            this->type = type;
+        }
+    int pipeRead();
+    protected:
+        void run();
+    private:
+        TouchManager *manager;
+        /*type  取值
+         * 0    表示卸载驱动
+         * 1    表示刷新驱动
+        */
+        int type;
+        touch_device *dev;
+        HANDLE m_hPipe;
+        BOOL m_bConnected;
+        int m_bMsgNum;
+    };
+
+    class SettingModeListener{
+    public:
+        virtual void setRemoveDriverBtnEnable(bool enable) = 0;
+        virtual void showShutDownMessage() = 0;
+        virtual void removeDriverResult(bool result) = 0;
+    };
+
+
     //边缘拉伸
     TOUCHSHARED_EXPORT QVariantMap getEdgeStrechVal(int initVal = 0);
     TOUCHSHARED_EXPORT void setEdgeStrechMode(bool flag);
@@ -398,6 +433,13 @@ public:
 
     TOUCHSHARED_EXPORT static void test(void);
 
+    //更多
+    TOUCHSHARED_EXPORT void removeDriver(SettingModeListener *settingModeListener);
+    //true：重启  false：关机
+    TOUCHSHARED_EXPORT void systemShutDown(bool reset);
+    DriverThread *driverThread;
+    SettingModeListener *settingModeListener;
+
 private:
 
     int addPackageToQueue(touch_package *require, touch_package *reply, touch_device *device,
@@ -497,6 +539,9 @@ public:
     TOUCHSHARED_EXPORT void setBatchCancal(bool cancel);
 
     QMutex batchDelayMutex;
+
+
+
     //onboard
     int boardCount = 0;
     unsigned char boardIndexBuf[128];

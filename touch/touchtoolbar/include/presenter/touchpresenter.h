@@ -58,11 +58,15 @@ public:
     virtual QVariantMap getBatchUpgradeData() = 0;
     //边缘拉伸
     virtual void startEdgeStrech() = 0;
-    virtual void setEdgeStrechMode(bool flag);
+    virtual void setEdgeStrechMode(bool flag) = 0;
     virtual QVariantMap getEdgeStrechVal(int initVal = 0) = 0;
     virtual void setNextActivityEdge(int activityEdge) = 0;
     virtual void setCancelEdgeStrech(bool cancelEdgeStrech) = 0;
-    virtual void setEdgeStrechVal(QVariantList edgeStrechVal);
+    virtual void setEdgeStrechVal(QVariantList edgeStrechVal) = 0;
+
+    //更多
+    virtual void removeDriver() = 0;
+    virtual void shutDown(bool flag) = 0;
 
 };
 class ProcessStarter : public QProcess {
@@ -396,6 +400,11 @@ public:
     //更多设置
     Q_INVOKABLE void modeSetting(bool startup = false);
     Q_INVOKABLE QVariantMap refreshModeSetting();
+    Q_INVOKABLE void removeDriver();
+    void setRemoveDriverBtnEnable(bool enable);
+    void showShutDownMessage(QString title,QString Message,int type);
+    Q_INVOKABLE void shutDown(bool flag);
+    void removeDriverResult(bool result);
 
     //批处理
     Q_INVOKABLE void batchProgress(int batchIndex,int progress);

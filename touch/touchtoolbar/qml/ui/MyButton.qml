@@ -48,7 +48,7 @@ Button {
         style:ButtonStyle{
             background: Rectangle{
                 anchors.fill: parent
-                color: rootBtn.pressed ? "#c2def5" : (rootBtn.hovered ? "#d9ebf9" : "#cdcdcd")
+                color: rootBtn.enabled ? (rootBtn.pressed ? "#c2def5" : (rootBtn.hovered ? "#d9ebf9" : "#e7f2ff")):"#d4d4d5"
             }
         }
 }

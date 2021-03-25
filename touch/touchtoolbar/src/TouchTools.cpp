@@ -12,11 +12,14 @@
 #include <QTextStream>
 #include <QtEndian>
 #include <QSemaphore>
-#include <windows.h>
 #include <unistd.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
+#include<unistd.h>
+#include<sys/stat.h>
+#include<stdlib.h>
+#include<errno.h>
 
 using namespace Touch;
 #define UPGRADE_FILE_DIR  "config/"
@@ -26,6 +29,10 @@ using namespace Touch;
 
 #define TEST_NORMAL 1
 #define TEST_CANCEL 0
+
+//使用管理员权限开辟的共享内存的名字
+#define FileMapping_NAME "memory_1"
+#define  FILESIZE 1024
 
 //显示消息框
 void TouchTools::showMessageDialog(QString title, QString message, int type)
@@ -1166,7 +1173,31 @@ TouchTools::TouchTools(QObject *parent, TouchPresenter *presenter,int argc,char 
     TINFO("start init thread");
     addTouchManagerTr();
     initSdkThread.start();
+//    getWindowDirver();
+}
 
+TouchTools::~TouchTools()
+{
+#if 1
+    presenter->stopGetSignalDataSync();
+
+    presenter->destroyQml();
+
+    if (mTouchManager != NULL) {
+        mTouchManager->setTesting(mTouchManager->firstConnectedDevice(), 0);
+        TouchManager::freeInstance();
+
+        mTouchManager = NULL;
+    }
+
+
+    TouchManager::freeAllTouchDeviceInfo();
+    delete tray;
+    tray = NULL;
+
+#endif
+
+    TDEBUG("TouchTools end");
 }
 void TouchTools::timeoutWorking()
 {
@@ -1286,31 +1317,77 @@ void TouchTools::setEdgeStrechVal(QVariantList edgeStrechVal)
     mTouchManager->setEdgeStrechVal(edgeStrechVal);
 }
 
-
-
-TouchTools::~TouchTools()
+void TouchTools::removeDriver()
 {
-#if 1  
-    presenter->stopGetSignalDataSync();
-
-    presenter->destroyQml();
-
-    if (mTouchManager != NULL) {
-        mTouchManager->setTesting(mTouchManager->firstConnectedDevice(), 0);
-        TouchManager::freeInstance();
-
-        mTouchManager = NULL;
+    touch_device *dev = mTouchManager->firstConnectedDevice();
+    if(dev == NULL)
+    {
+        removeDriverResult(false);
+        setRemoveDriverBtnEnable(true);
+        TPRINTF("卸载驱动失败 dev == NULL");
+        return;
     }
 
+    TPRINTF("启动子进程");
+//    QString program = QStringLiteral("D:\\qt\\TouchAssistant_Windows_V2.1.0\\needAdminPermission.exe");
+//    myProcess = new QProcess(this);
+//    myProcess->start(program,,QStringList() << "uninstallDriver_14E1_3500");
 
-    TouchManager::freeAllTouchDeviceInfo();
-    delete tray;
-    tray = NULL;
+//    connect(myProcess,SIGNAL(readyRead()),this,SLOT(readProcessData()));
+//    connect(myProcess,SIGNAL(finished(int)),this,SLOT(onFinished(int)));
 
-#endif
 
-    TDEBUG("TouchTools end");
+
+
+    //启动程序
+    QString fileName = appPath + "/needAdminPermission.exe";
+    fileName = fileName.replace("/","\\");
+    TPRINTF("启动子程序的路径：%s",fileName.toStdString().c_str());
+    int ret = (int)ShellExecute(NULL,L"runas",L"needAdminPermission.exe",L"uninstallDriver_14E1_3500",(LPCWSTR)(appPath.toStdString().c_str()),SW_HIDE);
+    TPRINTF("程序启动的结果%d",ret);
+    if(ret < 32)
+    {
+        removeDriverResult(false);
+        setRemoveDriverBtnEnable(true);
+        return;
+    }
+    mTouchManager->removeDriver(this);
 }
+void TouchTools::readProcessData()
+{
+    QString result =  myProcess->readAll();
+    TPRINTF("result = %s",result.toStdString().c_str());
+}
+
+void TouchTools::onFinished(int result)
+{
+    TPRINTF("子线程结果 result = %d",result);
+    removeDriverResult(result ? true : false);
+    setRemoveDriverBtnEnable(true);
+}
+void TouchTools::setRemoveDriverBtnEnable(bool enable)
+{
+    presenter->setRemoveDriverBtnEnable(enable);
+}
+
+void TouchTools::showShutDownMessage()
+{
+    presenter->showShutDownMessage(tr("Shut down"),tr("Reboot is required to take effect. Do you want to restart?"),1);
+}
+
+void TouchTools::shutDown(bool flag)
+{
+    mTouchManager->systemShutDown(flag);
+}
+
+void TouchTools::removeDriverResult(bool result)
+{
+    presenter->removeDriverResult(result);
+}
+
+
+
+
 
 void TouchTools::onCommandDone(touch_device *dev, touch_package *require, touch_package *reply)
 {
@@ -1627,6 +1704,64 @@ void TouchTools::AutoRun(bool isAutoRun)
     }
 
 }
+
+bool TouchTools::IsRunAsAdministrator()
+{
+    BOOL fIsRunAsAdmin = FALSE;
+    DWORD dwError = ERROR_SUCCESS;
+    PSID pAdministratorsGroup = NULL;
+
+    SID_IDENTIFIER_AUTHORITY NtAuthority = SECURITY_NT_AUTHORITY;
+    if (!AllocateAndInitializeSid(
+        &NtAuthority,
+        2,
+        SECURITY_BUILTIN_DOMAIN_RID,
+        DOMAIN_ALIAS_RID_ADMINS,
+        0, 0, 0, 0, 0, 0,
+        &pAdministratorsGroup))
+    {
+        dwError = GetLastError();
+        goto Cleanup;
+    }
+
+    if (!CheckTokenMembership(NULL, pAdministratorsGroup, &fIsRunAsAdmin))
+    {
+        dwError = GetLastError();
+        goto Cleanup;
+    }
+
+Cleanup:
+
+    if (pAdministratorsGroup)
+    {
+        FreeSid(pAdministratorsGroup);
+        pAdministratorsGroup = NULL;
+    }
+
+    if (ERROR_SUCCESS != dwError)
+    {
+        throw dwError;
+    }
+
+    return fIsRunAsAdmin;
+}
+
+void TouchTools::GainAdminPrivileges(QString strApp)
+{
+    SHELLEXECUTEINFO execinfo;
+    memset(&execinfo, 0, sizeof(execinfo));
+    execinfo.lpFile = (LPCWSTR)(strApp.toStdString().c_str());
+    execinfo.cbSize = sizeof(execinfo);
+    execinfo.lpVerb = (LPCWSTR)("runas");
+    execinfo.fMask = SEE_MASK_NO_CONSOLE;
+    execinfo.nShow = SW_SHOWDEFAULT;
+
+    ShellExecuteEx(&execinfo);
+}
+
+
+
+
 #if 0
 void TouchTools::SetProcessAutoRunSelf(const QString &appPath)
 {
@@ -1651,6 +1786,8 @@ void TouchTools::SetProcessAutoRunSelf(const QString &appPath)
     }
 }
 #endif
+//获取电脑的数据库驱动
+
 void TouchTools::addTouchManagerTr(){
     tr("Being detected! Do not touch!");
     tr("test failed");

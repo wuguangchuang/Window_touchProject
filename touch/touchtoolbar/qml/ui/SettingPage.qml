@@ -57,7 +57,10 @@ Item{
     property Item settingEdgeStrechBtn:settingConfigurationPage.settingEdgeStrechBtn
     property Item factoryResetEdgeStrech:settingConfigurationPage.factoryResetEdgeStrech
 
+    //更多界面
+
     property Item settingConfigurationPage:settingConfigurationPage
+    property Item modeSettingPage:modeSettingPage
     id: root
     focus: true
     Keys.enabled: true
@@ -360,6 +363,10 @@ Item{
             if(dirention >= 0 && dirention !== settings.screenRotation)
             {
                 swipeView.currentIndex = 1;
+                showMessageDialogType = 0;
+                systemScreenDirectionMessage.title =  qsTr("System display direction")
+                systemScreenDirectionMessage.text = qsTr("System display orientation is inconsistent with firmware screen orientation.The current display direction of the system is %1°.\n").arg(dirention * 90) + "\n" +
+                     qsTr("Is the firmware screen display orientation set to the system display orientation?")
                 systemScreenDirectionMessage.visible = true;
             }
         }
@@ -609,31 +616,64 @@ Item{
         }
 
     }
+
+
+    /*showMessageDialogType
+      0     表示的是屏幕旋转的提示
+      1     表示的是关机的提示
+    */
+    property int showMessageDialogType : 0
     MessageDialog{
         id:systemScreenDirectionMessage
         visible: false
         width: 500
         height: 300
-        title: qsTr("System display direction")
-        text:qsTr("System display orientation is inconsistent with firmware screen orientation.The current display direction of the system is %1°.\n").arg(dirention * 90) + "\n" +
-             qsTr("Is the firmware screen display orientation set to the system display orientation?")
         standardButtons:StandardButton.Yes|StandardButton.No
 
         onYes: {
-
-            console.log("设置屏幕的显示方向：" + dirention);
-            for (var i = 0; i < screenRotationGroup.buttons.length; i++) {
-                var btn = screenRotationGroup.buttons[i];
-                if (btn.mode === dirention) {
-                    btn.checked = true;
-                    break;
+            switch(showMessageDialogType)
+            {
+            case 0:
+                console.log("设置屏幕的显示方向：" + dirention);
+                for (var i = 0; i < screenRotationGroup.buttons.length; i++) {
+                    var btn = screenRotationGroup.buttons[i];
+                    if (btn.mode === dirention) {
+                        btn.checked = true;
+                        break;
+                    }
                 }
+                break;
+            case 1:
+                touch.tPrintf("关机");
+                touch.shutDown(true);
+                mainPage.setRemoveDriverBtnEnable(true);
+                break
             }
+
 
         }
         onNo: {
-            console.log("不设置屏幕的显示方向" );
+            switch(showMessageDialogType)
+            {
+            case 0:
+                console.log("不设置屏幕的显示方向" );
+                break;
+            case 1:
+                touch.tPrintf("不关机");
+                mainPage.removeDriverResult(false);
+                mainPage.setRemoveDriverBtnEnable(true);
+                break
+            }
+
         }
+    }
+
+    function showMessageDialog(title,message,type)
+    {
+        systemScreenDirectionMessage.title = title;
+        systemScreenDirectionMessage.text = message;
+        showMessageDialogType = type;
+        systemScreenDirectionMessage.visible = true;
     }
 
 

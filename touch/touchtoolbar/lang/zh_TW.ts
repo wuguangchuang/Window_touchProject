@@ -180,6 +180,10 @@
         <source>Reedge stretch</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Next side</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>FineTune</name>
@@ -220,6 +224,30 @@
     <name>ModeSetting</name>
     <message>
         <source>Self-starting software</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Driver</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Remove driver</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unmount the USB device driver.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Search driver</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Scanning seedlings to detect hardware drivers.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Other</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -378,6 +406,14 @@
     </message>
     <message>
         <source>Enter the edge stretch interface.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Refresh success</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Setting success</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -963,6 +999,14 @@
         <source>Serial number:</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Shut down</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Reboot is required to take effect. Do you want to restart?</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>main</name>
@@ -1168,6 +1212,14 @@
     </message>
     <message>
         <source>Continuous restart</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Uninstall driver successful</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Uninstall driver failed</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

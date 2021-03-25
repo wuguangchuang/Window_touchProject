@@ -11,6 +11,9 @@
 #include <QTranslator>
 #include "systemtray.h"
 #include "src/jsonFile/json.h"
+#include <windows.h>
+
+
 
 namespace Touch {
 
@@ -47,7 +50,7 @@ typedef enum {
 
 class TouchTools : public QObject, public CommandThread::CommandListener,
         public TouchManager::HotplugListener, public TouchInterface,public TouchManager::Trans,
-        public SystemTray::Trans,public SystemTray::ActionSignal
+        public SystemTray::Trans,public SystemTray::ActionSignal,public TouchManager::SettingModeListener
 {
     Q_OBJECT
 public:
@@ -341,10 +344,31 @@ public:
     void setTestThreadRunning(bool isRunning){
             testThread.running = isRunning;
         }
+
+    //更多
+    void removeDriver();
+    void setRemoveDriverBtnEnable(bool enable);
+    void showShutDownMessage();
+    void shutDown(bool flag);
+    void removeDriverResult(bool result);
 public:
+    //自启动
     void AutoRun(bool isAutoRun);
 //    void SetProcessAutoRunSelf(const QString &appPath)
+    //判断是否已管理员的身份进行
+    bool IsRunAsAdministrator();
+    void GainAdminPrivileges(QString strApp);
+
+
     QString getAppPath(){return appPath;}
+
+    //QProcess 读取子程序信息
+    QProcess *myProcess;
+public slots:
+    void readProcessData();
+    void onFinished(int result);
+
+
 
     //静态变量与方法
 public:

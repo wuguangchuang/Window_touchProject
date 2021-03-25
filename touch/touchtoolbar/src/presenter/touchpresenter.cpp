@@ -684,6 +684,48 @@ QVariantMap TouchPresenter::refreshModeSetting()
     return map;
 }
 
+void TouchPresenter::removeDriver()
+{
+    touch->removeDriver();
+}
+
+void TouchPresenter::setRemoveDriverBtnEnable(bool enable)
+{
+    if (component == NULL) {
+        return;
+    }
+    QMetaObject::invokeMethod(component, "setRemoveDriverBtnEnable",
+        Q_ARG(QVariant, enable));
+    return;
+}
+
+void TouchPresenter::showShutDownMessage(QString title, QString Message,int type)
+{
+    if (component == NULL) {
+        return;
+    }
+    QMetaObject::invokeMethod(component, "showShutDownMessage",
+        Q_ARG(QVariant, title),
+        Q_ARG(QVariant, Message),
+        Q_ARG(QVariant, type));
+    return;
+}
+
+void TouchPresenter::shutDown(bool flag)
+{
+    touch->shutDown(flag);
+}
+
+void TouchPresenter::removeDriverResult(bool result)
+{
+    if (component == NULL) {
+        return;
+    }
+    QMetaObject::invokeMethod(component, "removeDriverResult",
+        Q_ARG(QVariant, result));
+    return;
+}
+
 void TouchPresenter::batchProgress(int batchIndex, int progress)
 {
     if (component == NULL) {

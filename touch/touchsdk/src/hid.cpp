@@ -40,6 +40,7 @@ typedef LONG NTSTATUS;
 //#define HIDAPI_USE_DDK
 #include "touch.h"
 #include "utils/tdebug.h"
+#include "utils/tPrintf.h"
 
 #define DEFAULT_REPORT_LENGTH (64)
 
@@ -48,11 +49,16 @@ typedef LONG NTSTATUS;
 extern "C" {
 #endif
 */
+
+    #include <winioctl.h>
+    #include <initguid.h>
+    #include <ntddstor.h>
     #include <setupapi.h>
     #include <winioctl.h>
     #ifdef HIDAPI_USE_DDK
         #include <hidsdi.h>
     #endif
+
 
 
     // Copied from inc/ddk/hidclass.h, part of the Windows DDK.
@@ -68,8 +74,19 @@ extern "C" {
 #include <stdio.h>
 #include <stdlib.h>
 
+#include <devguid.h>
+
+
 #include  <QThread>
 #include "hidapi.h"
+
+#define WINVER _WIN32_WINNT_WIN7
+#include <newdev.h>
+#include <psapi.h>
+#include <shlwapi.h>
+#pragma comment(lib, "psapi.lib")
+#pragma comment(lib, "shlwapi.lib")
+#define  ARRAY_SIZE 1024
 
 #ifdef _MSC_VER
     // Thanks Microsoft, but I know how to use strncpy().
@@ -81,6 +98,9 @@ extern "C" {
 extern "C" {
 #endif
 */
+
+
+
 
 #ifndef HIDAPI_USE_DDK
     // Since we're not building with the DDK, and the HID header
@@ -582,7 +602,7 @@ touch_device *HID_API_EXPORT HID_API_CALL hid_find_touchdevice(int *count)
               }
           }
         if (found && temp_vendor != NULL) {
-            TVERBOSE("## %d,  vid:=%x, pid=%x, bootloader=%d, repord_id=0x%x, path=%s\n",
+            TPRINTF("## %d,  vid:=%x, pid=%x, bootloader=%d, repord_id=0x%x, path=%s\n",
                      found,
                      temp_vendor->vid, temp_vendor->pid,
                      temp_vendor->bootloader, temp_vendor->rid, temp_vendor->path);
@@ -1201,6 +1221,241 @@ int HID_API_EXPORT_CALL HID_API_CALL hid_get_indexed_string(hid_device *dev, int
 HID_API_EXPORT const wchar_t * HID_API_CALL  hid_error(hid_device *dev)
 {
     return (wchar_t*)dev->last_error_str;
+}
+
+//遍历驱动设备
+bool HID_API_EXPORT HID_API_CALL hid_remove_driver(int vid,int pid,int *result)
+{
+    bool needReboot = false;
+    HDEVINFO hDevInfoSet;
+    // Windows objects for interacting with the driver.
+//    GUID InterfaceClassGuid = GUID_DEVCLASS_LEGACYDRIVER;
+    GUID InterfaceClassGuid = GUID_DEVCLASS_USB;
+    hDevInfoSet = SetupDiGetClassDevs(&InterfaceClassGuid,NULL,NULL,DIGCF_ALLCLASSES);
+    if(hDevInfoSet == INVALID_HANDLE_VALUE)
+    {
+        TPRINTF("###############获取驱动类出错ret = %d",GetLastError());
+        return false;
+    }
+    TPRINTF("###############获取驱动句柄成功");
+    int res = 0;
+    SP_DEVINFO_DATA DeviceInfoData = { sizeof(DeviceInfoData) };
+
+    char vidLow[5] = {0},vidUp[5] = {0};
+    char pidLow[5] = {0},pidUp[5] = {0};
+    sprintf(vidLow,"%x",vid);
+    vidLow[4] = '\0';
+    sprintf(vidUp,"%X",vid);
+    vidUp[4] = '\0';
+    sprintf(pidLow,"%x",pid);
+    pidLow[4] = '\0';
+    sprintf(pidUp,"%X",pid);
+    pidUp[4] = '\0';
+    TPRINTF("卸载驱动的vid = %s,VID = %s,pid = %s,PID = %s",vidLow,vidUp,pidLow,pidUp);
+
+    //删除HID设备
+    for(int i = 0;SetupDiEnumDeviceInfo(hDevInfoSet, i, &DeviceInfoData);i++)
+    {
+
+        DWORD DataT;
+        wchar_t wcBuffer[2046] = { 0 };
+        DWORD buffersize = 2046;
+        DWORD req_bufsize = 0;
+        char bufferData[2046] = {0};
+        TPRINTF("###############枚举次数 = %d",i + 1);
+
+//        TDEBUG("111######DeviceInfoData : %d,%d,%d",DeviceInfoData.cbSize,
+//               DeviceInfoData.DevInst,DeviceInfoData.Reserved);
+
+        // retrieves a specified Plug and Play device property
+        if (!SetupDiGetDeviceRegistryProperty(
+            hDevInfoSet,
+            &DeviceInfoData,
+            SPDRP_HARDWAREID,
+            &DataT,
+            (LPBYTE)wcBuffer,
+            buffersize,
+            &req_bufsize
+            ))
+        {
+            res = GetLastError();
+            //continue;
+        }
+//        TDEBUG("222######DeviceInfoData : %d,%d,%d",DeviceInfoData.cbSize,
+//               DeviceInfoData.DevInst,DeviceInfoData.Reserved);
+        for(int i = 0;i < req_bufsize;i++)
+        {
+            bufferData[i] =  wcBuffer[i];
+        }
+        TPRINTF("#############驱动设备属性：%s",bufferData);
+        if( (strstr(bufferData,vidLow) != NULL || strstr(bufferData,vidUp) != NULL) &&
+            (strstr(bufferData,pidLow) != NULL || strstr(bufferData,pidUp) != NULL))
+        {
+            SP_REMOVEDEVICE_PARAMS rmdParams;
+            SP_DEVINSTALL_PARAMS devParams;
+            rmdParams.ClassInstallHeader.cbSize = sizeof(SP_CLASSINSTALL_HEADER);
+            rmdParams.ClassInstallHeader.InstallFunction = DIF_REMOVE;
+            rmdParams.Scope = DI_REMOVEDEVICE_GLOBAL;
+
+
+//            if(SetupDiSetClassInstallParams(hDevInfoSet,&DeviceInfoData,&rmdParams.ClassInstallHeader,sizeof(rmdParams)) &&
+//                    SetupDiCallClassInstaller(DIF_REMOVE,hDevInfoSet,&DeviceInfoData))
+//            if(SetupDiCallClassInstaller(DIF_REMOVE,hDevInfoSet,&DeviceInfoData))
+            if(SetupDiRemoveDevice(hDevInfoSet,&DeviceInfoData))
+//            if(DiUninstallDevice(NULL,hDevInfoSet,&DeviceInfoData,0,NULL))
+            {
+
+                *result = 1;
+                TPRINTF("删除驱动：i = %d ,删除成功",i);
+//                devParams.cbSize = sizeof(devParams);
+//                if(SetupDiGetDeviceInstallParams(hDevInfoSet,&DeviceInfoData,&devParams) &&
+//                        devParams.Flags & (DI_NEEDRESTART | DI_NEEDREBOOT))
+//                {
+//                    needReboot = true;
+//                }
+
+
+            }
+            else
+            {
+                *result = 0;
+                if(GetLastError() == ERROR_IN_WOW64)
+                {
+                    TPRINTF("删除驱动：i = %d 失败,不允许在64位环境下执行32位程序",i);
+                }
+                else
+                {
+                    TPRINTF("删除驱动：i = %d ,删除失败:%d",i,GetLastError());
+                }
+
+            }
+
+        }
+    }
+
+
+    SetupDiDestroyDeviceInfoList(hDevInfoSet);
+
+    return needReboot;
+
+}
+//true：重启  false：关机
+bool HID_API_EXPORT HID_API_CALL hid_system_shut_down(bool reset)
+{
+    HANDLE hToken;
+     TOKEN_PRIVILEGES tkp;
+     // Get a token for this process.
+     if (!OpenProcessToken(GetCurrentProcess(),TOKEN_ADJUST_PRIVILEGES | TOKEN_QUERY, &hToken))
+     return(FALSE);
+     // Get the LUID for the shutdown privilege.
+     LookupPrivilegeValue(NULL, SE_SHUTDOWN_NAME,&tkp.Privileges[0].Luid);
+     tkp.PrivilegeCount = 1;  // one privilege to set
+     tkp.Privileges[0].Attributes = SE_PRIVILEGE_ENABLED;
+     // Get the shutdown privilege for this process.
+     AdjustTokenPrivileges(hToken, FALSE, &tkp, 0,(PTOKEN_PRIVILEGES)NULL, 0);
+     if (GetLastError() != ERROR_SUCCESS)
+     return FALSE;
+     // Shut down the system and force all applications to close.
+     if(!reset)
+     {//关机
+         if (!ExitWindowsEx(EWX_SHUTDOWN | EWX_FORCE,
+         SHTDN_REASON_MAJOR_OPERATINGSYSTEM |
+         SHTDN_REASON_MINOR_UPGRADE |
+         SHTDN_REASON_FLAG_PLANNED));
+     }
+     //restart the system
+     else
+     {//重启
+         if(!ExitWindowsEx(EWX_REBOOT | EWX_FORCE, 0));
+     }
+     //return FALSE;
+     //shutdown or restart was successful
+     return TRUE;
+}
+
+/*
+bool HID_API_EXPORT HID_API_CALL hid_remove_driver(int vid,int pid)
+{
+    PCWSTR devClassName;
+    DWORD dwGuids = 0;
+    HDEVINFO hDevInfoSet;
+
+    SetupDiClassGuidsFromNameW( PCWSTR(devClassName), 0, 0, &dwGuids );
+    if(dwGuids)
+    {
+        GUID* pGuids = new GUID[dwGuids];
+
+        BOOL success = SetupDiClassGuidsFromNameW( PCWSTR(devClassName), pGuids, dwGuids, &dwGuids );
+
+        hDevInfoSet = SetupDiGetClassDevsW( pGuids, NULL, NULL, DIGCF_PRESENT);
+
+        delete [] pGuids;
+
+    }
+    else
+    {
+        TDEBUG("!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+    }
+
+
+    TDEBUG("#####drvClassString = %s",(char *)devClassName);
+    SP_DEVINFO_DATA devInfo;
+    TDEBUG("########### dwGuids = %d",dwGuids);
+    if(dwGuids)
+    {
+        int nIndex = 0;
+
+        devInfo.cbSize = sizeof( SP_DEVINFO_DATA );
+
+        while( SetupDiEnumDeviceInfo( hDevInfoSet, nIndex, &devInfo ) && ( nIndex != -1 ) )
+        {
+            //Logger::logTrace(QString("WinDeviceHelper::searchForPort() enumerating ports. current index: %1").arg(nIndex));
+
+            QString enumDeviceInfo = QString("WinDeviceHelper::searchForPort() enumerating ports. current index: %1").arg(nIndex);
+            TDEBUG("##### enumDeviceInfo = %s",enumDeviceInfo.toStdString().c_str());
+
+            DWORD dwType = 0;
+            DWORD requiredSize=0;
+            QString propValue="";
+            BOOL result=SetupDiGetDeviceRegistryPropertyW( hDevInfoSet, &devInfo, SPDRP_DRIVER, &dwType, NULL, NULL, &requiredSize);
+            if(result)
+            {
+                TDEBUG("############获取驱动属性失败");
+                continue;
+            }
+            size_t strSize=requiredSize/sizeof(wchar_t)+1;
+            wchar_t* requestedData = new wchar_t[strSize];// буфер
+            result=SetupDiGetDeviceRegistryPropertyW( hDevInfoSet, &devInfo, SPDRP_DRIVER, &dwType,reinterpret_cast<PBYTE>(requestedData), requiredSize, &requiredSize);
+            if(result==TRUE )
+            {
+                propValue=QString::fromWCharArray(requestedData,wcslen(requestedData));
+                TDEBUG("#####驱动设备属性的值：%s",propValue.toStdString().c_str());
+            }
+            else
+            {
+                TDEBUG("####获取驱动失败：%s",QString("WinDeviceHelper::getDeviceRegistryString: SetupDiGetDeviceRegistryPropertyW failed with error %1").arg(GetLastError()).toStdString().c_str());
+
+            }
+            delete[]requestedData;
+        }
+    }
+    else
+    {
+        TDEBUG("#####################################");
+    }
+
+
+}
+*/
+
+void HID_API_EXPORT HID_API_CALL closeHandle(hid_device *device)
+{
+    if (!device)
+        return;
+    CancelIo(device->device_handle);
+    CloseHandle(device->ol.hEvent);
+    CloseHandle(device->device_handle);
+    LocalFree(device->last_error_str);
 }
 
 

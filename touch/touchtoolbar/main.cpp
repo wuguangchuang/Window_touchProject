@@ -191,36 +191,6 @@ int main(int argc, char *argv[])
         }
         TINFO("load translator %s %s", lang.toStdString().c_str(), ok ? "success" : "fail");
     }
-//    if (lang != "en_US") {
-//        if (!ok) {
-//            lang = "zh_CN";
-//            //        ok = translator.load(":lang/" + QLocale().name() + ".qm");
-//            ok = translator.load(":lang/" + lang + ".qm");
-//        }
-//        TINFO("load translator %s %s", lang.toStdString().c_str(), ok ? "success" : "fail");
-//        if (ok) {
-//            app.installTranslator(&translator);
-//        } else {
-//            ok = translator.load(":lang/zh_CN.qm");
-//            lang = "zh_CN";
-//            app.installTranslator(&translator);
-//        }
-//    }else
-//    {
-//        if (!ok) {
-//            lang = "en_US";
-//            //        ok = translator.load(":lang/" + QLocale().name() + ".qm");
-//            ok = translator.load(":lang/" + lang + ".qm");
-//        }
-//        TINFO("load translator %s %s", lang.toStdString().c_str(), ok ? "success" : "fail");
-//        if (ok) {
-//            app.installTranslator(&translator);
-//        } else {
-//            ok = translator.load(":lang/en_US.qm");
-//            lang = "en_US";
-//            app.installTranslator(&translator);
-//        }
-//    }
     //用于语言之间的转换
     QLocale curLocale(lang);
     QLocale::setDefault(curLocale);

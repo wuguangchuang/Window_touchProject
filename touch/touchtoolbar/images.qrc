@@ -42,5 +42,7 @@
         <file>images/signal_chart.png</file>
         <file>images/rectangle.png</file>
         <file>images/edge_strech.png</file>
+        <file>images/uninstall.png</file>
+        <file>images/search.png</file>
     </qresource>
 </RCC>

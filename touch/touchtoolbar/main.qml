@@ -3194,6 +3194,21 @@ QMessageBox::Critical	3	an icon indicating that the message represents a critica
          }
         touch.currentTabRefresh(currenttab);
      }
+     //更多
+     function setRemoveDriverBtnEnable(enable)
+     {
+         settingsTabId.settingsPage.modeSettingPage.removeDriver.enabled = enable;
+     }
+     function showShutDownMessage(title,message,type)
+     {
+         settingsTabId.settingsPage.showMessageDialog(title,message,type);
+     }
+     function removeDriverResult(result)
+     {
+         console.log("显示驱动处理结果:" + result ? "成功":"失败");
+         var message = result ? qsTr("Uninstall driver successful"):qsTr("Uninstall driver failed");
+         showToast(message);
+     }
 
 
 

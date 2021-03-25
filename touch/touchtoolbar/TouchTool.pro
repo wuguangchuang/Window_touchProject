@@ -120,4 +120,7 @@ include(deployment.pri)
 SUBDIRS += \
     TouchTest.pro
 
+#RC_FILE=uac.rc
+
+
 

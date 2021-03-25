@@ -10,12 +10,27 @@
 #include <QtEndian>
 #include <QObject>
 #include <time.h>
+#include <QDesktopServices>
+#include <QUrl>
+#include<cstdio>
+#include<cstdlib>
+#include <iostream>
+#include <windows.h>
 
 #define SERVICE_NAME "touch_hotplug"
 #undef TVERBOSE
 #define TVERBOSE(format, ...)
 #define DEVICE_CONNECT 1
 #define DEVICE_DISCONNECT 2
+
+#define REMOVE_DRIVER 0
+#define REFRESH_DRIVER 1
+
+
+//命名管道
+#define PIPE_NAME "\\\\.\\Pipe\\UninstallDdriver"
+#define PIPE_SIZE 1024
+
 
 static char *signal_test_name[] = {
     "ADC_X_TB",
@@ -207,7 +222,8 @@ TouchManager::TouchManager() : mTesting(false), mUpgrading(false),
     mHotplugThread(this), mHotplugListener(NULL), untDataBuf(NULL),
     mCount(0), hotplugInterval(500), hotplugSem(0),mPauseHotplug(false),
     mtestStop(false),translator(NULL),batchCancal(false),batchUpgradeList(NULL),
-    initDeviceThreadList(NULL),batchFirstUpgrade(true),mDevices(NULL),batchUpgradeDevList(NULL)
+    initDeviceThreadList(NULL),batchFirstUpgrade(true),mDevices(NULL),batchUpgradeDevList(NULL),
+    settingModeListener(NULL)
 {
 #if 1
     //mDevices = hid_find_touchdevice(&mCount);
@@ -233,6 +249,8 @@ TouchManager::TouchManager() : mTesting(false), mUpgrading(false),
         //initDeviceInfo(tmp);
         //tmp = tmp->next;
     //}
+
+
     TDEBUG("init %s", __func__);
 #endif
 }
@@ -293,6 +311,22 @@ void TouchManager::test()
     TouchManager *tm = new TouchManager();
     delete tm;
 }
+
+void TouchManager::removeDriver(SettingModeListener *settingModeListener)
+{
+    touch_device *dev = firstConnectedDevice();
+    driverThread = new DriverThread(this,dev,REMOVE_DRIVER);
+    this->settingModeListener = settingModeListener;
+    driverThread->start();
+
+
+}
+
+void TouchManager::systemShutDown(bool reset)
+{
+    hid_system_shut_down(reset);
+}
+
 
 void TouchManager::onCommandDone(touch_device *dev, touch_package *require, touch_package *reply)
 {
@@ -1647,7 +1681,6 @@ void TouchManager::HotplugThread::run()
     }
     finshed = true;
     TDEBUG("hotplug thread end");
-    exit(0);
 }
 //初始化设备信息
 int TouchManager::initDeviceInfo(touch_device *dev)
@@ -2174,6 +2207,8 @@ void TouchManager::setBatchCancal(bool cancel)
 {
     batchCancal = cancel;
 }
+
+
 void TouchManager::TestThread::run()
 {
     TDebug::debug("run test thread");
@@ -4414,4 +4449,146 @@ void TouchManager::setEdgeStrechVal(QVariantList edgeStrechVal)
 {
     //发送命令设置边缘拉伸的值
     TDEBUG("设置边缘拉伸的值为：%0.2f,%0.2f,%0.2f,%0.2f",edgeStrechVal.at(0).toFloat(),edgeStrechVal.at(1).toFloat(),edgeStrechVal.at(2).toFloat(),edgeStrechVal.at(3).toFloat());
+}
+/*
+void TouchManager::DriverThread::run()
+{
+
+    bool needReboot = false;
+    int result = 0;
+    switch(this->type)
+    {
+    case REMOVE_DRIVER:
+        TPRINTF("卸载驱动");
+
+        if(dev == NULL)
+        {
+            manager->settingModeListener->removeDriverResult( result == 1 ? true : false);
+            manager->settingModeListener->setRemoveDriverBtnEnable(true);
+            return;
+        }
+        int vid = dev->info->vendor_id;
+        int pid = dev->info->product_id;
+        closeHandle(dev->hid);
+        needReboot = hid_remove_driver(vid,pid,&result);
+
+        manager->settingModeListener->removeDriverResult( result == 1 ? true : false);
+        manager->settingModeListener->setRemoveDriverBtnEnable(true);
+//        if(needReboot)
+//        {
+//            TPRINTF("删除驱动完成,需要重启电脑才生效");
+////            manager->systemShutDown(true);
+//            manager->settingModeListener->showShutDownMessage();
+//        }
+//        else
+//        {
+
+//            manager->settingModeListener->removeDriverResult( result == 1 ? true : false);
+//            manager->settingModeListener->setRemoveDriverBtnEnable(true);
+//            TPRINTF("不需要重启电脑");
+//        }
+
+
+        break;
+
+//    case REFRESH_DRIVER:
+//        TPRINTF("搜索驱动");
+//        break;
+    }
+
+}
+*/
+
+
+//会阻塞等待有数据读取
+int TouchManager::DriverThread::pipeRead()
+{
+    DWORD   dwBytesRead;
+    TCHAR   buffer[PIPE_SIZE];
+    int bufsize = sizeof(buffer);
+
+    memset(buffer, 0x00, bufsize);
+    if (m_bConnected)
+    {
+        if (ReadFile(m_hPipe, buffer, bufsize, &dwBytesRead, NULL))
+        {
+            TPRINTF("读取数据为length = %d,buffer = %s",dwBytesRead,buffer);
+            return 0;
+        }
+        else
+        {
+            TPRINTF("读取数据失败,erroe = %d",GetLastError());
+            return 1;
+        }
+    }
+}
+
+void TouchManager::DriverThread::run()
+{
+
+    bool needReboot = false;
+    int result = 0;
+    switch(this->type)
+    {
+    case REMOVE_DRIVER:
+        TPRINTF("卸载驱动");
+        //创建命名管道
+        m_hPipe = CreateNamedPipe(L"\\\\.\\Pipe\\UninstallDriver",
+                                  PIPE_ACCESS_DUPLEX,
+                                  PIPE_TYPE_MESSAGE|PIPE_READMODE_MESSAGE|PIPE_WAIT ,
+                                  1,
+                                  PIPE_SIZE,
+                                  PIPE_SIZE,
+                                  0,
+                                  NULL);
+
+        if(m_hPipe == INVALID_HANDLE_VALUE)
+        {
+            TPRINTF("创建管道失败,错误码 = %d",GetLastError());
+            manager->settingModeListener->removeDriverResult(false);
+            manager->settingModeListener->setRemoveDriverBtnEnable(true);
+            return;
+        }
+        else
+        {
+            TPRINTF("创建管道成功");
+        }
+        //等待客户端的连接
+        m_bConnected = ConnectNamedPipe(m_hPipe, NULL);
+        if(m_bConnected)
+        {
+            TPRINTF("子程序连接成功");
+        }
+        else
+        {
+            TPRINTF("子程序连接失败,错误码 = %d",GetLastError());
+        }
+
+        int ret = 0;
+        do{
+            ret = pipeRead();
+            if(ret != 0)
+                QThread::msleep(10);
+        }while(ret);
+
+
+
+
+        if (m_hPipe!=NULL && m_hPipe != INVALID_HANDLE_VALUE)
+        {
+            CloseHandle(m_hPipe);
+            m_hPipe=NULL;
+        }
+
+        manager->settingModeListener->removeDriverResult( result == 1 ? true : false);
+        manager->settingModeListener->setRemoveDriverBtnEnable(true);
+
+
+        break;
+
+//    case REFRESH_DRIVER:
+//        TPRINTF("搜索驱动");
+//        break;
+    }
+
 }
