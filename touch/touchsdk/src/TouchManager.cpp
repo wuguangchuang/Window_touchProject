@@ -312,19 +312,29 @@ void TouchManager::test()
     delete tm;
 }
 
-void TouchManager::removeDriver(SettingModeListener *settingModeListener)
+int TouchManager::removeDriver(SettingModeListener *settingModeListener)
 {
     touch_device *dev = firstConnectedDevice();
+    if(dev == NULL)
+    {
+        return 0;
+    }
+    closeHandle(dev->hid);
     driverThread = new DriverThread(this,dev,REMOVE_DRIVER);
     this->settingModeListener = settingModeListener;
     driverThread->start();
 
-
+    return 1;
 }
 
 void TouchManager::systemShutDown(bool reset)
 {
     hid_system_shut_down(reset);
+}
+
+bool TouchManager::uninstallDriver(int vid, int pid, int *result)
+{
+    return hid_remove_driver(vid,pid,result);
 }
 
 
@@ -4500,28 +4510,7 @@ void TouchManager::DriverThread::run()
 */
 
 
-//会阻塞等待有数据读取
-int TouchManager::DriverThread::pipeRead()
-{
-    DWORD   dwBytesRead;
-    TCHAR   buffer[PIPE_SIZE];
-    int bufsize = sizeof(buffer);
 
-    memset(buffer, 0x00, bufsize);
-    if (m_bConnected)
-    {
-        if (ReadFile(m_hPipe, buffer, bufsize, &dwBytesRead, NULL))
-        {
-            TPRINTF("读取数据为length = %d,buffer = %s",dwBytesRead,buffer);
-            return 0;
-        }
-        else
-        {
-            TPRINTF("读取数据失败,erroe = %d",GetLastError());
-            return 1;
-        }
-    }
-}
 
 void TouchManager::DriverThread::run()
 {
@@ -4564,12 +4553,11 @@ void TouchManager::DriverThread::run()
             TPRINTF("子程序连接失败,错误码 = %d",GetLastError());
         }
 
-        int ret = 0;
-        do{
-            ret = pipeRead();
-            if(ret != 0)
-                QThread::msleep(10);
-        }while(ret);
+//        do{
+            result = pipeRead();
+//            if(ret != 0)
+//                QThread::msleep(10);
+//        }while(ret);
 
 
 
@@ -4591,4 +4579,36 @@ void TouchManager::DriverThread::run()
 //        break;
     }
 
+}
+//会阻塞等待有数据读取
+int TouchManager::DriverThread::pipeRead()
+{
+    DWORD   dwBytesRead;
+    TCHAR   buffer[PIPE_SIZE];
+    int bufsize = sizeof(buffer);
+
+    memset(buffer, 0x00, bufsize);
+    if (m_bConnected)
+    {
+        if (ReadFile(m_hPipe, buffer, bufsize, &dwBytesRead, NULL))
+        {
+            TPRINTF("读取数据为length = %d,buffer = %s",dwBytesRead,buffer);
+
+            if(strcmp((char *)buffer,"true") == 0)
+            {
+                return 1;
+            }
+            else
+            {
+                return 0;
+            }
+
+
+        }
+        else
+        {
+            TPRINTF("读取数据失败,erroe = %d",GetLastError());
+            return 0;
+        }
+    }
 }

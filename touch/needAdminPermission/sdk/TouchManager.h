@@ -13,6 +13,10 @@
 #include <windows.h>
 #define MAX_TOUCH_COUNT 9
 
+#ifdef TOUCHSHARED_EXPORT
+#undef TOUCHSHARED_EXPORT
+#endif
+#define TOUCHSHARED_EXPORT
 
 typedef enum {
     Standard_Factory = STE_FACTORY_TEST,
@@ -260,7 +264,7 @@ private:
 public:
     TOUCHSHARED_EXPORT static TouchManager* getInstance();
     TOUCHSHARED_EXPORT static void freeInstance();
-    TOUCHSHARED_EXPORT virtual ~TouchManager();
+    TOUCHSHARED_EXPORT virtual ~TouchManager() = 0;
     TOUCHSHARED_EXPORT void setTr(Trans *translator);
     TOUCHSHARED_EXPORT int registerHotplug(HotplugListener *listener);
 
@@ -434,7 +438,8 @@ public:
     TOUCHSHARED_EXPORT static void test(void);
 
     //更多
-    TOUCHSHARED_EXPORT int removeDriver(SettingModeListener *settingModeListener);
+    TOUCHSHARED_EXPORT void removeDriver(SettingModeListener *settingModeListener);
+
     //true：重启  false：关机
     TOUCHSHARED_EXPORT void systemShutDown(bool reset);
     TOUCHSHARED_EXPORT bool uninstallDriver(int vid,int pid,int *result);

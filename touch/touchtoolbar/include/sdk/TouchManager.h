@@ -405,7 +405,7 @@ public:
     static void test(void);
 
     //更多
-    TOUCHSHARED_EXPORT void removeDriver(SettingModeListener *settingModeListener);
+    TOUCHSHARED_EXPORT int removeDriver(SettingModeListener *settingModeListener);
     //true：重启  false：关机
     TOUCHSHARED_EXPORT void systemShutDown(bool reset);
     DriverThread driverThread;

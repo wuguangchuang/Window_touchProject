@@ -1338,6 +1338,7 @@ void TouchTools::removeDriver()
 
 
 
+    mTouchManager->removeDriver(this);
 
     //启动程序
     QString fileName = appPath + "/needAdminPermission.exe";
@@ -1345,13 +1346,13 @@ void TouchTools::removeDriver()
     TPRINTF("启动子程序的路径：%s",fileName.toStdString().c_str());
     int ret = (int)ShellExecute(NULL,L"runas",L"needAdminPermission.exe",L"uninstallDriver_14E1_3500",(LPCWSTR)(appPath.toStdString().c_str()),SW_HIDE);
     TPRINTF("程序启动的结果%d",ret);
-    if(ret < 32)
+    if(ret <= 32)
     {
         removeDriverResult(false);
         setRemoveDriverBtnEnable(true);
         return;
     }
-    mTouchManager->removeDriver(this);
+
 }
 void TouchTools::readProcessData()
 {
