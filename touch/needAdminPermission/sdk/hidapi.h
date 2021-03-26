@@ -395,8 +395,11 @@ extern "C" {
 		*/
 		HID_API_EXPORT const wchar_t* HID_API_CALL hid_error(hid_device *device);
 
-//        //遍历驱动设备
+        //驱动
+        //卸载驱动
         bool HID_API_EXPORT HID_API_CALL hid_remove_driver(int vid,int pid,int *result);
+        //刷新驱动
+        bool HID_API_EXPORT HID_API_CALL hid_refresh_driver();
         //true：重启  false：关机
         bool HID_API_EXPORT HID_API_CALL hid_system_shut_down(bool reset);
 

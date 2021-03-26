@@ -231,6 +231,8 @@ public:
         virtual void setRemoveDriverBtnEnable(bool enable) = 0;
         virtual void showShutDownMessage() = 0;
         virtual void removeDriverResult(bool result) = 0;
+        virtual void refreshDriverBtnEnable(bool enable) = 0;
+        virtual void refreshDriverResult(bool result) = 0;
     };
 
     //边缘拉伸
@@ -406,11 +408,11 @@ public:
 
     //更多
     TOUCHSHARED_EXPORT int removeDriver(SettingModeListener *settingModeListener);
+    TOUCHSHARED_EXPORT int refreshDriver(SettingModeListener *settingModeListener);
     //true：重启  false：关机
     TOUCHSHARED_EXPORT void systemShutDown(bool reset);
     DriverThread driverThread;
     SettingModeListener *settingModeListener;
-//    TOUCHSHARED_EXPORT void setRemoveDriverBtnEnable(bool enable);
 private:
 
     int addPackageToQueue(touch_package *require, touch_package *reply, touch_device *device,

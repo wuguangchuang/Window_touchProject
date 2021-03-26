@@ -731,6 +731,26 @@ void TouchPresenter::removeDriverResult(bool result)
     return;
 }
 
+void TouchPresenter::refreshDriverBtnEnable(bool enable)
+{
+    if (component == NULL) {
+        return;
+    }
+    QMetaObject::invokeMethod(component, "refreshDriverBtnEnable",
+        Q_ARG(QVariant, enable));
+    return;
+}
+
+void TouchPresenter::refreshDriverResult(bool result)
+{
+    if (component == NULL) {
+        return;
+    }
+    QMetaObject::invokeMethod(component, "refreshDriverResult",
+        Q_ARG(QVariant, result));
+    return;
+}
+
 void TouchPresenter::batchProgress(int batchIndex, int progress)
 {
     if (component == NULL) {

@@ -3205,8 +3205,18 @@ QMessageBox::Critical	3	an icon indicating that the message represents a critica
      }
      function removeDriverResult(result)
      {
-         console.log("显示驱动处理结果:" + result ? "成功":"失败");
+         console.log("卸载驱动处理结果:" + result ? "成功":"失败");
          var message = result ? qsTr("Uninstall driver successful"):qsTr("Uninstall driver failed");
+         showToast(message);
+     }
+     function refreshDriverBtnEnable(enable)
+     {
+         settingsTabId.settingsPage.modeSettingPage.refreshDriver.enabled = enable;
+     }
+     function refreshDriverResult(result)
+     {
+         console.log("刷新驱动处理结果:" + result ? "成功":"失败");
+         var message = result ? qsTr("Refresh driver successful"):qsTr("Refresh driver failed");
          showToast(message);
      }
 

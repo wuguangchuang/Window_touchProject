@@ -404,9 +404,12 @@ public:
     Q_INVOKABLE void removeDriver();
     Q_INVOKABLE void refreshDriver();
     void setRemoveDriverBtnEnable(bool enable);
+    void removeDriverResult(bool result);
+    void refreshDriverBtnEnable(bool enable);
+    void refreshDriverResult(bool result);
     void showShutDownMessage(QString title,QString Message,int type);
     Q_INVOKABLE void shutDown(bool flag);
-    void removeDriverResult(bool result);
+
 
     //批处理
     Q_INVOKABLE void batchProgress(int batchIndex,int progress);

@@ -240,6 +240,8 @@ public:
         virtual void setRemoveDriverBtnEnable(bool enable) = 0;
         virtual void showShutDownMessage() = 0;
         virtual void removeDriverResult(bool result) = 0;
+        virtual void refreshDriverBtnEnable(bool enable) = 0;
+        virtual void refreshDriverResult(bool result) = 0;
     };
 
 
@@ -436,9 +438,12 @@ public:
 
     //更多
     TOUCHSHARED_EXPORT int removeDriver(SettingModeListener *settingModeListener);
+    TOUCHSHARED_EXPORT bool uninstallDriver(int vid,int pid,int *result);
+    TOUCHSHARED_EXPORT int refreshDriver(SettingModeListener *settingModeListener);
+    TOUCHSHARED_EXPORT bool RefreshDriver();
     //true：重启  false：关机
     TOUCHSHARED_EXPORT void systemShutDown(bool reset);
-    TOUCHSHARED_EXPORT bool uninstallDriver(int vid,int pid,int *result);
+
     DriverThread *driverThread;
     SettingModeListener *settingModeListener;
 

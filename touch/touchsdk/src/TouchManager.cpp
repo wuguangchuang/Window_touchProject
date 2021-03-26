@@ -327,6 +327,20 @@ int TouchManager::removeDriver(SettingModeListener *settingModeListener)
     return 1;
 }
 
+int TouchManager::refreshDriver(TouchManager::SettingModeListener *settingModeListener)
+{
+    driverThread = new DriverThread(this,NULL,REFRESH_DRIVER);
+    this->settingModeListener = settingModeListener;
+    driverThread->start();
+
+    return 1;
+}
+
+bool TouchManager::RefreshDriver()
+{
+    return hid_refresh_driver();
+}
+
 void TouchManager::systemShutDown(bool reset)
 {
     hid_system_shut_down(reset);
@@ -4517,53 +4531,66 @@ void TouchManager::DriverThread::run()
 
     bool needReboot = false;
     int result = 0;
+    //创建命名管道
+    m_hPipe = CreateNamedPipe(L"\\\\.\\Pipe\\UninstallDriver",
+                              PIPE_ACCESS_DUPLEX,
+                              PIPE_TYPE_MESSAGE|PIPE_READMODE_MESSAGE|PIPE_WAIT ,
+                              1,
+                              PIPE_SIZE,
+                              PIPE_SIZE,
+                              0,
+                              NULL);
+
+    if(m_hPipe == INVALID_HANDLE_VALUE)
+    {
+        TPRINTF("创建管道失败,错误码 = %d",GetLastError());
+        if(type == REMOVE_DRIVER)
+        {
+            manager->settingModeListener->removeDriverResult(false);
+            manager->settingModeListener->setRemoveDriverBtnEnable(true);
+        }
+        else if(type == REFRESH_DRIVER)
+        {
+            manager->settingModeListener->refreshDriverResult(false);
+            manager->settingModeListener->refreshDriverBtnEnable(true);
+        }
+        return;
+    }
+    else
+    {
+        TPRINTF("创建管道成功");
+    }
+    //等待客户端的连接
+    m_bConnected = ConnectNamedPipe(m_hPipe, NULL);
+    if(m_bConnected)
+    {
+        TPRINTF("子程序连接成功");
+    }
+    else
+    {
+        TPRINTF("子程序连接失败,错误码 = %d",GetLastError());
+        if(type == REMOVE_DRIVER)
+        {
+            manager->settingModeListener->removeDriverResult(false);
+            manager->settingModeListener->setRemoveDriverBtnEnable(true);
+        }
+        else if(type == REFRESH_DRIVER)
+        {
+            manager->settingModeListener->refreshDriverResult(false);
+            manager->settingModeListener->refreshDriverBtnEnable(true);
+        }
+    }
     switch(this->type)
     {
     case REMOVE_DRIVER:
         TPRINTF("卸载驱动");
-        //创建命名管道
-        m_hPipe = CreateNamedPipe(L"\\\\.\\Pipe\\UninstallDriver",
-                                  PIPE_ACCESS_DUPLEX,
-                                  PIPE_TYPE_MESSAGE|PIPE_READMODE_MESSAGE|PIPE_WAIT ,
-                                  1,
-                                  PIPE_SIZE,
-                                  PIPE_SIZE,
-                                  0,
-                                  NULL);
 
-        if(m_hPipe == INVALID_HANDLE_VALUE)
-        {
-            TPRINTF("创建管道失败,错误码 = %d",GetLastError());
-            manager->settingModeListener->removeDriverResult(false);
-            manager->settingModeListener->setRemoveDriverBtnEnable(true);
-            return;
-        }
-        else
-        {
-            TPRINTF("创建管道成功");
-        }
-        //等待客户端的连接
-        m_bConnected = ConnectNamedPipe(m_hPipe, NULL);
-        if(m_bConnected)
-        {
-            TPRINTF("子程序连接成功");
-        }
-        else
-        {
-            TPRINTF("子程序连接失败,错误码 = %d",GetLastError());
-        }
         //发送VID和PID
         PipeWrite(QString().sprintf("%X",dev->info->vendor_id));
+
         PipeWrite(QString().sprintf("%X",dev->info->product_id));
 
         result = pipeRead();
-
-
-        if (m_hPipe!=NULL && m_hPipe != INVALID_HANDLE_VALUE)
-        {
-            CloseHandle(m_hPipe);
-            m_hPipe=NULL;
-        }
 
         manager->settingModeListener->removeDriverResult( result == 1 ? true : false);
         manager->settingModeListener->setRemoveDriverBtnEnable(true);
@@ -4571,9 +4598,20 @@ void TouchManager::DriverThread::run()
 
         break;
 
-//    case REFRESH_DRIVER:
-//        TPRINTF("搜索驱动");
-//        break;
+    case REFRESH_DRIVER:
+        TPRINTF("搜索驱动");
+
+        result = pipeRead();
+        manager->settingModeListener->refreshDriverResult( result == 1 ? true : false);
+        manager->settingModeListener->refreshDriverBtnEnable(true);
+
+        break;
+    }
+
+    if (m_hPipe!=NULL && m_hPipe != INVALID_HANDLE_VALUE)
+    {
+        CloseHandle(m_hPipe);
+        m_hPipe=NULL;
     }
 
 }

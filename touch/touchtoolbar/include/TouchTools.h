@@ -349,9 +349,12 @@ public:
     void removeDriver();
     void refreshDriver();
     void setRemoveDriverBtnEnable(bool enable);
+    void removeDriverResult(bool result);
+    void refreshDriverBtnEnable(bool enable);
+    void refreshDriverResult(bool result);
     void showShutDownMessage();
     void shutDown(bool flag);
-    void removeDriverResult(bool result);
+
 public:
     //自启动
     void AutoRun(bool isAutoRun);

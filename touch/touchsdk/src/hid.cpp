@@ -76,6 +76,7 @@ extern "C" {
 
 #include <devguid.h>
 
+#include <cfgmgr32.h>
 
 #include  <QThread>
 #include "hidapi.h"
@@ -1262,7 +1263,7 @@ bool HID_API_EXPORT HID_API_CALL hid_remove_driver(int vid,int pid,int *result)
         DWORD buffersize = 2046;
         DWORD req_bufsize = 0;
         char bufferData[2046] = {0};
-        TPRINTF("###############枚举次数 = %d",i + 1);
+//        TPRINTF("###############枚举次数 = %d",i + 1);
 
 //        TDEBUG("111######DeviceInfoData : %d,%d,%d",DeviceInfoData.cbSize,
 //               DeviceInfoData.DevInst,DeviceInfoData.Reserved);
@@ -1287,7 +1288,7 @@ bool HID_API_EXPORT HID_API_CALL hid_remove_driver(int vid,int pid,int *result)
         {
             bufferData[i] =  wcBuffer[i];
         }
-        TPRINTF("#############驱动设备属性：%s",bufferData);
+//        TPRINTF("#############驱动设备属性：%s",bufferData);
         if( (strstr(bufferData,vidLow) != NULL || strstr(bufferData,vidUp) != NULL) &&
             (strstr(bufferData,pidLow) != NULL || strstr(bufferData,pidUp) != NULL))
         {
@@ -1339,6 +1340,36 @@ bool HID_API_EXPORT HID_API_CALL hid_remove_driver(int vid,int pid,int *result)
     return needReboot;
 
 }
+//刷新驱动
+bool HID_API_EXPORT HID_API_CALL hid_refresh_driver()
+{
+    DEVINST     devInst;
+    CONFIGRET   status;
+
+    status = CM_Locate_DevNode(&devInst, NULL, CM_LOCATE_DEVNODE_NORMAL);
+
+    if (status != CR_SUCCESS) {
+       TPRINTF("CM_Locate_DevNode failed: %x", status);
+       return FALSE;
+    }
+    else
+    {
+        TPRINTF("CM_Locate_DevNode successfully");
+    }
+
+    status = CM_Reenumerate_DevNode(devInst, 0);
+
+    if (status != CR_SUCCESS) {
+       TPRINTF("CM_Reenumerate_DevNode failed: %x", status);
+       return false;
+    }
+    else
+    {
+        TPRINTF("CM_Reenumerate_DevNode successfully");
+    }
+     return true;
+}
+
 //true：重启  false：关机
 bool HID_API_EXPORT HID_API_CALL hid_system_shut_down(bool reset)
 {
@@ -1373,80 +1404,6 @@ bool HID_API_EXPORT HID_API_CALL hid_system_shut_down(bool reset)
      return TRUE;
 }
 
-/*
-bool HID_API_EXPORT HID_API_CALL hid_remove_driver(int vid,int pid)
-{
-    PCWSTR devClassName;
-    DWORD dwGuids = 0;
-    HDEVINFO hDevInfoSet;
-
-    SetupDiClassGuidsFromNameW( PCWSTR(devClassName), 0, 0, &dwGuids );
-    if(dwGuids)
-    {
-        GUID* pGuids = new GUID[dwGuids];
-
-        BOOL success = SetupDiClassGuidsFromNameW( PCWSTR(devClassName), pGuids, dwGuids, &dwGuids );
-
-        hDevInfoSet = SetupDiGetClassDevsW( pGuids, NULL, NULL, DIGCF_PRESENT);
-
-        delete [] pGuids;
-
-    }
-    else
-    {
-        TDEBUG("!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-    }
-
-
-    TDEBUG("#####drvClassString = %s",(char *)devClassName);
-    SP_DEVINFO_DATA devInfo;
-    TDEBUG("########### dwGuids = %d",dwGuids);
-    if(dwGuids)
-    {
-        int nIndex = 0;
-
-        devInfo.cbSize = sizeof( SP_DEVINFO_DATA );
-
-        while( SetupDiEnumDeviceInfo( hDevInfoSet, nIndex, &devInfo ) && ( nIndex != -1 ) )
-        {
-            //Logger::logTrace(QString("WinDeviceHelper::searchForPort() enumerating ports. current index: %1").arg(nIndex));
-
-            QString enumDeviceInfo = QString("WinDeviceHelper::searchForPort() enumerating ports. current index: %1").arg(nIndex);
-            TDEBUG("##### enumDeviceInfo = %s",enumDeviceInfo.toStdString().c_str());
-
-            DWORD dwType = 0;
-            DWORD requiredSize=0;
-            QString propValue="";
-            BOOL result=SetupDiGetDeviceRegistryPropertyW( hDevInfoSet, &devInfo, SPDRP_DRIVER, &dwType, NULL, NULL, &requiredSize);
-            if(result)
-            {
-                TDEBUG("############获取驱动属性失败");
-                continue;
-            }
-            size_t strSize=requiredSize/sizeof(wchar_t)+1;
-            wchar_t* requestedData = new wchar_t[strSize];// буфер
-            result=SetupDiGetDeviceRegistryPropertyW( hDevInfoSet, &devInfo, SPDRP_DRIVER, &dwType,reinterpret_cast<PBYTE>(requestedData), requiredSize, &requiredSize);
-            if(result==TRUE )
-            {
-                propValue=QString::fromWCharArray(requestedData,wcslen(requestedData));
-                TDEBUG("#####驱动设备属性的值：%s",propValue.toStdString().c_str());
-            }
-            else
-            {
-                TDEBUG("####获取驱动失败：%s",QString("WinDeviceHelper::getDeviceRegistryString: SetupDiGetDeviceRegistryPropertyW failed with error %1").arg(GetLastError()).toStdString().c_str());
-
-            }
-            delete[]requestedData;
-        }
-    }
-    else
-    {
-        TDEBUG("#####################################");
-    }
-
-
-}
-*/
 
 void HID_API_EXPORT HID_API_CALL closeHandle(hid_device *device)
 {

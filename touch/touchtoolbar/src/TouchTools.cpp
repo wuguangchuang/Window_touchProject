@@ -1331,14 +1331,6 @@ void TouchTools::removeDriver()
     }
 
     TPRINTF("启动子进程");
-//    QString program = QStringLiteral("D:\\qt\\TouchAssistant_Windows_V2.1.0\\needAdminPermission.exe");
-//    myProcess = new QProcess(this);
-//    myProcess->start(program,,QStringList() << "uninstallDriver_14E1_3500");
-
-//    connect(myProcess,SIGNAL(readyRead()),this,SLOT(readProcessData()));
-//    connect(myProcess,SIGNAL(finished(int)),this,SLOT(onFinished(int)));
-
-
 
     mTouchManager->removeDriver(this);
 
@@ -1359,7 +1351,22 @@ void TouchTools::removeDriver()
 
 void TouchTools::refreshDriver()
 {
+    TPRINTF("启动子进程");
 
+    mTouchManager->refreshDriver(this);
+
+    //启动程序
+    QString fileName = appPath + "/needAdminPermission.exe";
+    fileName = fileName.replace("/","\\");
+    TPRINTF("启动子程序的路径：%s",fileName.toStdString().c_str());
+    int ret = (int)ShellExecute(NULL,L"runas",L"needAdminPermission.exe",L"refreshDriver",(LPCWSTR)(appPath.toStdString().c_str()),SW_HIDE);
+    TPRINTF("程序启动的结果%d",ret);
+    if(ret <= 32)
+    {
+        refreshDriverResult(false);
+        refreshDriverBtnEnable(true);
+        return;
+    }
 }
 void TouchTools::readProcessData()
 {
@@ -1391,6 +1398,16 @@ void TouchTools::shutDown(bool flag)
 void TouchTools::removeDriverResult(bool result)
 {
     presenter->removeDriverResult(result);
+}
+
+void TouchTools::refreshDriverBtnEnable(bool enable)
+{
+    presenter->refreshDriverBtnEnable(enable);
+}
+
+void TouchTools::refreshDriverResult(bool result)
+{
+    presenter->refreshDriverResult(result);
 }
 
 
